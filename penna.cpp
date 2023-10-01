@@ -3,8 +3,9 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <sfmt.h>
+// #include <sfmt.h>
 #include <limits.h>
+#include <random>
 
 #define CALE_WYJSCIE             //zapisz dane o kazdej z symulacji
 #define UZYJ_MPI                 //uzyj MPI
@@ -16,9 +17,9 @@
 #endif
 #define WIELKOSC 2               //*32 bity
 #define INT_W 32                 //wielkosc integera
-#define MAX_POP 1500000          //maksymalna wielkosc populacji
-#define MAX_POP_LAT 150000       //maksymalna dlugosc symulacji
-#define ZYC_START 300000         //zyc na starcie
+#define MAX_POP 15000            // maksymalna wielkosc populacji
+#define MAX_POP_LAT 1500         // maksymalna dlugosc symulacji
+#define ZYC_START 3000           // zyc na starcie
 #define ILOSC_MUTACJI 1          //ilosc mutacji przy rozmnazaniu
 #define MAX_JEDYNEK 4            //ilosc 1 po ktorych osobnik umiera
 #define JEDYNEK_START 4          //losc 1 w genomie osobnika na starcie symulacji 
@@ -41,9 +42,9 @@ abs(START_ODLOWOW - KONIEC_ODLOWOW)/(float)SYMULACJI_NA_PROCES;
 int numer_procesu = 0;              //numer procesu gdy zdefiniowane jest UZYJ_MPI (domyslnie 0)
 int wielkosc_klastra = 1;           //wielkosc klastra, na ktorym symulacja jest liczona (domyslnie 1)
 
-#ifdef UZYJ_ATI_STREAM
-#include "brookgenfiles/podziel.h"
-#endif
+// #ifdef UZYJ_ATI_STREAM
+// #include "brookgenfiles/podziel.h"
+// #endif
 
 //tablice uzywane do zbierania danych z symulacji
 static int rodziny[ZYC_START];
@@ -121,34 +122,39 @@ void przelicz_srednie_konwencjonalnie(float dzielnik)
 	}
 }
 //---------------------------------------------------------------//
-#ifdef UZYJ_ATI_STREAM
-int przelicz(float tab[], int rozmiar, float dzielnik)
-{
-	unsigned int RozmiarStrumienia[] = {rozmiar, 1};
-	unsigned int stopien = 1;
-	brook::Stream<float> StrumienWejsciowy(stopien, RozmiarStrumienia);
-	brook::Stream<float> StrumienWyjsciowy(stopien, RozmiarStrumienia);
+// #ifdef UZYJ_ATI_STREAM
+// int przelicz(float tab[], int rozmiar, float dzielnik)
+//{
+//	unsigned int RozmiarStrumienia[] = {rozmiar, 1};
+//	unsigned int stopien = 1;
+//	brook::Stream<float> StrumienWejsciowy(stopien, RozmiarStrumienia);
+//	brook::Stream<float> StrumienWyjsciowy(stopien, RozmiarStrumienia);
 
-	StrumienWejsciowy.read(tab);
+//	StrumienWejsciowy.read(tab);
 
-	podziel(StrumienWejsciowy, dzielnik , StrumienWyjsciowy);
+//	podziel(StrumienWejsciowy, dzielnik , StrumienWyjsciowy);
 
-	StrumienWyjsciowy.write(tab);
+//	StrumienWyjsciowy.write(tab);
 
-	return 0;
-}
+//	return 0;
+//}
 
-int przelicz_srednie_uzywajac_ATI_STREAM(float dzielnik)
-{
-	przelicz(sr_gompertz_final,sizeof(sr_gompertz_final)/sizeof(sr_gompertz_final[0]), dzielnik);
-	przelicz(sr_bity_final,sizeof(sr_bity_final)/sizeof(sr_bity_final[0]), dzielnik);
-	przelicz(sr_wiek_final,sizeof(sr_wiek_final)/sizeof(sr_wiek_final[0]), dzielnik);
-	przelicz(sr_rodziny_final,sizeof(sr_rodziny_final)/sizeof(sr_rodziny_final[0]), dzielnik);
-	przelicz(sr_stat_final[0],sizeof(sr_stat_final)/sizeof(sr_stat_final[0])*4, dzielnik);
+// int przelicz_srednie_uzywajac_ATI_STREAM(float dzielnik)
+//{
+//	przelicz(sr_gompertz_final,sizeof(sr_gompertz_final)/sizeof(sr_gompertz_final[0]),
+// dzielnik);
+//	przelicz(sr_bity_final,sizeof(sr_bity_final)/sizeof(sr_bity_final[0]),
+// dzielnik);
+//	przelicz(sr_wiek_final,sizeof(sr_wiek_final)/sizeof(sr_wiek_final[0]),
+// dzielnik);
+//	przelicz(sr_rodziny_final,sizeof(sr_rodziny_final)/sizeof(sr_rodziny_final[0]),
+// dzielnik);
+//	przelicz(sr_stat_final[0],sizeof(sr_stat_final)/sizeof(sr_stat_final[0])*4,
+// dzielnik);
 
-	return 0;
-}
-#endif
+//	return 0;
+//}
+// #endif
 //---------------------------------------------------------------//
 class dane {
 public:     
@@ -219,143 +225,146 @@ private:
 		plik_nazwa.append("proces");
 		plik_nazwa.append(bufor2);
 		plik_nazwa.append("_symulacja");
-		#endif
-		plik_nazwa.append(bufor);
-		plik_nazwa.append("_");
-		plik_nazwa.append(nazwy_plikow[numer]);
+#endif
+                plik_nazwa.append(bufor);
+                plik_nazwa.append("_");
+                plik_nazwa.append(nazwy_plikow[numer]);
 
-		return plik_nazwa;
-	}
-public:     
-	void otworz_pliki(int przedrostek)
-	{
-		fopen_s (&plik_statystyki,nazwa(przedrostek,STATYSTYKI).data(),"w");
-		if(przedrostek != 0)
-		fopen_s(&plik_osobniki, nazwa(przedrostek,POPULACJE).data(),"w");
-		fopen_s (&plik_rozklad_wieku, nazwa(przedrostek,ROZKLAD_WIEKU).data(),"w");
-		fopen_s (&plik_rozklad_bitow, nazwa(przedrostek,ROZKLAD_JEDYNEK).data(),"w");
-		fopen_s (&plik_gompertz, nazwa(przedrostek,GOMPERTZ).data(),"w");
-		fopen_s (&plik_rodziny, nazwa(przedrostek,RODZINY).data(),"w");
-	}
+                return plik_nazwa;
+        }
 
-	void otworz_pliki2(int przedrostek)
-	{
-		#ifdef CALE_WYJSCIE
-		wyjscie.otworz_pliki(przedrostek);
-		#endif
-	}
+    public:
+        void otworz_pliki(int przedrostek)
+        {
+                fopen_s(&plik_statystyki, nazwa(przedrostek, STATYSTYKI).data(), "w");
+                if (przedrostek != 0)
+                        fopen_s(&plik_osobniki, nazwa(przedrostek, POPULACJE).data(), "w");
+                fopen_s(&plik_rozklad_wieku, nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
+                fopen_s(&plik_rozklad_bitow, nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
+                fopen_s(&plik_gompertz, nazwa(przedrostek, GOMPERTZ).data(), "w");
+                fopen_s(&plik_rodziny, nazwa(przedrostek, RODZINY).data(), "w");
+        }
 
-	void zamknij_pliki(int przedrostek)
-	{
-		if(przedrostek != 0)
-		fclose(plik_osobniki);
-		fclose(plik_statystyki);
-		fclose(plik_rozklad_wieku);
-		fclose(plik_rozklad_bitow);
-		fclose(plik_gompertz);  
-	}
+        void otworz_pliki2(int przedrostek)
+        {
+#ifdef CALE_WYJSCIE
+                otworz_pliki(przedrostek);
+#endif
+        }
 
-	void zapisz_srednie(int symulacji)
-	{
-		#ifdef UZYJ_ATI_STREAM
-		przelicz_srednie_uzywajac_ATI_STREAM((float)symulacji);
-		#else
-		przelicz_srednie_konwencjonalnie((float)symulacji);
-		#endif
+        void zamknij_pliki(int przedrostek)
+        {
+                if (przedrostek != 0)
+                        fclose(plik_osobniki);
+                fclose(plik_statystyki);
+                fclose(plik_rozklad_wieku);
+                fclose(plik_rozklad_bitow);
+                fclose(plik_gompertz);
+        }
 
-		for(int v = 0; v<MAX_POP_LAT; v++)
-		{
-			if(sr_rodziny_final[v]>1)
-			fprintf(plik_rodziny,"%d\t%f\n",v,sr_rodziny_final[v]);
-			fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n",v,sr_stat_final[v][0],sr_stat_final[v][1],sr_stat_final[v][2],sr_stat_final[v][3]);
-		}
-		
-		for(int v = 0; v<WIELKOSC*INT_W; v++)
-		{
-			fprintf(plik_rozklad_wieku,"%d\t%f\n",v,sr_wiek_final[v]);
-			fprintf(plik_rozklad_bitow,"%d\t%.2f\n",v,sr_bity_final[v]);
-			if(sr_gompertz_final[v]>0)
-			fprintf(plik_gompertz,"%d\t%.3f\n",v,sr_gompertz_final[v]);
-			else 
-			fprintf(plik_gompertz,"%d\t1\n",v);
-		}
-	}
+        void zapisz_srednie(int symulacji)
+        {
+                //		#ifdef UZYJ_ATI_STREAM
+                //		przelicz_srednie_uzywajac_ATI_STREAM((float)symulacji);
+                //		#else
+                przelicz_srednie_konwencjonalnie((float)symulacji);
+                //		#endif
 
-	void zapisz_kolejne(bool rodzina1,int rok)
-	{
-		if(!rodzina1)
-		{
-			#ifdef CALE_WYJSCIE
-			fprintf(plik_rodziny,"%d\t%d\n",rok,ilosc_rodzin);
-			#endif
-			sr_rodziny[rok] += ilosc_rodzin;
-		}
-		#ifdef CALE_WYJSCIE
-		fprintf(plik_statystyki,"%d\t%d\t%d\t%d\t%d\n",rok,ilosc_osobnikow,ilosc_narodzin,ilosc_osobnikow - zgon,zgon);
-		#endif
-		sr_stat[rok][0] += ilosc_osobnikow;
-		sr_stat[rok][1] += ilosc_narodzin;
-		sr_stat[rok][2] += ilosc_osobnikow - zgon;
-		sr_stat[rok][3] += zgon;
-		
-		if(rok+1 == MAX_POP_LAT)
-		{
-			for(int v=0; v<WIELKOSC*INT_W; v++)
-			{
-				#ifdef CALE_WYJSCIE
-				fprintf(plik_rozklad_wieku,"%d\t%d\n",v,rozklad_wieku[v]);
-				#endif
-				sr_wiek[v] += rozklad_wieku[v];
-			}
+                for (int v = 0; v < MAX_POP_LAT; v++)
+                {
+                        if (sr_rodziny_final[v] > 1)
+                        fprintf(plik_rodziny, "%d\t%f\n", v, sr_rodziny_final[v]);
+                        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v, sr_stat_final[v][0], sr_stat_final[v][1], sr_stat_final[v][2], sr_stat_final[v][3]);
+                }
 
-			for(int v=0; v<WIELKOSC*INT_W; v++)
-			{
-				#ifdef CALE_WYJSCIE
-				fprintf(plik_rozklad_bitow,"%d\t%.2f\n",v,rozklad_bitow[v]*1.0/ilosc_osobnikow);
-				#endif
-				sr_bity[v] += (float)rozklad_bitow[v]/(float)ilosc_osobnikow;
-			}
+                for (int v = 0; v < WIELKOSC * INT_W; v++)
+                {
+                        fprintf(plik_rozklad_wieku, "%d\t%f\n", v, sr_wiek_final[v]);
+                        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, sr_bity_final[v]);
+                        if (sr_gompertz_final[v] > 0)
+                        fprintf(plik_gompertz, "%d\t%.3f\n", v, sr_gompertz_final[v]);
+                        else
+                        fprintf(plik_gompertz, "%d\t1\n", v);
+                }
+        }
 
-			for(int v = 0; v<WIELKOSC*INT_W; v++)
-			if(rozklad_wieku[v]>0)
-			{
-				#ifdef CALE_WYJSCIE
-				fprintf(plik_gompertz,"%d\t%.3f\n",v,gompertz_zgony[v]*1.0/rozklad_wieku[v]);
-				#endif
-				sr_gompertz[v] += (float)gompertz_zgony[v]/(float)rozklad_wieku[v];
-			}
-			else 
-			{
-				#ifdef CALE_WYJSCIE
-				fprintf(plik_gompertz,"%d\t1\n",v);
-				#endif
-				sr_gompertz[v]+=1;
-			}
-		}
-	}
+        void zapisz_kolejne(bool rodzina1, int rok)
+        {
+                if (!rodzina1)
+                {
+#ifdef CALE_WYJSCIE
+                        fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
+#endif
+                        sr_rodziny[rok] += ilosc_rodzin;
+                }
+#ifdef CALE_WYJSCIE
+                fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
+#endif
+                sr_stat[rok][0] += ilosc_osobnikow;
+                sr_stat[rok][1] += ilosc_narodzin;
+                sr_stat[rok][2] += ilosc_osobnikow - zgon;
+                sr_stat[rok][3] += zgon;
 
-	void zapisz_losowana_populacje(int numer)
-	{
-		#ifdef CALE_WYJSCIE
-		fprintf(plik_osobniki,"%u ",numer-1);
-		populacja[numer-1].itob(plik_osobniki);
-		#endif
-	}
+                if (rok + 1 == MAX_POP_LAT)
+                {
+                        for (int v = 0; v < WIELKOSC * INT_W; v++)
+                        {
+#ifdef CALE_WYJSCIE
+                        fprintf(plik_rozklad_wieku, "%d\t%d\n", v, rozklad_wieku[v]);
+#endif
+                        sr_wiek[v] += rozklad_wieku[v];
+                        }
 
-	void zapisz_koncowa_populacje(int x, unsigned int ostatni_el)
-	{
-		#ifdef CALE_WYJSCIE
-		for(unsigned d = 0; d<ostatni_el; d++)
-		if(populacja[d].przodek!=-1)
-		{
-			fprintf(plik_osobniki,"%u %d %d %d %u ",d,populacja[d].przodek,populacja[d].wiek,populacja[d].ilosc_1, populacja[d].ciag[0]);
-			populacja[d].itob(plik_osobniki);
-		}
-		wyjscie.zamknij_pliki(x);
-		#endif
-	}
-private:
-} wyjscie;
+                        for (int v = 0; v < WIELKOSC * INT_W; v++)
+                        {
+#ifdef CALE_WYJSCIE
+                        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, rozklad_bitow[v] * 1.0 / ilosc_osobnikow);
+#endif
+                        sr_bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
+                        }
+
+                        for (int v = 0; v < WIELKOSC * INT_W; v++)
+                        if (rozklad_wieku[v] > 0)
+                        {
+#ifdef CALE_WYJSCIE
+                            fprintf(plik_gompertz, "%d\t%.3f\n", v, gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
+#endif
+                            sr_gompertz[v] += (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
+                        }
+                        else
+                        {
+#ifdef CALE_WYJSCIE
+                            fprintf(plik_gompertz, "%d\t1\n", v);
+#endif
+                            sr_gompertz[v] += 1;
+                        }
+                }
+        }
+
+        void zapisz_losowana_populacje(int numer)
+        {
+#ifdef CALE_WYJSCIE
+                fprintf(plik_osobniki, "%u ", numer - 1);
+                populacja[numer - 1].itob(plik_osobniki);
+#endif
+        }
+
+        void zapisz_koncowa_populacje(int x, unsigned int ostatni_el)
+        {
+#ifdef CALE_WYJSCIE
+                for (unsigned d = 0; d < ostatni_el; d++)
+                        if (populacja[d].przodek != -1)
+                        {
+                        fprintf(plik_osobniki, "%u %d %d %d %u ", d, populacja[d].przodek, populacja[d].wiek, populacja[d].ilosc_1, populacja[d].ciag[0]);
+                        populacja[d].itob(plik_osobniki);
+                        }
+                zamknij_pliki(x);
+#endif
+        }
+
+    private:
+};
+pliki wyjscie;
 //---------------------------------------------------------------//
 void zerowanie()
 {
@@ -375,35 +384,38 @@ void zerowanie()
 	}
 }
 //---------------------------------------------------------------//
-int losuj_populacje(CRandomSFMT1* generator)
+int losuj_populacje(std::mt19937& rng)
 {
-	unsigned int nowy[WIELKOSC];
-	unsigned int liczba_losowa = 0;
-	unsigned int ktore = 0;
-	unsigned int temp = 0;
-	unsigned int numer = 0;
-	
-	for(int i = 0; i<ZYC_START; i++)
-	{
-		for(int x = 0; x<WIELKOSC; x++)
-			nowy[x] = 0;
-		for(int j = 0; j<JEDYNEK_START; j++)
-		{
-			do
-			{
-				liczba_losowa = generator->IRandomX(0,INT_W-1);
-				ktore = generator->IRandomX(0,WIELKOSC-1);
-				temp = 1;
-				temp <<= liczba_losowa;
-			}while(nowy[ktore] == (nowy[ktore] | temp));
+        unsigned int nowy[WIELKOSC];
+        unsigned int liczba_losowa = 0;
+        unsigned int ktore = 0;
+        unsigned int temp = 0;
+        unsigned int numer = 0;
 
-			nowy[ktore] = (nowy[ktore] | temp);
-		}
-		numer++;
-		populacja[numer-1].inicjuj(i,nowy);
-		wyjscie.zapisz_losowana_populacje(numer);
-	} 
-	return numer;
+        std::uniform_int_distribution<std::mt19937::result_type> randomNumber(0, INT_W - 1);    // distribution in range [1, 6]
+        std::uniform_int_distribution<std::mt19937::result_type> randomWhich(0, WIELKOSC - 1);  // distribution in range [1, 6]
+
+        for (int i = 0; i < ZYC_START; i++)
+        {
+                for (int x = 0; x < WIELKOSC; x++)
+                        nowy[x] = 0;
+                for (int j = 0; j < JEDYNEK_START; j++)
+                {
+                        do
+                        {
+                        liczba_losowa = randomNumber(rng);
+                        ktore = randomWhich(rng);
+                        temp = 1;
+                        temp <<= liczba_losowa;
+                        } while (nowy[ktore] == (nowy[ktore] | temp));
+
+                        nowy[ktore] = (nowy[ktore] | temp);
+                }
+                numer++;
+                populacja[numer - 1].inicjuj(i, nowy);
+                wyjscie.zapisz_losowana_populacje(numer);
+        }
+        return numer;
 }
 //---------------------------------------------------------------//
 class rownolegle{
@@ -441,165 +453,180 @@ public:
 } mpi;
 //===============================================================//
 int main(int argc,char* argv[])
-{ 
-	mpi.start(argc,argv);
+{
+        mpi.start(argc, argv);
 
-	int glowne_ziarno = 0;
+        int glowne_ziarno = 0;
 
-	if (numer_procesu == 0) // glowny
-	{
-		Randomize();
-		glowne_ziarno = abs(RandomInteger(0,INT_MAX));
-	}
+        if (numer_procesu == 0)  // glowny
+        {
+                Randomize();
+                glowne_ziarno = abs(RandomInteger(0, INT_MAX));
+        }
 
-	mpi.rozeslij_ziarno(& glowne_ziarno);
+        mpi.rozeslij_ziarno(&glowne_ziarno);
 
-	CRandomSFMT1 * generator = new CRandomSFMT1(glowne_ziarno);
-	int seeds[2] = {glowne_ziarno,numer_procesu};
-	generator->RandomInitByArray(seeds,2);
+        std::random_device device;
+        std::mt19937 rng(device());
+        std::uniform_int_distribution<std::mt19937::result_type> genOld(0, 100);
+        std::uniform_int_distribution<std::mt19937::result_type> randomNumber(0, INT_W - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> randomWhich(0, WIELKOSC - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> tenK(0, 10000);
+        std::uniform_int_distribution<std::mt19937::result_type> offsrpingGenerator(1, 100);
 
-	std::vector < unsigned int > puste; //kontener z indeksami pustych miejsc w tablicy populacja[]
+        std::vector<unsigned int> puste;                    // kontener z indeksami pustych miejsc w tablicy populacja[]
 
-	for(int o = 1; o<=SYMULACJI_NA_PROCES+1; o++) //start kolejne symulacje
-	{
-		clock_t start, koniec;
-		unsigned int rok = 0; //aktualny rok w symulacji
-		bool rodzina1 = false; //flaga pokazujaca istnienie tylko jednej rodziny
-		puste.clear();
+        for (int o = 1; o <= SYMULACJI_NA_PROCES + 1; o++)  // start kolejne symulacje
+        {
+                clock_t start, koniec;
+                unsigned int rok = 0;   // aktualny rok w symulacji
+                bool rodzina1 = false;  // flaga pokazujaca istnienie tylko jednej rodziny
+                puste.clear();
 
-		if(o == SYMULACJI_NA_PROCES+1 && numer_procesu == 0 )
-		wyjscie.otworz_pliki(0);
-		else
-		{
-			if(o != SYMULACJI_NA_PROCES+1)
-			wyjscie.otworz_pliki2(o);
-		}
+                if (o == SYMULACJI_NA_PROCES + 1 && numer_procesu == 0)
+                        wyjscie.otworz_pliki(0);
+                else
+                {
+                        if (o != SYMULACJI_NA_PROCES + 1)
+                        wyjscie.otworz_pliki2(o);
+                }
 
-		if(o != SYMULACJI_NA_PROCES+1)
-		{         
-			unsigned int ostatni_el = losuj_populacje(generator);
-			if (numer_procesu == 0)
-			{
-				printf("%d/%d Postep:       [                                                  ]",o,SYMULACJI_NA_PROCES);
-				for(int k = 0; k<=50; k++)
-				printf("\b");
-				start = clock();
-			}
-			while(rok < MAX_POP_LAT) //kolejne lata
-			{
-				zerowanie();
+                if (o != SYMULACJI_NA_PROCES + 1)
+                {
+                        unsigned int ostatni_el = losuj_populacje(rng);
+                        if (numer_procesu == 0)
+                        {
+                        printf("%d/%d Postep:       [                                                  ]", o, SYMULACJI_NA_PROCES);
+                        for (int k = 0; k <= 50; k++)
+                            printf("\b");
+                        start = clock();
+                        }
+                        while (rok < MAX_POP_LAT)  // kolejne lata
+                        {
+                        zerowanie();
 
-				#ifdef SYMULACJA_DORSZY
-				if(rok+1 == MAX_POP_LAT)
-				{
-					if(ostatni_el-puste.size() == 0)
-					return 0;
-				}
-				#endif
+#ifdef SYMULACJA_DORSZY
+                        if (rok + 1 == MAX_POP_LAT)
+                        {
+                            if (ostatni_el - puste.size() == 0)
+                                return 0;
+                        }
+#endif
 
-				for(unsigned int i = 0; i<ostatni_el; i++)
-				{
-					if(populacja[i].przodek == -1)
-					continue;
-					else 
-					ilosc_osobnikow++;
-					
-					if(!rodzina1)//gromadz dane o rodzinach
-					{
-						rodziny[populacja[i].przodek]++;
-						if(rodziny[populacja[i].przodek] == 1)
-						ilosc_rodzin++;
-					}
-					
-					if(rok+1 == MAX_POP_LAT) //zgromadz dane o bitach i wieku
-					{
-						rozklad_wieku[populacja[i].wiek]++;
-						for(int v = 0;v<WIELKOSC*INT_W; v++)
-							if(populacja[i].ciag[v/INT_W] & (1 << (INT_W-(v+1)%INT_W)))
-						rozklad_bitow[v]++;
-					}
+                        for (unsigned int i = 0; i < ostatni_el; i++)
+                        {
+                            if (populacja[i].przodek == -1)
+                                continue;
+                            else
+                                ilosc_osobnikow++;
 
-					//decyzja o zyciu badz smierci osobnika
-					if ((populacja[i].ilosc_1 >= MAX_JEDYNEK) || //jedynki
-						(populacja[i].wiek >= WIELKOSC*INT_W) || //starosc
-						((float)generator->IRandomX(0,100) <= (float)(ostatni_el-puste.size())/MAX_POP*100.0) //verhulst
-						#ifdef SYMULACJA_DORSZY
-						|| ( ( rok > ODLOWY_OD ) && ( populacja[i].wiek >= MINIMALNY_WIEK ) && 
-							( (float)generator->IRandomX(0,10000)/100 <= START_ODLOWOW + o * krok_symulacji ) )
-						#endif
-						) //smierc
-					{
-						zgon++;  
-						gompertz_zgony[populacja[i].wiek]++;
-						puste.push_back(i);
-						populacja[i].przodek = -1;
-						continue;
-					}
-					else //zycie
-					{
-						if((populacja[i].wiek>ROZMNAZANIE_OD_ROKU) && generator->IRandomX(1,100) <= SZANSA_NA_POTOMSTWO) //potomstwo
-						{
-							dane osobnik;
-							for(unsigned int l = 0; l<ILOSC_POTOMSTWA; l++) //ile potomstwa
-							{ 
-								ilosc_narodzin++;              
-								for(int x = 0; x<WIELKOSC; x++) //przepisz genom rodzica
-									osobnik.ciag[x] = populacja[i].ciag[x];
-								for(unsigned m = 0; m<ILOSC_MUTACJI; m++) //mutacje
-								{
-									unsigned int liczba_losowa = generator->IRandomX(0,INT_W-1);
-									unsigned int ktore = generator->IRandomX(0,WIELKOSC-1);
-									unsigned int temp = 1;
-									temp <<= liczba_losowa;
-									osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
-								}                              
+                            if (!rodzina1)  // gromadz dane o rodzinach
+                            {
+                                rodziny[populacja[i].przodek]++;
+                                if (rodziny[populacja[i].przodek] == 1)
+                                    ilosc_rodzin++;
+                            }
 
-								if(puste.size() == 0 && ostatni_el<MAX_POP) //dodaj osobnika na nowym miejscu
-								{
-									populacja[ostatni_el].inicjuj(populacja[i].przodek,osobnik.ciag);                 
-									ostatni_el++;
-								}
-								else //dodaj osobnika w miejsce puste
-								{  
-									if(puste.size()>0)
-									{
-										populacja[puste.back()].inicjuj(populacja[i].przodek,osobnik.ciag);                
-										puste.pop_back();  
-									}
-								}
-							}
-						}
-					}
-					populacja[i].wiek++;//dodaj rok do wieku
-					populacja[i].czy1(populacja[i].wiek);//sprawdzanie chorob
-				}
-				if(ilosc_rodzin == 1)
-					rodzina1 = true;
-				wyjscie.zapisz_kolejne(rodzina1,rok);
-				rok++;
-				if (numer_procesu == 0 && (rok%(MAX_POP_LAT/50)) == 0)
-					printf("*");//progress bar          
-			} //kolejne lata
-			wyjscie.zapisz_koncowa_populacje(SYMULACJI_NA_PROCES+1-o,ostatni_el);
-		}
-		else
-		{
-			mpi.zbierz_dane_z_procesow();
-			if (numer_procesu == 0)
-			{
-				wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES*wielkosc_klastra);
-				wyjscie.zamknij_pliki(SYMULACJI_NA_PROCES+1-o);
-			}
-		}
-		if (numer_procesu == 0)
-		{
-			koniec = clock();
-			if(o != SYMULACJI_NA_PROCES+1)
-				printf("\nCzas wykonania: %d godzin, %d minut %d sekund\n", (koniec - start) / (1000*60*60), ((koniec - start) % (1000*60*60)) / (1000*60), (((koniec - start) % (1000*60*60)) % (1000*60)) / 1000);
-		}
-	} // kolejne symulacje
-	delete(generator);
-	mpi.koniec();
-	return 0;
+                            if (rok + 1 == MAX_POP_LAT)  // zgromadz dane o
+                                                         // bitach i wieku
+                            {
+                                rozklad_wieku[populacja[i].wiek]++;
+                                for (int v = 0; v < WIELKOSC * INT_W; v++)
+                                    if (populacja[i].ciag[v / INT_W] & (1 << (INT_W - (v + 1) % INT_W)))
+                                        rozklad_bitow[v]++;
+                            }
+
+                            // decyzja o zyciu badz smierci osobnika
+                            if ((populacja[i].ilosc_1 >= MAX_JEDYNEK) ||                                      // jedynki
+                                (populacja[i].wiek >= WIELKOSC * INT_W) ||                                    // starosc
+                                ((float)genOld(rng) <= (float)(ostatni_el - puste.size()) / MAX_POP * 100.0)  // verhulst
+#ifdef SYMULACJA_DORSZY
+                                ||
+                                ((rok > ODLOWY_OD) && (populacja[i].wiek >= MINIMALNY_WIEK) && ((float)tenK(rng) / 100 <= START_ODLOWOW + o * krok_symulacji))
+#endif
+                                    )  // smierc
+                            {
+                                zgon++;
+                                gompertz_zgony[populacja[i].wiek]++;
+                                puste.push_back(i);
+                                populacja[i].przodek = -1;
+                                continue;
+                            }
+                            else                                                                                                  // zycie
+                            {
+                                if ((populacja[i].wiek > ROZMNAZANIE_OD_ROKU) && offsrpingGenerator(rng) <= SZANSA_NA_POTOMSTWO)  // potomstwo
+                                {
+                                    dane osobnik;
+                                    for (unsigned int l = 0; l < ILOSC_POTOMSTWA; l++)  // ile potomstwa
+                                    {
+                                        ilosc_narodzin++;
+                                        for (int x = 0; x < WIELKOSC; x++)            // przepisz genom
+                                                                                      // rodzica
+                                            osobnik.ciag[x] = populacja[i].ciag[x];
+                                        for (unsigned m = 0; m < ILOSC_MUTACJI; m++)  // mutacje
+                                        {
+                                            unsigned int liczba_losowa = randomNumber(rng);
+                                            unsigned int ktore = randomWhich(rng);
+                                            unsigned int temp = 1;
+                                            temp <<= liczba_losowa;
+                                            osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
+                                        }
+
+                                        if (puste.size() == 0 && ostatni_el < MAX_POP)  // dodaj
+                                                                                        // osobnika
+                                                                                        // na
+                                                                                        // nowym
+                                                                                        // miejscu
+                                        {
+                                            populacja[ostatni_el].inicjuj(populacja[i].przodek, osobnik.ciag);
+                                            ostatni_el++;
+                                        }
+                                        else  // dodaj osobnika w
+                                              // miejsce puste
+                                        {
+                                            if (puste.size() > 0)
+                                            {
+                                                populacja[puste.back()].inicjuj(populacja[i].przodek, osobnik.ciag);
+                                                puste.pop_back();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            populacja[i].wiek++;                   // dodaj rok do wieku
+                            populacja[i].czy1(populacja[i].wiek);  // sprawdzanie chorob
+                        }
+                        if (ilosc_rodzin == 1)
+                            rodzina1 = true;
+                        wyjscie.zapisz_kolejne(rodzina1, rok);
+                        rok++;
+                        if (numer_procesu == 0 && (rok % (MAX_POP_LAT / 50)) == 0)
+                            printf("*");  // progress bar
+                        }                 // kolejne lata
+                        wyjscie.zapisz_koncowa_populacje(SYMULACJI_NA_PROCES + 1 - o, ostatni_el);
+                }
+                else
+                {
+                        mpi.zbierz_dane_z_procesow();
+                        if (numer_procesu == 0)
+                        {
+                        wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES * wielkosc_klastra);
+                        wyjscie.zamknij_pliki(SYMULACJI_NA_PROCES + 1 - o);
+                        }
+                }
+                if (numer_procesu == 0)
+                {
+                        koniec = clock();
+                        if (o != SYMULACJI_NA_PROCES + 1)
+                        printf(
+                            "\nCzas wykonania: %d godzin, %d minut %d "
+                            "sekund\n",
+                            (koniec - start) / (1000 * 60 * 60), ((koniec - start) % (1000 * 60 * 60)) / (1000 * 60),
+                            (((koniec - start) % (1000 * 60 * 60)) % (1000 * 60)) / 1000);
+                }
+        }  // kolejne symulacje
+           //        delete generator;
+        mpi.koniec();
+        return 0;
 }
 //============================================================//
