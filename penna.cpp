@@ -7,6 +7,8 @@
 #include <limits.h>
 #include <random>
 
+#include "Output.h"
+
 #define CALE_WYJSCIE             //zapisz dane o kazdej z symulacji
 #define UZYJ_MPI                 //uzyj MPI
 #define UZYJ_ATI_STREAM          //uzyj ATI STREAM
@@ -77,14 +79,6 @@ float (& sr_wiek_final)[WIELKOSC*INT_W] = sr_wiek;
 float (& sr_stat_final)[MAX_POP_LAT][4] = sr_stat;
 #endif
 
-//nazwy plikow wyjscia
-std::string nazwy_plikow[6] = { "statystyki.txt",
-	"osobniki.txt",
-	"rozklad_wieku.txt",
-	"rozklad_bitow.txt",
-	"gompertz.txt",
-	"rodziny.txt" };
-
 //zmienne przetrzymujace informacje potrzebne do statystyk
 int ilosc_osobnikow;
 int ilosc_narodzin;
@@ -101,25 +95,6 @@ int RandomInteger(int low, int high)
 	double d = (double) rand() / ((double) RAND_MAX + 1);
 	int k = (int) (d * (high - low + 1));
 	return (low + k);
-}
-//---------------------------------------------------------------//
-void przelicz_srednie_konwencjonalnie(float dzielnik)
-{
-	for(int v = 0; v < WIELKOSC*INT_W; v++)
-	{
-		sr_gompertz_final[v] = sr_gompertz_final[v]/dzielnik;
-		sr_bity_final[v] = sr_bity_final[v]/dzielnik;
-		sr_wiek_final[v] = sr_wiek_final[v]/dzielnik;
-	}
-
-	for(int v = 0; v < MAX_POP_LAT; v++)
-	sr_rodziny_final[v] = sr_rodziny_final[v]/dzielnik;
-
-	for(int v = 0; v < MAX_POP_LAT; v++)
-	for(int w = 0; w < 4; w++)
-	{
-		sr_stat_final[v][w] = sr_stat_final[v][w]/dzielnik;
-	}
 }
 //---------------------------------------------------------------//
 // #ifdef UZYJ_ATI_STREAM
@@ -197,175 +172,6 @@ private:
 //---------------------------------------------------------------//
 static dane populacja[MAX_POP];
 //---------------------------------------------------------------//
-class pliki {
-private:
-	FILE * plik_statystyki;
-	FILE * plik_osobniki;
-	FILE * plik_rozklad_wieku;
-	FILE * plik_rozklad_bitow;
-	FILE * plik_gompertz;
-	FILE * plik_rodziny;
-
-	enum { STATYSTYKI = 0, POPULACJE, ROZKLAD_WIEKU, ROZKLAD_JEDYNEK, GOMPERTZ, RODZINY };
-
-	std::string nazwa(int przedrostek, int numer)
-	{
-		std::string plik_nazwa;
-		char bufor[10],bufor2[10];
-		
-		#ifdef SYMULACJA_DORSZY
-		sprintf(bufor,"%3.2f",START_ODLOWOW + przedrostek * krok_symulacji);
-		#else	
-		_itoa(przedrostek,bufor,10);
-		#endif
-		_itoa(numer_procesu,bufor2,10);
-
-		plik_nazwa.erase();
-		#ifndef SYMULACJA_DORSZY
-		plik_nazwa.append("proces");
-		plik_nazwa.append(bufor2);
-		plik_nazwa.append("_symulacja");
-#endif
-                plik_nazwa.append(bufor);
-                plik_nazwa.append("_");
-                plik_nazwa.append(nazwy_plikow[numer]);
-
-                return plik_nazwa;
-        }
-
-    public:
-        void otworz_pliki(int przedrostek)
-        {
-                fopen_s(&plik_statystyki, nazwa(przedrostek, STATYSTYKI).data(), "w");
-                if (przedrostek != 0)
-                        fopen_s(&plik_osobniki, nazwa(przedrostek, POPULACJE).data(), "w");
-                fopen_s(&plik_rozklad_wieku, nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
-                fopen_s(&plik_rozklad_bitow, nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
-                fopen_s(&plik_gompertz, nazwa(przedrostek, GOMPERTZ).data(), "w");
-                fopen_s(&plik_rodziny, nazwa(przedrostek, RODZINY).data(), "w");
-        }
-
-        void otworz_pliki2(int przedrostek)
-        {
-#ifdef CALE_WYJSCIE
-                otworz_pliki(przedrostek);
-#endif
-        }
-
-        void zamknij_pliki(int przedrostek)
-        {
-                if (przedrostek != 0)
-                        fclose(plik_osobniki);
-                fclose(plik_statystyki);
-                fclose(plik_rozklad_wieku);
-                fclose(plik_rozklad_bitow);
-                fclose(plik_gompertz);
-        }
-
-        void zapisz_srednie(int symulacji)
-        {
-                //		#ifdef UZYJ_ATI_STREAM
-                //		przelicz_srednie_uzywajac_ATI_STREAM((float)symulacji);
-                //		#else
-                przelicz_srednie_konwencjonalnie((float)symulacji);
-                //		#endif
-
-                for (int v = 0; v < MAX_POP_LAT; v++)
-                {
-                        if (sr_rodziny_final[v] > 1)
-                        fprintf(plik_rodziny, "%d\t%f\n", v, sr_rodziny_final[v]);
-                        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v, sr_stat_final[v][0], sr_stat_final[v][1], sr_stat_final[v][2], sr_stat_final[v][3]);
-                }
-
-                for (int v = 0; v < WIELKOSC * INT_W; v++)
-                {
-                        fprintf(plik_rozklad_wieku, "%d\t%f\n", v, sr_wiek_final[v]);
-                        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, sr_bity_final[v]);
-                        if (sr_gompertz_final[v] > 0)
-                        fprintf(plik_gompertz, "%d\t%.3f\n", v, sr_gompertz_final[v]);
-                        else
-                        fprintf(plik_gompertz, "%d\t1\n", v);
-                }
-        }
-
-        void zapisz_kolejne(bool rodzina1, int rok)
-        {
-                if (!rodzina1)
-                {
-#ifdef CALE_WYJSCIE
-                        fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
-#endif
-                        sr_rodziny[rok] += ilosc_rodzin;
-                }
-#ifdef CALE_WYJSCIE
-                fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
-#endif
-                sr_stat[rok][0] += ilosc_osobnikow;
-                sr_stat[rok][1] += ilosc_narodzin;
-                sr_stat[rok][2] += ilosc_osobnikow - zgon;
-                sr_stat[rok][3] += zgon;
-
-                if (rok + 1 == MAX_POP_LAT)
-                {
-                        for (int v = 0; v < WIELKOSC * INT_W; v++)
-                        {
-#ifdef CALE_WYJSCIE
-                        fprintf(plik_rozklad_wieku, "%d\t%d\n", v, rozklad_wieku[v]);
-#endif
-                        sr_wiek[v] += rozklad_wieku[v];
-                        }
-
-                        for (int v = 0; v < WIELKOSC * INT_W; v++)
-                        {
-#ifdef CALE_WYJSCIE
-                        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, rozklad_bitow[v] * 1.0 / ilosc_osobnikow);
-#endif
-                        sr_bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
-                        }
-
-                        for (int v = 0; v < WIELKOSC * INT_W; v++)
-                        if (rozklad_wieku[v] > 0)
-                        {
-#ifdef CALE_WYJSCIE
-                            fprintf(plik_gompertz, "%d\t%.3f\n", v, gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
-#endif
-                            sr_gompertz[v] += (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
-                        }
-                        else
-                        {
-#ifdef CALE_WYJSCIE
-                            fprintf(plik_gompertz, "%d\t1\n", v);
-#endif
-                            sr_gompertz[v] += 1;
-                        }
-                }
-        }
-
-        void zapisz_losowana_populacje(int numer)
-        {
-#ifdef CALE_WYJSCIE
-                fprintf(plik_osobniki, "%u ", numer - 1);
-                populacja[numer - 1].itob(plik_osobniki);
-#endif
-        }
-
-        void zapisz_koncowa_populacje(int x, unsigned int ostatni_el)
-        {
-#ifdef CALE_WYJSCIE
-                for (unsigned d = 0; d < ostatni_el; d++)
-                        if (populacja[d].przodek != -1)
-                        {
-                        fprintf(plik_osobniki, "%u %d %d %d %u ", d, populacja[d].przodek, populacja[d].wiek, populacja[d].ilosc_1, populacja[d].ciag[0]);
-                        populacja[d].itob(plik_osobniki);
-                        }
-                zamknij_pliki(x);
-#endif
-        }
-
-    private:
-};
-pliki wyjscie;
-//---------------------------------------------------------------//
 void zerowanie()
 {
 	ilosc_osobnikow = 0;
@@ -384,7 +190,7 @@ void zerowanie()
 	}
 }
 //---------------------------------------------------------------//
-int losuj_populacje(std::mt19937& rng)
+int losuj_populacje(std::mt19937& rng, Output& wyjscie)
 {
         unsigned int nowy[WIELKOSC];
         unsigned int liczba_losowa = 0;
@@ -457,6 +263,7 @@ int main(int argc,char* argv[])
         mpi.start(argc, argv);
 
         int glowne_ziarno = 0;
+        Output wyjscie(numer_procesu, MAX_POP_LAT);
 
         if (numer_procesu == 0)  // glowny
         {
@@ -493,7 +300,7 @@ int main(int argc,char* argv[])
 
                 if (o != SYMULACJI_NA_PROCES + 1)
                 {
-                        unsigned int ostatni_el = losuj_populacje(rng);
+                        unsigned int ostatni_el = losuj_populacje(rng, wyjscie);
                         if (numer_procesu == 0)
                         {
                         printf("%d/%d Postep:       [                                                  ]", o, SYMULACJI_NA_PROCES);
@@ -598,7 +405,8 @@ int main(int argc,char* argv[])
                         }
                         if (ilosc_rodzin == 1)
                             rodzina1 = true;
-                        wyjscie.zapisz_kolejne(rodzina1, rok);
+                        wyjscie.zapisz_kolejne(rodzina1, rok, sr_gompertz, sr_rodziny, sr_bity, sr_wiek, sr_stat, ilosc_osobnikow, ilosc_narodzin, ilosc_rodzin,
+                                               zgon, rozklad_wieku, rozklad_bitow, gompertz_zgony);
                         rok++;
                         if (numer_procesu == 0 && (rok % (MAX_POP_LAT / 50)) == 0)
                             printf("*");  // progress bar
@@ -610,7 +418,8 @@ int main(int argc,char* argv[])
                         mpi.zbierz_dane_z_procesow();
                         if (numer_procesu == 0)
                         {
-                        wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES * wielkosc_klastra);
+                        wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES * wielkosc_klastra, sr_gompertz_final, sr_rodziny_final, sr_bity_final, sr_wiek_final,
+                                               sr_stat_final);
                         wyjscie.zamknij_pliki(SYMULACJI_NA_PROCES + 1 - o);
                         }
                 }
