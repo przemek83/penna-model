@@ -64,11 +64,7 @@ void Output::zamknij_pliki(int przedrostek)
 void Output::zapisz_srednie(int symulacji, float* sr_gompertz_final, float* sr_rodziny_final, float* sr_bity_final, float* sr_wiek_final,
                             float sr_stat_final[][4])
 {
-    //		#ifdef UZYJ_ATI_STREAM
-    //		przelicz_srednie_uzywajac_ATI_STREAM((float)symulacji);
-    //		#else
     przelicz_srednie_konwencjonalnie((float)symulacji, sr_gompertz_final, sr_rodziny_final, sr_bity_final, sr_wiek_final, sr_stat_final);
-    //		#endif
 
     for (int v = 0; v < maxPopulationAge_; v++)
     {

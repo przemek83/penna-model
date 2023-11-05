@@ -7,7 +7,6 @@
 
 #define CALE_WYJSCIE      // zapisz dane o kazdej z symulacji
 #define UZYJ_MPI          // uzyj MPI
-#define UZYJ_ATI_STREAM   // uzyj ATI STREAM
 #define SYMULACJA_DORSZY  // wlacz tryb symulacji odlowow
 
 #ifdef SYMULACJA_DORSZY

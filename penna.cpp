@@ -19,10 +19,6 @@ float krok_symulacji =  // wielkosc kroku symulacji
 int numer_procesu = 0;              // numer procesu gdy zdefiniowane jest UZYJ_MPI (domyslnie 0)
 int wielkosc_klastra = 1;           //wielkosc klastra, na ktorym symulacja jest liczona (domyslnie 1)
 
-// #ifdef UZYJ_ATI_STREAM
-// #include "brookgenfiles/podziel.h"
-// #endif
-
 //tablice uzywane do zbierania danych z symulacji
 static int rodziny[ZYC_START];
 static int rozklad_wieku[WIELKOSC*INT_W];
@@ -71,40 +67,6 @@ int RandomInteger(int low, int high)
 	int k = (int) (d * (high - low + 1));
 	return (low + k);
 }
-//---------------------------------------------------------------//
-// #ifdef UZYJ_ATI_STREAM
-// int przelicz(float tab[], int rozmiar, float dzielnik)
-//{
-//	unsigned int RozmiarStrumienia[] = {rozmiar, 1};
-//	unsigned int stopien = 1;
-//	brook::Stream<float> StrumienWejsciowy(stopien, RozmiarStrumienia);
-//	brook::Stream<float> StrumienWyjsciowy(stopien, RozmiarStrumienia);
-
-//	StrumienWejsciowy.read(tab);
-
-//	podziel(StrumienWejsciowy, dzielnik , StrumienWyjsciowy);
-
-//	StrumienWyjsciowy.write(tab);
-
-//	return 0;
-//}
-
-// int przelicz_srednie_uzywajac_ATI_STREAM(float dzielnik)
-//{
-//	przelicz(sr_gompertz_final,sizeof(sr_gompertz_final)/sizeof(sr_gompertz_final[0]),
-// dzielnik);
-//	przelicz(sr_bity_final,sizeof(sr_bity_final)/sizeof(sr_bity_final[0]),
-// dzielnik);
-//	przelicz(sr_wiek_final,sizeof(sr_wiek_final)/sizeof(sr_wiek_final[0]),
-// dzielnik);
-//	przelicz(sr_rodziny_final,sizeof(sr_rodziny_final)/sizeof(sr_rodziny_final[0]),
-// dzielnik);
-//	przelicz(sr_stat_final[0],sizeof(sr_stat_final)/sizeof(sr_stat_final[0])*4,
-// dzielnik);
-
-//	return 0;
-//}
-// #endif
 //---------------------------------------------------------------//
 namespace
 {
