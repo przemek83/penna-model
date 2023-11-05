@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include "Individual.h"
 
 class Output
 {
 public:
-    Output(int processId, int maxPopulationAge);
+    Output(float simulationStep_, int processId, int maxPopulationAge);
 
     void otworz_pliki(int przedrostek);
 
@@ -18,15 +19,17 @@ public:
     void zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* sr_rodziny, float* sr_bity, float* sr_wiek, float sr_stat[][4], int ilosc_osobnikow,
                         int ilosc_narodzin, int ilosc_rodzin, int zgon, int* rozklad_wieku, int* rozklad_bitow, int* gompertz_zgony);
 
-    void zapisz_losowana_populacje(int numer);
+    void zapisz_losowana_populacje(Individual* populacja, int numer);
 
-    void zapisz_koncowa_populacje(int x, unsigned int ostatni_el);
+    void zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int ostatni_el);
 
 private:
     std::string nazwa(int przedrostek, int numer);
 
     void przelicz_srednie_konwencjonalnie(float dzielnik, float* sr_gompertz_final, float* sr_rodziny_final, float* sr_bity_final, float* sr_wiek_final,
                                           float sr_stat_final[][4]);
+
+    const float simulationStep_;
 
     const int maxPopulationAge_;
 

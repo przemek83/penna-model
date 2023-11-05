@@ -14,6 +14,9 @@ set(${PROJECT_NAME}_SOURCES
     penna.cpp
     Output.h
     Output.cpp
+    Individual.h
+    Individual.cpp
+    Common.h
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

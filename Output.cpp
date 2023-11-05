@@ -1,9 +1,12 @@
 #include "Output.h"
 
-#define WIELKOSC 2  //*32 bity
-#define INT_W 32    // wielkosc integera
+#include "Common.h"
+#include "Individual.h"
 
-Output::Output(int processId, int maxPopulationAge) : processId_{processId}, maxPopulationAge_{maxPopulationAge} {}
+Output::Output(float simulationStep, int processId, int maxPopulationAge)
+    : simulationStep_{simulationStep}, processId_{processId}, maxPopulationAge_{maxPopulationAge}
+{
+}
 
 std::string Output::nazwa(int przedrostek, int numer)
 {
@@ -11,7 +14,7 @@ std::string Output::nazwa(int przedrostek, int numer)
     char bufor[10], bufor2[10];
 
 #ifdef SYMULACJA_DORSZY
-    sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * krok_symulacji);
+    sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * simulationStep_);
 #else
     _itoa(przedrostek, bufor, 10);
 #endif
@@ -139,7 +142,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* s
     }
 }
 
-void Output::zapisz_losowana_populacje(int numer)
+void Output::zapisz_losowana_populacje(Individual* populacja, int numer)
 {
 #ifdef CALE_WYJSCIE
     fprintf(plik_osobniki, "%u ", numer - 1);
@@ -147,7 +150,7 @@ void Output::zapisz_losowana_populacje(int numer)
 #endif
 }
 
-void Output::zapisz_koncowa_populacje(int x, unsigned int ostatni_el)
+void Output::zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int ostatni_el)
 {
 #ifdef CALE_WYJSCIE
     for (unsigned d = 0; d < ostatni_el; d++)

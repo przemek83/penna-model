@@ -7,41 +7,16 @@
 #include <limits.h>
 #include <random>
 
+#include "Common.h"
+#include "Individual.h"
 #include "Output.h"
 
-#define CALE_WYJSCIE             //zapisz dane o kazdej z symulacji
-#define UZYJ_MPI                 //uzyj MPI
-#define UZYJ_ATI_STREAM          //uzyj ATI STREAM
-#define SYMULACJA_DORSZY         //wlacz tryb symulacji odlowow
-
-#ifdef  SYMULACJA_DORSZY
-#undef  UZYJ_MPI
-#endif
-#define WIELKOSC 2               //*32 bity
-#define INT_W 32                 //wielkosc integera
-#define MAX_POP 15000            // maksymalna wielkosc populacji
-#define MAX_POP_LAT 1500         // maksymalna dlugosc symulacji
-#define ZYC_START 3000           // zyc na starcie
-#define ILOSC_MUTACJI 1          //ilosc mutacji przy rozmnazaniu
-#define MAX_JEDYNEK 4            //ilosc 1 po ktorych osobnik umiera
-#define JEDYNEK_START 4          //losc 1 w genomie osobnika na starcie symulacji 
-#define ROZMNAZANIE_OD_ROKU 10   //rozmnazanie od roku
-#define SZANSA_NA_POTOMSTWO 100  //z jakim prawd osobnik wyda potomstwo (w %)
-#define ILOSC_POTOMSTWA 3        //ilosc potmostwa
-#define SYMULACJI_NA_PROCES 25   //ilosc symulacji, ktore ma zrobic jeden proces
-#ifdef  SYMULACJA_DORSZY
-#ifndef CALE_WYJSCIE
-#define CALE_WYJSCIE             //wlacz wyjscie gdy symulowane sa odlowy
-#endif
-#define ODLOWY_OD 50000          //rok, od ktorego rozpoczynaja sie odlowy
-#define MINIMALNY_WIEK 4         //minimalny wiek odlawianych ryb
-#define START_ODLOWOW 50         //startowa wielkosc odlowow (w %)
-#define KONIEC_ODLOWOW 54        //koncowa wielkosc odlowow (w %)
-float krok_symulacji =           //wielkosc kroku symulacji 
-abs(START_ODLOWOW - KONIEC_ODLOWOW)/(float)SYMULACJI_NA_PROCES;
+#ifdef SYMULACJA_DORSZY
+float krok_symulacji =  // wielkosc kroku symulacji
+    abs(START_ODLOWOW - KONIEC_ODLOWOW) / (float)SYMULACJI_NA_PROCES;
 #endif
 
-int numer_procesu = 0;              //numer procesu gdy zdefiniowane jest UZYJ_MPI (domyslnie 0)
+int numer_procesu = 0;              // numer procesu gdy zdefiniowane jest UZYJ_MPI (domyslnie 0)
 int wielkosc_klastra = 1;           //wielkosc klastra, na ktorym symulacja jest liczona (domyslnie 1)
 
 // #ifdef UZYJ_ATI_STREAM
@@ -131,46 +106,10 @@ int RandomInteger(int low, int high)
 //}
 // #endif
 //---------------------------------------------------------------//
-class dane {
-public:     
-	int wiek;
-	int ilosc_1;
-	int przodek;
-	unsigned int ciag[WIELKOSC];
-
-	void czy1(unsigned int miejsce)
-	{
-		unsigned long int pomoc = ciag[miejsce/INT_W];
-		pomoc = pomoc >> (INT_W-(miejsce%INT_W));
-		if( pomoc&1 ) 
-			this->ilosc_1++;
-	}
-
-	void itob(FILE * plik)
-	{
-		char ciag_binarny[INT_W+1];
-		for(int x = 0; x<WIELKOSC; x++)
-		{
-			_itoa(ciag[x], ciag_binarny, 2);
-			for(int i = INT_W-strlen(ciag_binarny); i>0; i--)
-			fprintf(plik,"0");
-			fprintf(plik,"%s", ciag_binarny);
-		}
-		fprintf(plik,"\n");
-	}
-
-	void inicjuj(unsigned int a, unsigned int bity[WIELKOSC])
-	{
-		this->wiek = 0;
-		this->ilosc_1 = 0;
-		this->przodek = a;
-		for(int i = 0; i<WIELKOSC; i++)
-			this->ciag[i] = bity[i];     
-	}
-private:
-};
-//---------------------------------------------------------------//
-static dane populacja[MAX_POP];
+namespace
+{
+Individual populacja[MAX_POP];
+}  // namespace
 //---------------------------------------------------------------//
 void zerowanie()
 {
@@ -219,7 +158,7 @@ int losuj_populacje(std::mt19937& rng, Output& wyjscie)
         }
         numer++;
         populacja[numer - 1].inicjuj(i, nowy);
-        wyjscie.zapisz_losowana_populacje(numer);
+        wyjscie.zapisz_losowana_populacje(populacja, numer);
     }
     return numer;
 }
@@ -263,7 +202,7 @@ int main(int argc,char* argv[])
     mpi.start(argc, argv);
 
     int glowne_ziarno = 0;
-    Output wyjscie(numer_procesu, MAX_POP_LAT);
+    Output wyjscie(krok_symulacji, numer_procesu, MAX_POP_LAT);
 
     if (numer_procesu == 0)  // glowny
     {
@@ -362,7 +301,7 @@ int main(int argc,char* argv[])
                 {
                     if ((populacja[i].wiek > ROZMNAZANIE_OD_ROKU) && offsrpingGenerator(rng) <= SZANSA_NA_POTOMSTWO)  // potomstwo
                     {
-                        dane osobnik;
+                        Individual osobnik;
                         for (unsigned int l = 0; l < ILOSC_POTOMSTWA; l++)  // ile potomstwa
                         {
                             ilosc_narodzin++;
@@ -410,7 +349,7 @@ int main(int argc,char* argv[])
             if (numer_procesu == 0 && (rok % (MAX_POP_LAT / 50)) == 0)
                 printf("*");  // progress bar
             }                 // kolejne lata
-            wyjscie.zapisz_koncowa_populacje(SYMULACJI_NA_PROCES + 1 - o, ostatni_el);
+            wyjscie.zapisz_koncowa_populacje(populacja, SYMULACJI_NA_PROCES + 1 - o, ostatni_el);
         }
         else
         {
