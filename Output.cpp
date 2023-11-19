@@ -2,11 +2,9 @@
 
 #include "Common.h"
 #include "Individual.h"
+#include "SimulationData.h"
 
-Output::Output(float simulationStep, int processId, int maxPopulationAge)
-    : simulationStep_{simulationStep}, processId_{processId}, maxPopulationAge_{maxPopulationAge}
-{
-}
+Output::Output(float simulationStep, int maxPopulationAge) : simulationStep_{simulationStep}, maxPopulationAge_{maxPopulationAge} {}
 
 std::string Output::nazwa(int przedrostek, int numer)
 {
@@ -18,7 +16,7 @@ std::string Output::nazwa(int przedrostek, int numer)
 #else
     _itoa(przedrostek, bufor, 10);
 #endif
-    _itoa(processId_, bufor2, 10);
+    _itoa(1, bufor2, 10);
 
     plik_nazwa.erase();
 #ifndef SYMULACJA_DORSZY
@@ -61,46 +59,46 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_gompertz);
 }
 
-void Output::zapisz_srednie(int symulacji, float* sr_gompertz_final, float* sr_rodziny_final, float* sr_bity_final, float* sr_wiek_final,
-                            float sr_stat_final[][4])
+void Output::zapisz_srednie(int symulacji, SimulationData& simulationData)
 {
-    przelicz_srednie_konwencjonalnie((float)symulacji, sr_gompertz_final, sr_rodziny_final, sr_bity_final, sr_wiek_final, sr_stat_final);
+    przelicz_srednie_konwencjonalnie((float)symulacji, simulationData);
 
     for (int v = 0; v < maxPopulationAge_; v++)
     {
-        if (sr_rodziny_final[v] > 1)
-            fprintf(plik_rodziny, "%d\t%f\n", v, sr_rodziny_final[v]);
-        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v, sr_stat_final[v][0], sr_stat_final[v][1], sr_stat_final[v][2], sr_stat_final[v][3]);
+        if (simulationData.rodziny[v] > 1)
+            fprintf(plik_rodziny, "%d\t%f\n", v, simulationData.rodziny[v]);
+        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v, simulationData.stat[v][0], simulationData.stat[v][1], simulationData.stat[v][2],
+                simulationData.stat[v][3]);
     }
 
     for (int v = 0; v < WIELKOSC * INT_W; v++)
     {
-        fprintf(plik_rozklad_wieku, "%d\t%f\n", v, sr_wiek_final[v]);
-        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, sr_bity_final[v]);
-        if (sr_gompertz_final[v] > 0)
-            fprintf(plik_gompertz, "%d\t%.3f\n", v, sr_gompertz_final[v]);
+        fprintf(plik_rozklad_wieku, "%d\t%f\n", v, simulationData.wiek[v]);
+        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, simulationData.bity[v]);
+        if (simulationData.gompertz[v] > 0)
+            fprintf(plik_gompertz, "%d\t%.3f\n", v, simulationData.gompertz[v]);
         else
             fprintf(plik_gompertz, "%d\t1\n", v);
     }
 }
 
-void Output::zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* sr_rodziny, float* sr_bity, float* sr_wiek, float sr_stat[][4],
-                            int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon, int* rozklad_wieku, int* rozklad_bitow, int* gompertz_zgony)
+void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationData, int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
+                            int* rozklad_wieku, int* rozklad_bitow, int* gompertz_zgony)
 {
     if (!rodzina1)
     {
 #ifdef CALE_WYJSCIE
         fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
 #endif
-        sr_rodziny[rok] += ilosc_rodzin;
+        simulationData.rodziny[rok] += ilosc_rodzin;
     }
 #ifdef CALE_WYJSCIE
     fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
 #endif
-    sr_stat[rok][0] += ilosc_osobnikow;
-    sr_stat[rok][1] += ilosc_narodzin;
-    sr_stat[rok][2] += ilosc_osobnikow - zgon;
-    sr_stat[rok][3] += zgon;
+    simulationData.stat[rok][0] += ilosc_osobnikow;
+    simulationData.stat[rok][1] += ilosc_narodzin;
+    simulationData.stat[rok][2] += ilosc_osobnikow - zgon;
+    simulationData.stat[rok][3] += zgon;
 
     if (rok + 1 == maxPopulationAge_)
     {
@@ -109,7 +107,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* s
 #ifdef CALE_WYJSCIE
             fprintf(plik_rozklad_wieku, "%d\t%d\n", v, rozklad_wieku[v]);
 #endif
-            sr_wiek[v] += rozklad_wieku[v];
+            simulationData.wiek[v] += rozklad_wieku[v];
         }
 
         for (int v = 0; v < WIELKOSC * INT_W; v++)
@@ -117,7 +115,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* s
 #ifdef CALE_WYJSCIE
             fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, rozklad_bitow[v] * 1.0 / ilosc_osobnikow);
 #endif
-            sr_bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
+            simulationData.bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
         }
 
         for (int v = 0; v < WIELKOSC * INT_W; v++)
@@ -126,14 +124,14 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, float* sr_gompertz, float* s
 #ifdef CALE_WYJSCIE
                 fprintf(plik_gompertz, "%d\t%.3f\n", v, gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
 #endif
-                sr_gompertz[v] += (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
+                simulationData.gompertz[v] += (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
             }
             else
             {
 #ifdef CALE_WYJSCIE
                 fprintf(plik_gompertz, "%d\t1\n", v);
 #endif
-                sr_gompertz[v] += 1;
+                simulationData.gompertz[v] += 1;
             }
     }
 }
@@ -159,22 +157,21 @@ void Output::zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int
 #endif
 }
 
-void Output::przelicz_srednie_konwencjonalnie(float dzielnik, float* sr_gompertz_final, float* sr_rodziny_final, float* sr_bity_final, float* sr_wiek_final,
-                                              float sr_stat_final[][4])
+void Output::przelicz_srednie_konwencjonalnie(float dzielnik, SimulationData& simulationData)
 {
     for (int v = 0; v < WIELKOSC * INT_W; v++)
     {
-        sr_gompertz_final[v] = sr_gompertz_final[v] / dzielnik;
-        sr_bity_final[v] = sr_bity_final[v] / dzielnik;
-        sr_wiek_final[v] = sr_wiek_final[v] / dzielnik;
+        simulationData.gompertz[v] = simulationData.gompertz[v] / dzielnik;
+        simulationData.bity[v] = simulationData.bity[v] / dzielnik;
+        simulationData.wiek[v] = simulationData.wiek[v] / dzielnik;
     }
 
     for (int v = 0; v < maxPopulationAge_; v++)
-        sr_rodziny_final[v] = sr_rodziny_final[v] / dzielnik;
+        simulationData.rodziny[v] = simulationData.rodziny[v] / dzielnik;
 
     for (int v = 0; v < maxPopulationAge_; v++)
         for (int w = 0; w < 4; w++)
         {
-            sr_stat_final[v][w] = sr_stat_final[v][w] / dzielnik;
+            simulationData.stat[v][w] = simulationData.stat[v][w] / dzielnik;
         }
 }

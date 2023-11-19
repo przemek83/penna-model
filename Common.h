@@ -2,16 +2,11 @@
 
 #include <cstdlib>
 
-#define WIELKOSC 2        //*32 bity
-#define INT_W 32          // wielkosc integera
+#define WIELKOSC 2               //*32 bity
+#define INT_W 32                 // wielkosc integera
 
-#define CALE_WYJSCIE      // zapisz dane o kazdej z symulacji
-#define UZYJ_MPI          // uzyj MPI
-#define SYMULACJA_DORSZY  // wlacz tryb symulacji odlowow
-
-#ifdef SYMULACJA_DORSZY
-#undef UZYJ_MPI
-#endif
+#define CALE_WYJSCIE             // zapisz dane o kazdej z symulacji
+#define SYMULACJA_DORSZY         // wlacz tryb symulacji odlowow
 
 #define MAX_POP 15000            // maksymalna wielkosc populacji
 #define MAX_POP_LAT 1500         // maksymalna dlugosc symulacji

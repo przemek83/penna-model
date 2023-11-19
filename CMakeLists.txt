@@ -17,6 +17,7 @@ set(${PROJECT_NAME}_SOURCES
     Individual.h
     Individual.cpp
     Common.h
+    SimulationData.h
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
