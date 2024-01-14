@@ -11,59 +11,23 @@
 #include "Output.h"
 #include "SimulationData.h"
 
-#ifdef SYMULACJA_DORSZY
+namespace
+{
 float krok_symulacji =  // wielkosc kroku symulacji
     abs(START_ODLOWOW - KONIEC_ODLOWOW) / (float)SYMULACJI_NA_PROCES;
-#endif
 
-//tablice uzywane do zbierania danych z symulacji
-static int rodziny[ZYC_START];
-static int rozklad_wieku[WIELKOSC*INT_W];
-static int rozklad_bitow[WIELKOSC*INT_W];
-static int gompertz_zgony[WIELKOSC*INT_W]; 
-static unsigned int osobniki[WIELKOSC*INT_W];
+void Randomize(void) { srand((int)time(NULL)); }
 
-//zmienne przetrzymujace informacje potrzebne do statystyk
-int ilosc_osobnikow;
-int ilosc_narodzin;
-int ilosc_rodzin;
-int zgon;
-//===============================================================//
-void Randomize(void)
-{
-	srand((int) time(NULL));
-}
-//---------------------------------------------------------------//
 int RandomInteger(int low, int high) 
 {
 	double d = (double) rand() / ((double) RAND_MAX + 1);
 	int k = (int) (d * (high - low + 1));
 	return (low + k);
 }
-//---------------------------------------------------------------//
-namespace
-{
+
 Individual populacja[MAX_POP];
 }  // namespace
-//---------------------------------------------------------------//
-void zerowanie()
-{
-	ilosc_osobnikow = 0;
-	ilosc_narodzin = 0;
-	ilosc_rodzin = 0;
-	zgon = 0;
 
-	for(int v = 0; v<ZYC_START; v++)
-	rodziny[v]=0;
-	for(int v = 0; v<WIELKOSC*INT_W; v++)
-	{
-		osobniki[v] = 0;
-		rozklad_wieku[v] = 0;
-		rozklad_bitow[v] = 0;
-		gompertz_zgony[v] = 0; 
-	}
-}
-//---------------------------------------------------------------//
 int losuj_populacje(std::mt19937& rng, Output& wyjscie)
 {
     unsigned int nowy[WIELKOSC];
@@ -100,7 +64,7 @@ int losuj_populacje(std::mt19937& rng, Output& wyjscie)
 
 int main(int argc, char* argv[])
 {
-    SimulationData simulationData;
+    SimulationData simulationDataAvg;
     int glowne_ziarno = 0;
     Output wyjscie(krok_symulacji, MAX_POP_LAT);
 
@@ -121,7 +85,7 @@ int main(int argc, char* argv[])
     {
         clock_t start, koniec;
         unsigned int rok = 0;   // aktualny rok w symulacji
-        bool rodzina1 = false;  // flaga pokazujaca istnienie tylko jednej rodziny
+        bool singleFamily = false;  // flaga pokazujaca istnienie tylko jednej rodziny
         puste.clear();
 
         if (o == SYMULACJI_NA_PROCES + 1)
@@ -134,6 +98,7 @@ int main(int argc, char* argv[])
 
         if (o != SYMULACJI_NA_PROCES + 1)
         {
+            SimulationData simulationData;
             unsigned int ostatni_el = losuj_populacje(rng, wyjscie);
 
             printf("%d/%d Postep:       [                                                  ]", o, SYMULACJI_NA_PROCES);
@@ -143,7 +108,27 @@ int main(int argc, char* argv[])
 
             while (rok < MAX_POP_LAT)  // kolejne lata
             {
-            zerowanie();
+            // zmienne przetrzymujace informacje potrzebne do statystyk
+            int ilosc_osobnikow{0};
+            int ilosc_narodzin{0};
+            int ilosc_rodzin{0};
+            int zgon{0};
+            int rodziny[ZYC_START];
+            //  tablice uzywane do zbierania danych z symulacji
+            int rozklad_wieku[WIELKOSC * INT_W];
+            int rozklad_bitow[WIELKOSC * INT_W];
+            int gompertz_zgony[WIELKOSC * INT_W];
+            for (int v = 0; v < ZYC_START; v++)
+                rodziny[v] = 0;
+            for (int v = 0; v < WIELKOSC * INT_W; v++)
+            {
+                //                osobniki[v] = 0;
+                rozklad_wieku[v] = 0;
+                rozklad_bitow[v] = 0;
+                gompertz_zgony[v] = 0;
+            }
+
+            // zerowanie();
 
 #ifdef SYMULACJA_DORSZY
             if (rok + 1 == MAX_POP_LAT)
@@ -160,7 +145,7 @@ int main(int argc, char* argv[])
                 else
                     ilosc_osobnikow++;
 
-                if (!rodzina1)  // gromadz dane o rodzinach
+                if (!singleFamily)  // gromadz dane o rodzinach
                 {
                     rodziny[populacja[i].przodek]++;
                     if (rodziny[populacja[i].przodek] == 1)
@@ -236,8 +221,8 @@ int main(int argc, char* argv[])
                 populacja[i].czy1(populacja[i].wiek);  // sprawdzanie chorob
             }
             if (ilosc_rodzin == 1)
-                rodzina1 = true;
-            wyjscie.zapisz_kolejne(rodzina1, rok, simulationData, ilosc_osobnikow, ilosc_narodzin, ilosc_rodzin, zgon, rozklad_wieku, rozklad_bitow,
+                singleFamily = true;
+            wyjscie.zapisz_kolejne(singleFamily, rok, simulationDataAvg, ilosc_osobnikow, ilosc_narodzin, ilosc_rodzin, zgon, rozklad_wieku, rozklad_bitow,
                                    gompertz_zgony);
             rok++;
             if ((rok % (MAX_POP_LAT / 50)) == 0)
@@ -247,7 +232,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES, simulationData);
+            wyjscie.zapisz_srednie(SYMULACJI_NA_PROCES, simulationDataAvg);
             wyjscie.zamknij_pliki(SYMULACJI_NA_PROCES + 1 - o);
         }
 
