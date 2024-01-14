@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+
 #include "Individual.h"
 
 struct SimulationData;

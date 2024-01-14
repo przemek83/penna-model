@@ -1,11 +1,10 @@
-#include <vector>
+#include <cmath>
+#include <ctime>
 #include <iostream>
-#include <math.h>
-#include <string.h>
-#include <time.h>
-// #include <sfmt.h>
-#include <limits.h>
+#include <limits>
 #include <random>
+#include <string>
+#include <vector>
 
 #include "Common.h"
 #include "Individual.h"
