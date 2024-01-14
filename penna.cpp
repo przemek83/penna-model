@@ -26,7 +26,6 @@ int RandomInteger(int low, int high)
 }
 
 Individual populacja[MAX_POP];
-}  // namespace
 
 int losuj_populacje(std::mt19937& rng, Output& wyjscie)
 {
@@ -61,6 +60,7 @@ int losuj_populacje(std::mt19937& rng, Output& wyjscie)
     }
     return numer;
 }
+}  // namespace
 
 int main(int argc, char* argv[])
 {
