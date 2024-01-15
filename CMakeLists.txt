@@ -18,6 +18,11 @@ set(${PROJECT_NAME}_SOURCES
     Individual.cpp
     Common.h
     SimulationData.h
+    Simulation.h
+    Simulation.cpp
+    Generator.h
+    NumbersGenerator.h
+    NumbersGenerator.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

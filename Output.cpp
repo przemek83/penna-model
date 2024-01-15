@@ -122,9 +122,11 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
             if (rozklad_wieku[v] > 0)
             {
 #ifdef CALE_WYJSCIE
-                fprintf(plik_gompertz, "%d\t%.3f\n", v, gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
+                fprintf(plik_gompertz, "%d\t%.3f\n", v,
+                        gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
 #endif
-                simulationData.gompertz[v] += (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
+                simulationData.gompertz[v] +=
+                    (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
             }
             else
             {
@@ -144,7 +146,8 @@ void Output::zapisz_losowana_populacje(Individual* populacja, int numer)
 #endif
 }
 
-void Output::zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int ostatni_el)
+void Output::zapisz_koncowa_populacje(Individual* populacja, int x,
+                                      unsigned int ostatni_el)
 {
 #ifdef CALE_WYJSCIE
     for (unsigned d = 0; d < ostatni_el; d++)
@@ -157,7 +160,8 @@ void Output::zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int
 #endif
 }
 
-void Output::przelicz_srednie_konwencjonalnie(float dzielnik, SimulationData& simulationData)
+void Output::przelicz_srednie_konwencjonalnie(float dzielnik,
+                                              SimulationData& simulationData)
 {
     for (int v = 0; v < WIELKOSC * INT_W; v++)
     {
