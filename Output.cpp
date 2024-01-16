@@ -67,8 +67,9 @@ void Output::zapisz_srednie(int symulacji, SimulationData& simulationData)
     {
         if (simulationData.rodziny[v] > 1)
             fprintf(plik_rodziny, "%d\t%f\n", v, simulationData.rodziny[v]);
-        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v, simulationData.stat[v][0], simulationData.stat[v][1], simulationData.stat[v][2],
-                simulationData.stat[v][3]);
+        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v,
+                simulationData.livingAtStart_[v], simulationData.births_[v],
+                simulationData.livingAtEnd_[v], simulationData.deaths_[v]);
     }
 
     for (int v = 0; v < WIELKOSC * INT_W; v++)
@@ -95,10 +96,10 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
 #ifdef CALE_WYJSCIE
     fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
 #endif
-    simulationData.stat[rok][0] += ilosc_osobnikow;
-    simulationData.stat[rok][1] += ilosc_narodzin;
-    simulationData.stat[rok][2] += ilosc_osobnikow - zgon;
-    simulationData.stat[rok][3] += zgon;
+    simulationData.livingAtStart_[rok] += ilosc_osobnikow;
+    simulationData.births_[rok] += ilosc_narodzin;
+    simulationData.livingAtEnd_[rok] += ilosc_osobnikow - zgon;
+    simulationData.deaths_[rok] += zgon;
 
     if (rok + 1 == maxPopulationAge_)
     {
@@ -138,7 +139,8 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
     }
 }
 
-void Output::zapisz_losowana_populacje(Individual* populacja, int numer)
+void Output::zapisz_losowana_populacje(std::vector<Individual>& populacja,
+                                       int numer)
 {
 #ifdef CALE_WYJSCIE
     fprintf(plik_osobniki, "%u ", numer - 1);
@@ -146,7 +148,7 @@ void Output::zapisz_losowana_populacje(Individual* populacja, int numer)
 #endif
 }
 
-void Output::zapisz_koncowa_populacje(Individual* populacja, int x,
+void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
                                       unsigned int ostatni_el)
 {
 #ifdef CALE_WYJSCIE
@@ -163,19 +165,21 @@ void Output::zapisz_koncowa_populacje(Individual* populacja, int x,
 void Output::przelicz_srednie_konwencjonalnie(float dzielnik,
                                               SimulationData& simulationData)
 {
-    for (int v = 0; v < WIELKOSC * INT_W; v++)
+    for (size_t v = 0; v < WIELKOSC * INT_W; v++)
     {
-        simulationData.gompertz[v] = simulationData.gompertz[v] / dzielnik;
-        simulationData.bity[v] = simulationData.bity[v] / dzielnik;
-        simulationData.wiek[v] = simulationData.wiek[v] / dzielnik;
+        simulationData.gompertz[v] /= dzielnik;
+        simulationData.bity[v] /= dzielnik;
+        simulationData.wiek[v] /= dzielnik;
     }
 
-    for (int v = 0; v < maxPopulationAge_; v++)
-        simulationData.rodziny[v] = simulationData.rodziny[v] / dzielnik;
+    for (size_t v = 0; v < maxPopulationAge_; v++)
+        simulationData.rodziny[v] /= dzielnik;
 
-    for (int v = 0; v < maxPopulationAge_; v++)
-        for (int w = 0; w < 4; w++)
-        {
-            simulationData.stat[v][w] = simulationData.stat[v][w] / dzielnik;
-        }
+    for (size_t v = 0; v < maxPopulationAge_; v++)
+    {
+        simulationData.livingAtStart_[v] /= dzielnik;
+        simulationData.births_[v] /= dzielnik;
+        simulationData.livingAtEnd_[v] /= dzielnik;
+        simulationData.deaths_[v] /= dzielnik;
+    }
 }

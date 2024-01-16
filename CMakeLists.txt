@@ -23,6 +23,7 @@ set(${PROJECT_NAME}_SOURCES
     Generator.h
     NumbersGenerator.h
     NumbersGenerator.cpp
+    Config.h
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

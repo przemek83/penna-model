@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Common.h"
 #include "NumbersGenerator.h"
 #include "Output.h"
@@ -6,45 +8,50 @@
 
 int main()
 {
-    const float krok_symulacji =  // wielkosc kroku symulacji
-        abs(START_ODLOWOW - KONIEC_ODLOWOW) /
-        static_cast<float>(SYMULACJI_NA_PROCES);
+    Config config;
+    const float krok_symulacji =
+#ifdef SYMULACJA_DORSZY
+        static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
+#else
+        100
+#endif
+        / static_cast<float>(config.simulationsCount_);
 
-    SimulationData simulationDataAvg;
-    Output output(krok_symulacji, MAX_POP_LAT);
+    SimulationData simulationDataAvg{};
+    simulationDataAvg.rodziny.resize(static_cast<size_t>(config.years_));
+    simulationDataAvg.livingAtStart_.resize(static_cast<size_t>(config.years_));
+    simulationDataAvg.births_.resize(static_cast<size_t>(config.years_));
+    simulationDataAvg.livingAtEnd_.resize(static_cast<size_t>(config.years_));
+    simulationDataAvg.deaths_.resize(static_cast<size_t>(config.years_));
+
+    Output output(krok_symulacji, config.years_);
 
     NumbersGenerator generator;
 
-    for (int o = 1; o <= SYMULACJI_NA_PROCES + 1;
-         o++)  // start kolejne symulacje
+    for (int i = 1; i <= config.simulationsCount_; i++)
     {
-        if (o == SYMULACJI_NA_PROCES + 1)
-            output.otworz_pliki(0);
-        else
-        {
-            if (o != SYMULACJI_NA_PROCES + 1)
-                output.otworz_pliki2(o);
-        }
+        output.otworz_pliki2(i);
 
         const clock_t start{clock()};
-        Simulation simulation(o, krok_symulacji);
+        Simulation simulation(config, i, krok_symulacji);
         simulation.run(output, generator, simulationDataAvg);
 
-        output.zapisz_srednie(SYMULACJI_NA_PROCES, simulationDataAvg);
-        output.zamknij_pliki(SYMULACJI_NA_PROCES + 1 - o);
-
         const clock_t koniec{clock()};
-        if (o != SYMULACJI_NA_PROCES + 1)
-        {
-            printf(
-                "\nCzas wykonania: %d godzin, %d minut %d "
-                "sekund\n",
-                (koniec - start) / (1000 * 60 * 60), ((koniec - start) % (1000 * 60 * 60)) / (1000 * 60),
-                (((koniec - start) % (1000 * 60 * 60)) % (1000 * 60)) / 1000);
-        }
 
-    }  // kolejne symulacje
+        std::cout << std::endl
+                  << "Execution time: " << (koniec - start) / (1000 * 60 * 60)
+                  << "h, "
+                  << ((koniec - start) % (1000 * 60 * 60)) / (1000 * 60)
+                  << "m, "
+                  << (((koniec - start) % (1000 * 60 * 60)) % (1000 * 60)) /
+                         1000
+                  << "s." << std::endl;
+    }
 
-    return 0;
+    output.otworz_pliki(0);
+    output.zapisz_srednie(config.simulationsCount_, simulationDataAvg);
+    output.zamknij_pliki(0);
+
+    return EXIT_SUCCESS;
 }
 //============================================================//

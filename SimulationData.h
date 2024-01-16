@@ -1,15 +1,22 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
-#include "Common.h"
+#include "Config.h"
 
 struct SimulationData
 {
 public:
-    std::array<float, WIELKOSC * INT_W> gompertz;
-    std::array<float, MAX_POP_LAT> rodziny;
-    std::array<float, WIELKOSC * INT_W> bity;
-    std::array<float, WIELKOSC * INT_W> wiek;
-    float stat[MAX_POP_LAT][4];
+    std::array<float, Config::bits_> gompertz;
+    std::vector<float> rodziny;
+    std::array<float, Config::bits_> bity;
+    std::array<float, Config::bits_> wiek;
+
+    std::vector<float> livingAtStart_;  // 0
+    std::vector<float> births_;         // 1
+    std::vector<float> livingAtEnd_;    // ilosc_osobnikow - zgon; //2
+    std::vector<float> deaths_;         // 3
+
+    //    std::vector<std::vector<float>> stat;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "Individual.h"
 
@@ -22,9 +23,11 @@ public:
     void zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationData, int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
                         int* rozklad_wieku, int* rozklad_bitow, int* gompertz_zgony);
 
-    void zapisz_losowana_populacje(Individual* populacja, int numer);
+    void zapisz_losowana_populacje(std::vector<Individual>& populacja,
+                                   int numer);
 
-    void zapisz_koncowa_populacje(Individual* populacja, int x, unsigned int ostatni_el);
+    void zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
+                                  unsigned int ostatni_el);
 
 private:
     std::string nazwa(int przedrostek, int numer);

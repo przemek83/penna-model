@@ -1,11 +1,16 @@
 #include "Simulation.h"
 
+#include <iostream>
 #include <vector>
 
 #include "Generator.h"
 #include "Output.h"
 
-Simulation::Simulation(int number, float step) : number_(number), step_{step} {}
+Simulation::Simulation(const Config& config, int number, float step)
+    : config_(config), number_(number), step_{step}
+{
+    individuals_.resize(config_.maxPopulation_);
+}
 
 void Simulation::run(Output& output, Generator& generator,
                      SimulationData& simulationDataAvg)
@@ -17,26 +22,22 @@ void Simulation::run(Output& output, Generator& generator,
 
     unsigned int ostatni_el = losuj_populacje(output, generator);
 
-    printf(
-        "%d/%d Postep:       [                                                 "
-        " ]",
-        number_, SYMULACJI_NA_PROCES);
-    for (int k = 0; k <= 50; k++)
-        printf("\b");
+    printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
-    while (rok < MAX_POP_LAT)  // kolejne lata
+    while (rok < config_.years_)  // kolejne lata
     {
         // zmienne przetrzymujace informacje potrzebne do statystyk
         int ilosc_osobnikow{0};
         int ilosc_narodzin{0};
         int ilosc_rodzin{0};
         int zgon{0};
-        int rodziny[ZYC_START];
+        std::vector<int> rodziny;
+        rodziny.resize(config_.livesOnStart_);
         //  tablice uzywane do zbierania danych z symulacji
         int rozklad_wieku[WIELKOSC * INT_W];
         int rozklad_bitow[WIELKOSC * INT_W];
         int gompertz_zgony[WIELKOSC * INT_W];
-        for (int v = 0; v < ZYC_START; v++)
+        for (int v = 0; v < config_.livesOnStart_; v++)
             rodziny[v] = 0;
         for (int v = 0; v < WIELKOSC * INT_W; v++)
         {
@@ -67,8 +68,8 @@ void Simulation::run(Output& output, Generator& generator,
                     ilosc_rodzin++;
             }
 
-            if (rok + 1 == MAX_POP_LAT)  // zgromadz dane o
-                                         // bitach i wieku
+            if (rok + 1 == config_.years_)  // zgromadz dane o
+                                            // bitach i wieku
             {
                 rozklad_wieku[individuals_[i].wiek]++;
                 for (int v = 0; v < WIELKOSC * INT_W; v++)
@@ -78,10 +79,11 @@ void Simulation::run(Output& output, Generator& generator,
             }
 
             // decyzja o zyciu badz smierci osobnika
-            if ((individuals_[i].ilosc_1 >= MAX_JEDYNEK) ||    // jedynki
+            if ((individuals_[i].ilosc_1 >=
+                 config_.maxMutations_) ||                     // jedynki
                 (individuals_[i].wiek >= WIELKOSC * INT_W) ||  // starosc
                 ((float)generator.getInt(0, 100) <=
-                 (float)(ostatni_el - puste.size()) / MAX_POP *
+                 (float)(ostatni_el - puste.size()) / config_.maxPopulation_ *
                      100.0)  // verhulst
 #ifdef SYMULACJA_DORSZY
                 || ((rok > ODLOWY_OD) &&
@@ -99,19 +101,20 @@ void Simulation::run(Output& output, Generator& generator,
             }
             else  // zycie
             {
-                if ((individuals_[i].wiek > ROZMNAZANIE_OD_ROKU) &&
+                if ((individuals_[i].wiek > config_.reproductionAge_) &&
                     generator.getInt(1, 100) <=
-                        SZANSA_NA_POTOMSTWO)  // potomstwo
+                        config_.chanceForOffspring_)  // potomstwo
                 {
                     Individual osobnik;
-                    for (unsigned int l = 0; l < ILOSC_POTOMSTWA;
+                    for (unsigned int l = 0; l < config_.offspringCount_;
                          l++)  // ile potomstwa
                     {
                         ilosc_narodzin++;
                         for (int x = 0; x < WIELKOSC; x++)  // przepisz genom
                                                             // rodzica
                             osobnik.ciag[x] = individuals_[i].ciag[x];
-                        for (unsigned m = 0; m < ILOSC_MUTACJI; m++)  // mutacje
+                        for (unsigned m = 0; m < config_.mutationsDelta_;
+                             m++)  // mutacje
                         {
                             unsigned int liczba_losowa =
                                 generator.getInt(0, INT_W - 1);
@@ -123,11 +126,11 @@ void Simulation::run(Output& output, Generator& generator,
                         }
 
                         if (puste.size() == 0 &&
-                            ostatni_el < MAX_POP)  // dodaj
-                                                   // osobnika
-                                                   // na
-                                                   // nowym
-                                                   // miejscu
+                            ostatni_el < config_.maxPopulation_)  // dodaj
+                                                                  // osobnika
+                                                                  // na
+                                                                  // nowym
+                                                                  // miejscu
                         {
                             individuals_[ostatni_el].inicjuj(
                                 individuals_[i].przodek, osobnik.ciag);
@@ -157,11 +160,12 @@ void Simulation::run(Output& output, Generator& generator,
                               zgon, rozklad_wieku, rozklad_bitow,
                               gompertz_zgony);
         rok++;
-        if ((rok % (MAX_POP_LAT / 50)) == 0)
-            printf("*");  // progress bar
-    }                     // kolejne lata
+        if ((rok % (config_.years_ / 50)) == 0)
+            std::cout << "*";
+    }  // kolejne lata
+    std::cout << "]";
     output.zapisz_koncowa_populacje(
-        individuals_, SYMULACJI_NA_PROCES + 1 - number_, ostatni_el);
+        individuals_, config_.simulationsCount_ + 1 - number_, ostatni_el);
 }
 
 int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
@@ -172,11 +176,11 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
     unsigned int temp = 0;
     unsigned int numer = 0;
 
-    for (int i = 0; i < ZYC_START; i++)
+    for (int i = 0; i < config_.livesOnStart_; i++)
     {
         for (int x = 0; x < WIELKOSC; x++)
             nowy[x] = 0;
-        for (int j = 0; j < JEDYNEK_START; j++)
+        for (int j = 0; j < config_.startingMutations_; j++)
         {
             do
             {
