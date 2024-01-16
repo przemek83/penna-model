@@ -1,10 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-
-#define WIELKOSC 2               //*32 bity
-#define INT_W 32                 // wielkosc integera
-
 #define CALE_WYJSCIE             // zapisz dane o kazdej z symulacji
 // #define SYMULACJA_DORSZY         // wlacz tryb symulacji odlowow
 

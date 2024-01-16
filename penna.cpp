@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "Common.h"
 #include "NumbersGenerator.h"
 #include "Output.h"
 #include "Simulation.h"

@@ -72,7 +72,7 @@ void Output::zapisz_srednie(int symulacji, SimulationData& simulationData)
                 simulationData.livingAtEnd_[v], simulationData.deaths_[v]);
     }
 
-    for (int v = 0; v < WIELKOSC * INT_W; v++)
+    for (int v = 0; v < Config::bits_; v++)
     {
         fprintf(plik_rozklad_wieku, "%d\t%f\n", v, simulationData.wiek[v]);
         fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, simulationData.bity[v]);
@@ -103,7 +103,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
 
     if (rok + 1 == maxPopulationAge_)
     {
-        for (int v = 0; v < WIELKOSC * INT_W; v++)
+        for (int v = 0; v < Config::bits_; v++)
         {
 #ifdef CALE_WYJSCIE
             fprintf(plik_rozklad_wieku, "%d\t%d\n", v, rozklad_wieku[v]);
@@ -111,7 +111,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
             simulationData.wiek[v] += rozklad_wieku[v];
         }
 
-        for (int v = 0; v < WIELKOSC * INT_W; v++)
+        for (int v = 0; v < Config::bits_; v++)
         {
 #ifdef CALE_WYJSCIE
             fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, rozklad_bitow[v] * 1.0 / ilosc_osobnikow);
@@ -119,7 +119,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationDa
             simulationData.bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
         }
 
-        for (int v = 0; v < WIELKOSC * INT_W; v++)
+        for (int v = 0; v < Config::bits_; v++)
             if (rozklad_wieku[v] > 0)
             {
 #ifdef CALE_WYJSCIE
@@ -165,7 +165,7 @@ void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
 void Output::przelicz_srednie_konwencjonalnie(float dzielnik,
                                               SimulationData& simulationData)
 {
-    for (size_t v = 0; v < WIELKOSC * INT_W; v++)
+    for (size_t v = 0; v < Config::bits_; v++)
     {
         simulationData.gompertz[v] /= dzielnik;
         simulationData.bity[v] /= dzielnik;

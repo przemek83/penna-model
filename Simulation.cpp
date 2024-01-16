@@ -34,12 +34,12 @@ void Simulation::run(Output& output, Generator& generator,
         std::vector<int> rodziny;
         rodziny.resize(config_.livesOnStart_);
         //  tablice uzywane do zbierania danych z symulacji
-        int rozklad_wieku[WIELKOSC * INT_W];
-        int rozklad_bitow[WIELKOSC * INT_W];
-        int gompertz_zgony[WIELKOSC * INT_W];
+        int rozklad_wieku[Config::bits_];
+        int rozklad_bitow[Config::bits_];
+        int gompertz_zgony[Config::bits_];
         for (int v = 0; v < config_.livesOnStart_; v++)
             rodziny[v] = 0;
-        for (int v = 0; v < WIELKOSC * INT_W; v++)
+        for (int v = 0; v < Config::bits_; v++)
         {
             rozklad_wieku[v] = 0;
             rozklad_bitow[v] = 0;
@@ -72,16 +72,17 @@ void Simulation::run(Output& output, Generator& generator,
                                             // bitach i wieku
             {
                 rozklad_wieku[individuals_[i].wiek]++;
-                for (int v = 0; v < WIELKOSC * INT_W; v++)
-                    if (individuals_[i].ciag[v / INT_W] &
-                        (1 << (INT_W - (v + 1) % INT_W)))
+                for (int v = 0; v < Config::bits_; v++)
+                    if (individuals_[i].ciag[v / Individual::intCount_] &
+                        (1 << (Individual::intCount_ -
+                               (v + 1) % Individual::intCount_)))
                         rozklad_bitow[v]++;
             }
 
             // decyzja o zyciu badz smierci osobnika
             if ((individuals_[i].ilosc_1 >=
-                 config_.maxMutations_) ||                     // jedynki
-                (individuals_[i].wiek >= WIELKOSC * INT_W) ||  // starosc
+                 config_.maxMutations_) ||                  // jedynki
+                (individuals_[i].wiek >= Config::bits_) ||  // starosc
                 ((float)generator.getInt(0, 100) <=
                  (float)(ostatni_el - puste.size()) / config_.maxPopulation_ *
                      100.0)  // verhulst
@@ -110,16 +111,17 @@ void Simulation::run(Output& output, Generator& generator,
                          l++)  // ile potomstwa
                     {
                         ilosc_narodzin++;
-                        for (int x = 0; x < WIELKOSC; x++)  // przepisz genom
-                                                            // rodzica
+                        for (int x = 0; x < Individual::intSize_;
+                             x++)  // przepisz genom
+                                   // rodzica
                             osobnik.ciag[x] = individuals_[i].ciag[x];
                         for (unsigned m = 0; m < config_.mutationsDelta_;
                              m++)  // mutacje
                         {
                             unsigned int liczba_losowa =
-                                generator.getInt(0, INT_W - 1);
+                                generator.getInt(0, Individual::intCount_ - 1);
                             unsigned int ktore =
-                                generator.getInt(0, WIELKOSC - 1);
+                                generator.getInt(0, Individual::intSize_ - 1);
                             unsigned int temp = 1;
                             temp <<= liczba_losowa;
                             osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
@@ -170,7 +172,7 @@ void Simulation::run(Output& output, Generator& generator,
 
 int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
-    unsigned int nowy[WIELKOSC];
+    unsigned int nowy[Individual::intSize_];
     unsigned int liczba_losowa = 0;
     unsigned int ktore = 0;
     unsigned int temp = 0;
@@ -178,14 +180,14 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 
     for (int i = 0; i < config_.livesOnStart_; i++)
     {
-        for (int x = 0; x < WIELKOSC; x++)
+        for (int x = 0; x < Individual::intSize_; x++)
             nowy[x] = 0;
         for (int j = 0; j < config_.startingMutations_; j++)
         {
             do
             {
-                liczba_losowa = generator.getInt(0, INT_W - 1);
-                ktore = generator.getInt(0, WIELKOSC - 1);
+                liczba_losowa = generator.getInt(0, Individual::intCount_ - 1);
+                ktore = generator.getInt(0, Individual::intSize_ - 1);
                 temp = 1;
                 temp <<= liczba_losowa;
             } while (nowy[ktore] == (nowy[ktore] | temp));
