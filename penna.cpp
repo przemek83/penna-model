@@ -32,14 +32,14 @@ private:
 
 int main()
 {
-    Config config;
-    const float krok_symulacji =
+    const Config config;
+    const float krok_symulacji{
 #ifdef SYMULACJA_DORSZY
         static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
 #else
         100
 #endif
-        / static_cast<float>(config.simulationsCount_);
+        / static_cast<float>(config.simulationsCount_)};
 
     SimulationData::AvgData simulationAvgData{
         SimulationData::prepareAvgData(config.years_)};
@@ -48,7 +48,7 @@ int main()
 
     NumbersGenerator generator;
 
-    for (int i = 1; i <= config.simulationsCount_; i++)
+    for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
 
@@ -64,4 +64,3 @@ int main()
 
     return EXIT_SUCCESS;
 }
-//============================================================//
