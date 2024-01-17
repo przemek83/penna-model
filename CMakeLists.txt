@@ -27,3 +27,6 @@ set(${PROJECT_NAME}_SOURCES
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+enable_testing()
+Include(Tests.cmake)
+add_subdirectory(test)
