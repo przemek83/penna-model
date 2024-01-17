@@ -73,9 +73,9 @@ void Simulation::run(Output& output, Generator& generator,
             {
                 rozklad_wieku[individuals_[i].wiek]++;
                 for (int v = 0; v < Config::bits_; v++)
-                    if (individuals_[i].ciag[v / Individual::intCount_] &
-                        (1 << (Individual::intCount_ -
-                               (v + 1) % Individual::intCount_)))
+                    if (individuals_[i].ciag[v / Config::intCount_] &
+                        (1 << (Config::intCount_ -
+                               (v + 1) % Config::intCount_)))
                         rozklad_bitow[v]++;
             }
 
@@ -111,7 +111,7 @@ void Simulation::run(Output& output, Generator& generator,
                          l++)  // ile potomstwa
                     {
                         ilosc_narodzin++;
-                        for (int x = 0; x < Individual::intSize_;
+                        for (int x = 0; x < Config::intSize_;
                              x++)  // przepisz genom
                                    // rodzica
                             osobnik.ciag[x] = individuals_[i].ciag[x];
@@ -119,9 +119,9 @@ void Simulation::run(Output& output, Generator& generator,
                              m++)  // mutacje
                         {
                             unsigned int liczba_losowa =
-                                generator.getInt(0, Individual::intCount_ - 1);
+                                generator.getInt(0, Config::intCount_ - 1);
                             unsigned int ktore =
-                                generator.getInt(0, Individual::intSize_ - 1);
+                                generator.getInt(0, Config::intSize_ - 1);
                             unsigned int temp = 1;
                             temp <<= liczba_losowa;
                             osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
@@ -172,7 +172,7 @@ void Simulation::run(Output& output, Generator& generator,
 
 int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
-    unsigned int nowy[Individual::intSize_];
+    unsigned int nowy[Config::intSize_];
     unsigned int liczba_losowa = 0;
     unsigned int ktore = 0;
     unsigned int temp = 0;
@@ -180,14 +180,14 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 
     for (int i = 0; i < config_.livesOnStart_; i++)
     {
-        for (int x = 0; x < Individual::intSize_; x++)
+        for (int x = 0; x < Config::intSize_; x++)
             nowy[x] = 0;
         for (int j = 0; j < config_.startingMutations_; j++)
         {
             do
             {
-                liczba_losowa = generator.getInt(0, Individual::intCount_ - 1);
-                ktore = generator.getInt(0, Individual::intSize_ - 1);
+                liczba_losowa = generator.getInt(0, Config::intCount_ - 1);
+                ktore = generator.getInt(0, Config::intSize_ - 1);
                 temp = 1;
                 temp <<= liczba_losowa;
             } while (nowy[ktore] == (nowy[ktore] | temp));

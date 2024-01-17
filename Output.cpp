@@ -56,6 +56,7 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_statystyki);
     fclose(plik_rozklad_wieku);
     fclose(plik_rozklad_bitow);
+    fclose(plik_rodziny);
     fclose(plik_gompertz);
 }
 

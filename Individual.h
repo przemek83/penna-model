@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-#include "Common.h"
+#include "Config.h"
 
 class Individual
 {
@@ -11,20 +11,11 @@ public:
     int ilosc_1;
     int przodek;
 
-    static constexpr int intCount_{2};           //*32 bity
-    static constexpr int intSize_{sizeof(int)};  // wielkosc integera
-
-    unsigned int ciag[intSize_];
+    unsigned int ciag[Config::intSize_];
 
     void czy1(unsigned int miejsce);
 
     void itob(FILE* plik);
 
-    void inicjuj(unsigned int a, unsigned int bity[intSize_]);
-
-    // private:
-    //     static constexpr int size_{2};               //*32 bity
-    //     static constexpr int intSize_{sizeof(int)};  // wielkosc integera
-
-    //    unsigned int ciag[intSize_];
+    void inicjuj(unsigned int a, unsigned int bity[Config::intSize_]);
 };
