@@ -1,9 +1,34 @@
+#include <chrono>
 #include <iostream>
 
 #include "NumbersGenerator.h"
 #include "Output.h"
 #include "Simulation.h"
 #include "SimulationData.h"
+
+namespace
+{
+using std::chrono::duration_cast;
+using std::chrono::seconds;
+using std::chrono::steady_clock;
+using std::chrono::time_point;
+
+class Timer
+{
+public:
+    ~Timer()
+    {
+        const auto end{steady_clock::now()};
+        std::cout << std::endl
+                  << "Execution time: "
+                  << duration_cast<seconds>(end - start_).count() << "s."
+                  << std::endl;
+    }
+
+private:
+    time_point<steady_clock> start_{steady_clock::now()};
+};
+};  // namespace
 
 int main()
 {
@@ -25,22 +50,12 @@ int main()
 
     for (int i = 1; i <= config.simulationsCount_; i++)
     {
+        const Timer timer;
+
         output.otworz_pliki2(i);
 
-        const clock_t start{clock()};
         Simulation simulation(config, i, krok_symulacji);
         simulation.run(output, generator, simulationAvgData);
-
-        const clock_t koniec{clock()};
-
-        std::cout << std::endl
-                  << "Execution time: " << (koniec - start) / (1000 * 60 * 60)
-                  << "h, "
-                  << ((koniec - start) % (1000 * 60 * 60)) / (1000 * 60)
-                  << "m, "
-                  << (((koniec - start) % (1000 * 60 * 60)) % (1000 * 60)) /
-                         1000
-                  << "s." << std::endl;
     }
 
     output.otworz_pliki(0);
