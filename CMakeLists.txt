@@ -25,6 +25,8 @@ set(${PROJECT_NAME}_SOURCES
     NumbersGenerator.h
     NumbersGenerator.cpp
     Config.h
+    Timer.h
+    Timer.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

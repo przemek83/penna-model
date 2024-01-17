@@ -1,34 +1,10 @@
-#include <chrono>
 #include <iostream>
 
 #include "NumbersGenerator.h"
 #include "Output.h"
 #include "Simulation.h"
 #include "SimulationData.h"
-
-namespace
-{
-using std::chrono::duration_cast;
-using std::chrono::seconds;
-using std::chrono::steady_clock;
-using std::chrono::time_point;
-
-class Timer
-{
-public:
-    ~Timer()
-    {
-        const auto end{steady_clock::now()};
-        std::cout << std::endl
-                  << "Execution time: "
-                  << duration_cast<seconds>(end - start_).count() << "s."
-                  << std::endl;
-    }
-
-private:
-    time_point<steady_clock> start_{steady_clock::now()};
-};
-};  // namespace
+#include "Timer.h"
 
 int main()
 {
