@@ -5,7 +5,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 file(COPY TestFiles DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(${PROJECT_TEST}_SOURCES
-    E2ETest.cpp
+    SimulationTest.cpp
     ../Simulation.cpp
     ../Individual.cpp
     ../Output.cpp

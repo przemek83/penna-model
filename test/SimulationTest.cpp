@@ -48,7 +48,7 @@ void compareFiles(const std::string& currentFile,
 
 };  // namespace
 
-TEST_CASE("E2E", "[penna]")
+TEST_CASE("Simulation", "[penna]")
 {
     SECTION("single simulation")
     {
