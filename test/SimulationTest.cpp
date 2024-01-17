@@ -58,18 +58,12 @@ TEST_CASE("Simulation", "[penna]")
         Output output(100, config.years_);
         output.otworz_pliki2(1);
 
-        SimulationData simulationDataAvg{};
-        simulationDataAvg.rodziny.resize(static_cast<size_t>(config.years_));
-        simulationDataAvg.livingAtStart_.resize(
-            static_cast<size_t>(config.years_));
-        simulationDataAvg.births_.resize(static_cast<size_t>(config.years_));
-        simulationDataAvg.livingAtEnd_.resize(
-            static_cast<size_t>(config.years_));
-        simulationDataAvg.deaths_.resize(static_cast<size_t>(config.years_));
+        SimulationData::AvgData simulationAvgData{
+            SimulationData::prepareAvgData(config.years_)};
 
         MockedGenerator generator;
         Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationDataAvg);
+        simulation.run(output, generator, simulationAvgData);
 
         std::vector<std::string> files{"proces1_symulacja1_gompertz.txt",
                                        "proces1_symulacja1_osobniki.txt",

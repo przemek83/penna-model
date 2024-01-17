@@ -9,6 +9,7 @@ set(${PROJECT_TEST}_SOURCES
     ../Simulation.cpp
     ../Individual.cpp
     ../Output.cpp
+    ../SimulationData.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})

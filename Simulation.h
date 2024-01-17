@@ -5,10 +5,10 @@
 
 #include "Config.h"
 #include "Individual.h"
+#include "SimulationData.h"
 
 class Output;
 class Generator;
-class SimulationData;
 
 class Simulation
 {
@@ -16,7 +16,7 @@ public:
     Simulation(const Config& config, int number, float step);
 
     void run(Output& output, Generator& generator,
-             SimulationData& simulationDataAvg);
+             SimulationData::AvgData& simulationDataAvg);
 
 private:
     int losuj_populacje(Output& wyjscie, Generator& generator);

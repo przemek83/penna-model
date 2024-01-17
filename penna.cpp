@@ -16,12 +16,8 @@ int main()
 #endif
         / static_cast<float>(config.simulationsCount_);
 
-    SimulationData simulationDataAvg{};
-    simulationDataAvg.rodziny.resize(static_cast<size_t>(config.years_));
-    simulationDataAvg.livingAtStart_.resize(static_cast<size_t>(config.years_));
-    simulationDataAvg.births_.resize(static_cast<size_t>(config.years_));
-    simulationDataAvg.livingAtEnd_.resize(static_cast<size_t>(config.years_));
-    simulationDataAvg.deaths_.resize(static_cast<size_t>(config.years_));
+    SimulationData::AvgData simulationAvgData{
+        SimulationData::prepareAvgData(config.years_)};
 
     Output output(krok_symulacji, config.years_);
 
@@ -33,7 +29,7 @@ int main()
 
         const clock_t start{clock()};
         Simulation simulation(config, i, krok_symulacji);
-        simulation.run(output, generator, simulationDataAvg);
+        simulation.run(output, generator, simulationAvgData);
 
         const clock_t koniec{clock()};
 
@@ -48,7 +44,7 @@ int main()
     }
 
     output.otworz_pliki(0);
-    output.zapisz_srednie(config.simulationsCount_, simulationDataAvg);
+    output.zapisz_srednie(config.simulationsCount_, simulationAvgData);
     output.zamknij_pliki(0);
 
     return EXIT_SUCCESS;

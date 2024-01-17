@@ -13,7 +13,7 @@ Simulation::Simulation(const Config& config, int number, float step)
 }
 
 void Simulation::run(Output& output, Generator& generator,
-                     SimulationData& simulationDataAvg)
+                     SimulationData::AvgData& simulationDataAvg)
 {
     unsigned int rok = 0;  // aktualny rok w symulacji
     bool singleFamily =

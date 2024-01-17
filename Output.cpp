@@ -60,7 +60,8 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_gompertz);
 }
 
-void Output::zapisz_srednie(int symulacji, SimulationData& simulationData)
+void Output::zapisz_srednie(int symulacji,
+                            SimulationData::AvgData& simulationData)
 {
     przelicz_srednie_konwencjonalnie((float)symulacji, simulationData);
 
@@ -84,8 +85,11 @@ void Output::zapisz_srednie(int symulacji, SimulationData& simulationData)
     }
 }
 
-void Output::zapisz_kolejne(bool rodzina1, int rok, SimulationData& simulationData, int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
-                            int* rozklad_wieku, int* rozklad_bitow, int* gompertz_zgony)
+void Output::zapisz_kolejne(bool rodzina1, int rok,
+                            SimulationData::AvgData& simulationData,
+                            int ilosc_osobnikow, int ilosc_narodzin,
+                            int ilosc_rodzin, int zgon, int* rozklad_wieku,
+                            int* rozklad_bitow, int* gompertz_zgony)
 {
     if (!rodzina1)
     {
@@ -163,8 +167,8 @@ void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
 #endif
 }
 
-void Output::przelicz_srednie_konwencjonalnie(float dzielnik,
-                                              SimulationData& simulationData)
+void Output::przelicz_srednie_konwencjonalnie(
+    float dzielnik, SimulationData::AvgData& simulationData)
 {
     for (size_t v = 0; v < Config::bits_; v++)
     {
