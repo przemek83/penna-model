@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(${PROJECT_NAME}_SOURCES
-    penna.cpp
+    main.cpp
     Output.h
     Output.cpp
     Individual.h
