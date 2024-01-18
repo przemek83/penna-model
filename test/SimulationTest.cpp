@@ -80,6 +80,7 @@ TEST_CASE("Simulation", "[penna]")
 
 TEST_CASE("Benchmark", "[penna]")
 {
+    SKIP();
     Config config;
 
     SimulationData::AvgData simulationAvgData{
@@ -90,7 +91,7 @@ TEST_CASE("Benchmark", "[penna]")
     SECTION("simulation short")
     {
         // 18.01.2024 - 205.679 s
-        SKIP();
+
         Output output(100, config.years_);
         output.otworz_pliki2(1);
         config.maxPopulation_ = 100'000;
@@ -106,7 +107,6 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 18.01.2024 - 846.279 s
 
-        SKIP();
         Output output(100, config.years_);
         output.otworz_pliki2(1);
         config.maxPopulation_ = 200'000;
