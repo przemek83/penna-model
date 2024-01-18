@@ -16,7 +16,7 @@ public:
 
     std::array<int, Config::intCount_> ciag{0, 0};
 
-    void czy1(unsigned int miejsce);
+    void ageByOneYear(unsigned int miejsce);
 
     void itob(FILE* plik);
 

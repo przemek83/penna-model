@@ -151,7 +151,8 @@ void Simulation::run(Output& output, Generator& generator,
                 }
             }
             individuals_[i].wiek++;                      // dodaj rok do wieku
-            individuals_[i].czy1(individuals_[i].wiek);  // sprawdzanie chorob
+            individuals_[i].ageByOneYear(
+                individuals_[i].wiek);                   // sprawdzanie chorob
         }
         if (ilosc_rodzin == 1)
             singleFamilyLeft = true;

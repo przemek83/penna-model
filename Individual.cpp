@@ -5,10 +5,10 @@
 
 #include "Generator.h"
 
-void Individual::czy1(unsigned int miejsce)
+void Individual::ageByOneYear(unsigned int miejsce)
 {
     unsigned long int pomoc = ciag[miejsce / Config::intSize_];
-    pomoc = pomoc >> (Config::intCount_ - (miejsce % Config::intSize_));
+    pomoc = pomoc >> (Config::intSize_ - (miejsce % Config::intSize_));
     if (pomoc & 1)
         ilosc_1++;
 }
