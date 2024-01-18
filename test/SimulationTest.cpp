@@ -65,6 +65,8 @@ TEST_CASE("Simulation", "[penna]")
         Simulation simulation(config, 0, 100);
         simulation.run(output, generator, simulationAvgData);
 
+        std::cout << std::endl;
+
         std::vector<std::string> files{"proces1_symulacja1_gompertz.txt",
                                        "proces1_symulacja1_osobniki.txt",
                                        "proces1_symulacja1_rodziny.txt",
@@ -73,5 +75,44 @@ TEST_CASE("Simulation", "[penna]")
                                        "proces1_symulacja1_statystyki.txt"};
         for (const auto& file : files)
             compareFiles(file, "testFiles/" + file);
+    }
+}
+
+TEST_CASE("Benchmark", "[penna]")
+{
+    Config config;
+    Output output(100, config.years_);
+    output.otworz_pliki2(1);
+
+    SimulationData::AvgData simulationAvgData{
+        SimulationData::prepareAvgData(config.years_)};
+
+    MockedGenerator generator;
+
+    SECTION("simulation short")
+    {
+        // 18.01.2024 - 205.679 s
+        SKIP();
+        config.maxPopulation_ = 100'000;
+        config.years_ = 100'000;
+
+        Simulation simulation(config, 0, 100);
+        simulation.run(output, generator, simulationAvgData);
+
+        std::cout << std::endl;
+    }
+
+    SECTION("simulation long")
+    {
+        // 18.01.2024 - 846.279 s
+
+        SKIP();
+        config.maxPopulation_ = 200'000;
+        config.years_ = 200'000;
+
+        Simulation simulation(config, 0, 100);
+        simulation.run(output, generator, simulationAvgData);
+
+        std::cout << std::endl;
     }
 }
