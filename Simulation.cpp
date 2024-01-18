@@ -171,31 +171,11 @@ void Simulation::run(Output& output, Generator& generator,
 
 int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
-    std::array<int, Config::intCount_> newBorn;
-    unsigned int liczba_losowa = 0;
-    unsigned int ktore = 0;
-    unsigned int temp = 0;
-    unsigned int numer = 0;
-
-    for (int i = 0; i < config_.livesOnStart_; i++)
+    for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
-        for (int x = 0; x < Config::intCount_; x++)
-            newBorn[x] = 0;
-        for (int j = 0; j < config_.startingMutations_; j++)
-        {
-            do
-            {
-                liczba_losowa = generator.getInt(0, Config::intSize_ - 1);
-                ktore = generator.getInt(0, Config::intCount_ - 1);
-                temp = 1;
-                temp <<= liczba_losowa;
-            } while (newBorn[ktore] == (newBorn[ktore] | temp));
-
-            newBorn[ktore] = (newBorn[ktore] | temp);
-        }
-        numer++;
-        individuals_[numer - 1].inicjuj(i, newBorn);
-        wyjscie.zapisz_losowana_populacje(individuals_, numer);
+        individuals_[i].assignRandomBits(generator, config_.startingMutations_);
+        individuals_[i].przodek = i;
+        wyjscie.zapisz_losowana_populacje(individuals_, i);
     }
-    return numer;
+    return config_.livesOnStart_;
 }

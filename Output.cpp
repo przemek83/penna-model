@@ -148,8 +148,8 @@ void Output::zapisz_losowana_populacje(std::vector<Individual>& populacja,
                                        int numer)
 {
 #ifdef CALE_WYJSCIE
-    fprintf(plik_osobniki, "%u ", numer - 1);
-    populacja[numer - 1].itob(plik_osobniki);
+    fprintf(plik_osobniki, "%u ", numer);
+    populacja[numer].itob(plik_osobniki);
 #endif
 }
 
