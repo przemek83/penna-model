@@ -52,4 +52,13 @@ TEST_CASE("Individual", "[penna]")
         individual.ageByOneYear(47);
         REQUIRE(individual.ilosc_1 == 2);
     }
+
+    SECTION("ageing passing all bits")
+    {
+        Individual individual;
+        individual.assignRandomBits(generator, 4);
+        for (int i{0}; i < Config::bits_; ++i)
+            individual.ageByOneYear(i);
+        REQUIRE(individual.ilosc_1 == 4);
+    }
 }
