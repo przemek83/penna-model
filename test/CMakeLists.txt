@@ -6,6 +6,8 @@ file(COPY TestFiles DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(${PROJECT_TEST}_SOURCES
     SimulationTest.cpp
+    MockedGenerator.h
+    MockedGenerator.cpp
     ../Simulation.cpp
     ../Individual.cpp
     ../Output.cpp

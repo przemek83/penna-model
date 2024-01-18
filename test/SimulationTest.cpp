@@ -5,30 +5,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include "catch2/matchers/catch_matchers_string.hpp"
 
-#include "Generator.h"
+#include "MockedGenerator.h"
 #include "Output.h"
 #include "Simulation.h"
 #include "SimulationData.h"
 
 namespace
 {
-class MockedGenerator : public Generator
-{
-public:
-    int getInt(int low, int high) override
-    {
-        // Following SplitMix64 algorithm described in
-        // https://thompsonsed.co.uk/random-number-generators-for-c-performance-tested
-        uint64_t z = (x_ += UINT64_C(0x9E3779B97F4A7C15));
-        z = (z ^ (z >> 30)) * UINT64_C(0xBF58476D1CE4E5B9);
-        z = (z ^ (z >> 27)) * UINT64_C(0x94D049BB133111EB);
-        return low + ((z ^ (z >> 31)) % (high - low + 1));
-    }
-
-private:
-    uint64_t x_{12};
-};
-
 std::string getFileContent(const std::string& file)
 {
     std::ifstream ifstream(file);
