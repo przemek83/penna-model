@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
+#include "catch2/matchers/catch_matchers_string.hpp"
 
 #include "Individual.h"
 #include "MockedGenerator.h"
@@ -51,8 +52,16 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("ageing passing all bits")
     {
-        for (int i{0}; i < Config::bits_; ++i)
+        for (unsigned int i{0}; i < Config::bits_; ++i)
             individual.ageByOneYear(i);
         REQUIRE(individual.ilosc_1 == 4);
+    }
+
+    SECTION("bits as string")
+    {
+        REQUIRE_THAT(
+            individual.asBitString(),
+            Catch::Matchers::Equals("000000000000000001000000000000000000000000"
+                                    "0000100100000000001000"));
     }
 }
