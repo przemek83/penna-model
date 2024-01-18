@@ -15,16 +15,15 @@ Simulation::Simulation(const Config& config, int number, float step)
 void Simulation::run(Output& output, Generator& generator,
                      SimulationData::AvgData& simulationDataAvg)
 {
-    unsigned int rok = 0;  // aktualny rok w symulacji
-    bool singleFamily =
-        false;             // flaga pokazujaca istnienie tylko jednej rodziny
+    int year{0};
+    bool singleFamilyLeft{false};
     std::vector<unsigned int> puste;
 
     unsigned int ostatni_el = losuj_populacje(output, generator);
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
-    while (rok < config_.years_)  // kolejne lata
+    while (year < config_.years_)  // kolejne lata
     {
         // zmienne przetrzymujace informacje potrzebne do statystyk
         int ilosc_osobnikow{0};
@@ -61,15 +60,15 @@ void Simulation::run(Output& output, Generator& generator,
             else
                 ilosc_osobnikow++;
 
-            if (!singleFamily)  // gromadz dane o rodzinach
+            if (!singleFamilyLeft)  // gromadz dane o rodzinach
             {
                 rodziny[individuals_[i].przodek]++;
                 if (rodziny[individuals_[i].przodek] == 1)
                     ilosc_rodzin++;
             }
 
-            if (rok + 1 == config_.years_)  // zgromadz dane o
-                                            // bitach i wieku
+            if (year + 1 == config_.years_)  // zgromadz dane o
+                                             // bitach i wieku
             {
                 rozklad_wieku[individuals_[i].wiek]++;
                 for (int v = 0; v < Config::bits_; v++)
@@ -155,16 +154,16 @@ void Simulation::run(Output& output, Generator& generator,
             individuals_[i].czy1(individuals_[i].wiek);  // sprawdzanie chorob
         }
         if (ilosc_rodzin == 1)
-            singleFamily = true;
+            singleFamilyLeft = true;
 
-        output.zapisz_kolejne(singleFamily, rok, simulationDataAvg,
+        output.zapisz_kolejne(singleFamilyLeft, year, simulationDataAvg,
                               ilosc_osobnikow, ilosc_narodzin, ilosc_rodzin,
                               zgon, rozklad_wieku, rozklad_bitow,
                               gompertz_zgony);
-        rok++;
-        if ((rok % (config_.years_ / 50)) == 0)
+        year++;
+        if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";
-    }  // kolejne lata
+    }
     std::cout << "]";
     output.zapisz_koncowa_populacje(
         individuals_, config_.simulationsCount_ + 1 - number_, ostatni_el);
