@@ -8,7 +8,7 @@ void Individual::czy1(unsigned int miejsce)
     unsigned long int pomoc = ciag[miejsce / Config::intCount_];
     pomoc = pomoc >> (Config::intCount_ - (miejsce % Config::intCount_));
     if (pomoc & 1)
-        this->ilosc_1++;
+        ilosc_1++;
 }
 
 void Individual::itob(FILE* plik)
@@ -27,9 +27,9 @@ void Individual::itob(FILE* plik)
 void Individual::inicjuj(unsigned int a,
                          std::array<int, Config::intSize_>& bity)
 {
-    this->wiek = 0;
-    this->ilosc_1 = 0;
-    this->przodek = a;
+    wiek = 0;
+    ilosc_1 = 0;
+    przodek = a;
     for (int i = 0; i < Config::intSize_; i++)
-        this->ciag[i] = bity[i];
+        ciag[i] = bity[i];
 }
