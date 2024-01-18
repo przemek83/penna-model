@@ -148,8 +148,8 @@ void Output::zapisz_losowana_populacje(std::vector<Individual>& populacja,
                                        int numer)
 {
 #ifdef CALE_WYJSCIE
-    fprintf(plik_osobniki, "%u ", numer);
-    populacja[numer].itob(plik_osobniki);
+    fprintf(plik_osobniki, "%u %s\n", numer,
+            populacja[numer].asBitString().c_str());
 #endif
 }
 
@@ -160,8 +160,10 @@ void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
     for (unsigned d = 0; d < ostatni_el; d++)
         if (populacja[d].przodek != -1)
         {
-            fprintf(plik_osobniki, "%u %d %d %d %u ", d, populacja[d].przodek, populacja[d].wiek, populacja[d].ilosc_1, populacja[d].ciag[0]);
-            populacja[d].itob(plik_osobniki);
+            fprintf(plik_osobniki, "%u %d %d %d %u %s\n", d,
+                    populacja[d].przodek, populacja[d].wiek,
+                    populacja[d].ilosc_1, populacja[d].ciag[0],
+                    populacja[d].asBitString().c_str());
         }
     zamknij_pliki(x);
 #endif

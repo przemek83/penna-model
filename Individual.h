@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdio>
+#include <string>
 
 #include "Config.h"
 
@@ -18,7 +19,7 @@ public:
 
     void ageByOneYear(unsigned int miejsce);
 
-    void itob(FILE* plik);
+    std::string asBitString();
 
     void inicjuj(unsigned int a, std::array<int, Config::intCount_>& bity);
 

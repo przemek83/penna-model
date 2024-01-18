@@ -1,5 +1,6 @@
 #include "Individual.h"
 
+#include <bitset>
 #include <cstdlib>
 #include <cstring>
 
@@ -13,17 +14,13 @@ void Individual::ageByOneYear(unsigned int miejsce)
         ilosc_1++;
 }
 
-void Individual::itob(FILE* plik)
+std::string Individual::asBitString()
 {
-    char ciag_binarny[Config::intSize_ + 1];
-    for (int x = 0; x < Config::intCount_; x++)
-    {
-        _itoa(ciag[x], ciag_binarny, 2);
-        for (int i = Config::intSize_ - strlen(ciag_binarny); i > 0; i--)
-            fprintf(plik, "0");
-        fprintf(plik, "%s", ciag_binarny);
-    }
-    fprintf(plik, "\n");
+    unsigned long long bitsAsInt{static_cast<unsigned int>(ciag[0])};
+    bitsAsInt = bitsAsInt << static_cast<unsigned int>(Config::intSize_);
+    bitsAsInt += static_cast<unsigned int>(ciag[1]);
+    const std::bitset<Config::bits_> asBitset(bitsAsInt);
+    return asBitset.to_string();
 }
 
 void Individual::inicjuj(unsigned int a,
