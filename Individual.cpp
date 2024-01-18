@@ -5,19 +5,19 @@
 
 void Individual::czy1(unsigned int miejsce)
 {
-    unsigned long int pomoc = ciag[miejsce / Config::intCount_];
-    pomoc = pomoc >> (Config::intCount_ - (miejsce % Config::intCount_));
+    unsigned long int pomoc = ciag[miejsce / Config::intSize_];
+    pomoc = pomoc >> (Config::intCount_ - (miejsce % Config::intSize_));
     if (pomoc & 1)
         ilosc_1++;
 }
 
 void Individual::itob(FILE* plik)
 {
-    char ciag_binarny[Config::intCount_ + 1];
-    for (int x = 0; x < Config::intSize_; x++)
+    char ciag_binarny[Config::intSize_ + 1];
+    for (int x = 0; x < Config::intCount_; x++)
     {
         _itoa(ciag[x], ciag_binarny, 2);
-        for (int i = Config::intCount_ - strlen(ciag_binarny); i > 0; i--)
+        for (int i = Config::intSize_ - strlen(ciag_binarny); i > 0; i--)
             fprintf(plik, "0");
         fprintf(plik, "%s", ciag_binarny);
     }
@@ -25,11 +25,11 @@ void Individual::itob(FILE* plik)
 }
 
 void Individual::inicjuj(unsigned int a,
-                         std::array<int, Config::intSize_>& bity)
+                         std::array<int, Config::intCount_>& bity)
 {
     wiek = 0;
     ilosc_1 = 0;
     przodek = a;
-    for (int i = 0; i < Config::intSize_; i++)
+    for (int i = 0; i < Config::intCount_; i++)
         ciag[i] = bity[i];
 }

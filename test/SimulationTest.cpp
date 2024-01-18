@@ -64,7 +64,7 @@ TEST_CASE("Simulation", "[penna]")
         MockedGenerator generator;
         Simulation simulation(config, 0, 100);
         simulation.run(output, generator, simulationAvgData);
-
+        output.zamknij_pliki(1);
         std::cout << std::endl;
 
         std::vector<std::string> files{"proces1_symulacja1_gompertz.txt",
@@ -81,8 +81,6 @@ TEST_CASE("Simulation", "[penna]")
 TEST_CASE("Benchmark", "[penna]")
 {
     Config config;
-    Output output(100, config.years_);
-    output.otworz_pliki2(1);
 
     SimulationData::AvgData simulationAvgData{
         SimulationData::prepareAvgData(config.years_)};
@@ -93,6 +91,8 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 18.01.2024 - 205.679 s
         SKIP();
+        Output output(100, config.years_);
+        output.otworz_pliki2(1);
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
@@ -107,6 +107,8 @@ TEST_CASE("Benchmark", "[penna]")
         // 18.01.2024 - 846.279 s
 
         SKIP();
+        Output output(100, config.years_);
+        output.otworz_pliki2(1);
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 

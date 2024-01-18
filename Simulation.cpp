@@ -110,7 +110,7 @@ void Simulation::run(Output& output, Generator& generator,
                          l++)  // ile potomstwa
                     {
                         ilosc_narodzin++;
-                        for (int x = 0; x < Config::intSize_;
+                        for (int x = 0; x < Config::intCount_;
                              x++)  // przepisz genom
                                    // rodzica
                             osobnik.ciag[x] = individuals_[i].ciag[x];
@@ -118,9 +118,9 @@ void Simulation::run(Output& output, Generator& generator,
                              m++)  // mutacje
                         {
                             unsigned int liczba_losowa =
-                                generator.getInt(0, Config::intCount_ - 1);
-                            unsigned int ktore =
                                 generator.getInt(0, Config::intSize_ - 1);
+                            unsigned int ktore =
+                                generator.getInt(0, Config::intCount_ - 1);
                             unsigned int temp = 1;
                             temp <<= liczba_losowa;
                             osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
@@ -171,7 +171,7 @@ void Simulation::run(Output& output, Generator& generator,
 
 int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
-    std::array<int, Config::intSize_> newBorn;
+    std::array<int, Config::intCount_> newBorn;
     unsigned int liczba_losowa = 0;
     unsigned int ktore = 0;
     unsigned int temp = 0;
@@ -179,14 +179,14 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 
     for (int i = 0; i < config_.livesOnStart_; i++)
     {
-        for (int x = 0; x < Config::intSize_; x++)
+        for (int x = 0; x < Config::intCount_; x++)
             newBorn[x] = 0;
         for (int j = 0; j < config_.startingMutations_; j++)
         {
             do
             {
-                liczba_losowa = generator.getInt(0, Config::intCount_ - 1);
-                ktore = generator.getInt(0, Config::intSize_ - 1);
+                liczba_losowa = generator.getInt(0, Config::intSize_ - 1);
+                ktore = generator.getInt(0, Config::intCount_ - 1);
                 temp = 1;
                 temp <<= liczba_losowa;
             } while (newBorn[ktore] == (newBorn[ktore] | temp));

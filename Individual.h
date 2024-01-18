@@ -12,11 +12,11 @@ public:
     int ilosc_1;
     int przodek;
 
-    std::array<int, Config::intSize_> ciag;
+    std::array<int, Config::intCount_> ciag;
 
     void czy1(unsigned int miejsce);
 
     void itob(FILE* plik);
 
-    void inicjuj(unsigned int a, std::array<int, Config::intSize_>& bity);
+    void inicjuj(unsigned int a, std::array<int, Config::intCount_>& bity);
 };
