@@ -72,9 +72,8 @@ void Simulation::run(Output& output, Generator& generator,
             {
                 rozklad_wieku[individuals_[i].wiek]++;
                 for (int v = 0; v < Config::bits_; v++)
-                    if (individuals_[i].ciag[v / Config::intCount_] &
-                        (1 << (Config::intCount_ -
-                               (v + 1) % Config::intCount_)))
+                    if (individuals_[i].ciag[v / Config::intSize_] &
+                        (1 << (Config::intSize_ - (v + 1) % Config::intSize_)))
                         rozklad_bitow[v]++;
             }
 
