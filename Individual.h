@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdio>
 
 #include "Config.h"
@@ -11,11 +12,11 @@ public:
     int ilosc_1;
     int przodek;
 
-    unsigned int ciag[Config::intSize_];
+    std::array<int, Config::intSize_> ciag;
 
     void czy1(unsigned int miejsce);
 
     void itob(FILE* plik);
 
-    void inicjuj(unsigned int a, unsigned int bity[Config::intSize_]);
+    void inicjuj(unsigned int a, std::array<int, Config::intSize_>& bity);
 };

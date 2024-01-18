@@ -24,7 +24,8 @@ void Individual::itob(FILE* plik)
     fprintf(plik, "\n");
 }
 
-void Individual::inicjuj(unsigned int a, unsigned int bity[Config::intSize_])
+void Individual::inicjuj(unsigned int a,
+                         std::array<int, Config::intSize_>& bity)
 {
     this->wiek = 0;
     this->ilosc_1 = 0;
