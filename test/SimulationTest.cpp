@@ -69,6 +69,7 @@ TEST_CASE("Benchmark", "[penna]")
     SECTION("simulation short")
     {
         // 18.01.2024 - 205.679 s
+        // 19.01.2024 - 83.274 s
 
         Output output(100, config.years_);
         output.otworz_pliki2(1);
@@ -87,6 +88,7 @@ TEST_CASE("Benchmark", "[penna]")
     SECTION("simulation long")
     {
         // 18.01.2024 - 846.279 s
+        // 19.01.2024 - 333.807 s
 
         Output output(100, config.years_);
         output.otworz_pliki2(1);
