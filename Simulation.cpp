@@ -34,11 +34,8 @@ void Simulation::run(Output& output, Generator& generator,
         families.resize(config_.livesOnStart_, 0);
 
         std::array<int, Config::bits_> ageDistribution{};
-        ageDistribution.fill(0);
         std::array<int, Config::bits_> bitsDistribution{};
-        bitsDistribution.fill(0);
         std::array<int, Config::bits_> gompertzDeathsDistribution{};
-        gompertzDeathsDistribution.fill(0);
 
 #ifdef SYMULACJA_DORSZY
         if (rok + 1 == MAX_POP_LAT)
