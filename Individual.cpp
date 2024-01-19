@@ -25,7 +25,7 @@ Individual Individual::offspring() const
 
 void Individual::applyMutation(Generator& generator)
 {
-    const int mutationPosition = generator.getInt(0, Config::bits_ - 1);
+    const int mutationPosition{generator.getInt(0, Config::bits_ - 1)};
     genome_[mutationPosition] = true;
 }
 
