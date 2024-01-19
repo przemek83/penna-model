@@ -9,6 +9,10 @@
 
 TEST_CASE("Individual", "[penna]")
 {
+    const std::string genome{
+        "000000000000000001000000000000000000000000"
+        "0000100100000000001000"};
+
     SECTION("bit strings creation")
     {
         MockedGenerator generator;
@@ -59,10 +63,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("bits as string")
     {
-        REQUIRE_THAT(
-            individual.asBitString(),
-            Catch::Matchers::Equals("000000000000000001000000000000000000000000"
-                                    "0000100100000000001000"));
+        REQUIRE_THAT(individual.asBitString(), Catch::Matchers::Equals(genome));
     }
 
     SECTION("offspring check bits")
@@ -98,5 +99,59 @@ TEST_CASE("Individual", "[penna]")
         const Individual child{individual.offspring()};
 
         REQUIRE(child.survivedOnes_ == 0);
+    }
+
+    SECTION("single mutation applied")
+    {
+        individual.genome_[0] = 0;
+        individual.genome_[1] = 0;
+        MockedGenerator generator;
+        individual.applyMutation(generator);
+
+        REQUIRE_THAT(individual.asBitString(),
+                     !Catch::Matchers::Equals(genome));
+    }
+
+    SECTION("single mutation applied on existing")
+    {
+        individual.genome_[0] = 0;
+        individual.genome_[1] = 8;
+        MockedGenerator generator;
+        const std::string genomeBeforeMutation{individual.asBitString()};
+        individual.applyMutation(generator);
+
+        REQUIRE_THAT(individual.asBitString(),
+                     Catch::Matchers::Equals(genomeBeforeMutation));
+    }
+
+    SECTION("single mutation exact match")
+    {
+        individual.genome_[0] = 0;
+        individual.genome_[1] = 0;
+        MockedGenerator generator;
+        individual.applyMutation(generator);
+
+        const std::string expectedGenome{
+            "000000000000000000000000000000000000000000"
+            "0000000000000000001000"};
+
+        REQUIRE_THAT(individual.asBitString(),
+                     Catch::Matchers::Equals(expectedGenome));
+    }
+
+    SECTION("multiple mutations exact match")
+    {
+        individual.genome_[0] = 0;
+        individual.genome_[1] = 0;
+        MockedGenerator generator;
+        individual.applyMutation(generator);
+        individual.applyMutation(generator);
+        individual.applyMutation(generator);
+
+        const std::string expectedGenome{
+            "0000000000000000010000000000000000000000000000000100000000001000"};
+
+        REQUIRE_THAT(individual.asBitString(),
+                     Catch::Matchers::Equals(expectedGenome));
     }
 }
