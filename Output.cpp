@@ -29,13 +29,13 @@ std::string Output::nazwa(int przedrostek, int numer)
 
 void Output::otworz_pliki(int przedrostek)
 {
-    fopen_s(&plik_statystyki, nazwa(przedrostek, STATYSTYKI).data(), "w");
+    plik_statystyki = fopen(nazwa(przedrostek, STATYSTYKI).data(), "w");
     if (przedrostek != 0)
-        fopen_s(&plik_osobniki, nazwa(przedrostek, POPULACJE).data(), "w");
-    fopen_s(&plik_rozklad_wieku, nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
-    fopen_s(&plik_rozklad_bitow, nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
-    fopen_s(&plik_gompertz, nazwa(przedrostek, GOMPERTZ).data(), "w");
-    fopen_s(&plik_rodziny, nazwa(przedrostek, RODZINY).data(), "w");
+        plik_osobniki = fopen(nazwa(przedrostek, POPULACJE).data(), "w");
+    plik_rozklad_wieku = fopen(nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
+    plik_rozklad_bitow = fopen(nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
+    plik_gompertz = fopen(nazwa(przedrostek, GOMPERTZ).data(), "w");
+    plik_rodziny = fopen(nazwa(przedrostek, RODZINY).data(), "w");
 }
 
 void Output::otworz_pliki2(int przedrostek)
