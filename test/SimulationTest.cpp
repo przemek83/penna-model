@@ -56,7 +56,7 @@ TEST_CASE("Simulation", "[penna]")
                                        "proces1_symulacja1_rozklad_wieku.txt",
                                        "proces1_symulacja1_statystyki.txt"};
         for (const auto& file : files)
-            compareFiles(file, "testFiles/" + file);
+            compareFiles(file, "TestFiles/" + file);
     }
 }
 
