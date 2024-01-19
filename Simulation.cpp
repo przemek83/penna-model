@@ -98,43 +98,35 @@ void Simulation::run(Output& output, Generator& generator,
                 individuals_[i].ancestor_ = -1;
                 continue;
             }
-            else  // zycie
+
+            if ((individuals_[i].age_ > config_.reproductionAge_) &&
+                generator.getInt(1, 100) <=
+                    config_.chanceForOffspring_)  // potomstwo
             {
-                if ((individuals_[i].age_ > config_.reproductionAge_) &&
-                    generator.getInt(1, 100) <=
-                        config_.chanceForOffspring_)  // potomstwo
+                for (int l{0}; l < config_.offspringCount_; l++)
                 {
-                    for (unsigned int l = 0; l < config_.offspringCount_;
-                         l++)  // ile potomstwa
+                    Individual osobnik{individuals_[i].offspring()};
+                    ilosc_narodzin++;
+
+                    for (int m{0}; m < config_.mutationsDelta_; m++)
+                        osobnik.applyMutation(generator);
+
+                    if (puste.empty() && ostatni_el < config_.maxPopulation_)
                     {
-                        Individual osobnik{individuals_[i].offspring()};
-                        ilosc_narodzin++;
-
-                        for (int m{0}; m < config_.mutationsDelta_; m++)
-                            osobnik.applyMutation(generator);
-
-                        if (puste.size() == 0 &&
-                            ostatni_el < config_.maxPopulation_)  // dodaj
-                                                                  // osobnika
-                                                                  // na
-                                                                  // nowym
-                                                                  // miejscu
+                        individuals_[ostatni_el] = osobnik;
+                        ostatni_el++;
+                    }
+                    else
+                    {
+                        if (!puste.empty())
                         {
-                            individuals_[ostatni_el] = osobnik;
-                            ostatni_el++;
-                        }
-                        else  // dodaj osobnika w
-                              // miejsce puste
-                        {
-                            if (puste.size() > 0)
-                            {
-                                individuals_[puste.back()] = osobnik;
-                                puste.pop_back();
-                            }
+                            individuals_[puste.back()] = osobnik;
+                            puste.pop_back();
                         }
                     }
                 }
             }
+
             individuals_[i].age_++;     // dodaj rok do wieku
             individuals_[i].ageByOneYear(
                 individuals_[i].age_);  // sprawdzanie chorob
