@@ -55,56 +55,56 @@ void Simulation::run(Output& output, Generator& generator,
 
         for (unsigned int i = 0; i < ostatni_el; i++)
         {
-            if (individuals_[i].ancestor_ == -1)
+            Individual& individual{individuals_[i]};
+            if (individual.ancestor_ == -1)
                 continue;
             else
                 ilosc_osobnikow++;
 
             if (!singleFamilyLeft)  // gromadz dane o rodzinach
             {
-                rodziny[individuals_[i].ancestor_]++;
-                if (rodziny[individuals_[i].ancestor_] == 1)
+                rodziny[individual.ancestor_]++;
+                if (rodziny[individual.ancestor_] == 1)
                     ilosc_rodzin++;
             }
 
             if (year + 1 == config_.years_)  // zgromadz dane o
                                              // bitach i wieku
             {
-                rozklad_wieku[individuals_[i].age_]++;
+                rozklad_wieku[individual.age_]++;
                 for (size_t v = 0; v < Config::bits_; v++)
-                    if (individuals_[i].genome_[v])
+                    if (individual.genome_[v])
                         rozklad_bitow[v]++;
             }
 
             // decyzja o zyciu badz smierci osobnika
-            if ((individuals_[i].survivedOnes_ >=
-                 config_.maxMutations_) ||                  // jedynki
-                (individuals_[i].age_ >= Config::bits_) ||  // starosc
+            if ((individual.survivedOnes_ >=
+                 config_.maxMutations_) ||             // jedynki
+                (individual.age_ >= Config::bits_) ||  // starosc
                 ((float)generator.getInt(0, 100) <=
                  (float)(ostatni_el - puste.size()) / config_.maxPopulation_ *
                      100.0)  // verhulst
 #ifdef SYMULACJA_DORSZY
-                || ((rok > ODLOWY_OD) &&
-                    (individuals_[i].wiek >= MINIMALNY_WIEK) &&
+                || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                     ((float)generator.getInt(0, 10000) / 100 <=
                      START_ODLOWOW + number_ * step_))
 #endif
                     )  // smierc
             {
                 zgon++;
-                gompertz_zgony[individuals_[i].age_]++;
+                gompertz_zgony[individual.age_]++;
                 puste.push_back(i);
-                individuals_[i].ancestor_ = -1;
+                individual.ancestor_ = -1;
                 continue;
             }
 
-            if ((individuals_[i].age_ > config_.reproductionAge_) &&
+            if ((individual.age_ > config_.reproductionAge_) &&
                 generator.getInt(1, 100) <=
                     config_.chanceForOffspring_)  // potomstwo
             {
                 for (int l{0}; l < config_.offspringCount_; l++)
                 {
-                    Individual osobnik{individuals_[i].offspring()};
+                    Individual osobnik{individual.offspring()};
                     ilosc_narodzin++;
 
                     for (int m{0}; m < config_.mutationsDelta_; m++)
@@ -126,7 +126,7 @@ void Simulation::run(Output& output, Generator& generator,
                 }
             }
 
-            individuals_[i].ageByOneYear();
+            individual.ageByOneYear();
         }
         if (ilosc_rodzin == 1)
             singleFamilyLeft = true;
@@ -148,9 +148,11 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
     for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
-        individuals_[i].assignRandomBits(generator, config_.startingMutations_);
-        individuals_[i].ancestor_ = i;
-        wyjscie.zapisz_losowana_populacje(individuals_, i);
+        Individual& individual{individuals_[i]};
+        individual.assignRandomBits(generator, config_.startingMutations_);
+        individual.ancestor_ = i;
     }
+
+    wyjscie.zapisz_losowana_populacje(individuals_, config_.livesOnStart_);
     return config_.livesOnStart_;
 }

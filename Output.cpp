@@ -140,12 +140,13 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
     }
 }
 
-void Output::zapisz_losowana_populacje(std::vector<Individual>& populacja,
-                                       int numer)
+void Output::zapisz_losowana_populacje(
+    const std::vector<Individual>& individuals, int count)
 {
 #ifdef CALE_WYJSCIE
-    fprintf(plik_osobniki, "%u %s\n", numer,
-            populacja[numer].asBitString().c_str());
+    for (int i{0}; i < count; ++i)
+        fprintf(plik_osobniki, "%u %s\n", i,
+                individuals[i].asBitString().c_str());
 #endif
 }
 

@@ -25,8 +25,8 @@ public:
                         int ilosc_rodzin, int zgon, int* rozklad_wieku,
                         int* rozklad_bitow, int* gompertz_zgony);
 
-    void zapisz_losowana_populacje(std::vector<Individual>& populacja,
-                                   int numer);
+    void zapisz_losowana_populacje(const std::vector<Individual>& individuals,
+                                   int count);
 
     void zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
                                   unsigned int ostatni_el);
