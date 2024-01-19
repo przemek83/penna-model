@@ -14,9 +14,9 @@ std::string Output::nazwa(int przedrostek, int numer)
 #ifdef SYMULACJA_DORSZY
     sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * simulationStep_);
 #else
-    _itoa(przedrostek, bufor, 10);
+    itoa(przedrostek, bufor, 10);
 #endif
-    _itoa(1, bufor2, 10);
+    itoa(1, bufor2, 10);
 
     plik_nazwa.erase();
 #ifndef SYMULACJA_DORSZY
