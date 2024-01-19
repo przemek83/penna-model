@@ -9,22 +9,18 @@ Output::Output(float simulationStep, int maxPopulationAge) : simulationStep_{sim
 std::string Output::nazwa(int przedrostek, int numer)
 {
     std::string plik_nazwa;
-    char bufor[10], bufor2[10];
 
 #ifdef SYMULACJA_DORSZY
     sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * simulationStep_);
-#else
-    itoa(przedrostek, bufor, 10);
 #endif
-    itoa(1, bufor2, 10);
 
     plik_nazwa.erase();
 #ifndef SYMULACJA_DORSZY
     plik_nazwa.append("proces");
-    plik_nazwa.append(bufor2);
+    plik_nazwa.append(std::to_string(1));
     plik_nazwa.append("_symulacja");
 #endif
-    plik_nazwa.append(bufor);
+    plik_nazwa.append(std::to_string(przedrostek));
     plik_nazwa.append("_");
     plik_nazwa.append(fileNames_[numer]);
 
