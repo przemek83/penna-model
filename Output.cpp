@@ -158,7 +158,8 @@ void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
         {
             fprintf(plik_osobniki, "%u %d %d %d %u %s\n", d,
                     populacja[d].ancestor_, populacja[d].age_,
-                    populacja[d].survivedOnes_, populacja[d].genome_[0],
+                    populacja[d].survivedOnes_,
+                    populacja[d].genome_.to_ullong(),
                     populacja[d].asBitString().c_str());
         }
     zamknij_pliki(x);

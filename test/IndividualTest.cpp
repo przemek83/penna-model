@@ -18,46 +18,46 @@ TEST_CASE("Individual", "[penna]")
         MockedGenerator generator;
         Individual individual;
         individual.assignRandomBits(generator, 4);
-        // 16384  = 00000000000000000100000000000000
-        // 147464 = 00000000000000100100000000001000
-        REQUIRE(individual.genome_[0] == 16384);
-        REQUIRE(individual.genome_[1] == 147464);
+        REQUIRE(
+            individual.genome_.to_ullong() ==
+            0b0000000000000000010000000000000000000000100000000000001000001000);
     }
 
     Individual individual;
-    individual.genome_[0] = 16384;
-    individual.genome_[1] = 147464;
+    individual.genome_ = std::bitset<Config::bits_>(genome);
 
     SECTION("ageing passing 0")
     {
-        individual.ageByOneYear(17);
+        individual.ageByOneYear();
         REQUIRE(individual.survivedOnes_ == 0);
     }
 
     SECTION("ageing passing 1")
     {
-        individual.ageByOneYear(18);
+        for (int i{0}; i <= 3; ++i)
+            individual.ageByOneYear();
         REQUIRE(individual.survivedOnes_ == 1);
     }
 
     SECTION("ageing passing 0 after 1")
     {
-        individual.ageByOneYear(18);
-        individual.ageByOneYear(19);
+        for (int i{0}; i <= 4; ++i)
+            individual.ageByOneYear();
+        individual.ageByOneYear();
         REQUIRE(individual.survivedOnes_ == 1);
     }
 
     SECTION("ageing passing multiple 1s")
     {
-        individual.ageByOneYear(18);
-        individual.ageByOneYear(47);
+        for (int i{0}; i <= 14; ++i)
+            individual.ageByOneYear();
         REQUIRE(individual.survivedOnes_ == 2);
     }
 
     SECTION("ageing passing all bits")
     {
-        for (unsigned int i{0}; i < Config::bits_; ++i)
-            individual.ageByOneYear(i);
+        for (unsigned int i{1}; i < Config::bits_; ++i)
+            individual.ageByOneYear();
         REQUIRE(individual.survivedOnes_ == 4);
     }
 
@@ -103,8 +103,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation applied")
     {
-        individual.genome_[0] = 0;
-        individual.genome_[1] = 0;
+        individual.genome_ = std::bitset<Config::bits_>(0);
         MockedGenerator generator;
         individual.applyMutation(generator);
 
@@ -114,8 +113,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation applied on existing")
     {
-        individual.genome_[0] = 0;
-        individual.genome_[1] = 8;
+        individual.genome_ = std::bitset<Config::bits_>(8);
         MockedGenerator generator;
         const std::string genomeBeforeMutation{individual.asBitString()};
         individual.applyMutation(generator);
@@ -126,8 +124,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation exact match")
     {
-        individual.genome_[0] = 0;
-        individual.genome_[1] = 0;
+        individual.genome_ = std::bitset<Config::bits_>(0);
         MockedGenerator generator;
         individual.applyMutation(generator);
 
@@ -141,15 +138,14 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("multiple mutations exact match")
     {
-        individual.genome_[0] = 0;
-        individual.genome_[1] = 0;
+        individual.genome_ = std::bitset<Config::bits_>(0);
         MockedGenerator generator;
         individual.applyMutation(generator);
         individual.applyMutation(generator);
         individual.applyMutation(generator);
 
         const std::string expectedGenome{
-            "0000000000000000010000000000000000000000000000000100000000001000"};
+            "0000000000000000010000000000000000000000100000000000000000001000"};
 
         REQUIRE_THAT(individual.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));

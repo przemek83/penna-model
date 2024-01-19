@@ -71,9 +71,8 @@ void Simulation::run(Output& output, Generator& generator,
                                              // bitach i wieku
             {
                 rozklad_wieku[individuals_[i].age_]++;
-                for (int v = 0; v < Config::bits_; v++)
-                    if (individuals_[i].genome_[v / Config::intSize_] &
-                        (1 << (Config::intSize_ - (v + 1) % Config::intSize_)))
+                for (size_t v = 0; v < Config::bits_; v++)
+                    if (individuals_[i].genome_[v])
                         rozklad_bitow[v]++;
             }
 
@@ -127,9 +126,7 @@ void Simulation::run(Output& output, Generator& generator,
                 }
             }
 
-            individuals_[i].age_++;     // dodaj rok do wieku
-            individuals_[i].ageByOneYear(
-                individuals_[i].age_);  // sprawdzanie chorob
+            individuals_[i].ageByOneYear();
         }
         if (ilosc_rodzin == 1)
             singleFamilyLeft = true;

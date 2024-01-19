@@ -13,6 +13,4 @@ struct Config
     int offspringCount_{3};
     int simulationsCount_{2};
     static constexpr int bits_{64};
-    static constexpr int intCount_{2};
-    static constexpr int intSize_{sizeof(int) * 8};
 };

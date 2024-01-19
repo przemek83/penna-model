@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <bitset>
 #include <cstdio>
 #include <string>
 
@@ -15,9 +16,9 @@ public:
     int survivedOnes_{0};
     int ancestor_{0};
 
-    std::array<int, Config::intCount_> genome_{0, 0};
+    std::bitset<Config::bits_> genome_;
 
-    void ageByOneYear(unsigned int miejsce);
+    void ageByOneYear();
 
     std::string asBitString() const;
 
