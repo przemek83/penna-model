@@ -104,15 +104,11 @@ void Simulation::run(Output& output, Generator& generator,
                     generator.getInt(1, 100) <=
                         config_.chanceForOffspring_)  // potomstwo
                 {
-                    Individual osobnik;
                     for (unsigned int l = 0; l < config_.offspringCount_;
                          l++)  // ile potomstwa
                     {
+                        Individual osobnik{individuals_[i].offspring()};
                         ilosc_narodzin++;
-                        for (int x = 0; x < Config::intCount_;
-                             x++)  // przepisz genom
-                                   // rodzica
-                            osobnik.ciag[x] = individuals_[i].ciag[x];
                         for (unsigned m = 0; m < config_.mutationsDelta_;
                              m++)  // mutacje
                         {
@@ -132,8 +128,7 @@ void Simulation::run(Output& output, Generator& generator,
                                                                   // nowym
                                                                   // miejscu
                         {
-                            individuals_[ostatni_el].inicjuj(
-                                individuals_[i].przodek, osobnik.ciag);
+                            individuals_[ostatni_el] = osobnik;
                             ostatni_el++;
                         }
                         else  // dodaj osobnika w
@@ -141,8 +136,7 @@ void Simulation::run(Output& output, Generator& generator,
                         {
                             if (puste.size() > 0)
                             {
-                                individuals_[puste.back()].inicjuj(
-                                    individuals_[i].przodek, osobnik.ciag);
+                                individuals_[puste.back()] = osobnik;
                                 puste.pop_back();
                             }
                         }

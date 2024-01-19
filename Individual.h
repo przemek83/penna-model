@@ -21,7 +21,7 @@ public:
 
     std::string asBitString();
 
-    void inicjuj(unsigned int a, std::array<int, Config::intCount_>& bity);
+    Individual offspring();
 
     void assignRandomBits(Generator& generator, int startingMutations);
 };

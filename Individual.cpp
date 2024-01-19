@@ -23,14 +23,12 @@ std::string Individual::asBitString()
     return asBitset.to_string();
 }
 
-void Individual::inicjuj(unsigned int a,
-                         std::array<int, Config::intCount_>& bity)
+Individual Individual::offspring()
 {
-    wiek = 0;
-    ilosc_1 = 0;
-    przodek = a;
-    for (int i = 0; i < Config::intCount_; i++)
-        ciag[i] = bity[i];
+    Individual offspring{*this};
+    offspring.wiek = 0;
+    offspring.ilosc_1 = 0;
+    return offspring;
 }
 
 void Individual::assignRandomBits(Generator& generator, int startingMutations)
