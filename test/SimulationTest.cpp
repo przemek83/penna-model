@@ -47,7 +47,6 @@ TEST_CASE("Simulation", "[penna]")
         MockedGenerator generator;
         Simulation simulation(config, 0, 100);
         simulation.run(output, generator, simulationAvgData);
-        output.zamknij_pliki(1);
         std::cout << std::endl;
 
         std::vector<std::string> files{"proces1_symulacja1_gompertz.txt",
