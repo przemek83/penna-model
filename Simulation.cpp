@@ -55,32 +55,32 @@ void Simulation::run(Output& output, Generator& generator,
 
         for (unsigned int i = 0; i < ostatni_el; i++)
         {
-            if (individuals_[i].przodek == -1)
+            if (individuals_[i].ancestor_ == -1)
                 continue;
             else
                 ilosc_osobnikow++;
 
             if (!singleFamilyLeft)  // gromadz dane o rodzinach
             {
-                rodziny[individuals_[i].przodek]++;
-                if (rodziny[individuals_[i].przodek] == 1)
+                rodziny[individuals_[i].ancestor_]++;
+                if (rodziny[individuals_[i].ancestor_] == 1)
                     ilosc_rodzin++;
             }
 
             if (year + 1 == config_.years_)  // zgromadz dane o
                                              // bitach i wieku
             {
-                rozklad_wieku[individuals_[i].wiek]++;
+                rozklad_wieku[individuals_[i].age_]++;
                 for (int v = 0; v < Config::bits_; v++)
-                    if (individuals_[i].ciag[v / Config::intSize_] &
+                    if (individuals_[i].genome_[v / Config::intSize_] &
                         (1 << (Config::intSize_ - (v + 1) % Config::intSize_)))
                         rozklad_bitow[v]++;
             }
 
             // decyzja o zyciu badz smierci osobnika
-            if ((individuals_[i].ilosc_1 >=
+            if ((individuals_[i].survivedOnes_ >=
                  config_.maxMutations_) ||                  // jedynki
-                (individuals_[i].wiek >= Config::bits_) ||  // starosc
+                (individuals_[i].age_ >= Config::bits_) ||  // starosc
                 ((float)generator.getInt(0, 100) <=
                  (float)(ostatni_el - puste.size()) / config_.maxPopulation_ *
                      100.0)  // verhulst
@@ -93,14 +93,14 @@ void Simulation::run(Output& output, Generator& generator,
                     )  // smierc
             {
                 zgon++;
-                gompertz_zgony[individuals_[i].wiek]++;
+                gompertz_zgony[individuals_[i].age_]++;
                 puste.push_back(i);
-                individuals_[i].przodek = -1;
+                individuals_[i].ancestor_ = -1;
                 continue;
             }
             else  // zycie
             {
-                if ((individuals_[i].wiek > config_.reproductionAge_) &&
+                if ((individuals_[i].age_ > config_.reproductionAge_) &&
                     generator.getInt(1, 100) <=
                         config_.chanceForOffspring_)  // potomstwo
                 {
@@ -118,7 +118,8 @@ void Simulation::run(Output& output, Generator& generator,
                                 generator.getInt(0, Config::intCount_ - 1);
                             unsigned int temp = 1;
                             temp <<= liczba_losowa;
-                            osobnik.ciag[ktore] = (osobnik.ciag[ktore] | temp);
+                            osobnik.genome_[ktore] =
+                                (osobnik.genome_[ktore] | temp);
                         }
 
                         if (puste.size() == 0 &&
@@ -143,9 +144,9 @@ void Simulation::run(Output& output, Generator& generator,
                     }
                 }
             }
-            individuals_[i].wiek++;                      // dodaj rok do wieku
+            individuals_[i].age_++;     // dodaj rok do wieku
             individuals_[i].ageByOneYear(
-                individuals_[i].wiek);                   // sprawdzanie chorob
+                individuals_[i].age_);  // sprawdzanie chorob
         }
         if (ilosc_rodzin == 1)
             singleFamilyLeft = true;
@@ -168,7 +169,7 @@ int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
     for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
         individuals_[i].assignRandomBits(generator, config_.startingMutations_);
-        individuals_[i].przodek = i;
+        individuals_[i].ancestor_ = i;
         wyjscie.zapisz_losowana_populacje(individuals_, i);
     }
     return config_.livesOnStart_;

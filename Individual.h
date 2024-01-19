@@ -11,17 +11,17 @@ class Generator;
 class Individual
 {
 public:
-    int wiek{0};
-    int ilosc_1{0};
-    int przodek{0};
+    int age_{0};
+    int survivedOnes_{0};
+    int ancestor_{0};
 
-    std::array<int, Config::intCount_> ciag{0, 0};
+    std::array<int, Config::intCount_> genome_{0, 0};
 
     void ageByOneYear(unsigned int miejsce);
 
-    std::string asBitString();
+    std::string asBitString() const;
 
-    Individual offspring();
+    Individual offspring() const;
 
     void assignRandomBits(Generator& generator, int startingMutations);
 };

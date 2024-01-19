@@ -8,26 +8,26 @@
 
 void Individual::ageByOneYear(unsigned int miejsce)
 {
-    unsigned long int pomoc = ciag[miejsce / Config::intSize_];
+    unsigned long int pomoc = genome_[miejsce / Config::intSize_];
     pomoc = pomoc >> (Config::intSize_ - (miejsce % Config::intSize_));
     if (pomoc & 1)
-        ilosc_1++;
+        survivedOnes_++;
 }
 
-std::string Individual::asBitString()
+std::string Individual::asBitString() const
 {
-    unsigned long long bitsAsInt{static_cast<unsigned int>(ciag[0])};
+    unsigned long long bitsAsInt{static_cast<unsigned int>(genome_[0])};
     bitsAsInt = bitsAsInt << static_cast<unsigned int>(Config::intSize_);
-    bitsAsInt += static_cast<unsigned int>(ciag[1]);
+    bitsAsInt += static_cast<unsigned int>(genome_[1]);
     const std::bitset<Config::bits_> asBitset(bitsAsInt);
     return asBitset.to_string();
 }
 
-Individual Individual::offspring()
+Individual Individual::offspring() const
 {
     Individual offspring{*this};
-    offspring.wiek = 0;
-    offspring.ilosc_1 = 0;
+    offspring.age_ = 0;
+    offspring.survivedOnes_ = 0;
     return offspring;
 }
 
@@ -51,5 +51,5 @@ void Individual::assignRandomBits(Generator& generator, int startingMutations)
     }
 
     for (size_t i = 0; i < Config::intCount_; i++)
-        ciag[i] = newBorn[i];
+        genome_[i] = newBorn[i];
 }

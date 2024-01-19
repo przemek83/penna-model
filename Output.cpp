@@ -158,11 +158,11 @@ void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
 {
 #ifdef CALE_WYJSCIE
     for (unsigned d = 0; d < ostatni_el; d++)
-        if (populacja[d].przodek != -1)
+        if (populacja[d].ancestor_ != -1)
         {
             fprintf(plik_osobniki, "%u %d %d %d %u %s\n", d,
-                    populacja[d].przodek, populacja[d].wiek,
-                    populacja[d].ilosc_1, populacja[d].ciag[0],
+                    populacja[d].ancestor_, populacja[d].age_,
+                    populacja[d].survivedOnes_, populacja[d].genome_[0],
                     populacja[d].asBitString().c_str());
         }
     zamknij_pliki(x);
