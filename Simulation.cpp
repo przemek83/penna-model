@@ -33,17 +33,12 @@ void Simulation::run(Output& output, Generator& generator,
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
 
-        //  tablice uzywane do zbierania danych z symulacji
-        int rozklad_wieku[Config::bits_];
-        int rozklad_bitow[Config::bits_];
-        int gompertz_zgony[Config::bits_];
-
-        for (int v = 0; v < Config::bits_; v++)
-        {
-            rozklad_wieku[v] = 0;
-            rozklad_bitow[v] = 0;
-            gompertz_zgony[v] = 0;
-        }
+        std::array<int, Config::bits_> ageDistribution{};
+        ageDistribution.fill(0);
+        std::array<int, Config::bits_> bitsDistribution{};
+        bitsDistribution.fill(0);
+        std::array<int, Config::bits_> gompertzDeathsDistribution{};
+        gompertzDeathsDistribution.fill(0);
 
 #ifdef SYMULACJA_DORSZY
         if (rok + 1 == MAX_POP_LAT)
@@ -71,10 +66,10 @@ void Simulation::run(Output& output, Generator& generator,
             if (year + 1 == config_.years_)  // zgromadz dane o
                                              // bitach i wieku
             {
-                rozklad_wieku[individual.age_]++;
+                ageDistribution[individual.age_]++;
                 for (size_t v = 0; v < Config::bits_; v++)
                     if (individual.genome_[v])
-                        rozklad_bitow[v]++;
+                        bitsDistribution[v]++;
             }
 
             // decyzja o zyciu badz smierci osobnika
@@ -92,7 +87,7 @@ void Simulation::run(Output& output, Generator& generator,
                     )  // smierc
             {
                 zgon++;
-                gompertz_zgony[individual.age_]++;
+                gompertzDeathsDistribution[individual.age_]++;
                 puste.push_back(i);
                 individual.ancestor_ = -1;
                 continue;
@@ -133,8 +128,8 @@ void Simulation::run(Output& output, Generator& generator,
 
         output.zapisz_kolejne(singleFamilyLeft, year, simulationDataAvg,
                               ilosc_osobnikow, ilosc_narodzin, familiesCount,
-                              zgon, rozklad_wieku, rozklad_bitow,
-                              gompertz_zgony);
+                              zgon, ageDistribution, bitsDistribution,
+                              gompertzDeathsDistribution);
         year++;
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";

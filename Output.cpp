@@ -81,11 +81,12 @@ void Output::zapisz_srednie(int symulacji,
     }
 }
 
-void Output::zapisz_kolejne(bool rodzina1, int rok,
-                            SimulationData::AvgData& simulationData,
-                            int ilosc_osobnikow, int ilosc_narodzin,
-                            int ilosc_rodzin, int zgon, int* rozklad_wieku,
-                            int* rozklad_bitow, int* gompertz_zgony)
+void Output::zapisz_kolejne(
+    bool rodzina1, int rok, SimulationData::AvgData& simulationData,
+    int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
+    const std::array<int, Config::bits_>& ageDistribution,
+    const std::array<int, Config::bits_>& bitsDistribution,
+    const std::array<int, Config::bits_>& gompertzDeathsDistribution)
 {
     if (!rodzina1)
     {
@@ -107,28 +108,32 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
         for (int v = 0; v < Config::bits_; v++)
         {
 #ifdef CALE_WYJSCIE
-            fprintf(plik_rozklad_wieku, "%d\t%d\n", v, rozklad_wieku[v]);
+            fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
 #endif
-            simulationData.wiek[v] += rozklad_wieku[v];
+            simulationData.wiek[v] += ageDistribution[v];
         }
 
         for (int v = 0; v < Config::bits_; v++)
         {
 #ifdef CALE_WYJSCIE
-            fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, rozklad_bitow[v] * 1.0 / ilosc_osobnikow);
+            fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
+                    bitsDistribution[v] * 1.0 / ilosc_osobnikow);
 #endif
-            simulationData.bity[v] += (float)rozklad_bitow[v] / (float)ilosc_osobnikow;
+            simulationData.bity[v] +=
+                (float)bitsDistribution[v] / (float)ilosc_osobnikow;
         }
 
         for (int v = 0; v < Config::bits_; v++)
-            if (rozklad_wieku[v] > 0)
+            if (ageDistribution[v] > 0)
             {
 #ifdef CALE_WYJSCIE
-                fprintf(plik_gompertz, "%d\t%.3f\n", v,
-                        gompertz_zgony[v] * 1.0 / rozklad_wieku[v]);
+                fprintf(
+                    plik_gompertz, "%d\t%.3f\n", v,
+                    gompertzDeathsDistribution[v] * 1.0 / ageDistribution[v]);
 #endif
                 simulationData.gompertz[v] +=
-                    (float)gompertz_zgony[v] / (float)rozklad_wieku[v];
+                    (float)gompertzDeathsDistribution[v] /
+                    (float)ageDistribution[v];
             }
             else
             {

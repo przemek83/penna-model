@@ -19,11 +19,12 @@ public:
 
     void zapisz_srednie(int symulacji, SimulationData::AvgData& simulationData);
 
-    void zapisz_kolejne(bool rodzina1, int rok,
-                        SimulationData::AvgData& simulationData,
-                        int ilosc_osobnikow, int ilosc_narodzin,
-                        int ilosc_rodzin, int zgon, int* rozklad_wieku,
-                        int* rozklad_bitow, int* gompertz_zgony);
+    void zapisz_kolejne(
+        bool rodzina1, int rok, SimulationData::AvgData& simulationData,
+        int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
+        const std::array<int, Config::bits_>& ageDistribution,
+        const std::array<int, Config::bits_>& bitsDistribution,
+        const std::array<int, Config::bits_>& gompertzDeathsDistribution);
 
     void zapisz_losowana_populacje(const std::vector<Individual>& individuals,
                                    int count);
