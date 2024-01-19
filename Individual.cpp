@@ -31,6 +31,15 @@ Individual Individual::offspring() const
     return offspring;
 }
 
+void Individual::applyMutation(Generator& generator)
+{
+    const int liczba_losowa = generator.getInt(0, Config::intSize_ - 1);
+    const int ktore = generator.getInt(0, Config::intCount_ - 1);
+    int temp = 1;
+    temp <<= liczba_losowa;
+    genome_[ktore] = (genome_[ktore] | temp);
+}
+
 void Individual::assignRandomBits(Generator& generator, int startingMutations)
 {
     std::array<int, Config::intCount_> newBorn{0, 0};

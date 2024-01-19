@@ -109,18 +109,9 @@ void Simulation::run(Output& output, Generator& generator,
                     {
                         Individual osobnik{individuals_[i].offspring()};
                         ilosc_narodzin++;
-                        for (unsigned m = 0; m < config_.mutationsDelta_;
-                             m++)  // mutacje
-                        {
-                            unsigned int liczba_losowa =
-                                generator.getInt(0, Config::intSize_ - 1);
-                            unsigned int ktore =
-                                generator.getInt(0, Config::intCount_ - 1);
-                            unsigned int temp = 1;
-                            temp <<= liczba_losowa;
-                            osobnik.genome_[ktore] =
-                                (osobnik.genome_[ktore] | temp);
-                        }
+
+                        for (int m{0}; m < config_.mutationsDelta_; m++)
+                            osobnik.applyMutation(generator);
 
                         if (puste.size() == 0 &&
                             ostatni_el < config_.maxPopulation_)  // dodaj

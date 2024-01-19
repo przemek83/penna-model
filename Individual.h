@@ -23,5 +23,7 @@ public:
 
     Individual offspring() const;
 
+    void applyMutation(Generator& generator);
+
     void assignRandomBits(Generator& generator, int startingMutations);
 };
