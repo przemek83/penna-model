@@ -64,10 +64,6 @@ TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
     Config config;
-
-    SimulationData::AvgData simulationAvgData{
-        SimulationData::prepareAvgData(config.years_)};
-
     MockedGenerator generator;
 
     SECTION("simulation short")
@@ -78,6 +74,9 @@ TEST_CASE("Benchmark", "[penna]")
         output.otworz_pliki2(1);
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
+
+        SimulationData::AvgData simulationAvgData{
+            SimulationData::prepareAvgData(config.years_)};
 
         Simulation simulation(config, 0, 100);
         simulation.run(output, generator, simulationAvgData);
@@ -93,6 +92,9 @@ TEST_CASE("Benchmark", "[penna]")
         output.otworz_pliki2(1);
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
+
+        SimulationData::AvgData simulationAvgData{
+            SimulationData::prepareAvgData(config.years_)};
 
         Simulation simulation(config, 0, 100);
         simulation.run(output, generator, simulationAvgData);
