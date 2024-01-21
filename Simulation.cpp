@@ -110,10 +110,19 @@ void Simulation::run(Output& output, Generator& generator,
                               populationCount, ilosc_narodzin, familiesCount,
                               zgon, ageDistribution, bitsDistribution,
                               gompertzDeathsDistribution);
+
+        if (year + 1 == config_.years_)
+        {
+            output.saveAgeDistribution(ageDistribution, simulationDataAvg);
+            output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
+                                        populationCount);
+        }
+
         year++;
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";
     }
+
     std::cout << "]";
     output.zapisz_koncowa_populacje(individuals_,
                                     config_.simulationsCount_ + 1 - number_);
@@ -129,4 +138,26 @@ void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
     }
 
     wyjscie.zapisz_losowana_populacje(individuals_);
+}
+
+std::array<int, Config::bits_> Simulation::getAgeDistribution(
+    const std::list<Individual>& individuals)
+{
+    std::array<int, Config::bits_> ageDistribution{};
+    for (const auto& individual : individuals)
+        ageDistribution[individual.getAge()]++;
+    return ageDistribution;
+}
+
+std::array<int, Config::bits_> Simulation::getBitsDistribution(
+    const std::list<Individual>& individuals)
+{
+    std::array<int, Config::bits_> bitsDistribution{};
+    for (const auto& individual : individuals)
+    {
+        for (size_t i = 0; i < Config::bits_; i++)
+            if (individual.genome_[i])
+                bitsDistribution[i]++;
+    }
+    return bitsDistribution;
 }

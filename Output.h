@@ -30,6 +30,14 @@ public:
 
     void zapisz_koncowa_populacje(std::list<Individual>& populacja, int x);
 
+    void saveBitsDistribution(
+        const std::array<int, Config::bits_>& bitsDistribution,
+        SimulationData::AvgData& avgData, int populationCount);
+
+    void saveAgeDistribution(
+        const std::array<int, Config::bits_>& ageDistribution,
+        SimulationData::AvgData& avgData);
+
 private:
     std::string nazwa(int przedrostek, int numer);
 

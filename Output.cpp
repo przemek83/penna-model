@@ -106,24 +106,6 @@ void Output::zapisz_kolejne(
     if (rok + 1 == maxPopulationAge_)
     {
         for (int v = 0; v < Config::bits_; v++)
-        {
-#ifdef CALE_WYJSCIE
-            fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
-#endif
-            simulationData.wiek[v] += ageDistribution[v];
-        }
-
-        for (int v = 0; v < Config::bits_; v++)
-        {
-#ifdef CALE_WYJSCIE
-            fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
-                    bitsDistribution[v] * 1.0 / ilosc_osobnikow);
-#endif
-            simulationData.bity[v] +=
-                (float)bitsDistribution[v] / (float)ilosc_osobnikow;
-        }
-
-        for (int v = 0; v < Config::bits_; v++)
             if (ageDistribution[v] > 0)
             {
 #ifdef CALE_WYJSCIE
@@ -173,6 +155,33 @@ void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
     }
     zamknij_pliki(x);
 #endif
+}
+
+void Output::saveBitsDistribution(
+    const std::array<int, Config::bits_>& bitsDistribution,
+    SimulationData::AvgData& avgData, int populationCount)
+{
+    for (int v = 0; v < Config::bits_; v++)
+    {
+#ifdef CALE_WYJSCIE
+        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
+                bitsDistribution[v] * 1.0 / populationCount);
+#endif
+        avgData.bity[v] += (float)bitsDistribution[v] / (float)populationCount;
+    }
+}
+
+void Output::saveAgeDistribution(
+    const std::array<int, Config::bits_>& ageDistribution,
+    SimulationData::AvgData& avgData)
+{
+    for (int v = 0; v < Config::bits_; v++)
+    {
+#ifdef CALE_WYJSCIE
+        fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
+#endif
+        avgData.wiek[v] += ageDistribution[v];
+    }
 }
 
 void Output::przelicz_srednie_konwencjonalnie(

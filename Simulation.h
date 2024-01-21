@@ -21,6 +21,12 @@ public:
 private:
     void losuj_populacje(Output& wyjscie, Generator& generator);
 
+    static std::array<int, Config::bits_> getAgeDistribution(
+        const std::list<Individual>& individuals);
+
+    static std::array<int, Config::bits_> getBitsDistribution(
+        const std::list<Individual>& individuals);
+
     std::list<Individual> individuals_;
 
     const Config& config_;
