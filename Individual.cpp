@@ -6,6 +6,8 @@
 
 #include "Generator.h"
 
+Individual::Individual(int ancestor) : ancestor_{ancestor} {}
+
 void Individual::ageByOneYear()
 {
     if (genome_[age_])

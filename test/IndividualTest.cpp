@@ -16,14 +16,14 @@ TEST_CASE("Individual", "[penna]")
     SECTION("bit strings creation")
     {
         MockedGenerator generator;
-        Individual individual;
+        Individual individual(0);
         individual.assignRandomBits(generator, 4);
         REQUIRE(
             individual.genome_.to_ullong() ==
             0b0000000000000000010000000000000000000000100000000000001000001000);
     }
 
-    Individual individual;
+    Individual individual(0);
     individual.genome_ = std::bitset<Config::bits_>(genome);
 
     SECTION("ageing passing 0")
@@ -88,10 +88,10 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("offspring ancestor")
     {
-        individual.ancestor_ = 77;
+        individual = Individual(77);
         const Individual child{individual.offspring()};
 
-        REQUIRE(child.ancestor_ == 77);
+        REQUIRE(child.getAncestor() == 77);
     }
 
     SECTION("offspring survived ones")

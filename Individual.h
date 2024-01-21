@@ -12,11 +12,13 @@ class Generator;
 class Individual
 {
 public:
+    explicit Individual(int ancestor);
+
     inline int getAge() const { return age_; }
 
     inline int getSurvivedMutations() const { return survivedMutations_; }
 
-    int ancestor_{0};
+    inline int getAncestor() const { return ancestor_; }
 
     std::bitset<Config::bits_> genome_;
 
@@ -34,4 +36,6 @@ private:
     int age_{0};
 
     int survivedMutations_{0};
+
+    int ancestor_;
 };

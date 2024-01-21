@@ -52,8 +52,8 @@ void Simulation::run(Output& output, Generator& generator,
 
             if (!singleFamilyLeft)
             {
-                families[individual.ancestor_]++;
-                if (families[individual.ancestor_] == 1)
+                families[individual.getAncestor()]++;
+                if (families[individual.getAncestor()] == 1)
                     familiesCount++;
             }
 
@@ -123,9 +123,8 @@ void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
     for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
-        Individual individual;
+        Individual individual(i);
         individual.assignRandomBits(generator, config_.startingMutations_);
-        individual.ancestor_ = i;
         individuals_.emplace_back(std::move(individual));
     }
 
