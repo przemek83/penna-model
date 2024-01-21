@@ -79,10 +79,11 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("offspring check age")
     {
-        individual.age_ = 10;
+        for (unsigned int i{0}; i < 10; ++i)
+            individual.ageByOneYear();
         const Individual child{individual.offspring()};
 
-        REQUIRE(child.age_ == 0);
+        REQUIRE(child.getAge() == 0);
     }
 
     SECTION("offspring ancestor")

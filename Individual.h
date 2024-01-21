@@ -12,7 +12,8 @@ class Generator;
 class Individual
 {
 public:
-    int age_{0};
+    inline int getAge() const { return age_; }
+
     int survivedOnes_{0};
     int ancestor_{0};
 
@@ -27,4 +28,7 @@ public:
     void applyMutation(Generator& generator);
 
     void assignRandomBits(Generator& generator, int startingMutations);
+
+private:
+    int age_{0};
 };

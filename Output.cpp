@@ -165,8 +165,8 @@ void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
     for (const auto& individual : individuals)
     {
         fprintf(plik_osobniki, "%u %d %d %d %u %s\n", counter,
-                individual.ancestor_, individual.age_, individual.survivedOnes_,
-                individual.genome_.to_ullong(),
+                individual.ancestor_, individual.getAge(),
+                individual.survivedOnes_, individual.genome_.to_ullong(),
                 individual.asBitString().c_str());
         counter++;
     }

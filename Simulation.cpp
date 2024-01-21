@@ -59,14 +59,14 @@ void Simulation::run(Output& output, Generator& generator,
 
             if (year + 1 == config_.years_)
             {
-                ageDistribution[individual.age_]++;
+                ageDistribution[individual.getAge()]++;
                 for (size_t v = 0; v < Config::bits_; v++)
                     if (individual.genome_[v])
                         bitsDistribution[v]++;
             }
 
             if ((individual.survivedOnes_ >= config_.maxMutations_) ||  // ones
-                (individual.age_ >= Config::bits_) ||         // ageing
+                (individual.getAge() >= Config::bits_) ||     // ageing
                 (generator.getInt(0, 100) <= chanceForDeath)  // verhulst
 #ifdef SYMULACJA_DORSZY
                 || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
@@ -76,12 +76,12 @@ void Simulation::run(Output& output, Generator& generator,
             )
             {
                 zgon++;
-                gompertzDeathsDistribution[individual.age_]++;
+                gompertzDeathsDistribution[individual.getAge()]++;
                 it = individuals_.erase(it);
                 continue;
             }
 
-            if ((individual.age_ > config_.reproductionAge_) &&
+            if ((individual.getAge() > config_.reproductionAge_) &&
                 generator.getInt(1, 100) <= config_.chanceForOffspring_)
             {
                 for (int l{0}; l < config_.offspringCount_; l++)
