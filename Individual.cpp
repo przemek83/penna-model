@@ -9,7 +9,7 @@
 void Individual::ageByOneYear()
 {
     if (genome_[age_])
-        survivedOnes_++;
+        survivedMutations_++;
     age_++;
 }
 
@@ -19,7 +19,7 @@ Individual Individual::offspring() const
 {
     Individual offspring{*this};
     offspring.age_ = 0;
-    offspring.survivedOnes_ = 0;
+    offspring.survivedMutations_ = 0;
     return offspring;
 }
 

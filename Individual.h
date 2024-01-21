@@ -14,7 +14,8 @@ class Individual
 public:
     inline int getAge() const { return age_; }
 
-    int survivedOnes_{0};
+    inline int getSurvivedMutations() const { return survivedMutations_; }
+
     int ancestor_{0};
 
     std::bitset<Config::bits_> genome_;
@@ -31,4 +32,6 @@ public:
 
 private:
     int age_{0};
+
+    int survivedMutations_{0};
 };

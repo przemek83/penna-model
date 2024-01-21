@@ -65,7 +65,8 @@ void Simulation::run(Output& output, Generator& generator,
                         bitsDistribution[v]++;
             }
 
-            if ((individual.survivedOnes_ >= config_.maxMutations_) ||  // ones
+            if ((individual.getSurvivedMutations() >=
+                 config_.maxMutations_) ||                    // ones
                 (individual.getAge() >= Config::bits_) ||     // ageing
                 (generator.getInt(0, 100) <= chanceForDeath)  // verhulst
 #ifdef SYMULACJA_DORSZY

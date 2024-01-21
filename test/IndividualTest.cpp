@@ -29,14 +29,14 @@ TEST_CASE("Individual", "[penna]")
     SECTION("ageing passing 0")
     {
         individual.ageByOneYear();
-        REQUIRE(individual.survivedOnes_ == 0);
+        REQUIRE(individual.getSurvivedMutations() == 0);
     }
 
     SECTION("ageing passing 1")
     {
         for (int i{0}; i <= 3; ++i)
             individual.ageByOneYear();
-        REQUIRE(individual.survivedOnes_ == 1);
+        REQUIRE(individual.getSurvivedMutations() == 1);
     }
 
     SECTION("ageing passing 0 after 1")
@@ -44,21 +44,21 @@ TEST_CASE("Individual", "[penna]")
         for (int i{0}; i <= 4; ++i)
             individual.ageByOneYear();
         individual.ageByOneYear();
-        REQUIRE(individual.survivedOnes_ == 1);
+        REQUIRE(individual.getSurvivedMutations() == 1);
     }
 
     SECTION("ageing passing multiple 1s")
     {
         for (int i{0}; i <= 14; ++i)
             individual.ageByOneYear();
-        REQUIRE(individual.survivedOnes_ == 2);
+        REQUIRE(individual.getSurvivedMutations() == 2);
     }
 
     SECTION("ageing passing all bits")
     {
         for (unsigned int i{1}; i < Config::bits_; ++i)
             individual.ageByOneYear();
-        REQUIRE(individual.survivedOnes_ == 4);
+        REQUIRE(individual.getSurvivedMutations() == 4);
     }
 
     SECTION("bits as string")
@@ -96,10 +96,11 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("offspring survived ones")
     {
-        individual.survivedOnes_ = 3;
+        for (int i{0}; i <= 14; ++i)
+            individual.ageByOneYear();
         const Individual child{individual.offspring()};
 
-        REQUIRE(child.survivedOnes_ == 0);
+        REQUIRE(child.getSurvivedMutations() == 0);
     }
 
     SECTION("single mutation applied")
