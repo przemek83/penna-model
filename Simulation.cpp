@@ -163,9 +163,15 @@ void Simulation::saveDistributions(
     const std::array<int, Config::bits_> bitsDistribution{
         getBitsDistribution(individuals_)};
 
-    output.saveAgeDistribution(ageDistribution, simulationDataAvg);
-    output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
-                                populationCount);
+    for (int v = 0; v < Config::bits_; v++)
+    {
+        simulationDataAvg.bity[v] +=
+            (float)bitsDistribution[v] / (float)populationCount;
+        simulationDataAvg.wiek[v] += ageDistribution[v];
+    }
+
+    output.saveAgeDistribution(ageDistribution);
+    output.saveBitsDistribution(bitsDistribution, populationCount);
 
     output.saveDeathsDistribution(gompertzDeathsDistribution,
                                   gompertzAgeDistribution, simulationDataAvg);

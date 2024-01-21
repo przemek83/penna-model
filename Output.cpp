@@ -133,30 +133,22 @@ void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
 }
 
 void Output::saveBitsDistribution(
-    const std::array<int, Config::bits_>& bitsDistribution,
-    SimulationData::AvgData& avgData, int populationCount)
+    const std::array<int, Config::bits_>& bitsDistribution, int populationCount)
 {
-    for (int v = 0; v < Config::bits_; v++)
-    {
 #ifdef CALE_WYJSCIE
+    for (int v = 0; v < Config::bits_; v++)
         fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
                 bitsDistribution[v] * 1.0 / populationCount);
 #endif
-        avgData.bity[v] += (float)bitsDistribution[v] / (float)populationCount;
-    }
 }
 
 void Output::saveAgeDistribution(
-    const std::array<int, Config::bits_>& ageDistribution,
-    SimulationData::AvgData& avgData)
+    const std::array<int, Config::bits_>& ageDistribution)
 {
-    for (int v = 0; v < Config::bits_; v++)
-    {
 #ifdef CALE_WYJSCIE
+    for (int v = 0; v < Config::bits_; v++)
         fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
 #endif
-        avgData.wiek[v] += ageDistribution[v];
-    }
 }
 
 void Output::saveDeathsDistribution(

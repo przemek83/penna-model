@@ -30,11 +30,10 @@ public:
 
     void saveBitsDistribution(
         const std::array<int, Config::bits_>& bitsDistribution,
-        SimulationData::AvgData& avgData, int populationCount);
+        int populationCount);
 
     void saveAgeDistribution(
-        const std::array<int, Config::bits_>& ageDistribution,
-        SimulationData::AvgData& avgData);
+        const std::array<int, Config::bits_>& ageDistribution);
 
     void saveDeathsDistribution(
         const std::array<int, Config::bits_>& deathsDistribution,
