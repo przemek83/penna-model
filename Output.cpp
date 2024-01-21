@@ -81,12 +81,10 @@ void Output::zapisz_srednie(int symulacji,
     }
 }
 
-void Output::zapisz_kolejne(
-    bool rodzina1, int rok, SimulationData::AvgData& simulationData,
-    int ilosc_osobnikow, int ilosc_narodzin, int ilosc_rodzin, int zgon,
-    const std::array<int, Config::bits_>& ageDistribution,
-    const std::array<int, Config::bits_>& bitsDistribution,
-    const std::array<int, Config::bits_>& gompertzDeathsDistribution)
+void Output::zapisz_kolejne(bool rodzina1, int rok,
+                            SimulationData::AvgData& simulationData,
+                            int ilosc_osobnikow, int ilosc_narodzin,
+                            int ilosc_rodzin, int zgon)
 {
     if (!rodzina1)
     {
@@ -102,29 +100,6 @@ void Output::zapisz_kolejne(
     simulationData.births_[rok] += ilosc_narodzin;
     simulationData.livingAtEnd_[rok] += ilosc_osobnikow - zgon;
     simulationData.deaths_[rok] += zgon;
-
-    if (rok + 1 == maxPopulationAge_)
-    {
-        for (int v = 0; v < Config::bits_; v++)
-            if (ageDistribution[v] > 0)
-            {
-#ifdef CALE_WYJSCIE
-                fprintf(
-                    plik_gompertz, "%d\t%.3f\n", v,
-                    gompertzDeathsDistribution[v] * 1.0 / ageDistribution[v]);
-#endif
-                simulationData.gompertz[v] +=
-                    (float)gompertzDeathsDistribution[v] /
-                    (float)ageDistribution[v];
-            }
-            else
-            {
-#ifdef CALE_WYJSCIE
-                fprintf(plik_gompertz, "%d\t1\n", v);
-#endif
-                simulationData.gompertz[v] += 1;
-            }
-    }
 }
 
 void Output::zapisz_losowana_populacje(const std::list<Individual>& individuals)
@@ -181,6 +156,32 @@ void Output::saveAgeDistribution(
         fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
 #endif
         avgData.wiek[v] += ageDistribution[v];
+    }
+}
+
+void Output::saveDeathsDistribution(
+    const std::array<int, Config::bits_>& deathsDistribution,
+    const std::array<int, Config::bits_>& ageDistribution,
+    SimulationData::AvgData& avgData)
+{
+    for (int v = 0; v < Config::bits_; v++)
+    {
+        if (ageDistribution[v] > 0)
+        {
+#ifdef CALE_WYJSCIE
+            fprintf(plik_gompertz, "%d\t%.3f\n", v,
+                    deathsDistribution[v] * 1.0 / ageDistribution[v]);
+#endif
+            avgData.gompertz[v] +=
+                (float)deathsDistribution[v] / (float)ageDistribution[v];
+        }
+        else
+        {
+#ifdef CALE_WYJSCIE
+            fprintf(plik_gompertz, "%d\t1\n", v);
+#endif
+            avgData.gompertz[v] += 1;
+        }
     }
 }
 

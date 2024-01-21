@@ -22,6 +22,9 @@ void Simulation::run(Output& output, Generator& generator,
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
+    std::array<int, Config::bits_> gompertzDeathsDistribution{};
+    std::array<int, Config::bits_> gompertzAgeDistribution{};
+
     while (year < config_.years_)
     {
         int ilosc_narodzin{0};
@@ -29,10 +32,6 @@ void Simulation::run(Output& output, Generator& generator,
         int zgon{0};
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
-
-        std::array<int, Config::bits_> ageDistribution{};
-        std::array<int, Config::bits_> bitsDistribution{};
-        std::array<int, Config::bits_> gompertzDeathsDistribution{};
 
 #ifdef SYMULACJA_DORSZY
         if (rok + 1 == MAX_POP_LAT)
@@ -58,12 +57,7 @@ void Simulation::run(Output& output, Generator& generator,
             }
 
             if (year + 1 == config_.years_)
-            {
-                ageDistribution[individual.getAge()]++;
-                for (size_t v = 0; v < Config::bits_; v++)
-                    if (individual.genome_[v])
-                        bitsDistribution[v]++;
-            }
+                gompertzAgeDistribution[individual.getAge()]++;
 
             if ((individual.getSurvivedMutations() >=
                  config_.maxMutations_) ||                    // mutations
@@ -77,7 +71,8 @@ void Simulation::run(Output& output, Generator& generator,
             )
             {
                 zgon++;
-                gompertzDeathsDistribution[individual.getAge()]++;
+                if (year + 1 == config_.years_)
+                    gompertzDeathsDistribution[individual.getAge()]++;
                 it = individuals_.erase(it);
                 continue;
             }
@@ -108,8 +103,7 @@ void Simulation::run(Output& output, Generator& generator,
 
         output.zapisz_kolejne(singleFamilyLeft, year, simulationDataAvg,
                               populationCount, ilosc_narodzin, familiesCount,
-                              zgon, ageDistribution, bitsDistribution,
-                              gompertzDeathsDistribution);
+                              zgon);
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
@@ -124,6 +118,9 @@ void Simulation::run(Output& output, Generator& generator,
     output.saveAgeDistribution(ageDistribution, simulationDataAvg);
     output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
                                 populationCount);
+
+    output.saveDeathsDistribution(gompertzDeathsDistribution,
+                                  gompertzAgeDistribution, simulationDataAvg);
 
     std::cout << "]";
     output.zapisz_koncowa_populacje(individuals_,
