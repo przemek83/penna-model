@@ -110,17 +110,8 @@ void Simulation::run(Output& output, Generator& generator,
             std::cout << "*";
     }
 
-    const std::array<int, Config::bits_> ageDistribution{
-        getAgeDistribution(individuals_)};
-    const std::array<int, Config::bits_> bitsDistribution{
-        getBitsDistribution(individuals_)};
-
-    output.saveAgeDistribution(ageDistribution, simulationDataAvg);
-    output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
-                                populationCount);
-
-    output.saveDeathsDistribution(gompertzDeathsDistribution,
-                                  gompertzAgeDistribution, simulationDataAvg);
+    saveDistributions(simulationDataAvg, gompertzDeathsDistribution,
+                      gompertzAgeDistribution, output, populationCount);
 
     std::cout << "]";
     output.zapisz_koncowa_populacje(individuals_,
@@ -159,4 +150,23 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
                 bitsDistribution[i]++;
     }
     return bitsDistribution;
+}
+
+void Simulation::saveDistributions(
+    SimulationData::AvgData& simulationDataAvg,
+    const std::array<int, Config::bits_>& gompertzDeathsDistribution,
+    const std::array<int, Config::bits_>& gompertzAgeDistribution,
+    Output& output, int populationCount)
+{
+    const std::array<int, Config::bits_> ageDistribution{
+        getAgeDistribution(individuals_)};
+    const std::array<int, Config::bits_> bitsDistribution{
+        getBitsDistribution(individuals_)};
+
+    output.saveAgeDistribution(ageDistribution, simulationDataAvg);
+    output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
+                                populationCount);
+
+    output.saveDeathsDistribution(gompertzDeathsDistribution,
+                                  gompertzAgeDistribution, simulationDataAvg);
 }
