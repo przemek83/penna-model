@@ -1,7 +1,7 @@
 #pragma once
 
+#include <list>
 #include <string>
-#include <vector>
 
 #include "Individual.h"
 #include "SimulationData.h"
@@ -26,11 +26,9 @@ public:
         const std::array<int, Config::bits_>& bitsDistribution,
         const std::array<int, Config::bits_>& gompertzDeathsDistribution);
 
-    void zapisz_losowana_populacje(const std::vector<Individual>& individuals,
-                                   int count);
+    void zapisz_losowana_populacje(const std::list<Individual>& individuals);
 
-    void zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
-                                  unsigned int ostatni_el);
+    void zapisz_koncowa_populacje(std::list<Individual>& populacja, int x);
 
 private:
     std::string nazwa(int przedrostek, int numer);

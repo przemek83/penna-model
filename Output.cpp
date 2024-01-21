@@ -145,29 +145,31 @@ void Output::zapisz_kolejne(
     }
 }
 
-void Output::zapisz_losowana_populacje(
-    const std::vector<Individual>& individuals, int count)
+void Output::zapisz_losowana_populacje(const std::list<Individual>& individuals)
 {
 #ifdef CALE_WYJSCIE
-    for (int i{0}; i < count; ++i)
-        fprintf(plik_osobniki, "%u %s\n", i,
-                individuals[i].asBitString().c_str());
+    int counter{0};
+    for (const auto& individual : individuals)
+    {
+        fprintf(plik_osobniki, "%u %s\n", counter,
+                individual.asBitString().c_str());
+        counter++;
+    }
 #endif
 }
 
-void Output::zapisz_koncowa_populacje(std::vector<Individual>& populacja, int x,
-                                      unsigned int ostatni_el)
+void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
 {
 #ifdef CALE_WYJSCIE
-    for (unsigned d = 0; d < ostatni_el; d++)
-        if (populacja[d].ancestor_ != -1)
-        {
-            fprintf(plik_osobniki, "%u %d %d %d %u %s\n", d,
-                    populacja[d].ancestor_, populacja[d].age_,
-                    populacja[d].survivedOnes_,
-                    populacja[d].genome_.to_ullong(),
-                    populacja[d].asBitString().c_str());
-        }
+    int counter{0};
+    for (const auto& individual : individuals)
+    {
+        fprintf(plik_osobniki, "%u %d %d %d %u %s\n", counter,
+                individual.ancestor_, individual.age_, individual.survivedOnes_,
+                individual.genome_.to_ullong(),
+                individual.asBitString().c_str());
+        counter++;
+    }
     zamknij_pliki(x);
 #endif
 }

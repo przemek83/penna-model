@@ -1,7 +1,7 @@
 #pragma once
 
+#include <list>
 #include <random>
-#include <vector>
 
 #include "Config.h"
 #include "Individual.h"
@@ -19,9 +19,9 @@ public:
              SimulationData::AvgData& simulationDataAvg);
 
 private:
-    int losuj_populacje(Output& wyjscie, Generator& generator);
+    void losuj_populacje(Output& wyjscie, Generator& generator);
 
-    std::vector<Individual> individuals_;
+    std::list<Individual> individuals_;
 
     const Config& config_;
     const int number_;

@@ -9,7 +9,6 @@
 Simulation::Simulation(const Config& config, int number, float step)
     : config_(config), number_(number), step_{step}
 {
-    individuals_.resize(config_.maxPopulation_);
 }
 
 void Simulation::run(Output& output, Generator& generator,
@@ -17,16 +16,14 @@ void Simulation::run(Output& output, Generator& generator,
 {
     int year{0};
     bool singleFamilyLeft{false};
-    std::vector<unsigned int> puste;
+    int populationCount{config_.livesOnStart_};
 
-    unsigned int ostatni_el = losuj_populacje(output, generator);
+    losuj_populacje(output, generator);
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
-    while (year < config_.years_)  // kolejne lata
+    while (year < config_.years_)
     {
-        // zmienne przetrzymujace informacje potrzebne do statystyk
-        int ilosc_osobnikow{0};
         int ilosc_narodzin{0};
         int familiesCount{0};
         int zgon{0};
@@ -45,23 +42,22 @@ void Simulation::run(Output& output, Generator& generator,
         }
 #endif
 
-        for (unsigned int i = 0; i < ostatni_el; i++)
-        {
-            Individual& individual{individuals_[i]};
-            if (individual.ancestor_ == -1)
-                continue;
-            else
-                ilosc_osobnikow++;
+        const int chanceForDeath{static_cast<int>(
+            (float)populationCount / config_.maxPopulation_ * 100.0)};
 
-            if (!singleFamilyLeft)  // gromadz dane o rodzinach
+        auto it{individuals_.begin()};
+        while (it != individuals_.end())
+        {
+            Individual& individual{*it};
+
+            if (!singleFamilyLeft)
             {
                 families[individual.ancestor_]++;
                 if (families[individual.ancestor_] == 1)
                     familiesCount++;
             }
 
-            if (year + 1 == config_.years_)  // zgromadz dane o
-                                             // bitach i wieku
+            if (year + 1 == config_.years_)
             {
                 ageDistribution[individual.age_]++;
                 for (size_t v = 0; v < Config::bits_; v++)
@@ -69,30 +65,24 @@ void Simulation::run(Output& output, Generator& generator,
                         bitsDistribution[v]++;
             }
 
-            // decyzja o zyciu badz smierci osobnika
-            if ((individual.survivedOnes_ >=
-                 config_.maxMutations_) ||             // jedynki
-                (individual.age_ >= Config::bits_) ||  // starosc
-                ((float)generator.getInt(0, 100) <=
-                 (float)(ostatni_el - puste.size()) / config_.maxPopulation_ *
-                     100.0)  // verhulst
+            if ((individual.survivedOnes_ >= config_.maxMutations_) ||  // ones
+                (individual.age_ >= Config::bits_) ||         // ageing
+                (generator.getInt(0, 100) <= chanceForDeath)  // verhulst
 #ifdef SYMULACJA_DORSZY
                 || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                     ((float)generator.getInt(0, 10000) / 100 <=
                      START_ODLOWOW + number_ * step_))
 #endif
-                    )  // smierc
+            )
             {
                 zgon++;
                 gompertzDeathsDistribution[individual.age_]++;
-                puste.push_back(i);
-                individual.ancestor_ = -1;
+                it = individuals_.erase(it);
                 continue;
             }
 
             if ((individual.age_ > config_.reproductionAge_) &&
-                generator.getInt(1, 100) <=
-                    config_.chanceForOffspring_)  // potomstwo
+                generator.getInt(1, 100) <= config_.chanceForOffspring_)
             {
                 for (int l{0}; l < config_.offspringCount_; l++)
                 {
@@ -102,29 +92,21 @@ void Simulation::run(Output& output, Generator& generator,
                     for (int m{0}; m < config_.mutationsDelta_; m++)
                         osobnik.applyMutation(generator);
 
-                    if (puste.empty() && ostatni_el < config_.maxPopulation_)
-                    {
-                        individuals_[ostatni_el] = osobnik;
-                        ostatni_el++;
-                    }
-                    else
-                    {
-                        if (!puste.empty())
-                        {
-                            individuals_[puste.back()] = osobnik;
-                            puste.pop_back();
-                        }
-                    }
+                    individuals_.push_front(osobnik);
                 }
             }
 
             individual.ageByOneYear();
+            it++;
         }
+
+        populationCount -= zgon;
+        populationCount += ilosc_narodzin;
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
         output.zapisz_kolejne(singleFamilyLeft, year, simulationDataAvg,
-                              ilosc_osobnikow, ilosc_narodzin, familiesCount,
+                              populationCount, ilosc_narodzin, familiesCount,
                               zgon, ageDistribution, bitsDistribution,
                               gompertzDeathsDistribution);
         year++;
@@ -132,19 +114,19 @@ void Simulation::run(Output& output, Generator& generator,
             std::cout << "*";
     }
     std::cout << "]";
-    output.zapisz_koncowa_populacje(
-        individuals_, config_.simulationsCount_ + 1 - number_, ostatni_el);
+    output.zapisz_koncowa_populacje(individuals_,
+                                    config_.simulationsCount_ + 1 - number_);
 }
 
-int Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
+void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
 {
     for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
-        Individual& individual{individuals_[i]};
+        Individual individual;
         individual.assignRandomBits(generator, config_.startingMutations_);
         individual.ancestor_ = i;
+        individuals_.emplace_back(std::move(individual));
     }
 
-    wyjscie.zapisz_losowana_populacje(individuals_, config_.livesOnStart_);
-    return config_.livesOnStart_;
+    wyjscie.zapisz_losowana_populacje(individuals_);
 }
