@@ -66,7 +66,7 @@ void Simulation::run(Output& output, Generator& generator,
             }
 
             if ((individual.getSurvivedMutations() >=
-                 config_.maxMutations_) ||                    // ones
+                 config_.maxMutations_) ||                    // mutations
                 (individual.getAge() >= Config::bits_) ||     // ageing
                 (generator.getInt(0, 100) <= chanceForDeath)  // verhulst
 #ifdef SYMULACJA_DORSZY
@@ -111,17 +111,19 @@ void Simulation::run(Output& output, Generator& generator,
                               zgon, ageDistribution, bitsDistribution,
                               gompertzDeathsDistribution);
 
-        if (year + 1 == config_.years_)
-        {
-            output.saveAgeDistribution(ageDistribution, simulationDataAvg);
-            output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
-                                        populationCount);
-        }
-
         year++;
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";
     }
+
+    const std::array<int, Config::bits_> ageDistribution{
+        getAgeDistribution(individuals_)};
+    const std::array<int, Config::bits_> bitsDistribution{
+        getBitsDistribution(individuals_)};
+
+    output.saveAgeDistribution(ageDistribution, simulationDataAvg);
+    output.saveBitsDistribution(bitsDistribution, simulationDataAvg,
+                                populationCount);
 
     std::cout << "]";
     output.zapisz_koncowa_populacje(individuals_,
