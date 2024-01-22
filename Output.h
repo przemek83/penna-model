@@ -13,8 +13,6 @@ public:
 
     void otworz_pliki(int przedrostek);
 
-    void otworz_pliki2(int przedrostek);
-
     void zamknij_pliki(int przedrostek);
 
     void zapisz_srednie(int symulacji, SimulationData::AvgData& simulationData);

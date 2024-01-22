@@ -38,11 +38,6 @@ void Output::otworz_pliki(int przedrostek)
     plik_rodziny = fopen(nazwa(przedrostek, RODZINY).data(), "w");
 }
 
-void Output::otworz_pliki2(int przedrostek)
-{
-    otworz_pliki(przedrostek);
-}
-
 void Output::zamknij_pliki(int przedrostek)
 {
     if (przedrostek != 0)

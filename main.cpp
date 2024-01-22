@@ -26,7 +26,7 @@ int main()
     {
         const Timer timer;
 
-        output.otworz_pliki2(i);
+        output.otworz_pliki(i);
 
         Simulation simulation(config, i, krok_symulacji);
         simulation.run(output, generator, simulationAvgData);
