@@ -32,9 +32,12 @@ private:
     const Config& config_;
     const int number_;
     const float step_;
-    void saveDistributions(
+
+    static void updateAvgDistributions(
         SimulationData::AvgData& simulationDataAvg,
+        const std::array<int, Config::bits_>& ageDistribution,
+        const std::array<int, Config::bits_>& bitsDistribution,
         const std::array<int, Config::bits_>& gompertzDeathsDistribution,
         const std::array<int, Config::bits_>& gompertzAgeDistribution,
-        Output& output, int populationCount);
+        int populationCount);
 };

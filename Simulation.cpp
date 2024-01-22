@@ -110,8 +110,19 @@ void Simulation::run(Output& output, Generator& generator,
             std::cout << "*";
     }
 
-    saveDistributions(simulationDataAvg, gompertzDeathsDistribution,
-                      gompertzAgeDistribution, output, populationCount);
+    const std::array<int, Config::bits_> ageDistribution{
+        getAgeDistribution(individuals_)};
+    const std::array<int, Config::bits_> bitsDistribution{
+        getBitsDistribution(individuals_)};
+
+    output.saveAgeDistribution(ageDistribution);
+    output.saveBitsDistribution(bitsDistribution, populationCount);
+    output.saveDeathsDistribution(gompertzDeathsDistribution,
+                                  gompertzAgeDistribution);
+
+    updateAvgDistributions(simulationDataAvg, ageDistribution, bitsDistribution,
+                           gompertzDeathsDistribution, gompertzAgeDistribution,
+                           populationCount);
 
     std::cout << "]";
     output.zapisz_koncowa_populacje(individuals_,
@@ -152,17 +163,14 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
     return bitsDistribution;
 }
 
-void Simulation::saveDistributions(
+void Simulation::updateAvgDistributions(
     SimulationData::AvgData& simulationDataAvg,
+    const std::array<int, Config::bits_>& ageDistribution,
+    const std::array<int, Config::bits_>& bitsDistribution,
     const std::array<int, Config::bits_>& gompertzDeathsDistribution,
     const std::array<int, Config::bits_>& gompertzAgeDistribution,
-    Output& output, int populationCount)
+    int populationCount)
 {
-    const std::array<int, Config::bits_> ageDistribution{
-        getAgeDistribution(individuals_)};
-    const std::array<int, Config::bits_> bitsDistribution{
-        getBitsDistribution(individuals_)};
-
     for (int v = 0; v < Config::bits_; v++)
     {
         simulationDataAvg.bity[v] +=
@@ -179,10 +187,4 @@ void Simulation::saveDistributions(
             simulationDataAvg.gompertz[v] += 1;
         }
     }
-
-    output.saveAgeDistribution(ageDistribution);
-    output.saveBitsDistribution(bitsDistribution, populationCount);
-
-    output.saveDeathsDistribution(gompertzDeathsDistribution,
-                                  gompertzAgeDistribution);
 }
