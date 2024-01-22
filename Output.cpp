@@ -40,9 +40,7 @@ void Output::otworz_pliki(int przedrostek)
 
 void Output::otworz_pliki2(int przedrostek)
 {
-#ifdef CALE_WYJSCIE
     otworz_pliki(przedrostek);
-#endif
 }
 
 void Output::zamknij_pliki(int przedrostek)
@@ -88,14 +86,10 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
 {
     if (!rodzina1)
     {
-#ifdef CALE_WYJSCIE
         fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
-#endif
         simulationData.rodziny[rok] += ilosc_rodzin;
     }
-#ifdef CALE_WYJSCIE
     fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
-#endif
     simulationData.livingAtStart_[rok] += ilosc_osobnikow;
     simulationData.births_[rok] += ilosc_narodzin;
     simulationData.livingAtEnd_[rok] += ilosc_osobnikow - zgon;
@@ -104,7 +98,6 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
 
 void Output::zapisz_losowana_populacje(const std::list<Individual>& individuals)
 {
-#ifdef CALE_WYJSCIE
     int counter{0};
     for (const auto& individual : individuals)
     {
@@ -112,12 +105,10 @@ void Output::zapisz_losowana_populacje(const std::list<Individual>& individuals)
                 individual.asBitString().c_str());
         counter++;
     }
-#endif
 }
 
 void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
 {
-#ifdef CALE_WYJSCIE
     int counter{0};
     for (const auto& individual : individuals)
     {
@@ -129,26 +120,21 @@ void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
         counter++;
     }
     zamknij_pliki(x);
-#endif
 }
 
 void Output::saveBitsDistribution(
     const std::array<int, Config::bits_>& bitsDistribution, int populationCount)
 {
-#ifdef CALE_WYJSCIE
     for (int v = 0; v < Config::bits_; v++)
         fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
                 bitsDistribution[v] * 1.0 / populationCount);
-#endif
 }
 
 void Output::saveAgeDistribution(
     const std::array<int, Config::bits_>& ageDistribution)
 {
-#ifdef CALE_WYJSCIE
     for (int v = 0; v < Config::bits_; v++)
         fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
-#endif
 }
 
 void Output::saveDeathsDistribution(
@@ -160,18 +146,14 @@ void Output::saveDeathsDistribution(
     {
         if (ageDistribution[v] > 0)
         {
-#ifdef CALE_WYJSCIE
             fprintf(plik_gompertz, "%d\t%.3f\n", v,
                     deathsDistribution[v] * 1.0 / ageDistribution[v]);
-#endif
             avgData.gompertz[v] +=
                 (float)deathsDistribution[v] / (float)ageDistribution[v];
         }
         else
         {
-#ifdef CALE_WYJSCIE
             fprintf(plik_gompertz, "%d\t1\n", v);
-#endif
             avgData.gompertz[v] += 1;
         }
     }
