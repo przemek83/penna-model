@@ -139,8 +139,7 @@ void Output::saveAgeDistribution(
 
 void Output::saveDeathsDistribution(
     const std::array<int, Config::bits_>& deathsDistribution,
-    const std::array<int, Config::bits_>& ageDistribution,
-    SimulationData::AvgData& avgData)
+    const std::array<int, Config::bits_>& ageDistribution)
 {
     for (int v = 0; v < Config::bits_; v++)
     {
@@ -148,13 +147,10 @@ void Output::saveDeathsDistribution(
         {
             fprintf(plik_gompertz, "%d\t%.3f\n", v,
                     deathsDistribution[v] * 1.0 / ageDistribution[v]);
-            avgData.gompertz[v] +=
-                (float)deathsDistribution[v] / (float)ageDistribution[v];
         }
         else
         {
             fprintf(plik_gompertz, "%d\t1\n", v);
-            avgData.gompertz[v] += 1;
         }
     }
 }

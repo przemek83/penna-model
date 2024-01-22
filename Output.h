@@ -37,8 +37,7 @@ public:
 
     void saveDeathsDistribution(
         const std::array<int, Config::bits_>& deathsDistribution,
-        const std::array<int, Config::bits_>& ageDistribution,
-        SimulationData::AvgData& avgData);
+        const std::array<int, Config::bits_>& ageDistribution);
 
 private:
     std::string nazwa(int przedrostek, int numer);

@@ -168,11 +168,21 @@ void Simulation::saveDistributions(
         simulationDataAvg.bity[v] +=
             (float)bitsDistribution[v] / (float)populationCount;
         simulationDataAvg.wiek[v] += ageDistribution[v];
+        if (gompertzAgeDistribution[v] > 0)
+        {
+            simulationDataAvg.gompertz[v] +=
+                (float)gompertzDeathsDistribution[v] /
+                (float)gompertzAgeDistribution[v];
+        }
+        else
+        {
+            simulationDataAvg.gompertz[v] += 1;
+        }
     }
 
     output.saveAgeDistribution(ageDistribution);
     output.saveBitsDistribution(bitsDistribution, populationCount);
 
     output.saveDeathsDistribution(gompertzDeathsDistribution,
-                                  gompertzAgeDistribution, simulationDataAvg);
+                                  gompertzAgeDistribution);
 }
