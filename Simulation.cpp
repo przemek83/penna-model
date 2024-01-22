@@ -138,7 +138,7 @@ void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
         individuals_.emplace_back(std::move(individual));
     }
 
-    wyjscie.zapisz_losowana_populacje(individuals_);
+    wyjscie.saveInitialPopulation(individuals_);
 }
 
 std::array<int, Config::bits_> Simulation::getAgeDistribution(

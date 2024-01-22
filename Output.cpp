@@ -96,7 +96,7 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
     simulationData.deaths_[rok] += zgon;
 }
 
-void Output::zapisz_losowana_populacje(const std::list<Individual>& individuals)
+void Output::saveInitialPopulation(const std::list<Individual>& individuals)
 {
     int counter{0};
     for (const auto& individual : individuals)

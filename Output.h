@@ -24,7 +24,7 @@ public:
                         int ilosc_osobnikow, int ilosc_narodzin,
                         int ilosc_rodzin, int zgon);
 
-    void zapisz_losowana_populacje(const std::list<Individual>& individuals);
+    void saveInitialPopulation(const std::list<Individual>& individuals);
 
     void zapisz_koncowa_populacje(std::list<Individual>& populacja, int x);
 
