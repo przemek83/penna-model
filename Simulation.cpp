@@ -127,7 +127,7 @@ void Simulation::run(Output& output, Generator& generator,
 
     std::cout << "]";
     output.saveFinalPopulation(individuals_, number_);
-    output.zamknij_pliki(config_.simulationsCount_ + 1 - number_);
+    output.zamknij_pliki(number_);
 }
 
 void Simulation::createInitialPopulation(Generator& generator)
