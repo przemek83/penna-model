@@ -39,7 +39,6 @@ TEST_CASE("Simulation", "[penna]")
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
         Output output(100, config.years_);
-        output.otworz_pliki(1);
 
         SimulationAverages simulationAverages{
             prepareSimulationAverages(config.years_)};
@@ -75,7 +74,6 @@ TEST_CASE("Benchmark", "[penna]")
         // 19.01.2024 - 83.274 s
 
         Output output(100, config.years_);
-        output.otworz_pliki(1);
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
@@ -94,7 +92,6 @@ TEST_CASE("Benchmark", "[penna]")
         // 19.01.2024 - 333.807 s
 
         Output output(100, config.years_);
-        output.otworz_pliki(1);
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 

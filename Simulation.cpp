@@ -14,6 +14,8 @@ Simulation::Simulation(const Config& config, int number, float step)
 void Simulation::run(Output& output, Generator& generator,
                      SimulationData<float>& simulationDataAvg)
 {
+    output.otworz_pliki(number_ + 1);
+
     int year{0};
     bool singleFamilyLeft{false};
     int populationCount{config_.livesOnStart_};

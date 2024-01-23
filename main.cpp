@@ -24,9 +24,6 @@ int main()
     for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
-
-        output.otworz_pliki(i);
-
         Simulation simulation(config, i, krok_symulacji);
         simulation.run(output, generator, averages);
     }
