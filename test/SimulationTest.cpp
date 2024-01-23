@@ -49,7 +49,6 @@ TEST_CASE("Simulation", "[penna]")
         simulation.run(output, generator, simulationAvgData);
         std::cout << std::endl;
 
-                                       "proces1_symulacja1_statystyki.txt"};
         std::vector<std::string> files{
             "proces1_symulacja1_gompertz.txt",
             "proces1_symulacja0_initialPopulation.txt",
