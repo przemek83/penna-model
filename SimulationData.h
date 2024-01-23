@@ -5,24 +5,22 @@
 
 #include "Config.h"
 
-namespace SimulationData
-{
-struct AvgData
+template <typename T>
+struct SimulationData
 {
 public:
-    std::array<float, Config::bits_> gompertz;
-    std::vector<float> rodziny;
-    std::array<float, Config::bits_> bity;
-    std::array<float, Config::bits_> wiek;
+    std::array<T, Config::bits_> gompertz;
+    std::vector<T> rodziny;
+    std::array<T, Config::bits_> bity;
+    std::array<T, Config::bits_> wiek;
 
-    std::vector<float> livingAtStart_;
-    std::vector<float> births_;
-    std::vector<float> livingAtEnd_;
-    std::vector<float> deaths_;
+    std::vector<T> livingAtStart_;
+    std::vector<T> births_;
+    std::vector<T> livingAtEnd_;
+    std::vector<T> deaths_;
 };
 
-AvgData prepareAvgData(int years);
+SimulationData<float> prepareAvgData(int years);
 
 void prepareFinalResults(float simulationCount, int maxPopulationAge,
-                         SimulationData::AvgData& simulationData);
-};  // namespace SimulationData
+                         SimulationData<float>& simulationData);

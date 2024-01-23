@@ -46,7 +46,7 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_gompertz);
 }
 
-void Output::saveAvgs(SimulationData::AvgData& simulationData)
+void Output::saveAvgs(SimulationData<float>& simulationData)
 {
     for (int v = 0; v < maxPopulationAge_; v++)
     {
@@ -69,7 +69,7 @@ void Output::saveAvgs(SimulationData::AvgData& simulationData)
 }
 
 void Output::zapisz_kolejne(bool rodzina1, int rok,
-                            SimulationData::AvgData& simulationData,
+                            SimulationData<float>& simulationData,
                             int ilosc_osobnikow, int ilosc_narodzin,
                             int ilosc_rodzin, int zgon)
 {

@@ -12,7 +12,7 @@ Simulation::Simulation(const Config& config, int number, float step)
 }
 
 void Simulation::run(Output& output, Generator& generator,
-                     SimulationData::AvgData& simulationDataAvg)
+                     SimulationData<float>& simulationDataAvg)
 {
     int year{0};
     bool singleFamilyLeft{false};
@@ -163,7 +163,7 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
 }
 
 void Simulation::updateAvgDistributions(
-    SimulationData::AvgData& simulationDataAvg,
+    SimulationData<float>& simulationDataAvg,
     const std::array<int, Config::bits_>& ageDistribution,
     const std::array<int, Config::bits_>& bitsDistribution,
     const std::array<int, Config::bits_>& gompertzDeathsDistribution,

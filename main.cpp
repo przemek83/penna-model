@@ -15,8 +15,7 @@ int main()
 #endif
         / static_cast<float>(config.simulationsCount_)};
 
-    SimulationData::AvgData simulationAvgData{
-        SimulationData::prepareAvgData(config.years_)};
+    SimulationData simulationAvgData{prepareAvgData(config.years_)};
 
     Output output(krok_symulacji, config.years_);
 
@@ -33,8 +32,8 @@ int main()
     }
 
     output.otworz_pliki(0);
-    SimulationData::prepareFinalResults(config.simulationsCount_, config.years_,
-                                        simulationAvgData);
+    prepareFinalResults(config.simulationsCount_, config.years_,
+                        simulationAvgData);
     output.saveAvgs(simulationAvgData);
     output.zamknij_pliki(0);
 

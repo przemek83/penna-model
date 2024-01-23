@@ -16,7 +16,7 @@ public:
     Simulation(const Config& config, int number, float step);
 
     void run(Output& output, Generator& generator,
-             SimulationData::AvgData& simulationDataAvg);
+             SimulationData<float>& simulationDataAvg);
 
 private:
     void createInitialPopulation(Generator& generator);
@@ -34,7 +34,7 @@ private:
     const float step_;
 
     static void updateAvgDistributions(
-        SimulationData::AvgData& simulationDataAvg,
+        SimulationData<float>& simulationDataAvg,
         const std::array<int, Config::bits_>& ageDistribution,
         const std::array<int, Config::bits_>& bitsDistribution,
         const std::array<int, Config::bits_>& gompertzDeathsDistribution,

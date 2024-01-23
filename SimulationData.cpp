@@ -1,10 +1,8 @@
 #include "SimulationData.h"
 
-namespace SimulationData
+SimulationData<float> prepareAvgData(int years)
 {
-AvgData prepareAvgData(int years)
-{
-    AvgData avgData;
+    SimulationData<float> avgData;
     avgData.rodziny.resize(static_cast<std::size_t>(years));
     avgData.livingAtStart_.resize(static_cast<std::size_t>(years));
     avgData.births_.resize(static_cast<std::size_t>(years));
@@ -15,7 +13,7 @@ AvgData prepareAvgData(int years)
 }
 
 void prepareFinalResults(float simulationCount, int maxPopulationAge,
-                         SimulationData::AvgData& simulationData)
+                         SimulationData<float>& simulationData)
 {
     for (std::size_t v = 0; v < Config::bits_; v++)
     {
@@ -35,5 +33,3 @@ void prepareFinalResults(float simulationCount, int maxPopulationAge,
         simulationData.deaths_[v] /= simulationCount;
     }
 }
-
-};  // namespace SimulationData
