@@ -19,7 +19,7 @@ public:
              SimulationData::AvgData& simulationDataAvg);
 
 private:
-    void losuj_populacje(Output& wyjscie, Generator& generator);
+    void createInitialPopulation(Generator& generator);
 
     static std::array<int, Config::bits_> getAgeDistribution(
         const std::list<Individual>& individuals);

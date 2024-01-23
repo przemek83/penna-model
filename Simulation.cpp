@@ -18,7 +18,8 @@ void Simulation::run(Output& output, Generator& generator,
     bool singleFamilyLeft{false};
     int populationCount{config_.livesOnStart_};
 
-    losuj_populacje(output, generator);
+    createInitialPopulation(generator);
+    output.saveInitialPopulation(individuals_);
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
@@ -129,7 +130,7 @@ void Simulation::run(Output& output, Generator& generator,
                                     config_.simulationsCount_ + 1 - number_);
 }
 
-void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
+void Simulation::createInitialPopulation(Generator& generator)
 {
     for (size_t i{0}; i < config_.livesOnStart_; i++)
     {
@@ -137,8 +138,6 @@ void Simulation::losuj_populacje(Output& wyjscie, Generator& generator)
         individual.assignRandomBits(generator, config_.startingMutations_);
         individuals_.emplace_back(std::move(individual));
     }
-
-    wyjscie.saveInitialPopulation(individuals_);
 }
 
 std::array<int, Config::bits_> Simulation::getAgeDistribution(
