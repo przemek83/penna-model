@@ -15,8 +15,7 @@ class Simulation
 public:
     Simulation(const Config& config, int number, float step);
 
-    void run(Output& output, Generator& generator,
-             SimulationData<float>& simulationDataAvg);
+    void run(Generator& generator, SimulationData<float>& simulationDataAvg);
 
 private:
     void createInitialPopulation(Generator& generator);

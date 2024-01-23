@@ -6,7 +6,6 @@
 #include "catch2/matchers/catch_matchers_string.hpp"
 
 #include "MockedGenerator.h"
-#include "Output.h"
 #include "Simulation.h"
 #include "SimulationData.h"
 
@@ -38,20 +37,19 @@ TEST_CASE("Simulation", "[penna]")
         Config config;
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
-        Output output(100, config.years_);
 
         SimulationAverages simulationAverages{
             prepareSimulationAverages(config.years_)};
 
         MockedGenerator generator;
-        Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAverages);
+        Simulation simulation(config, 1, 100);
+        simulation.run(generator, simulationAverages);
         std::cout << std::endl;
 
         std::vector<std::string> files{
             "proces1_symulacja1_gompertz.txt",
-            "proces1_symulacja0_initialPopulation.txt",
-            "proces1_symulacja0_finalPopulation.txt",
+            "proces1_symulacja1_initialPopulation.txt",
+            "proces1_symulacja1_finalPopulation.txt",
             "proces1_symulacja1_rodziny.txt",
             "proces1_symulacja1_rozklad_bitow.txt",
             "proces1_symulacja1_rozklad_wieku.txt",
@@ -73,15 +71,14 @@ TEST_CASE("Benchmark", "[penna]")
         // 18.01.2024 - 205.679 s
         // 19.01.2024 - 83.274 s
 
-        Output output(100, config.years_);
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
         SimulationAverages simulationAverages{
             prepareSimulationAverages(config.years_)};
 
-        Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAverages);
+        Simulation simulation(config, 1, 100);
+        simulation.run(generator, simulationAverages);
 
         std::cout << std::endl;
     }
@@ -91,15 +88,14 @@ TEST_CASE("Benchmark", "[penna]")
         // 18.01.2024 - 846.279 s
         // 19.01.2024 - 333.807 s
 
-        Output output(100, config.years_);
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
         SimulationAverages simulationAverages{
             prepareSimulationAverages(config.years_)};
 
-        Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAverages);
+        Simulation simulation(config, 1, 100);
+        simulation.run(generator, simulationAverages);
 
         std::cout << std::endl;
     }

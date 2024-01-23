@@ -11,10 +11,10 @@ Simulation::Simulation(const Config& config, int number, float step)
 {
 }
 
-void Simulation::run(Output& output, Generator& generator,
+void Simulation::run(Generator& generator,
                      SimulationData<float>& simulationDataAvg)
 {
-    output.otworz_pliki(number_ + 1);
+    Output output(step_, config_.years_, number_);
 
     int year{0};
     bool singleFamilyLeft{false};
@@ -135,8 +135,8 @@ void Simulation::run(Output& output, Generator& generator,
                            populationCount);
 
     std::cout << "]";
-    output.saveFinalPopulation(individuals_, number_);
-    output.zamknij_pliki(number_);
+
+    output.saveFinalPopulation(individuals_);
 }
 
 void Simulation::createInitialPopulation(Generator& generator)

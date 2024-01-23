@@ -9,11 +9,7 @@
 class Output
 {
 public:
-    Output(float simulationStep_, int maxPopulationAge);
-
-    void otworz_pliki(int przedrostek);
-
-    void zamknij_pliki(int przedrostek);
+    Output(float simulationStep_, int maxPopulationAge, int run);
 
     void saveAverages(const SimulationAverages& simulationData);
 
@@ -23,7 +19,7 @@ public:
     void saveInitialPopulation(const std::list<Individual>& individuals,
                                int run);
 
-    void saveFinalPopulation(const std::list<Individual>& populacja, int run);
+    void saveFinalPopulation(const std::list<Individual>& populacja);
 
     void saveBitsDistribution(
         const std::array<int, Config::bits_>& bitsDistribution,
@@ -37,6 +33,10 @@ public:
         const std::array<int, Config::bits_>& ageDistribution);
 
 private:
+    void otworz_pliki(int przedrostek);
+
+    void zamknij_pliki(int przedrostek);
+
     std::string nazwa(int przedrostek, int numer);
 
     const float simulationStep_;
@@ -56,12 +56,14 @@ private:
 
     enum
     {
-        STATYSTYKI = 0,
+        STATISTICS = 0,
         INITIAL_POPULATION,
         FINAL_POPULATION,
-        ROZKLAD_WIEKU,
-        ROZKLAD_JEDYNEK,
-        GOMPERTZ,
-        RODZINY
+        AGE_DISTRIBUTION,
+        BITS_DISTRIBUTION,
+        DEATHS_DISTRIBUTION,
+        FAMILIES
     };
+
+    const int run_;
 };

@@ -1,11 +1,21 @@
 #include "Output.h"
 
+#include <filesystem>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 
 #include "Individual.h"
 #include "SimulationData.h"
 
-Output::Output(float simulationStep, int maxPopulationAge) : simulationStep_{simulationStep}, maxPopulationAge_{maxPopulationAge} {}
+Output::Output(float simulationStep, int maxPopulationAge, int run)
+    : simulationStep_{simulationStep},
+      maxPopulationAge_{maxPopulationAge},
+      run_{run}
+{
+    std::filesystem::remove(nazwa(run, FAMILIES));
+    std::filesystem::remove(nazwa(run, STATISTICS));
+}
 
 std::string Output::nazwa(int przedrostek, int numer)
 {
@@ -30,11 +40,13 @@ std::string Output::nazwa(int przedrostek, int numer)
 
 void Output::otworz_pliki(int przedrostek)
 {
-    plik_statystyki = fopen(nazwa(przedrostek, STATYSTYKI).data(), "w");
-    plik_rozklad_wieku = fopen(nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
-    plik_rozklad_bitow = fopen(nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
-    plik_gompertz = fopen(nazwa(przedrostek, GOMPERTZ).data(), "w");
-    plik_rodziny = fopen(nazwa(przedrostek, RODZINY).data(), "w");
+    plik_statystyki = fopen(nazwa(przedrostek, STATISTICS).data(), "w");
+    plik_rozklad_wieku =
+        fopen(nazwa(przedrostek, AGE_DISTRIBUTION).data(), "w");
+    plik_rozklad_bitow =
+        fopen(nazwa(przedrostek, BITS_DISTRIBUTION).data(), "w");
+    plik_gompertz = fopen(nazwa(przedrostek, DEATHS_DISTRIBUTION).data(), "w");
+    plik_rodziny = fopen(nazwa(przedrostek, FAMILIES).data(), "w");
 }
 
 void Output::zamknij_pliki(int przedrostek)
@@ -48,6 +60,8 @@ void Output::zamknij_pliki(int przedrostek)
 
 void Output::saveAverages(const SimulationAverages& simulationData)
 {
+    otworz_pliki(run_);
+
     for (int v = 0; v < maxPopulationAge_; v++)
     {
         if (simulationData.rodziny[v] > 1)
@@ -66,22 +80,28 @@ void Output::saveAverages(const SimulationAverages& simulationData)
         else
             fprintf(plik_gompertz, "%d\t1\n", v);
     }
+
+    zamknij_pliki(run_);
 }
 
 void Output::zapisz_kolejne(bool rodzina1, int rok, int ilosc_osobnikow,
                             int ilosc_narodzin, int ilosc_rodzin, int zgon)
 {
+    std::ofstream families{nazwa(run_, FAMILIES), std::ios_base::app};
+    std::ofstream stats{nazwa(run_, STATISTICS), std::ios_base::app};
+
     if (!rodzina1)
-        fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
-    fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow,
-            ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
+        families << rok << "\t" << ilosc_rodzin << std::endl;
+
+    stats << rok << "\t" << ilosc_osobnikow << "\t" << ilosc_narodzin << "\t"
+          << ilosc_osobnikow - zgon << "\t" << zgon << std::endl;
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals,
                                    int run)
 {
     int counter{0};
-    std::ofstream file{nazwa(run, INITIAL_POPULATION).c_str()};
+    std::ofstream file{nazwa(run, INITIAL_POPULATION)};
     for (const auto& individual : individuals)
     {
         file << counter << " " << individual.asBitString() << std::endl;
@@ -89,11 +109,10 @@ void Output::saveInitialPopulation(const std::list<Individual>& individuals,
     }
 }
 
-void Output::saveFinalPopulation(const std::list<Individual>& individuals,
-                                 int run)
+void Output::saveFinalPopulation(const std::list<Individual>& individuals)
 {
     int counter{0};
-    std::ofstream file{nazwa(run, FINAL_POPULATION).c_str()};
+    std::ofstream file{nazwa(run_, FINAL_POPULATION)};
     for (const auto& individual : individuals)
     {
         file << counter << " " << individual.getAncestor() << " "
@@ -107,32 +126,38 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals,
 void Output::saveBitsDistribution(
     const std::array<int, Config::bits_>& bitsDistribution, int populationCount)
 {
-    for (int v = 0; v < Config::bits_; v++)
-        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v,
-                bitsDistribution[v] * 1.0 / populationCount);
+    std::ofstream file{nazwa(run_, BITS_DISTRIBUTION)};
+
+    for (int i{0}; i < Config::bits_; i++)
+        file << i << "\t" << std::setprecision(2) << std::fixed
+             << bitsDistribution[i] * 1.0 / populationCount << std::endl;
 }
 
 void Output::saveAgeDistribution(
     const std::array<int, Config::bits_>& ageDistribution)
 {
-    for (int v = 0; v < Config::bits_; v++)
-        fprintf(plik_rozklad_wieku, "%d\t%d\n", v, ageDistribution[v]);
+    std::ofstream file{nazwa(run_, AGE_DISTRIBUTION)};
+    for (int i{0}; i < Config::bits_; i++)
+        file << i << "\t" << ageDistribution[i] << std::endl;
 }
 
 void Output::saveDeathsDistribution(
     const std::array<int, Config::bits_>& deathsDistribution,
     const std::array<int, Config::bits_>& ageDistribution)
 {
-    for (int v = 0; v < Config::bits_; v++)
+    std::ofstream file{nazwa(run_, DEATHS_DISTRIBUTION)};
+    for (int i{0}; i < Config::bits_; i++)
     {
-        if (ageDistribution[v] > 0)
+        if (ageDistribution[i] > 0)
         {
-            fprintf(plik_gompertz, "%d\t%.3f\n", v,
-                    deathsDistribution[v] * 1.0 / ageDistribution[v]);
+            file << i << "\t" << std::setprecision(3) << std::fixed
+                 << deathsDistribution[i] * 1.0 / ageDistribution[i]
+                 << std::endl;
         }
         else
         {
-            fprintf(plik_gompertz, "%d\t1\n", v);
+            file << i << "\t"
+                 << "1" << std::endl;
         }
     }
 }

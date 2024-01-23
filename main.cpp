@@ -17,21 +17,18 @@ int main()
 
     SimulationAverages averages{prepareSimulationAverages(config.years_)};
 
-    Output output(krok_symulacji, config.years_);
-
     NumbersGenerator generator;
 
     for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
         Simulation simulation(config, i, krok_symulacji);
-        simulation.run(output, generator, averages);
+        simulation.run(generator, averages);
     }
 
-    output.otworz_pliki(0);
+    Output output(krok_symulacji, config.years_, 0);
     prepareFinalResults(config.simulationsCount_, config.years_, averages);
     output.saveAverages(averages);
-    output.zamknij_pliki(0);
 
     return EXIT_SUCCESS;
 }
