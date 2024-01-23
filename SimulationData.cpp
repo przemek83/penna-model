@@ -1,19 +1,19 @@
 #include "SimulationData.h"
 
-SimulationData<float> prepareAvgData(int years)
+SimulationAverages prepareSimulationAverages(int years)
 {
-    SimulationData<float> avgData;
-    avgData.rodziny.resize(static_cast<std::size_t>(years));
-    avgData.livingAtStart_.resize(static_cast<std::size_t>(years));
-    avgData.births_.resize(static_cast<std::size_t>(years));
-    avgData.livingAtEnd_.resize(static_cast<std::size_t>(years));
-    avgData.deaths_.resize(static_cast<std::size_t>(years));
+    SimulationData<float> simulationAverages;
+    simulationAverages.rodziny.resize(static_cast<std::size_t>(years));
+    simulationAverages.livingAtStart_.resize(static_cast<std::size_t>(years));
+    simulationAverages.births_.resize(static_cast<std::size_t>(years));
+    simulationAverages.livingAtEnd_.resize(static_cast<std::size_t>(years));
+    simulationAverages.deaths_.resize(static_cast<std::size_t>(years));
 
-    return avgData;
+    return simulationAverages;
 }
 
 void prepareFinalResults(float simulationCount, int maxPopulationAge,
-                         SimulationData<float>& simulationData)
+                         SimulationAverages& simulationData)
 {
     for (std::size_t v = 0; v < Config::bits_; v++)
     {

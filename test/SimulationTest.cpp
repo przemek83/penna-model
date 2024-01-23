@@ -41,11 +41,12 @@ TEST_CASE("Simulation", "[penna]")
         Output output(100, config.years_);
         output.otworz_pliki(1);
 
-        SimulationData simulationAvgData{prepareAvgData(config.years_)};
+        SimulationAverages simulationAverages{
+            prepareSimulationAverages(config.years_)};
 
         MockedGenerator generator;
         Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAvgData);
+        simulation.run(output, generator, simulationAverages);
         std::cout << std::endl;
 
         std::vector<std::string> files{
@@ -78,10 +79,11 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
-        SimulationData simulationAvgData{prepareAvgData(config.years_)};
+        SimulationAverages simulationAverages{
+            prepareSimulationAverages(config.years_)};
 
         Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAvgData);
+        simulation.run(output, generator, simulationAverages);
 
         std::cout << std::endl;
     }
@@ -96,10 +98,11 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
-        SimulationData simulationAvgData{prepareAvgData(config.years_)};
+        SimulationAverages simulationAverages{
+            prepareSimulationAverages(config.years_)};
 
         Simulation simulation(config, 0, 100);
-        simulation.run(output, generator, simulationAvgData);
+        simulation.run(output, generator, simulationAverages);
 
         std::cout << std::endl;
     }

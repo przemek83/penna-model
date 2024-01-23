@@ -20,7 +20,9 @@ public:
     std::vector<T> deaths_;
 };
 
-SimulationData<float> prepareAvgData(int years);
+using SimulationAverages = SimulationData<float>;
+
+SimulationAverages prepareSimulationAverages(int years);
 
 void prepareFinalResults(float simulationCount, int maxPopulationAge,
-                         SimulationData<float>& simulationData);
+                         SimulationAverages& simulationData);

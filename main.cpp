@@ -15,7 +15,7 @@ int main()
 #endif
         / static_cast<float>(config.simulationsCount_)};
 
-    SimulationData simulationAvgData{prepareAvgData(config.years_)};
+    SimulationAverages averages{prepareSimulationAverages(config.years_)};
 
     Output output(krok_symulacji, config.years_);
 
@@ -28,13 +28,12 @@ int main()
         output.otworz_pliki(i);
 
         Simulation simulation(config, i, krok_symulacji);
-        simulation.run(output, generator, simulationAvgData);
+        simulation.run(output, generator, averages);
     }
 
     output.otworz_pliki(0);
-    prepareFinalResults(config.simulationsCount_, config.years_,
-                        simulationAvgData);
-    output.saveAvgs(simulationAvgData);
+    prepareFinalResults(config.simulationsCount_, config.years_, averages);
+    output.saveAvgs(averages);
     output.zamknij_pliki(0);
 
     return EXIT_SUCCESS;
