@@ -23,4 +23,6 @@ public:
 
 AvgData prepareAvgData(int years);
 
+void prepareFinalResults(float simulationCount, int maxPopulationAge,
+                         SimulationData::AvgData& simulationData);
 };  // namespace SimulationData

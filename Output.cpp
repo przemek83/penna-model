@@ -48,11 +48,8 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_gompertz);
 }
 
-void Output::zapisz_srednie(int symulacji,
-                            SimulationData::AvgData& simulationData)
+void Output::saveAvgs(int symulacji, SimulationData::AvgData& simulationData)
 {
-    przelicz_srednie_konwencjonalnie((float)symulacji, simulationData);
-
     for (int v = 0; v < maxPopulationAge_; v++)
     {
         if (simulationData.rodziny[v] > 1)
@@ -146,27 +143,5 @@ void Output::saveDeathsDistribution(
         {
             fprintf(plik_gompertz, "%d\t1\n", v);
         }
-    }
-}
-
-void Output::przelicz_srednie_konwencjonalnie(
-    float dzielnik, SimulationData::AvgData& simulationData)
-{
-    for (size_t v = 0; v < Config::bits_; v++)
-    {
-        simulationData.gompertz[v] /= dzielnik;
-        simulationData.bity[v] /= dzielnik;
-        simulationData.wiek[v] /= dzielnik;
-    }
-
-    for (size_t v = 0; v < maxPopulationAge_; v++)
-        simulationData.rodziny[v] /= dzielnik;
-
-    for (size_t v = 0; v < maxPopulationAge_; v++)
-    {
-        simulationData.livingAtStart_[v] /= dzielnik;
-        simulationData.births_[v] /= dzielnik;
-        simulationData.livingAtEnd_[v] /= dzielnik;
-        simulationData.deaths_[v] /= dzielnik;
     }
 }

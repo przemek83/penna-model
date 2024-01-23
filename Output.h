@@ -15,7 +15,7 @@ public:
 
     void zamknij_pliki(int przedrostek);
 
-    void zapisz_srednie(int symulacji, SimulationData::AvgData& simulationData);
+    void saveAvgs(int symulacji, SimulationData::AvgData& simulationData);
 
     void zapisz_kolejne(bool rodzina1, int rok,
                         SimulationData::AvgData& simulationData,
@@ -39,9 +39,6 @@ public:
 
 private:
     std::string nazwa(int przedrostek, int numer);
-
-    void przelicz_srednie_konwencjonalnie(
-        float dzielnik, SimulationData::AvgData& simulationData);
 
     const float simulationStep_;
 
