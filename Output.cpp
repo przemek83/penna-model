@@ -1,5 +1,7 @@
 #include "Output.h"
 
+#include <fstream>
+
 #include "Individual.h"
 #include "SimulationData.h"
 
@@ -29,8 +31,6 @@ std::string Output::nazwa(int przedrostek, int numer)
 void Output::otworz_pliki(int przedrostek)
 {
     plik_statystyki = fopen(nazwa(przedrostek, STATYSTYKI).data(), "w");
-    if (przedrostek != 0)
-        plik_osobniki = fopen(nazwa(przedrostek, POPULACJE).data(), "w");
     plik_rozklad_wieku = fopen(nazwa(przedrostek, ROZKLAD_WIEKU).data(), "w");
     plik_rozklad_bitow = fopen(nazwa(przedrostek, ROZKLAD_JEDYNEK).data(), "w");
     plik_gompertz = fopen(nazwa(przedrostek, GOMPERTZ).data(), "w");
@@ -39,8 +39,6 @@ void Output::otworz_pliki(int przedrostek)
 
 void Output::zamknij_pliki(int przedrostek)
 {
-    if (przedrostek != 0)
-        fclose(plik_osobniki);
     fclose(plik_statystyki);
     fclose(plik_rozklad_wieku);
     fclose(plik_rozklad_bitow);
@@ -87,31 +85,31 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
     simulationData.deaths_[rok] += zgon;
 }
 
-void Output::saveInitialPopulation(const std::list<Individual>& individuals)
+void Output::saveInitialPopulation(const std::list<Individual>& individuals,
+                                   int run)
 {
     int counter{0};
+    std::ofstream file{nazwa(run, INITIAL_POPULATION).c_str()};
     for (const auto& individual : individuals)
     {
-        fprintf(plik_osobniki, "%u %s\n", counter,
-                individual.asBitString().c_str());
+        file << counter << " " << individual.asBitString() << std::endl;
         counter++;
     }
 }
 
-void Output::zapisz_koncowa_populacje(const std::list<Individual>& individuals,
-                                      int x)
+void Output::saveFinalPopulation(const std::list<Individual>& individuals,
+                                 int run)
 {
     int counter{0};
+    std::ofstream file{nazwa(run, FINAL_POPULATION).c_str()};
     for (const auto& individual : individuals)
     {
-        fprintf(plik_osobniki, "%u %d %d %d %u %s\n", counter,
-                individual.getAncestor(), individual.getAge(),
-                individual.getSurvivedMutations(),
-                individual.genome_.to_ullong(),
-                individual.asBitString().c_str());
+        file << counter << " " << individual.getAncestor() << " "
+             << individual.getAge() << " " << individual.getSurvivedMutations()
+             << " " << individual.genome_.to_ullong() << " "
+             << individual.asBitString() << std::endl;
         counter++;
     }
-    zamknij_pliki(x);
 }
 
 void Output::saveBitsDistribution(

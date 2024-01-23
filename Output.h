@@ -22,10 +22,10 @@ public:
                         int ilosc_osobnikow, int ilosc_narodzin,
                         int ilosc_rodzin, int zgon);
 
-    void saveInitialPopulation(const std::list<Individual>& individuals);
+    void saveInitialPopulation(const std::list<Individual>& individuals,
+                               int run);
 
-    void zapisz_koncowa_populacje(const std::list<Individual>& populacja,
-                                  int x);
+    void saveFinalPopulation(const std::list<Individual>& populacja, int run);
 
     void saveBitsDistribution(
         const std::array<int, Config::bits_>& bitsDistribution,
@@ -45,10 +45,12 @@ private:
 
     const int maxPopulationAge_;
 
-    std::string fileNames_[6] = {"statystyki.txt", "osobniki.txt", "rozklad_wieku.txt", "rozklad_bitow.txt", "gompertz.txt", "rodziny.txt"};
+    std::string fileNames_[7] = {"statystyki.txt",      "initialPopulation.txt",
+                                 "finalPopulation.txt", "rozklad_wieku.txt",
+                                 "rozklad_bitow.txt",   "gompertz.txt",
+                                 "rodziny.txt"};
 
     FILE* plik_statystyki;
-    FILE* plik_osobniki;
     FILE* plik_rozklad_wieku;
     FILE* plik_rozklad_bitow;
     FILE* plik_gompertz;
@@ -57,7 +59,8 @@ private:
     enum
     {
         STATYSTYKI = 0,
-        POPULACJE,
+        INITIAL_POPULATION,
+        FINAL_POPULATION,
         ROZKLAD_WIEKU,
         ROZKLAD_JEDYNEK,
         GOMPERTZ,

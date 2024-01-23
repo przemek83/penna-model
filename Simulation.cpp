@@ -19,7 +19,7 @@ void Simulation::run(Output& output, Generator& generator,
     int populationCount{config_.livesOnStart_};
 
     createInitialPopulation(generator);
-    output.saveInitialPopulation(individuals_);
+    output.saveInitialPopulation(individuals_, number_);
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
@@ -126,8 +126,8 @@ void Simulation::run(Output& output, Generator& generator,
                            populationCount);
 
     std::cout << "]";
-    output.zapisz_koncowa_populacje(individuals_,
-                                    config_.simulationsCount_ + 1 - number_);
+    output.saveFinalPopulation(individuals_, number_);
+    output.zamknij_pliki(config_.simulationsCount_ + 1 - number_);
 }
 
 void Simulation::createInitialPopulation(Generator& generator)

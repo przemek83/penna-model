@@ -49,12 +49,16 @@ TEST_CASE("Simulation", "[penna]")
         simulation.run(output, generator, simulationAvgData);
         std::cout << std::endl;
 
-        std::vector<std::string> files{"proces1_symulacja1_gompertz.txt",
-                                       "proces1_symulacja1_osobniki.txt",
-                                       "proces1_symulacja1_rodziny.txt",
-                                       "proces1_symulacja1_rozklad_bitow.txt",
-                                       "proces1_symulacja1_rozklad_wieku.txt",
                                        "proces1_symulacja1_statystyki.txt"};
+        std::vector<std::string> files{
+            "proces1_symulacja1_gompertz.txt",
+            "proces1_symulacja0_initialPopulation.txt",
+            "proces1_symulacja0_finalPopulation.txt",
+            "proces1_symulacja1_rodziny.txt",
+            "proces1_symulacja1_rozklad_bitow.txt",
+            "proces1_symulacja1_rozklad_wieku.txt",
+            "proces1_symulacja1_statystyki.txt"};
+
         for (const auto& file : files)
             compareFiles(file, "TestFiles/" + file);
     }
