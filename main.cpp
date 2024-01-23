@@ -30,7 +30,7 @@ int main()
 
     output.otworz_pliki(0);
     prepareFinalResults(config.simulationsCount_, config.years_, averages);
-    output.saveAvgs(averages);
+    output.saveAverages(averages);
     output.zamknij_pliki(0);
 
     return EXIT_SUCCESS;
