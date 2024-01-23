@@ -98,7 +98,8 @@ void Output::saveInitialPopulation(const std::list<Individual>& individuals)
     }
 }
 
-void Output::zapisz_koncowa_populacje(std::list<Individual>& individuals, int x)
+void Output::zapisz_koncowa_populacje(const std::list<Individual>& individuals,
+                                      int x)
 {
     int counter{0};
     for (const auto& individual : individuals)

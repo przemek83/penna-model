@@ -24,7 +24,8 @@ public:
 
     void saveInitialPopulation(const std::list<Individual>& individuals);
 
-    void zapisz_koncowa_populacje(std::list<Individual>& populacja, int x);
+    void zapisz_koncowa_populacje(const std::list<Individual>& populacja,
+                                  int x);
 
     void saveBitsDistribution(
         const std::array<int, Config::bits_>& bitsDistribution,
