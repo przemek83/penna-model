@@ -108,6 +108,14 @@ void Simulation::run(Output& output, Generator& generator,
                               populationCount, ilosc_narodzin, familiesCount,
                               zgon);
 
+        if (!singleFamilyLeft)
+            simulationDataAvg.rodziny[year] += familiesCount;
+
+        simulationDataAvg.livingAtStart_[year] += populationCount;
+        simulationDataAvg.births_[year] += ilosc_narodzin;
+        simulationDataAvg.livingAtEnd_[year] += populationCount - zgon;
+        simulationDataAvg.deaths_[year] += zgon;
+
         year++;
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";

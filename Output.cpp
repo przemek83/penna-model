@@ -74,15 +74,9 @@ void Output::zapisz_kolejne(bool rodzina1, int rok,
                             int ilosc_rodzin, int zgon)
 {
     if (!rodzina1)
-    {
         fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
-        simulationData.rodziny[rok] += ilosc_rodzin;
-    }
-    fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow, ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
-    simulationData.livingAtStart_[rok] += ilosc_osobnikow;
-    simulationData.births_[rok] += ilosc_narodzin;
-    simulationData.livingAtEnd_[rok] += ilosc_osobnikow - zgon;
-    simulationData.deaths_[rok] += zgon;
+    fprintf(plik_statystyki, "%d\t%d\t%d\t%d\t%d\n", rok, ilosc_osobnikow,
+            ilosc_narodzin, ilosc_osobnikow - zgon, zgon);
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals,
