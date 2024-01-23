@@ -46,7 +46,7 @@ void Output::zamknij_pliki(int przedrostek)
     fclose(plik_gompertz);
 }
 
-void Output::saveAvgs(int symulacji, SimulationData::AvgData& simulationData)
+void Output::saveAvgs(SimulationData::AvgData& simulationData)
 {
     for (int v = 0; v < maxPopulationAge_; v++)
     {

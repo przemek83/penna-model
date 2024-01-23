@@ -35,7 +35,7 @@ int main()
     output.otworz_pliki(0);
     SimulationData::prepareFinalResults(config.simulationsCount_, config.years_,
                                         simulationAvgData);
-    output.saveAvgs(config.simulationsCount_, simulationAvgData);
+    output.saveAvgs(simulationAvgData);
     output.zamknij_pliki(0);
 
     return EXIT_SUCCESS;
