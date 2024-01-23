@@ -104,9 +104,8 @@ void Simulation::run(Output& output, Generator& generator,
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        output.zapisz_kolejne(singleFamilyLeft, year, simulationDataAvg,
-                              populationCount, ilosc_narodzin, familiesCount,
-                              zgon);
+        output.zapisz_kolejne(singleFamilyLeft, year, populationCount,
+                              ilosc_narodzin, familiesCount, zgon);
 
         if (!singleFamilyLeft)
             simulationDataAvg.rodziny[year] += familiesCount;

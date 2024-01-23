@@ -68,10 +68,8 @@ void Output::saveAverages(SimulationAverages& simulationData)
     }
 }
 
-void Output::zapisz_kolejne(bool rodzina1, int rok,
-                            SimulationData<float>& simulationData,
-                            int ilosc_osobnikow, int ilosc_narodzin,
-                            int ilosc_rodzin, int zgon)
+void Output::zapisz_kolejne(bool rodzina1, int rok, int ilosc_osobnikow,
+                            int ilosc_narodzin, int ilosc_rodzin, int zgon)
 {
     if (!rodzina1)
         fprintf(plik_rodziny, "%d\t%d\n", rok, ilosc_rodzin);
