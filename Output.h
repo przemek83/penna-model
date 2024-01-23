@@ -15,7 +15,7 @@ public:
 
     void zamknij_pliki(int przedrostek);
 
-    void saveAverages(SimulationAverages& simulationData);
+    void saveAverages(const SimulationAverages& simulationData);
 
     void zapisz_kolejne(bool rodzina1, int rok, int ilosc_osobnikow,
                         int ilosc_narodzin, int ilosc_rodzin, int zgon);
