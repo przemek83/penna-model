@@ -84,17 +84,17 @@ void Output::saveAverages(const SimulationAverages& simulationData)
     zamknij_pliki(run_);
 }
 
-void Output::zapisz_kolejne(bool rodzina1, int rok, int ilosc_osobnikow,
-                            int ilosc_narodzin, int ilosc_rodzin, int zgon)
+void Output::zapisz_kolejne(int year, int populationCount, int birthsCount,
+                            int familiesCount, int deaths)
 {
     std::ofstream families{nazwa(run_, FAMILIES), std::ios_base::app};
     std::ofstream stats{nazwa(run_, STATISTICS), std::ios_base::app};
 
-    if (!rodzina1)
-        families << rok << "\t" << ilosc_rodzin << std::endl;
+    if (familiesCount > 1)
+        families << year << "\t" << familiesCount << std::endl;
 
-    stats << rok << "\t" << ilosc_osobnikow << "\t" << ilosc_narodzin << "\t"
-          << ilosc_osobnikow - zgon << "\t" << zgon << std::endl;
+    stats << year << "\t" << populationCount << "\t" << birthsCount << "\t"
+          << populationCount - deaths << "\t" << deaths << std::endl;
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals,

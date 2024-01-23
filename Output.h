@@ -13,8 +13,8 @@ public:
 
     void saveAverages(const SimulationAverages& simulationData);
 
-    void zapisz_kolejne(bool rodzina1, int rok, int ilosc_osobnikow,
-                        int ilosc_narodzin, int ilosc_rodzin, int zgon);
+    void zapisz_kolejne(int year, int populationCount, int birthsCount,
+                        int familiesCount, int deaths);
 
     void saveInitialPopulation(const std::list<Individual>& individuals,
                                int run);
