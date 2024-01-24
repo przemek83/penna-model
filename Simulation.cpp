@@ -109,12 +109,12 @@ SingleSimulationData Simulation::run(Generator& generator)
                               familiesCount, zgon);
 
         if (!singleFamilyLeft)
-            data.rodziny[year] += familiesCount;
+            data.rodziny[year] = familiesCount;
 
-        data.livingAtStart_[year] += populationCount;
-        data.births_[year] += ilosc_narodzin;
-        data.livingAtEnd_[year] += populationCount - zgon;
-        data.deaths_[year] += zgon;
+        data.livingAtStart_[year] = populationCount;
+        data.births_[year] = ilosc_narodzin;
+        data.livingAtEnd_[year] = populationCount - zgon;
+        data.deaths_[year] = zgon;
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
@@ -184,16 +184,16 @@ void Simulation::fillDistributions(
 {
     for (size_t i{0}; i < Config::bits_; i++)
     {
-        data.bity[i] += (float)bitsDistribution[i] / (float)populationCount;
-        data.wiek[i] += ageDistribution[i];
+        data.bity[i] = (float)bitsDistribution[i] / (float)populationCount;
+        data.wiek[i] = ageDistribution[i];
         if (gompertzAgeDistribution[i] > 0)
         {
-            data.gompertz[i] += (float)gompertzDeathsDistribution[i] /
-                                (float)gompertzAgeDistribution[i];
+            data.gompertz[i] = (float)gompertzDeathsDistribution[i] /
+                               (float)gompertzAgeDistribution[i];
         }
         else
         {
-            data.gompertz[i] += 1;
+            data.gompertz[i] = 1;
         }
     }
 }
