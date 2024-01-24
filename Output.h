@@ -46,10 +46,6 @@ private:
 
     std::ofstream openFile(OUTPUT_FILE file) const;
 
-    void otworz_pliki(int przedrostek);
-
-    void zamknij_pliki(int przedrostek);
-
     std::string nazwa(int przedrostek, int numer) const;
 
     const float simulationStep_;
@@ -60,12 +56,6 @@ private:
                                  "finalPopulation.txt", "rozklad_wieku.txt",
                                  "rozklad_bitow.txt",   "gompertz.txt",
                                  "rodziny.txt"};
-
-    FILE* plik_statystyki;
-    FILE* plik_rozklad_wieku;
-    FILE* plik_rozklad_bitow;
-    FILE* plik_gompertz;
-    FILE* plik_rodziny;
 
     const int run_;
 };

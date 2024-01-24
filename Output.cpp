@@ -38,50 +38,40 @@ std::string Output::nazwa(int przedrostek, int numer) const
     return plik_nazwa;
 }
 
-void Output::otworz_pliki(int przedrostek)
-{
-    plik_statystyki = fopen(nazwa(przedrostek, STATISTICS).data(), "w");
-    plik_rozklad_wieku =
-        fopen(nazwa(przedrostek, AGE_DISTRIBUTION).data(), "w");
-    plik_rozklad_bitow =
-        fopen(nazwa(przedrostek, BITS_DISTRIBUTION).data(), "w");
-    plik_gompertz = fopen(nazwa(przedrostek, DEATHS_DISTRIBUTION).data(), "w");
-    plik_rodziny = fopen(nazwa(przedrostek, FAMILIES).data(), "w");
-}
-
-void Output::zamknij_pliki(int przedrostek)
-{
-    fclose(plik_statystyki);
-    fclose(plik_rozklad_wieku);
-    fclose(plik_rozklad_bitow);
-    fclose(plik_rodziny);
-    fclose(plik_gompertz);
-}
-
 void Output::saveAverages(const SimulationAverages& simulationData)
 {
-    otworz_pliki(run_);
+    std::ofstream families{openFile(FAMILIES)};
+    families << std::setprecision(6) << std::fixed;
+    std::ofstream ages{openFile(AGE_DISTRIBUTION)};
+    ages << std::setprecision(6) << std::fixed;
+    std::ofstream bits{openFile(BITS_DISTRIBUTION)};
+    bits << std::setprecision(2) << std::fixed;
+    std::ofstream deaths{openFile(DEATHS_DISTRIBUTION)};
+    deaths << std::setprecision(3) << std::fixed;
+    std::ofstream stats{openFile(STATISTICS)};
+    stats << std::setprecision(6) << std::fixed;
 
-    for (int v = 0; v < maxPopulationAge_; v++)
+    for (size_t i{0}; i < maxPopulationAge_; i++)
     {
-        if (simulationData.rodziny[v] > 1)
-            fprintf(plik_rodziny, "%d\t%f\n", v, simulationData.rodziny[v]);
-        fprintf(plik_statystyki, "%d\t%f\t%f\t%f\t%f\n", v,
-                simulationData.livingAtStart_[v], simulationData.births_[v],
-                simulationData.livingAtEnd_[v], simulationData.deaths_[v]);
+        if (simulationData.rodziny[i] > 1)
+            families << i << "\t" << simulationData.rodziny[i] << std::endl;
+
+        stats << i << "\t" << simulationData.livingAtStart_[i] << "\t"
+              << simulationData.births_[i] << "\t"
+              << simulationData.livingAtEnd_[i] << "\t"
+              << simulationData.deaths_[i] << std::endl;
     }
 
-    for (int v = 0; v < Config::bits_; v++)
+    for (size_t i{0}; i < Config::bits_; i++)
     {
-        fprintf(plik_rozklad_wieku, "%d\t%f\n", v, simulationData.wiek[v]);
-        fprintf(plik_rozklad_bitow, "%d\t%.2f\n", v, simulationData.bity[v]);
-        if (simulationData.gompertz[v] > 0)
-            fprintf(plik_gompertz, "%d\t%.3f\n", v, simulationData.gompertz[v]);
+        ages << i << "\t" << simulationData.wiek[i] << std::endl;
+        bits << i << "\t" << simulationData.bity[i] << std::endl;
+
+        if (simulationData.gompertz[i] > 0)
+            deaths << i << "\t" << simulationData.gompertz[i] << std::endl;
         else
-            fprintf(plik_gompertz, "%d\t1\n", v);
+            deaths << i << "\t" << 1 << std::endl;
     }
-
-    zamknij_pliki(run_);
 }
 
 void Output::zapisz_kolejne(int year, int populationCount, int birthsCount,
