@@ -108,9 +108,7 @@ SingleSimulationData Simulation::run(Generator& generator)
         output.zapisz_kolejne(year, populationCount, ilosc_narodzin,
                               familiesCount, zgon);
 
-        if (!singleFamilyLeft)
-            data.rodziny[year] = familiesCount;
-
+        data.rodziny[year] = familiesCount;
         data.livingAtStart_[year] = populationCount;
         data.births_[year] = ilosc_narodzin;
         data.livingAtEnd_[year] = populationCount - zgon;
