@@ -1,34 +1,12 @@
-#include <fstream>
 #include <iostream>
 
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/catch_test_macros.hpp>
-#include "catch2/matchers/catch_matchers_string.hpp"
 
+#include "Common.h"
 #include "MockedGenerator.h"
 #include "Simulation.h"
 #include "SimulationData.h"
-
-namespace
-{
-std::string getFileContent(const std::string& file)
-{
-    std::ifstream ifstream(file);
-    std::string content{(std::istreambuf_iterator<char>(ifstream)),
-                        (std::istreambuf_iterator<char>())};
-    return content;
-}
-
-void compareFiles(const std::string& currentFile,
-                  const std::string& expectedFile)
-{
-    const std::string currentContent{getFileContent(currentFile)};
-    const std::string expectedContent{getFileContent(expectedFile)};
-    CAPTURE(currentFile);
-    REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
-}
-
-};  // namespace
 
 TEST_CASE("Simulation", "[penna]")
 {
@@ -56,7 +34,7 @@ TEST_CASE("Simulation", "[penna]")
             "proces1_symulacja1_statystyki.txt"};
 
         for (const auto& file : files)
-            compareFiles(file, "TestFiles/" + file);
+            Common::compareFiles(file, "TestFiles/" + file);
     }
 }
 
