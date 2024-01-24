@@ -22,7 +22,7 @@ SingleSimulationData Simulation::run(Generator& generator)
     int populationCount{config_.livesOnStart_};
 
     createInitialPopulation(generator);
-    output.saveInitialPopulation(individuals_, number_);
+    output.saveInitialPopulation(individuals_);
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 

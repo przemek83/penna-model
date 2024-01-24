@@ -90,8 +90,7 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
     }
 }
 
-void Output::saveInitialPopulation(const std::list<Individual>& individuals,
-                                   int run)
+void Output::saveInitialPopulation(const std::list<Individual>& individuals)
 {
     int counter{0};
     std::ofstream file{openFile(INITIAL_POPULATION)};

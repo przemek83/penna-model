@@ -15,8 +15,7 @@ public:
 
     void saveBasicSimulationMetrics(const SingleSimulationData& data);
 
-    void saveInitialPopulation(const std::list<Individual>& individuals,
-                               int run);
+    void saveInitialPopulation(const std::list<Individual>& individuals);
 
     void saveFinalPopulation(const std::list<Individual>& populacja);
 
