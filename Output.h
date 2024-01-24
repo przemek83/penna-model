@@ -33,11 +33,24 @@ public:
         const std::array<int, Config::bits_>& ageDistribution);
 
 private:
+    enum OUTPUT_FILE
+    {
+        STATISTICS = 0,
+        INITIAL_POPULATION,
+        FINAL_POPULATION,
+        AGE_DISTRIBUTION,
+        BITS_DISTRIBUTION,
+        DEATHS_DISTRIBUTION,
+        FAMILIES
+    };
+
+    std::ofstream openFile(OUTPUT_FILE file) const;
+
     void otworz_pliki(int przedrostek);
 
     void zamknij_pliki(int przedrostek);
 
-    std::string nazwa(int przedrostek, int numer);
+    std::string nazwa(int przedrostek, int numer) const;
 
     const float simulationStep_;
 
@@ -53,17 +66,6 @@ private:
     FILE* plik_rozklad_bitow;
     FILE* plik_gompertz;
     FILE* plik_rodziny;
-
-    enum
-    {
-        STATISTICS = 0,
-        INITIAL_POPULATION,
-        FINAL_POPULATION,
-        AGE_DISTRIBUTION,
-        BITS_DISTRIBUTION,
-        DEATHS_DISTRIBUTION,
-        FAMILIES
-    };
 
     const int run_;
 };

@@ -17,7 +17,7 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
     std::filesystem::remove(nazwa(run, STATISTICS));
 }
 
-std::string Output::nazwa(int przedrostek, int numer)
+std::string Output::nazwa(int przedrostek, int numer) const
 {
     std::string plik_nazwa;
 
@@ -101,7 +101,7 @@ void Output::saveInitialPopulation(const std::list<Individual>& individuals,
                                    int run)
 {
     int counter{0};
-    std::ofstream file{nazwa(run, INITIAL_POPULATION)};
+    std::ofstream file{openFile(INITIAL_POPULATION)};
     for (const auto& individual : individuals)
     {
         file << counter << " " << individual.asBitString() << std::endl;
@@ -112,7 +112,7 @@ void Output::saveInitialPopulation(const std::list<Individual>& individuals,
 void Output::saveFinalPopulation(const std::list<Individual>& individuals)
 {
     int counter{0};
-    std::ofstream file{nazwa(run_, FINAL_POPULATION)};
+    std::ofstream file{openFile(FINAL_POPULATION)};
     for (const auto& individual : individuals)
     {
         file << counter << " " << individual.getAncestor() << " "
@@ -126,7 +126,7 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
 void Output::saveBitsDistribution(
     const std::array<int, Config::bits_>& bitsDistribution, int populationCount)
 {
-    std::ofstream file{nazwa(run_, BITS_DISTRIBUTION)};
+    std::ofstream file{openFile(BITS_DISTRIBUTION)};
 
     for (int i{0}; i < Config::bits_; i++)
         file << i << "\t" << std::setprecision(2) << std::fixed
@@ -136,7 +136,7 @@ void Output::saveBitsDistribution(
 void Output::saveAgeDistribution(
     const std::array<int, Config::bits_>& ageDistribution)
 {
-    std::ofstream file{nazwa(run_, AGE_DISTRIBUTION)};
+    std::ofstream file{openFile(AGE_DISTRIBUTION)};
     for (int i{0}; i < Config::bits_; i++)
         file << i << "\t" << ageDistribution[i] << std::endl;
 }
@@ -145,7 +145,7 @@ void Output::saveDeathsDistribution(
     const std::array<int, Config::bits_>& deathsDistribution,
     const std::array<int, Config::bits_>& ageDistribution)
 {
-    std::ofstream file{nazwa(run_, DEATHS_DISTRIBUTION)};
+    std::ofstream file{openFile(DEATHS_DISTRIBUTION)};
     for (int i{0}; i < Config::bits_; i++)
     {
         if (ageDistribution[i] > 0)
@@ -160,4 +160,10 @@ void Output::saveDeathsDistribution(
                  << "1" << std::endl;
         }
     }
+}
+
+std::ofstream Output::openFile(OUTPUT_FILE file) const
+{
+    std::ofstream stream{nazwa(run_, file)};
+    return stream;
 }
