@@ -15,25 +15,24 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 {
 }
 
-std::string Output::getName(int przedrostek, int numer) const
+std::string Output::getName(OUTPUT_FILE file) const
 {
-    std::string plik_nazwa;
+    std::string fileName;
 
 #ifdef SYMULACJA_DORSZY
     sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * simulationStep_);
 #endif
 
-    plik_nazwa.erase();
 #ifndef SYMULACJA_DORSZY
-    plik_nazwa.append("proces");
-    plik_nazwa.append(std::to_string(1));
-    plik_nazwa.append("_symulacja");
+    fileName.append("proces");
+    fileName.append(std::to_string(1));
+    fileName.append("_symulacja");
 #endif
-    plik_nazwa.append(std::to_string(przedrostek));
-    plik_nazwa.append("_");
-    plik_nazwa.append(fileNames_[numer]);
+    fileName.append(std::to_string(run_));
+    fileName.append("_");
+    fileName.append(fileNames_[file]);
 
-    return plik_nazwa;
+    return fileName;
 }
 
 void Output::saveAverages(const SimulationAverages& simulationData)
@@ -154,6 +153,6 @@ void Output::saveDeathsDistribution(
 
 std::ofstream Output::openFile(OUTPUT_FILE file) const
 {
-    std::ofstream stream{getName(run_, file)};
+    std::ofstream stream{getName(file)};
     return stream;
 }
