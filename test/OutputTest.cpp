@@ -15,17 +15,19 @@ TEST_CASE("Output", "[penna]")
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
 
-        SimulationAverages simulationAverages{
-            prepareSimulationAverages(config.years_)};
-
         MockedGenerator generator;
         Simulation simulation1(config, 1, 50);
-        simulation1.run(generator, simulationAverages);
+        SingleSimulationData data1{simulation1.run(generator)};
         std::cout << std::endl;
 
         Simulation simulation2(config, 2, 50);
-        simulation2.run(generator, simulationAverages);
+        SingleSimulationData data2{simulation2.run(generator)};
         std::cout << std::endl;
+
+        SimulationAverages simulationAverages{
+            prepareSimulationData<float>(config.years_)};
+        integrateData(simulationAverages, data1);
+        integrateData(simulationAverages, data2);
 
         prepareFinalResults(2, config.years_, simulationAverages);
 

@@ -16,12 +16,9 @@ TEST_CASE("Simulation", "[penna]")
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
 
-        SimulationAverages simulationAverages{
-            prepareSimulationAverages(config.years_)};
-
         MockedGenerator generator;
         Simulation simulation(config, 1, 100);
-        simulation.run(generator, simulationAverages);
+        simulation.run(generator);
         std::cout << std::endl;
 
         std::vector<std::string> files{
@@ -52,11 +49,8 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
-        SimulationAverages simulationAverages{
-            prepareSimulationAverages(config.years_)};
-
         Simulation simulation(config, 1, 100);
-        simulation.run(generator, simulationAverages);
+        simulation.run(generator);
 
         std::cout << std::endl;
     }
@@ -69,11 +63,8 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
-        SimulationAverages simulationAverages{
-            prepareSimulationAverages(config.years_)};
-
         Simulation simulation(config, 1, 100);
-        simulation.run(generator, simulationAverages);
+        simulation.run(generator);
 
         std::cout << std::endl;
     }

@@ -15,7 +15,7 @@ int main()
 #endif
         / static_cast<float>(config.simulationsCount_)};
 
-    SimulationAverages averages{prepareSimulationAverages(config.years_)};
+    SimulationAverages averages{prepareSimulationData<float>(config.years_)};
 
     NumbersGenerator generator;
 
@@ -23,7 +23,8 @@ int main()
     {
         const Timer timer;
         Simulation simulation(config, i, krok_symulacji);
-        simulation.run(generator, averages);
+        SingleSimulationData data{simulation.run(generator)};
+        integrateData(averages, data);
     }
 
     Output output(krok_symulacji, config.years_, 0);

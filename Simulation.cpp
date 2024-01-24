@@ -11,9 +11,10 @@ Simulation::Simulation(const Config& config, int number, float step)
 {
 }
 
-void Simulation::run(Generator& generator,
-                     SimulationData<float>& simulationDataAvg)
+SingleSimulationData Simulation::run(Generator& generator)
 {
+    SingleSimulationData data{prepareSimulationData<int>(config_.years_)};
+
     Output output(step_, config_.years_, number_);
 
     int year{0};
@@ -108,12 +109,12 @@ void Simulation::run(Generator& generator,
                               familiesCount, zgon);
 
         if (!singleFamilyLeft)
-            simulationDataAvg.rodziny[year] += familiesCount;
+            data.rodziny[year] += familiesCount;
 
-        simulationDataAvg.livingAtStart_[year] += populationCount;
-        simulationDataAvg.births_[year] += ilosc_narodzin;
-        simulationDataAvg.livingAtEnd_[year] += populationCount - zgon;
-        simulationDataAvg.deaths_[year] += zgon;
+        data.livingAtStart_[year] += populationCount;
+        data.births_[year] += ilosc_narodzin;
+        data.livingAtEnd_[year] += populationCount - zgon;
+        data.deaths_[year] += zgon;
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
@@ -130,13 +131,15 @@ void Simulation::run(Generator& generator,
     output.saveDeathsDistribution(gompertzDeathsDistribution,
                                   gompertzAgeDistribution);
 
-    updateAvgDistributions(simulationDataAvg, ageDistribution, bitsDistribution,
-                           gompertzDeathsDistribution, gompertzAgeDistribution,
-                           populationCount);
+    fillDistributions(data, ageDistribution, bitsDistribution,
+                      gompertzDeathsDistribution, gompertzAgeDistribution,
+                      populationCount);
 
     std::cout << "]";
 
     output.saveFinalPopulation(individuals_);
+
+    return data;
 }
 
 void Simulation::createInitialPopulation(Generator& generator)
@@ -164,35 +167,33 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
     std::array<int, Config::bits_> bitsDistribution{};
     for (const auto& individual : individuals)
     {
-        for (size_t i = 0; i < Config::bits_; i++)
+        for (size_t i{0}; i < Config::bits_; i++)
             if (individual.genome_[i])
                 bitsDistribution[i]++;
     }
     return bitsDistribution;
 }
 
-void Simulation::updateAvgDistributions(
-    SimulationData<float>& simulationDataAvg,
+void Simulation::fillDistributions(
+    SingleSimulationData& data,
     const std::array<int, Config::bits_>& ageDistribution,
     const std::array<int, Config::bits_>& bitsDistribution,
     const std::array<int, Config::bits_>& gompertzDeathsDistribution,
     const std::array<int, Config::bits_>& gompertzAgeDistribution,
     int populationCount)
 {
-    for (int v = 0; v < Config::bits_; v++)
+    for (size_t i{0}; i < Config::bits_; i++)
     {
-        simulationDataAvg.bity[v] +=
-            (float)bitsDistribution[v] / (float)populationCount;
-        simulationDataAvg.wiek[v] += ageDistribution[v];
-        if (gompertzAgeDistribution[v] > 0)
+        data.bity[i] += (float)bitsDistribution[i] / (float)populationCount;
+        data.wiek[i] += ageDistribution[i];
+        if (gompertzAgeDistribution[i] > 0)
         {
-            simulationDataAvg.gompertz[v] +=
-                (float)gompertzDeathsDistribution[v] /
-                (float)gompertzAgeDistribution[v];
+            data.gompertz[i] += (float)gompertzDeathsDistribution[i] /
+                                (float)gompertzAgeDistribution[i];
         }
         else
         {
-            simulationDataAvg.gompertz[v] += 1;
+            data.gompertz[i] += 1;
         }
     }
 }
