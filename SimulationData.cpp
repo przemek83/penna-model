@@ -2,14 +2,17 @@
 
 SimulationAverages prepareSimulationAverages(int years)
 {
-    SimulationData<float> simulationAverages;
-    simulationAverages.rodziny.resize(static_cast<std::size_t>(years));
-    simulationAverages.livingAtStart_.resize(static_cast<std::size_t>(years));
-    simulationAverages.births_.resize(static_cast<std::size_t>(years));
-    simulationAverages.livingAtEnd_.resize(static_cast<std::size_t>(years));
-    simulationAverages.deaths_.resize(static_cast<std::size_t>(years));
+    SimulationData<float> data;
+    data.gompertz.fill(0);
+    data.bity.fill(0);
+    data.wiek.fill(0);
+    data.rodziny.resize(static_cast<std::size_t>(years), 0);
+    data.livingAtStart_.resize(static_cast<std::size_t>(years), 0);
+    data.births_.resize(static_cast<std::size_t>(years), 0);
+    data.livingAtEnd_.resize(static_cast<std::size_t>(years), 0);
+    data.deaths_.resize(static_cast<std::size_t>(years), 0);
 
-    return simulationAverages;
+    return data;
 }
 
 void prepareFinalResults(float simulationCount, int maxPopulationAge,
