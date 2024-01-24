@@ -105,9 +105,6 @@ SingleSimulationData Simulation::run(Generator& generator)
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        output.zapisz_kolejne(year, populationCount, ilosc_narodzin,
-                              familiesCount, zgon);
-
         data.rodziny[year] = familiesCount;
         data.livingAtStart_[year] = populationCount;
         data.births_[year] = ilosc_narodzin;
@@ -118,6 +115,8 @@ SingleSimulationData Simulation::run(Generator& generator)
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";
     }
+
+    output.saveBasicSimulationMetrics(data);
 
     const std::array<int, Config::bits_> ageDistribution{
         getAgeDistribution(individuals_)};

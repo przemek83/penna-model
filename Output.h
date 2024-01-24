@@ -13,8 +13,7 @@ public:
 
     void saveAverages(const SimulationAverages& simulationData);
 
-    void zapisz_kolejne(int year, int populationCount, int birthsCount,
-                        int familiesCount, int deaths);
+    void saveBasicSimulationMetrics(const SingleSimulationData& data);
 
     void saveInitialPopulation(const std::list<Individual>& individuals,
                                int run);

@@ -45,6 +45,7 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 18.01.2024 - 205.679 s
         // 19.01.2024 - 83.274 s
+        // 24.01.2024 - 108.660 s
 
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
@@ -59,6 +60,7 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 18.01.2024 - 846.279 s
         // 19.01.2024 - 333.807 s
+        // 24.01.2024 - 430.467 s
 
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;

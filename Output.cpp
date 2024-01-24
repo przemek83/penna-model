@@ -74,17 +74,20 @@ void Output::saveAverages(const SimulationAverages& simulationData)
     }
 }
 
-void Output::zapisz_kolejne(int year, int populationCount, int birthsCount,
-                            int familiesCount, int deaths)
+void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
 {
     std::ofstream families{nazwa(run_, FAMILIES), std::ios_base::app};
     std::ofstream stats{nazwa(run_, STATISTICS), std::ios_base::app};
 
-    if (familiesCount > 1)
-        families << year << "\t" << familiesCount << std::endl;
+    for (size_t year{0}; year < data.livingAtStart_.size(); ++year)
+    {
+        if (data.rodziny[year] > 1)
+            families << year << "\t" << data.rodziny[year] << std::endl;
 
-    stats << year << "\t" << populationCount << "\t" << birthsCount << "\t"
-          << populationCount - deaths << "\t" << deaths << std::endl;
+        stats << year << "\t" << data.livingAtStart_[year] << "\t"
+              << data.births_[year] << "\t" << data.livingAtEnd_[year] << "\t"
+              << data.deaths_[year] << std::endl;
+    }
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals,
