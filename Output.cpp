@@ -13,8 +13,6 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
       maxPopulationAge_{maxPopulationAge},
       run_{run}
 {
-    std::filesystem::remove(nazwa(run, FAMILIES));
-    std::filesystem::remove(nazwa(run, STATISTICS));
 }
 
 std::string Output::nazwa(int przedrostek, int numer) const
@@ -76,8 +74,8 @@ void Output::saveAverages(const SimulationAverages& simulationData)
 
 void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
 {
-    std::ofstream families{nazwa(run_, FAMILIES), std::ios_base::app};
-    std::ofstream stats{nazwa(run_, STATISTICS), std::ios_base::app};
+    std::ofstream families{openFile(FAMILIES)};
+    std::ofstream stats{openFile(STATISTICS)};
 
     for (size_t year{0}; year < data.livingAtStart_.size(); ++year)
     {
