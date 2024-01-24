@@ -15,7 +15,7 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 {
 }
 
-std::string Output::nazwa(int przedrostek, int numer) const
+std::string Output::getName(int przedrostek, int numer) const
 {
     std::string plik_nazwa;
 
@@ -154,6 +154,6 @@ void Output::saveDeathsDistribution(
 
 std::ofstream Output::openFile(OUTPUT_FILE file) const
 {
-    std::ofstream stream{nazwa(run_, file)};
+    std::ofstream stream{getName(run_, file)};
     return stream;
 }

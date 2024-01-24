@@ -44,7 +44,7 @@ private:
 
     std::ofstream openFile(OUTPUT_FILE file) const;
 
-    std::string nazwa(int przedrostek, int numer) const;
+    std::string getName(int przedrostek, int numer) const;
 
     const float simulationStep_;
 
