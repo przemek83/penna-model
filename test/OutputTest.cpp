@@ -16,12 +16,14 @@ TEST_CASE("Output", "[penna]")
         config.years_ = 1000;
 
         MockedGenerator generator;
+        FileOutput output(0, config.years_, 0);
+
         Simulation simulation1(config, 1, 50);
-        SingleSimulationData data1{simulation1.run(generator)};
+        SingleSimulationData data1{simulation1.run(generator, output)};
         std::cout << std::endl;
 
         Simulation simulation2(config, 2, 50);
-        SingleSimulationData data2{simulation2.run(generator)};
+        SingleSimulationData data2{simulation2.run(generator, output)};
         std::cout << std::endl;
 
         SimulationAverages simulationAverages{
@@ -30,8 +32,6 @@ TEST_CASE("Output", "[penna]")
         integrateData(simulationAverages, data2);
 
         prepareFinalResults(2, config.years_, simulationAverages);
-
-        FileOutput output(0, config.years_, 0);
 
         output.saveAverages(simulationAverages);
 

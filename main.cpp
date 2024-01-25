@@ -18,12 +18,12 @@ int main()
     SimulationAverages averages{prepareSimulationData<float>(config.years_)};
 
     NumbersGenerator generator;
-
     for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
         Simulation simulation(config, i, krok_symulacji);
-        SingleSimulationData data{simulation.run(generator)};
+        FileOutput output(krok_symulacji, config.years_, i);
+        SingleSimulationData data{simulation.run(generator, output)};
         integrateData(averages, data);
     }
 

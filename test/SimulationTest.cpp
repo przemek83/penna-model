@@ -4,6 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "Common.h"
+#include "FileOutput.h"
 #include "MockedGenerator.h"
 #include "Simulation.h"
 #include "SimulationData.h"
@@ -17,8 +18,10 @@ TEST_CASE("Simulation", "[penna]")
         config.years_ = 1000;
 
         MockedGenerator generator;
+        FileOutput output(0, config.years_, 1);
+
         Simulation simulation(config, 1, 100);
-        simulation.run(generator);
+        simulation.run(generator, output);
         std::cout << std::endl;
 
         std::vector<std::string> files{
@@ -50,8 +53,9 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
+        FileOutput output(0, config.years_, 1);
         Simulation simulation(config, 1, 100);
-        simulation.run(generator);
+        simulation.run(generator, output);
 
         std::cout << std::endl;
     }
@@ -65,8 +69,9 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
+        FileOutput output(0, config.years_, 1);
         Simulation simulation(config, 1, 100);
-        simulation.run(generator);
+        simulation.run(generator, output);
 
         std::cout << std::endl;
     }

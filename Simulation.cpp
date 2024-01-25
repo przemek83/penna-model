@@ -11,11 +11,9 @@ Simulation::Simulation(const Config& config, int number, float step)
 {
 }
 
-SingleSimulationData Simulation::run(Generator& generator)
+SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
     SingleSimulationData data{prepareSimulationData<int>(config_.years_)};
-
-    FileOutput output(step_, config_.years_, number_);
 
     int year{0};
     bool singleFamilyLeft{false};
