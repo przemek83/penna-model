@@ -7,19 +7,34 @@
 #include "MockedGenerator.h"
 #include "Simulation.h"
 
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
+
+class testRunListener : public Catch::EventListenerBase
+{
+public:
+    using Catch::EventListenerBase::EventListenerBase;
+
+    void testRunStarting(
+        [[maybe_unused]] Catch::TestRunInfo const& testRunInfo) override
+    {
+        Config config;
+        config.maxPopulation_ = 5000;
+        config.years_ = 1000;
+
+        MockedGenerator generator;
+        FileOutput output(0, config.years_, 0);
+
+        Simulation simulation1(config, 1, 50);
+        const SingleSimulationData data1{simulation1.run(generator, output)};
+        std::cout << std::endl;
+    }
+};
+
+CATCH_REGISTER_LISTENER(testRunListener)
+
 TEST_CASE("Output", "[penna]")
 {
-    Config config;
-    config.maxPopulation_ = 5000;
-    config.years_ = 1000;
-
-    MockedGenerator generator;
-    FileOutput output(0, config.years_, 0);
-
-    Simulation simulation1(config, 1, 50);
-    const SingleSimulationData data1{simulation1.run(generator, output)};
-    std::cout << std::endl;
-
     SECTION("initial population")
     {
         const std::string file{"proces1_symulacja1_initialPopulation.txt"};
