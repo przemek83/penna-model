@@ -50,10 +50,10 @@ private:
 
     const int maxPopulationAge_;
 
-    std::string fileNames_[7] = {"statystyki.txt",      "initialPopulation.txt",
-                                 "finalPopulation.txt", "rozklad_wieku.txt",
-                                 "rozklad_bitow.txt",   "gompertz.txt",
-                                 "rodziny.txt"};
+    const std::vector<std::string> fileNames_{
+        "statystyki.txt",    "initialPopulation.txt", "finalPopulation.txt",
+        "rozklad_wieku.txt", "rozklad_bitow.txt",     "gompertz.txt",
+        "rodziny.txt"};
 
     const int run_;
 };
