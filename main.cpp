@@ -1,5 +1,5 @@
+#include "FileOutput.h"
 #include "NumbersGenerator.h"
-#include "Output.h"
 #include "Simulation.h"
 #include "SimulationData.h"
 #include "Timer.h"
@@ -27,7 +27,7 @@ int main()
         integrateData(averages, data);
     }
 
-    Output output(krok_symulacji, config.years_, 0);
+    FileOutput output(krok_symulacji, config.years_, 0);
     prepareFinalResults(config.simulationsCount_, config.years_, averages);
     output.saveAverages(averages);
 

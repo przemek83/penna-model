@@ -14,6 +14,7 @@ set(${PROJECT_TEST}_SOURCES
     Common.cpp
     ../Simulation.cpp
     ../Individual.cpp
+    ../FileOutput.cpp
     ../Output.cpp
     ../SimulationData.cpp
     )

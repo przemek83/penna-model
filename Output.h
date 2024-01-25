@@ -11,46 +11,30 @@ class Output
 public:
     Output(float simulationStep_, int maxPopulationAge, int run);
 
-    void saveAverages(const SimulationAverages& simulationData);
+    virtual ~Output() = default;
 
-    void saveBasicSimulationMetrics(const SingleSimulationData& data);
+    virtual void saveAverages(const SimulationAverages& simulationData) = 0;
 
-    void saveInitialPopulation(const std::list<Individual>& individuals);
+    virtual void saveBasicSimulationMetrics(
+        const SingleSimulationData& data) = 0;
 
-    void saveFinalPopulation(const std::list<Individual>& populacja);
+    virtual void saveInitialPopulation(
+        const std::list<Individual>& individuals) = 0;
 
-    void saveBitsDistribution(
-        const std::array<float, Config::bits_>& bitsDistribution);
+    virtual void saveFinalPopulation(
+        const std::list<Individual>& populacja) = 0;
 
-    void saveAgeDistribution(
-        const std::array<int, Config::bits_>& ageDistribution);
+    virtual void saveBitsDistribution(
+        const std::array<float, Config::bits_>& bitsDistribution) = 0;
 
-    void saveDeathsDistribution(const std::array<float, Config::bits_>& deaths);
+    virtual void saveAgeDistribution(
+        const std::array<int, Config::bits_>& ageDistribution) = 0;
 
-private:
-    enum OUTPUT_FILE
-    {
-        STATISTICS = 0,
-        INITIAL_POPULATION,
-        FINAL_POPULATION,
-        AGE_DISTRIBUTION,
-        BITS_DISTRIBUTION,
-        DEATHS_DISTRIBUTION,
-        FAMILIES
-    };
+    virtual void saveDeathsDistribution(
+        const std::array<float, Config::bits_>& deaths) = 0;
 
-    std::ofstream openFile(OUTPUT_FILE file) const;
-
-    std::string getName(OUTPUT_FILE file) const;
-
+protected:
     const float simulationStep_;
-
     const int maxPopulationAge_;
-
-    const std::vector<std::string> fileNames_{
-        "statystyki.txt",    "initialPopulation.txt", "finalPopulation.txt",
-        "rozklad_wieku.txt", "rozklad_bitow.txt",     "gompertz.txt",
-        "rodziny.txt"};
-
     const int run_;
 };

@@ -3,8 +3,8 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "Common.h"
+#include "FileOutput.h"
 #include "MockedGenerator.h"
-#include "Output.h"
 #include "Simulation.h"
 
 TEST_CASE("Output", "[penna]")
@@ -31,7 +31,7 @@ TEST_CASE("Output", "[penna]")
 
         prepareFinalResults(2, config.years_, simulationAverages);
 
-        Output output(0, config.years_, 0);
+        FileOutput output(0, config.years_, 0);
 
         output.saveAverages(simulationAverages);
 

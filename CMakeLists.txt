@@ -27,6 +27,8 @@ set(${PROJECT_NAME}_SOURCES
     Config.h
     Timer.h
     Timer.cpp
+    FileOutput.h
+    FileOutput.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

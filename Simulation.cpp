@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include "FileOutput.h"
 #include "Generator.h"
-#include "Output.h"
 
 Simulation::Simulation(const Config& config, int number, float step)
     : config_(config), number_(number), step_{step}
@@ -15,7 +15,7 @@ SingleSimulationData Simulation::run(Generator& generator)
 {
     SingleSimulationData data{prepareSimulationData<int>(config_.years_)};
 
-    Output output(step_, config_.years_, number_);
+    FileOutput output(step_, config_.years_, number_);
 
     int year{0};
     bool singleFamilyLeft{false};
