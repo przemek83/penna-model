@@ -9,6 +9,62 @@
 
 TEST_CASE("Output", "[penna]")
 {
+    Config config;
+    config.maxPopulation_ = 5000;
+    config.years_ = 1000;
+
+    MockedGenerator generator;
+    FileOutput output(0, config.years_, 0);
+
+    Simulation simulation1(config, 1, 50);
+    const SingleSimulationData data1{simulation1.run(generator, output)};
+    std::cout << std::endl;
+
+    SECTION("initial population")
+    {
+        const std::string file{"proces1_symulacja1_initialPopulation.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("final population")
+    {
+        const std::string file{"proces1_symulacja1_finalPopulation.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("families")
+    {
+        const std::string file{"proces1_symulacja1_rodziny.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("statistics")
+    {
+        const std::string file{"proces1_symulacja1_statystyki.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("bits distribution")
+    {
+        const std::string file{"proces1_symulacja1_rozklad_bitow.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("age distribution")
+    {
+        const std::string file{"proces1_symulacja1_rozklad_wieku.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+
+    SECTION("deaths distribution")
+    {
+        const std::string file{"proces1_symulacja1_gompertz.txt"};
+        Common::compareFiles(file, "TestFiles/" + file);
+    }
+}
+
+TEST_CASE("Output averages", "[penna]")
+{
     SECTION("save averages")
     {
         Config config;
