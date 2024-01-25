@@ -113,41 +113,30 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
 }
 
 void Output::saveBitsDistribution(
-    const std::array<int, Config::bits_>& bitsDistribution, int populationCount)
+    const std::array<float, Config::bits_>& bitsDistribution)
 {
     std::ofstream file{openFile(BITS_DISTRIBUTION)};
-
-    for (int i{0}; i < Config::bits_; i++)
+    for (std::size_t i{0}; i < Config::bits_; i++)
         file << i << "\t" << std::setprecision(2) << std::fixed
-             << bitsDistribution[i] * 1.0 / populationCount << std::endl;
+             << bitsDistribution[i] << std::endl;
 }
 
 void Output::saveAgeDistribution(
     const std::array<int, Config::bits_>& ageDistribution)
 {
     std::ofstream file{openFile(AGE_DISTRIBUTION)};
-    for (int i{0}; i < Config::bits_; i++)
+    for (std::size_t i{0}; i < Config::bits_; i++)
         file << i << "\t" << ageDistribution[i] << std::endl;
 }
 
 void Output::saveDeathsDistribution(
-    const std::array<int, Config::bits_>& deathsDistribution,
-    const std::array<int, Config::bits_>& ageDistribution)
+    const std::array<float, Config::bits_>& deaths)
 {
     std::ofstream file{openFile(DEATHS_DISTRIBUTION)};
-    for (int i{0}; i < Config::bits_; i++)
+    for (std::size_t i{0}; i < Config::bits_; i++)
     {
-        if (ageDistribution[i] > 0)
-        {
-            file << i << "\t" << std::setprecision(3) << std::fixed
-                 << deathsDistribution[i] * 1.0 / ageDistribution[i]
-                 << std::endl;
-        }
-        else
-        {
-            file << i << "\t"
-                 << "1" << std::endl;
-        }
+        file << i << "\t" << std::setprecision(3) << std::fixed << deaths[i]
+             << std::endl;
     }
 }
 

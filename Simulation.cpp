@@ -123,14 +123,13 @@ SingleSimulationData Simulation::run(Generator& generator)
     const std::array<int, Config::bits_> bitsDistribution{
         getBitsDistribution(individuals_)};
 
-    output.saveAgeDistribution(ageDistribution);
-    output.saveBitsDistribution(bitsDistribution, populationCount);
-    output.saveDeathsDistribution(gompertzDeathsDistribution,
-                                  gompertzAgeDistribution);
-
     fillDistributions(data, ageDistribution, bitsDistribution,
                       gompertzDeathsDistribution, gompertzAgeDistribution,
                       populationCount);
+
+    output.saveAgeDistribution(data.wiek);
+    output.saveBitsDistribution(data.bity);
+    output.saveDeathsDistribution(data.gompertz);
 
     std::cout << "]";
 

@@ -20,15 +20,12 @@ public:
     void saveFinalPopulation(const std::list<Individual>& populacja);
 
     void saveBitsDistribution(
-        const std::array<int, Config::bits_>& bitsDistribution,
-        int populationCount);
+        const std::array<float, Config::bits_>& bitsDistribution);
 
     void saveAgeDistribution(
         const std::array<int, Config::bits_>& ageDistribution);
 
-    void saveDeathsDistribution(
-        const std::array<int, Config::bits_>& deathsDistribution,
-        const std::array<int, Config::bits_>& ageDistribution);
+    void saveDeathsDistribution(const std::array<float, Config::bits_>& deaths);
 
 private:
     enum OUTPUT_FILE
