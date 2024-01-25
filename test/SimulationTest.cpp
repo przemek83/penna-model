@@ -24,7 +24,7 @@ TEST_CASE("Simulation", "[penna]")
         simulation.run(generator, output);
         std::cout << std::endl;
 
-        std::vector<std::string> files{
+        const std::vector<std::string> files{
             "proces1_symulacja1_gompertz.txt",
             "proces1_symulacja1_initialPopulation.txt",
             "proces1_symulacja1_finalPopulation.txt",

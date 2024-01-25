@@ -19,11 +19,11 @@ TEST_CASE("Output", "[penna]")
         FileOutput output(0, config.years_, 0);
 
         Simulation simulation1(config, 1, 50);
-        SingleSimulationData data1{simulation1.run(generator, output)};
+        const SingleSimulationData data1{simulation1.run(generator, output)};
         std::cout << std::endl;
 
         Simulation simulation2(config, 2, 50);
-        SingleSimulationData data2{simulation2.run(generator, output)};
+        const SingleSimulationData data2{simulation2.run(generator, output)};
         std::cout << std::endl;
 
         SimulationAverages simulationAverages{
@@ -35,11 +35,11 @@ TEST_CASE("Output", "[penna]")
 
         output.saveAverages(simulationAverages);
 
-        std::vector<std::string> files{"proces1_symulacja0_gompertz.txt",
-                                       "proces1_symulacja0_rodziny.txt",
-                                       "proces1_symulacja0_rozklad_bitow.txt",
-                                       "proces1_symulacja0_rozklad_wieku.txt",
-                                       "proces1_symulacja0_statystyki.txt"};
+        const std::vector<std::string> files{
+            "proces1_symulacja0_gompertz.txt", "proces1_symulacja0_rodziny.txt",
+            "proces1_symulacja0_rozklad_bitow.txt",
+            "proces1_symulacja0_rozklad_wieku.txt",
+            "proces1_symulacja0_statystyki.txt"};
 
         for (const auto& file : files)
             Common::compareFiles(file, "TestFiles/" + file);
