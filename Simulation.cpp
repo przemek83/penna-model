@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "FileOutput.h"
 #include "Generator.h"
+#include "Output.h"
 
 Simulation::Simulation(const Config& config, int number, float step)
     : config_(config), number_(number), step_{step}
