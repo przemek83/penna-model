@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <memory>
 #include <string>
 
 #include "Individual.h"
@@ -13,27 +14,36 @@ public:
 
     virtual ~Output() = default;
 
-    virtual void saveAverages(const SimulationAverages& simulationData) = 0;
+    void saveAverages(const SimulationAverages& simulationData);
 
-    virtual void saveBasicSimulationMetrics(
-        const SingleSimulationData& data) = 0;
+    void saveBasicSimulationMetrics(const SingleSimulationData& data);
 
-    virtual void saveInitialPopulation(
-        const std::list<Individual>& individuals) = 0;
+    void saveInitialPopulation(const std::list<Individual>& individuals);
 
-    virtual void saveFinalPopulation(
-        const std::list<Individual>& populacja) = 0;
+    void saveFinalPopulation(const std::list<Individual>& populacja);
 
-    virtual void saveBitsDistribution(
-        const std::array<float, Config::bits_>& bitsDistribution) = 0;
+    void saveBitsDistribution(
+        const std::array<float, Config::bits_>& bitsDistribution);
 
-    virtual void saveAgeDistribution(
-        const std::array<int, Config::bits_>& ageDistribution) = 0;
+    void saveAgeDistribution(
+        const std::array<int, Config::bits_>& ageDistribution);
 
-    virtual void saveDeathsDistribution(
-        const std::array<float, Config::bits_>& deaths) = 0;
+    void saveDeathsDistribution(const std::array<float, Config::bits_>& deaths);
 
 protected:
+    enum OUTPUT_FILE
+    {
+        STATISTICS = 0,
+        INITIAL_POPULATION,
+        FINAL_POPULATION,
+        AGE_DISTRIBUTION,
+        BITS_DISTRIBUTION,
+        DEATHS_DISTRIBUTION,
+        FAMILIES
+    };
+
+    virtual std::unique_ptr<std::ostream> openFile(OUTPUT_FILE file) const = 0;
+
     const float simulationStep_;
     const int maxPopulationAge_;
     const int run_;
