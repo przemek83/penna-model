@@ -10,10 +10,11 @@ public:
     StringOutput();
 
 protected:
-    std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
+    std::shared_ptr<std::ostream> getStream(
+        OUTPUT_TYPE outputType) const override;
 
 private:
-    std::map<OUTPUT_FILE, std::shared_ptr<std::ostringstream>> stringStreams_{
+    std::map<OUTPUT_TYPE, std::shared_ptr<std::ostringstream>> stringStreams_{
         {STATISTICS, std::make_shared<std::ostringstream>()},
         {INITIAL_POPULATION, std::make_shared<std::ostringstream>()},
         {FINAL_POPULATION, std::make_shared<std::ostringstream>()},

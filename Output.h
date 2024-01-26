@@ -31,7 +31,7 @@ public:
     void saveDeathsDistribution(const std::array<float, Config::bits_>& deaths);
 
 protected:
-    enum OUTPUT_FILE
+    enum OUTPUT_TYPE
     {
         STATISTICS = 0,
         INITIAL_POPULATION,
@@ -42,7 +42,8 @@ protected:
         FAMILIES
     };
 
-    virtual std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const = 0;
+    virtual std::shared_ptr<std::ostream> getStream(
+        OUTPUT_TYPE outputType) const = 0;
 
     const float simulationStep_;
     const int maxPopulationAge_;

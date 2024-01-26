@@ -11,10 +11,11 @@ public:
     FileOutput(float simulationStep_, int maxPopulationAge, int run);
 
 protected:
-    std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
+    std::shared_ptr<std::ostream> getStream(
+        OUTPUT_TYPE outputType) const override;
 
 private:
-    std::string getName(OUTPUT_FILE file) const;
+    std::string getName(OUTPUT_TYPE outputType) const;
 
     const std::vector<std::string> fileNames_{
         "statystyki.txt",    "initialPopulation.txt", "finalPopulation.txt",

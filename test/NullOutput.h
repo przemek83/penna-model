@@ -8,5 +8,6 @@ public:
     NullOutput();
 
 protected:
-    std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
+    std::shared_ptr<std::ostream> getStream(
+        OUTPUT_TYPE outputType) const override;
 };

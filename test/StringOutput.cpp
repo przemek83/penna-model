@@ -4,7 +4,8 @@
 
 StringOutput::StringOutput() : Output(0, 0, 0) {}
 
-std::shared_ptr<std::ostream> StringOutput::openFile(OUTPUT_FILE file) const
+std::shared_ptr<std::ostream> StringOutput::getStream(
+    OUTPUT_TYPE outputType) const
 {
-    return stringStreams_.at(file);
+    return stringStreams_.at(outputType);
 }
