@@ -13,6 +13,7 @@
 namespace
 {
 const int years{1000};
+const int maxPopulation{5000};
 StringOutput output(0, years, 0);
 }  // namespace
 
@@ -25,7 +26,7 @@ public:
         [[maybe_unused]] Catch::TestRunInfo const& testRunInfo) override
     {
         Config config;
-        config.maxPopulation_ = 5000;
+        config.maxPopulation_ = maxPopulation;
         config.years_ = years;
 
         MockedGenerator generator;
@@ -95,7 +96,7 @@ TEST_CASE("Output averages", "[penna]")
     SECTION("save averages")
     {
         Config config;
-        config.maxPopulation_ = 5000;
+        config.maxPopulation_ = maxPopulation;
         config.years_ = years;
 
         MockedGenerator generator;
