@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "FileOutput.h"
 #include "MockedGenerator.h"
+#include "NullOutput.h"
 #include "Simulation.h"
 
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
@@ -87,14 +88,16 @@ TEST_CASE("Output averages", "[penna]")
         config.years_ = 1000;
 
         MockedGenerator generator;
-        FileOutput output(0, config.years_, 0);
+        NullOutput nullOutput;
 
         Simulation simulation1(config, 1, 50);
-        const SingleSimulationData data1{simulation1.run(generator, output)};
+        const SingleSimulationData data1{
+            simulation1.run(generator, nullOutput)};
         std::cout << std::endl;
 
         Simulation simulation2(config, 2, 50);
-        const SingleSimulationData data2{simulation2.run(generator, output)};
+        const SingleSimulationData data2{
+            simulation2.run(generator, nullOutput)};
         std::cout << std::endl;
 
         SimulationAverages simulationAverages{
@@ -104,6 +107,7 @@ TEST_CASE("Output averages", "[penna]")
 
         prepareFinalResults(2, config.years_, simulationAverages);
 
+        FileOutput output(0, config.years_, 0);
         output.saveAverages(simulationAverages);
 
         const std::vector<std::string> files{

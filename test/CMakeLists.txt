@@ -12,6 +12,8 @@ set(${PROJECT_TEST}_SOURCES
     MockedGenerator.cpp
     Common.h
     Common.cpp
+    NullOutput.h
+    NullOutput.cpp
     ../Simulation.cpp
     ../Individual.cpp
     ../FileOutput.cpp
