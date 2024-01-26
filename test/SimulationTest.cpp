@@ -4,10 +4,11 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "Common.h"
-#include "FileOutput.h"
 #include "MockedGenerator.h"
+#include "NullOutput.h"
 #include "Simulation.h"
 #include "SimulationData.h"
+#include "StringOutput.h"
 
 TEST_CASE("Simulation", "[penna]")
 {
@@ -18,23 +19,26 @@ TEST_CASE("Simulation", "[penna]")
         config.years_ = 1000;
 
         MockedGenerator generator;
-        FileOutput output(0, config.years_, 1);
+        StringOutput output(0, config.years_, 1);
 
         Simulation simulation(config, 1, 100);
         simulation.run(generator, output);
         std::cout << std::endl;
 
-        const std::vector<std::string> files{
-            "proces1_symulacja1_gompertz.txt",
-            "proces1_symulacja1_initialPopulation.txt",
-            "proces1_symulacja1_finalPopulation.txt",
-            "proces1_symulacja1_rodziny.txt",
-            "proces1_symulacja1_rozklad_bitow.txt",
-            "proces1_symulacja1_rozklad_wieku.txt",
-            "proces1_symulacja1_statystyki.txt"};
+        const std::map<Output::OUTPUT_TYPE, std::string> files{
+            {Output::DEATHS_DISTRIBUTION, "proces1_symulacja1_gompertz.txt"},
+            {Output::INITIAL_POPULATION,
+             "proces1_symulacja1_initialPopulation.txt"},
+            {Output::FINAL_POPULATION,
+             "proces1_symulacja1_finalPopulation.txt"},
+            {Output::FAMILIES, "proces1_symulacja1_rodziny.txt"},
+            {Output::BITS_DISTRIBUTION, "proces1_symulacja1_rozklad_bitow.txt"},
+            {Output::AGE_DISTRIBUTION, "proces1_symulacja1_rozklad_wieku.txt"},
+            {Output::STATISTICS, "proces1_symulacja1_statystyki.txt"}};
 
-        for (const auto& file : files)
-            Common::compareFileWithExpected(file);
+        for (const auto& [outputType, file] : files)
+            Common::compareStringWithFileContent(
+                output.getContentForOutputType(outputType), file);
     }
 }
 
@@ -53,7 +57,7 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
-        FileOutput output(0, config.years_, 1);
+        NullOutput output;
         Simulation simulation(config, 1, 100);
         simulation.run(generator, output);
 
@@ -69,7 +73,7 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
-        FileOutput output(0, config.years_, 1);
+        NullOutput output;
         Simulation simulation(config, 1, 100);
         simulation.run(generator, output);
 
