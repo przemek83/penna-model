@@ -31,7 +31,7 @@ public:
 
     void saveInitialPopulation(const std::list<Individual>& individuals);
 
-    void saveFinalPopulation(const std::list<Individual>& populacja);
+    void saveFinalPopulation(const std::list<Individual>& individuals);
 
     void saveBitsDistribution(
         const std::array<float, Config::bits_>& bitsDistribution);
