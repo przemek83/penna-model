@@ -24,7 +24,7 @@ public:
         config.years_ = 1000;
 
         MockedGenerator generator;
-        FileOutput output(0, config.years_, 0);
+        FileOutput output(0, config.years_, 1);
 
         Simulation simulation1(config, 1, 50);
         const SingleSimulationData data1{simulation1.run(generator, output)};
