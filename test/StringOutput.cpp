@@ -1,10 +1,19 @@
 #include "StringOutput.h"
 
-StringOutput::StringOutput() : Output(0, 0, 0) {}
+StringOutput::StringOutput(float simulationStep, int maxPopulationAge, int run)
+    : Output(simulationStep, maxPopulationAge, run)
+{
+}
 
 std::string StringOutput::getContentForOutputType(OUTPUT_TYPE outputType)
 {
     return stringStreams_[outputType]->str();
+}
+
+void StringOutput::reset()
+{
+    for (auto& [_, stream] : stringStreams_)
+        stream = std::make_shared<std::ostringstream>();
 }
 
 std::shared_ptr<std::ostream> StringOutput::getStream(

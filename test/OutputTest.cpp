@@ -1,21 +1,20 @@
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
-
-#include "Common.h"
-#include "FileOutput.h"
-#include "MockedGenerator.h"
-#include "NullOutput.h"
-#include "Simulation.h"
-#include "test/StringOutput.h"
-
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
+#include "Common.h"
+#include "MockedGenerator.h"
+#include "NullOutput.h"
+#include "Simulation.h"
+#include "StringOutput.h"
+
 namespace
 {
-StringOutput output;
-}
+const int years{1000};
+StringOutput output(0, years, 0);
+}  // namespace
 
 class testRunListener : public Catch::EventListenerBase
 {
@@ -27,7 +26,7 @@ public:
     {
         Config config;
         config.maxPopulation_ = 5000;
-        config.years_ = 1000;
+        config.years_ = years;
 
         MockedGenerator generator;
 
@@ -45,56 +44,49 @@ TEST_CASE("Output", "[penna]")
     {
         const std::string file{"proces1_symulacja1_initialPopulation.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::INITIAL_POPULATION),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::INITIAL_POPULATION), file);
     }
 
     SECTION("final population")
     {
         const std::string file{"proces1_symulacja1_finalPopulation.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::FINAL_POPULATION),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::FINAL_POPULATION), file);
     }
 
     SECTION("families")
     {
         const std::string file{"proces1_symulacja1_rodziny.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::FAMILIES),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::FAMILIES), file);
     }
 
     SECTION("statistics")
     {
         const std::string file{"proces1_symulacja1_statystyki.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::STATISTICS),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::STATISTICS), file);
     }
 
     SECTION("bits distribution")
     {
         const std::string file{"proces1_symulacja1_rozklad_bitow.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::BITS_DISTRIBUTION),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::BITS_DISTRIBUTION), file);
     }
 
     SECTION("age distribution")
     {
         const std::string file{"proces1_symulacja1_rozklad_wieku.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::AGE_DISTRIBUTION),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::AGE_DISTRIBUTION), file);
     }
 
     SECTION("deaths distribution")
     {
         const std::string file{"proces1_symulacja1_gompertz.txt"};
         Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::DEATHS_DISTRIBUTION),
-            "TestFiles/" + file);
+            output.getContentForOutputType(Output::DEATHS_DISTRIBUTION), file);
     }
 }
 
@@ -104,7 +96,7 @@ TEST_CASE("Output averages", "[penna]")
     {
         Config config;
         config.maxPopulation_ = 5000;
-        config.years_ = 1000;
+        config.years_ = years;
 
         MockedGenerator generator;
         NullOutput nullOutput;
@@ -126,16 +118,18 @@ TEST_CASE("Output averages", "[penna]")
 
         prepareFinalResults(2, config.years_, simulationAverages);
 
-        FileOutput output(0, config.years_, 0);
+        output.reset();
         output.saveAverages(simulationAverages);
 
-        const std::vector<std::string> files{
-            "proces1_symulacja0_gompertz.txt", "proces1_symulacja0_rodziny.txt",
-            "proces1_symulacja0_rozklad_bitow.txt",
-            "proces1_symulacja0_rozklad_wieku.txt",
-            "proces1_symulacja0_statystyki.txt"};
+        const std::map<Output::OUTPUT_TYPE, std::string> files{
+            {Output::DEATHS_DISTRIBUTION, "proces1_symulacja0_gompertz.txt"},
+            {Output::FAMILIES, "proces1_symulacja0_rodziny.txt"},
+            {Output::BITS_DISTRIBUTION, "proces1_symulacja0_rozklad_bitow.txt"},
+            {Output::AGE_DISTRIBUTION, "proces1_symulacja0_rozklad_wieku.txt"},
+            {Output::STATISTICS, "proces1_symulacja0_statystyki.txt"}};
 
-        for (const auto& file : files)
-            Common::compareFiles(file, "TestFiles/" + file);
+        for (const auto& [outputType, file] : files)
+            Common::compareStringWithFileContent(
+                output.getContentForOutputType(outputType), file);
     }
 }

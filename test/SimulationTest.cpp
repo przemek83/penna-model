@@ -34,7 +34,7 @@ TEST_CASE("Simulation", "[penna]")
             "proces1_symulacja1_statystyki.txt"};
 
         for (const auto& file : files)
-            Common::compareFiles(file, "TestFiles/" + file);
+            Common::compareFileWithExpected(file);
     }
 }
 

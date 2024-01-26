@@ -16,19 +16,19 @@ std::string getFileContent(const std::string& file)
     return content;
 }
 
-void compareFiles(const std::string& currentFile,
-                  const std::string& expectedFile)
+void compareFileWithExpected(const std::string& file)
 {
-    const std::string currentContent{getFileContent(currentFile)};
-    const std::string expectedContent{getFileContent(expectedFile)};
-    CAPTURE(currentFile);
+    const std::string currentContent{getFileContent(file)};
+    const std::string expectedContent{getFileContent("TestFiles/" + file)};
+    CAPTURE(file);
     REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
 }
 
 void compareStringWithFileContent(const std::string& currentContent,
                                   const std::string& expectedFileName)
 {
-    const std::string expectedContent{getFileContent(expectedFileName)};
+    const std::string expectedContent{
+        getFileContent("TestFiles/" + expectedFileName)};
     CAPTURE(expectedFileName);
     REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
 }

@@ -8,9 +8,11 @@
 class StringOutput : public Output
 {
 public:
-    StringOutput();
+    StringOutput(float simulationStep, int maxPopulationAge, int run);
 
     std::string getContentForOutputType(OUTPUT_TYPE outputType);
+
+    void reset();
 
 protected:
     std::shared_ptr<std::ostream> getStream(

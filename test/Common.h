@@ -6,8 +6,7 @@ namespace Common
 {
 std::string getFileContent(const std::string& file);
 
-void compareFiles(const std::string& currentFile,
-                  const std::string& expectedFile);
+void compareFileWithExpected(const std::string& file);
 
 void compareStringWithFileContent(const std::string& currentContent,
                                   const std::string& expectedFileName);
