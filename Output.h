@@ -42,7 +42,7 @@ protected:
         FAMILIES
     };
 
-    virtual std::unique_ptr<std::ostream> openFile(OUTPUT_FILE file) const = 0;
+    virtual std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const = 0;
 
     const float simulationStep_;
     const int maxPopulationAge_;

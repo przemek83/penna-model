@@ -27,8 +27,8 @@ std::string FileOutput::getName(OUTPUT_FILE file) const
     return fileName;
 }
 
-std::unique_ptr<std::ostream> FileOutput::openFile(OUTPUT_FILE file) const
+std::shared_ptr<std::ostream> FileOutput::openFile(OUTPUT_FILE file) const
 {
-    auto stream{std::make_unique<std::ofstream>(getName(file))};
+    auto stream{std::make_shared<std::ofstream>(getName(file))};
     return stream;
 }

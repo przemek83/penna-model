@@ -8,5 +8,5 @@ public:
     NullOutput();
 
 protected:
-    std::unique_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
+    std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
 };

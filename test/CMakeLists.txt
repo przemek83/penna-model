@@ -14,6 +14,8 @@ set(${PROJECT_TEST}_SOURCES
     Common.cpp
     NullOutput.h
     NullOutput.cpp
+    StringOutput.h
+    StringOutput.cpp
     ../Simulation.cpp
     ../Individual.cpp
     ../FileOutput.cpp

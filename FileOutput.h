@@ -11,7 +11,7 @@ public:
     FileOutput(float simulationStep_, int maxPopulationAge, int run);
 
 protected:
-    std::unique_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
+    std::shared_ptr<std::ostream> openFile(OUTPUT_FILE file) const override;
 
 private:
     std::string getName(OUTPUT_FILE file) const;
