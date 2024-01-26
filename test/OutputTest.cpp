@@ -7,9 +7,15 @@
 #include "MockedGenerator.h"
 #include "NullOutput.h"
 #include "Simulation.h"
+#include "test/StringOutput.h"
 
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
+
+namespace
+{
+StringOutput output;
+}
 
 class testRunListener : public Catch::EventListenerBase
 {
@@ -24,7 +30,6 @@ public:
         config.years_ = 1000;
 
         MockedGenerator generator;
-        FileOutput output(0, config.years_, 1);
 
         Simulation simulation1(config, 1, 50);
         const SingleSimulationData data1{simulation1.run(generator, output)};
@@ -39,43 +44,57 @@ TEST_CASE("Output", "[penna]")
     SECTION("initial population")
     {
         const std::string file{"proces1_symulacja1_initialPopulation.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::INITIAL_POPULATION),
+            "TestFiles/" + file);
     }
 
     SECTION("final population")
     {
         const std::string file{"proces1_symulacja1_finalPopulation.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::FINAL_POPULATION),
+            "TestFiles/" + file);
     }
 
     SECTION("families")
     {
         const std::string file{"proces1_symulacja1_rodziny.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::FAMILIES),
+            "TestFiles/" + file);
     }
 
     SECTION("statistics")
     {
         const std::string file{"proces1_symulacja1_statystyki.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::STATISTICS),
+            "TestFiles/" + file);
     }
 
     SECTION("bits distribution")
     {
         const std::string file{"proces1_symulacja1_rozklad_bitow.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::BITS_DISTRIBUTION),
+            "TestFiles/" + file);
     }
 
     SECTION("age distribution")
     {
         const std::string file{"proces1_symulacja1_rozklad_wieku.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::AGE_DISTRIBUTION),
+            "TestFiles/" + file);
     }
 
     SECTION("deaths distribution")
     {
         const std::string file{"proces1_symulacja1_gompertz.txt"};
-        Common::compareFiles(file, "TestFiles/" + file);
+        Common::compareStringWithFileContent(
+            output.getContentForOutputType(Output::DEATHS_DISTRIBUTION),
+            "TestFiles/" + file);
     }
 }
 

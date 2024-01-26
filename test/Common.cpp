@@ -24,4 +24,13 @@ void compareFiles(const std::string& currentFile,
     CAPTURE(currentFile);
     REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
 }
+
+void compareStringWithFileContent(const std::string& currentContent,
+                                  const std::string& expectedFileName)
+{
+    const std::string expectedContent{getFileContent(expectedFileName)};
+    CAPTURE(expectedFileName);
+    REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
+}
+
 }  // namespace Common

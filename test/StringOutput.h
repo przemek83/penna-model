@@ -3,11 +3,14 @@
 #include <Output.h>
 
 #include <map>
+#include <sstream>
 
 class StringOutput : public Output
 {
 public:
     StringOutput();
+
+    std::string getContentForOutputType(OUTPUT_TYPE outputType);
 
 protected:
     std::shared_ptr<std::ostream> getStream(

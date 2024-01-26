@@ -14,6 +14,17 @@ public:
 
     virtual ~Output() = default;
 
+    enum OUTPUT_TYPE
+    {
+        STATISTICS = 0,
+        INITIAL_POPULATION,
+        FINAL_POPULATION,
+        AGE_DISTRIBUTION,
+        BITS_DISTRIBUTION,
+        DEATHS_DISTRIBUTION,
+        FAMILIES
+    };
+
     void saveAverages(const SimulationAverages& simulationData);
 
     void saveBasicSimulationMetrics(const SingleSimulationData& data);
@@ -31,17 +42,6 @@ public:
     void saveDeathsDistribution(const std::array<float, Config::bits_>& deaths);
 
 protected:
-    enum OUTPUT_TYPE
-    {
-        STATISTICS = 0,
-        INITIAL_POPULATION,
-        FINAL_POPULATION,
-        AGE_DISTRIBUTION,
-        BITS_DISTRIBUTION,
-        DEATHS_DISTRIBUTION,
-        FAMILIES
-    };
-
     virtual std::shared_ptr<std::ostream> getStream(
         OUTPUT_TYPE outputType) const = 0;
 
