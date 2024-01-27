@@ -18,7 +18,8 @@ private:
     std::string getName(OUTPUT_TYPE outputType) const;
 
     const std::vector<std::string> fileNames_{
-        "statystyki.txt",    "initialPopulation.txt", "finalPopulation.txt",
-        "rozklad_wieku.txt", "rozklad_bitow.txt",     "gompertz.txt",
-        "rodziny.txt"};
+        "statistics.txt",        "initialPopulation.txt",
+        "finalPopulation.txt",   "age_distribution.txt",
+        "bits_distribution.txt", "deaths_distribution.txt",
+        "families.txt"};
 };
