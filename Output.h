@@ -45,7 +45,7 @@ protected:
     virtual std::shared_ptr<std::ostream> getStream(
         OUTPUT_TYPE outputType) const = 0;
 
-    const float simulationStep_;
-    const int maxPopulationAge_;
-    const int run_;
+    float simulationStep_;
+    int maxPopulationAge_;
+    int run_;
 };

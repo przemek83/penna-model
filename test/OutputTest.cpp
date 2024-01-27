@@ -1,10 +1,12 @@
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include "Common.h"
+#include "FileOutput.h"
 #include "MockedGenerator.h"
 #include "NullOutput.h"
 #include "Simulation.h"
@@ -41,54 +43,15 @@ CATCH_REGISTER_LISTENER(testRunListener)
 
 TEST_CASE("Output", "[penna]")
 {
-    SECTION("initial population")
-    {
-        const std::string file{"proces1_symulacja1_initialPopulation.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::INITIAL_POPULATION), file);
-    }
-
-    SECTION("final population")
-    {
-        const std::string file{"proces1_symulacja1_finalPopulation.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::FINAL_POPULATION), file);
-    }
-
-    SECTION("families")
-    {
-        const std::string file{"proces1_symulacja1_rodziny.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::FAMILIES), file);
-    }
-
-    SECTION("statistics")
-    {
-        const std::string file{"proces1_symulacja1_statystyki.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::STATISTICS), file);
-    }
-
-    SECTION("bits distribution")
-    {
-        const std::string file{"proces1_symulacja1_rozklad_bitow.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::BITS_DISTRIBUTION), file);
-    }
-
-    SECTION("age distribution")
-    {
-        const std::string file{"proces1_symulacja1_rozklad_wieku.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::AGE_DISTRIBUTION), file);
-    }
-
-    SECTION("deaths distribution")
-    {
-        const std::string file{"proces1_symulacja1_gompertz.txt"};
-        Common::compareStringWithFileContent(
-            output.getContentForOutputType(Output::DEATHS_DISTRIBUTION), file);
-    }
+    auto outputType{GENERATE(Output::STATISTICS, Output::INITIAL_POPULATION,
+                             Output::FINAL_POPULATION, Output::AGE_DISTRIBUTION,
+                             Output::BITS_DISTRIBUTION,
+                             Output::DEATHS_DISTRIBUTION, Output::FAMILIES)};
+    CAPTURE(outputType);
+    const FileOutput fileOutput(0, years, 1);
+    const std::string file{fileOutput.getName(outputType)};
+    Common::compareStringWithFileContent(
+        output.getContentForOutputType(outputType), file);
 }
 
 TEST_CASE("Output averages", "[penna]")
@@ -122,15 +85,18 @@ TEST_CASE("Output averages", "[penna]")
         output.reset();
         output.saveAverages(simulationAverages);
 
-        const std::map<Output::OUTPUT_TYPE, std::string> files{
-            {Output::DEATHS_DISTRIBUTION, "proces1_symulacja0_gompertz.txt"},
-            {Output::FAMILIES, "proces1_symulacja0_rodziny.txt"},
-            {Output::BITS_DISTRIBUTION, "proces1_symulacja0_rozklad_bitow.txt"},
-            {Output::AGE_DISTRIBUTION, "proces1_symulacja0_rozklad_wieku.txt"},
-            {Output::STATISTICS, "proces1_symulacja0_statystyki.txt"}};
+        const std::vector<Output::OUTPUT_TYPE> outputTypes{
+            Output::DEATHS_DISTRIBUTION, Output::FAMILIES,
+            Output::BITS_DISTRIBUTION, Output::AGE_DISTRIBUTION,
+            Output::STATISTICS};
 
-        for (const auto& [outputType, file] : files)
+        const FileOutput fileOutput(0, years, 0);
+        for (const auto outputType : outputTypes)
+        {
+            CAPTURE(outputType);
             Common::compareStringWithFileContent(
-                output.getContentForOutputType(outputType), file);
+                output.getContentForOutputType(outputType),
+                fileOutput.getName(outputType));
+        }
     }
 }

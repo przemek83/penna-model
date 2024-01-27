@@ -4,6 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "Common.h"
+#include "FileOutput.h"
 #include "MockedGenerator.h"
 #include "NullOutput.h"
 #include "Simulation.h"
@@ -25,20 +26,20 @@ TEST_CASE("Simulation", "[penna]")
         simulation.run(generator, output);
         std::cout << std::endl;
 
-        const std::map<Output::OUTPUT_TYPE, std::string> files{
-            {Output::DEATHS_DISTRIBUTION, "proces1_symulacja1_gompertz.txt"},
-            {Output::INITIAL_POPULATION,
-             "proces1_symulacja1_initialPopulation.txt"},
-            {Output::FINAL_POPULATION,
-             "proces1_symulacja1_finalPopulation.txt"},
-            {Output::FAMILIES, "proces1_symulacja1_rodziny.txt"},
-            {Output::BITS_DISTRIBUTION, "proces1_symulacja1_rozklad_bitow.txt"},
-            {Output::AGE_DISTRIBUTION, "proces1_symulacja1_rozklad_wieku.txt"},
-            {Output::STATISTICS, "proces1_symulacja1_statystyki.txt"}};
+        const std::vector<Output::OUTPUT_TYPE> outputTypes{
+            Output::DEATHS_DISTRIBUTION, Output::INITIAL_POPULATION,
+            Output::FINAL_POPULATION,    Output::FAMILIES,
+            Output::BITS_DISTRIBUTION,   Output::AGE_DISTRIBUTION,
+            Output::STATISTICS};
 
-        for (const auto& [outputType, file] : files)
+        const FileOutput fileOutput(0, config.years_, 1);
+        for (const auto outputType : outputTypes)
+        {
+            CAPTURE(outputType);
             Common::compareStringWithFileContent(
-                output.getContentForOutputType(outputType), file);
+                output.getContentForOutputType(outputType),
+                fileOutput.getName(outputType));
+        }
     }
 }
 
