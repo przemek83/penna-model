@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 #include "catch2/matchers/catch_matchers_string.hpp"
 
 #include "Individual.h"
@@ -152,5 +153,12 @@ TEST_CASE("Individual", "[penna]")
 
         REQUIRE_THAT(individual.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
+    }
+
+    SECTION("genome as number")
+    {
+        unsigned long long number{GENERATE(0ULL, 1ULL, 21354634ULL)};
+        individual.setGenome(std::bitset<Config::bits_>(number));
+        REQUIRE(individual.getGenomeAsNumber() == number);
     }
 }
