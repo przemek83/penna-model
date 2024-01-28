@@ -162,8 +162,7 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
     for (const auto& individual : individuals)
     {
         for (size_t i{0}; i < Config::bits_; i++)
-            if (individual.genome_[i])
-                bitsDistribution[i]++;
+            bitsDistribution[i] += individual.genome_[i];
     }
     return bitsDistribution;
 }
