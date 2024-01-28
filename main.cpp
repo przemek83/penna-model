@@ -23,7 +23,7 @@ int main()
         const Timer timer;
         Simulation simulation(config, i, krok_symulacji);
         FileOutput output(krok_symulacji, config.years_, i);
-        SingleSimulationData data{simulation.run(generator, output)};
+        const SingleSimulationData data{simulation.run(generator, output)};
         integrateData(averages, data);
     }
 
