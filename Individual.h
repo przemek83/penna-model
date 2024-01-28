@@ -20,8 +20,6 @@ public:
 
     inline int getAncestor() const { return ancestor_; }
 
-    std::bitset<Config::bits_> genome_;
-
     void ageByOneYear();
 
     std::string asBitString() const;
@@ -32,7 +30,18 @@ public:
 
     void assignRandomBits(Generator& generator, int startingMutations);
 
+    unsigned long long getGenomeAsNumber() const;
+
+    inline bool getGenomeBit(size_t position) const
+    {
+        return genome_[position];
+    }
+
+    void setGenome(const std::bitset<Config::bits_>& genome);
+
 private:
+    std::bitset<Config::bits_> genome_;
+
     int age_{0};
 
     int survivedMutations_{0};

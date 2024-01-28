@@ -82,7 +82,7 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
     {
         *file << counter << " " << individual.getAncestor() << " "
               << individual.getAge() << " " << individual.getSurvivedMutations()
-              << " " << individual.genome_.to_ullong() << " "
+              << " " << individual.getGenomeAsNumber() << " "
               << individual.asBitString() << std::endl;
         counter++;
     }
