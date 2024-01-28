@@ -9,11 +9,11 @@ template <typename T>
 struct SimulationData
 {
 public:
-    std::array<float, Config::bits_> gompertz;
-    std::array<float, Config::bits_> bity;
-    std::array<T, Config::bits_> wiek;
+    std::array<float, Config::bits_> deathsDistribution_;
+    std::array<float, Config::bits_> bitsDistribution_;
+    std::array<T, Config::bits_> ageDistribution_;
 
-    std::vector<T> rodziny;
+    std::vector<T> families_;
     std::vector<T> livingAtStart_;
     std::vector<T> births_;
     std::vector<T> livingAtEnd_;
@@ -27,10 +27,10 @@ template <typename T>
 SimulationData<T> prepareSimulationData(int years)
 {
     SimulationData<T> data;
-    data.gompertz.fill(0);
-    data.bity.fill(0);
-    data.wiek.fill(0);
-    data.rodziny.resize(static_cast<std::size_t>(years), 0);
+    data.deathsDistribution_.fill(0);
+    data.bitsDistribution_.fill(0);
+    data.ageDistribution_.fill(0);
+    data.families_.resize(static_cast<std::size_t>(years), 0);
     data.livingAtStart_.resize(static_cast<std::size_t>(years), 0);
     data.births_.resize(static_cast<std::size_t>(years), 0);
     data.livingAtEnd_.resize(static_cast<std::size_t>(years), 0);

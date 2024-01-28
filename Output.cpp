@@ -26,8 +26,8 @@ void Output::saveAverages(const SimulationAverages& simulationData)
 
     for (size_t i{0}; i < maxPopulationAge_; i++)
     {
-        if (simulationData.rodziny[i] > 1)
-            *families << i << "\t" << simulationData.rodziny[i] << std::endl;
+        if (simulationData.families_[i] > 1)
+            *families << i << "\t" << simulationData.families_[i] << std::endl;
 
         *stats << i << "\t" << simulationData.livingAtStart_[i] << "\t"
                << simulationData.births_[i] << "\t"
@@ -37,11 +37,11 @@ void Output::saveAverages(const SimulationAverages& simulationData)
 
     for (size_t i{0}; i < Config::bits_; i++)
     {
-        *ages << i << "\t" << simulationData.wiek[i] << std::endl;
-        *bits << i << "\t" << simulationData.bity[i] << std::endl;
+        *ages << i << "\t" << simulationData.ageDistribution_[i] << std::endl;
+        *bits << i << "\t" << simulationData.bitsDistribution_[i] << std::endl;
 
-        if (simulationData.gompertz[i] > 0)
-            *deaths << i << "\t" << simulationData.gompertz[i] << std::endl;
+        if (simulationData.deathsDistribution_[i] > 0)
+            *deaths << i << "\t" << simulationData.deathsDistribution_[i] << std::endl;
         else
             *deaths << i << "\t" << 1 << std::endl;
     }
@@ -54,8 +54,8 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
 
     for (size_t year{0}; year < data.livingAtStart_.size(); ++year)
     {
-        if (data.rodziny[year] > 1)
-            *families << year << "\t" << data.rodziny[year] << std::endl;
+        if (data.families_[year] > 1)
+            *families << year << "\t" << data.families_[year] << std::endl;
 
         *stats << year << "\t" << data.livingAtStart_[year] << "\t"
                << data.births_[year] << "\t" << data.livingAtEnd_[year] << "\t"

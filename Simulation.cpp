@@ -103,7 +103,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        data.rodziny[year] = familiesCount;
+        data.families_[year] = familiesCount;
         data.livingAtStart_[year] = populationCount;
         data.births_[year] = ilosc_narodzin;
         data.livingAtEnd_[year] = populationCount - zgon;
@@ -125,9 +125,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                       gompertzDeathsDistribution, gompertzAgeDistribution,
                       populationCount);
 
-    output.saveAgeDistribution(data.wiek);
-    output.saveBitsDistribution(data.bity);
-    output.saveDeathsDistribution(data.gompertz);
+    output.saveAgeDistribution(data.ageDistribution_);
+    output.saveBitsDistribution(data.bitsDistribution_);
+    output.saveDeathsDistribution(data.deathsDistribution_);
 
     std::cout << "]";
 
@@ -177,16 +177,17 @@ void Simulation::fillDistributions(
 {
     for (size_t i{0}; i < Config::bits_; i++)
     {
-        data.bity[i] = (float)bitsDistribution[i] / (float)populationCount;
-        data.wiek[i] = ageDistribution[i];
+        data.bitsDistribution_[i] =
+            (float)bitsDistribution[i] / (float)populationCount;
+        data.ageDistribution_[i] = ageDistribution[i];
         if (gompertzAgeDistribution[i] > 0)
         {
-            data.gompertz[i] = (float)gompertzDeathsDistribution[i] /
-                               (float)gompertzAgeDistribution[i];
+            data.deathsDistribution_[i] = (float)gompertzDeathsDistribution[i] /
+                                          (float)gompertzAgeDistribution[i];
         }
         else
         {
-            data.gompertz[i] = 1;
+            data.deathsDistribution_[i] = 1;
         }
     }
 }

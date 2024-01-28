@@ -5,13 +5,13 @@ void prepareFinalResults(float simulationCount, int maxPopulationAge,
 {
     for (std::size_t v = 0; v < Config::bits_; v++)
     {
-        simulationData.gompertz[v] /= simulationCount;
-        simulationData.bity[v] /= simulationCount;
-        simulationData.wiek[v] /= simulationCount;
+        simulationData.deathsDistribution_[v] /= simulationCount;
+        simulationData.bitsDistribution_[v] /= simulationCount;
+        simulationData.ageDistribution_[v] /= simulationCount;
     }
 
     for (std::size_t v = 0; v < maxPopulationAge; v++)
-        simulationData.rodziny[v] /= simulationCount;
+        simulationData.families_[v] /= simulationCount;
 
     for (std::size_t v = 0; v < maxPopulationAge; v++)
     {
@@ -27,7 +27,7 @@ void integrateData(SimulationAverages& simulationAverages,
 {
     for (std::size_t i{0}; i < simulationAverages.births_.size(); ++i)
     {
-        simulationAverages.rodziny[i] += singleSimulationData.rodziny[i];
+        simulationAverages.families_[i] += singleSimulationData.families_[i];
         simulationAverages.livingAtStart_[i] +=
             singleSimulationData.livingAtStart_[i];
         simulationAverages.births_[i] += singleSimulationData.births_[i];
@@ -38,8 +38,8 @@ void integrateData(SimulationAverages& simulationAverages,
 
     for (std::size_t i{0}; i < Config::bits_; i++)
     {
-        simulationAverages.bity[i] += singleSimulationData.bity[i];
-        simulationAverages.wiek[i] += singleSimulationData.wiek[i];
-        simulationAverages.gompertz[i] += singleSimulationData.gompertz[i];
+        simulationAverages.bitsDistribution_[i] += singleSimulationData.bitsDistribution_[i];
+        simulationAverages.ageDistribution_[i] += singleSimulationData.ageDistribution_[i];
+        simulationAverages.deathsDistribution_[i] += singleSimulationData.deathsDistribution_[i];
     }
 }
