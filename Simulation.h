@@ -26,12 +26,6 @@ private:
     static std::array<int, Config::bits_> getBitsDistribution(
         const std::list<Individual>& individuals);
 
-    std::list<Individual> individuals_;
-
-    const Config& config_;
-    const int number_;
-    const float step_;
-
     static void fillDistributions(
         SingleSimulationData& data,
         const std::array<int, Config::bits_>& ageDistribution,
@@ -39,4 +33,10 @@ private:
         const std::array<int, Config::bits_>& gompertzDeathsDistribution,
         const std::array<int, Config::bits_>& gompertzAgeDistribution,
         int populationCount);
+
+    std::list<Individual> individuals_;
+
+    Config config_;
+    int number_;
+    float step_;
 };
