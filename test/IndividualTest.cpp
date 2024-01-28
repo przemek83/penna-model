@@ -161,4 +161,13 @@ TEST_CASE("Individual", "[penna]")
         individual.setGenome(std::bitset<Config::bits_>(number));
         REQUIRE(individual.getGenomeAsNumber() == number);
     }
+
+    SECTION("get genome bits")
+    {
+        const std::bitset<Config::bits_> bitset(
+            0b0000000000000000010000000000000000000000100000000000001000001000);
+        individual.setGenome(bitset);
+        for (size_t i{0}; i < bitset.size(); ++i)
+            REQUIRE(bitset[i] == individual.getGenomeBit(i));
+    }
 }
