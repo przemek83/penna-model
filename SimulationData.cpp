@@ -20,12 +20,9 @@ template <>
 void SimulationAverages::integrateDistributions(
     const SingleSimulationData& data)
 {
-    const std::array<float, Config::bits_>& deathsDistribution{
-        data.getDeathsDistribution()};
-    const std::array<float, Config::bits_> bitsDistribution{
-        data.getBitsDistribution()};
-    const std::array<int, Config::bits_> ageDistribution{
-        data.getAgeDistribution()};
+    const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
+    const std::vector<float>& bitsDistribution{data.getBitsDistribution()};
+    const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
     for (std::size_t i{0}; i < Config::bits_; i++)
     {

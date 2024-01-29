@@ -11,7 +11,7 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 {
 }
 
-void Output::saveAverages(const SimulationAverages& simulationData)
+void Output::saveAverages(const SimulationAverages& data)
 {
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     *families << std::setprecision(6) << std::fixed;
@@ -26,8 +26,7 @@ void Output::saveAverages(const SimulationAverages& simulationData)
 
     for (std::size_t i{0}; i < maxPopulationAge_; i++)
     {
-        const SimulationData<float>::BasicData& basicData{
-            simulationData.getBasicData(i)};
+        const SimulationData<float>::BasicData& basicData{data.getBasicData(i)};
         if (basicData.families_ > 1)
             *families << i << "\t" << basicData.families_ << std::endl;
 
@@ -36,12 +35,9 @@ void Output::saveAverages(const SimulationAverages& simulationData)
                << basicData.deaths_ << std::endl;
     }
 
-    const std::array<float, Config::bits_>& deathsDistribution{
-        simulationData.getDeathsDistribution()};
-    const std::array<float, Config::bits_> bitsDistribution{
-        simulationData.getBitsDistribution()};
-    const std::array<float, Config::bits_> ageDistribution{
-        simulationData.getAgeDistribution()};
+    const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
+    const std::vector<float>& bitsDistribution{data.getBitsDistribution()};
+    const std::vector<float>& ageDistribution{data.getAgeDistribution()};
 
     for (size_t i{0}; i < Config::bits_; i++)
     {
@@ -98,8 +94,7 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
     }
 }
 
-void Output::saveBitsDistribution(
-    const std::array<float, Config::bits_>& bitsDistribution)
+void Output::saveBitsDistribution(const std::vector<float>& bitsDistribution)
 {
     const std::shared_ptr<std::ostream> file{getStream(BITS_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)
@@ -107,16 +102,14 @@ void Output::saveBitsDistribution(
               << bitsDistribution[i] << std::endl;
 }
 
-void Output::saveAgeDistribution(
-    const std::array<int, Config::bits_>& ageDistribution)
+void Output::saveAgeDistribution(const std::vector<int>& ageDistribution)
 {
     const std::shared_ptr<std::ostream> file{getStream(AGE_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)
         *file << i << "\t" << ageDistribution[i] << std::endl;
 }
 
-void Output::saveDeathsDistribution(
-    const std::array<float, Config::bits_>& deaths)
+void Output::saveDeathsDistribution(const std::vector<float>& deaths)
 {
     const std::shared_ptr<std::ostream> file{getStream(DEATHS_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)

@@ -17,10 +17,10 @@ class SimulationData
 public:
     explicit SimulationData(std::size_t years) : years_(years)
     {
-        deathsDistribution_.fill(0);
-        bitsDistribution_.fill(0);
-        ageDistribution_.fill(0);
-        basicData_.resize(static_cast<std::size_t>(years_));
+        deathsDistribution_.resize(years_, 0);
+        bitsDistribution_.resize(years_, 0);
+        ageDistribution_.resize(years_, 0);
+        basicData_.resize(years_);
     }
 
     void integrateData(const SingleSimulationData& data);
@@ -46,17 +46,17 @@ public:
         return basicData_[year];
     }
 
-    const std::array<float, Config::bits_>& getDeathsDistribution() const
+    const std::vector<float>& getDeathsDistribution() const
     {
         return deathsDistribution_;
     }
 
-    const std::array<float, Config::bits_>& getBitsDistribution() const
+    const std::vector<float>& getBitsDistribution() const
     {
         return bitsDistribution_;
     }
 
-    const std::array<T, Config::bits_>& getAgeDistribution() const
+    const std::vector<T>& getAgeDistribution() const
     {
         return ageDistribution_;
     }
@@ -95,9 +95,9 @@ private:
 
     void finalizeDistributions();
 
-    std::array<float, Config::bits_> deathsDistribution_;
-    std::array<float, Config::bits_> bitsDistribution_;
-    std::array<T, Config::bits_> ageDistribution_;
+    std::vector<float> deathsDistribution_;
+    std::vector<float> bitsDistribution_;
+    std::vector<T> ageDistribution_;
 
     std::vector<BasicData> basicData_;
 
