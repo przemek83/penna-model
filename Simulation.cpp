@@ -13,8 +13,6 @@ Simulation::Simulation(const Config& config, int number, float step)
 
 SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
-    SingleSimulationData data{prepareSimulationData<int>(config_.years_)};
-
     int year{0};
     bool singleFamilyLeft{false};
     int populationCount{config_.livesOnStart_};
@@ -26,6 +24,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     std::array<int, Config::bits_> gompertzDeathsDistribution{};
     std::array<int, Config::bits_> gompertzAgeDistribution{};
+
+    std::vector<SingleSimulationData::BasicData> basicData;
+    basicData.resize(config_.years_);
 
     while (year < config_.years_)
     {
@@ -103,17 +104,19 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        data.families_[year] = familiesCount;
-        data.livingAtStart_[year] = populationCount;
-        data.births_[year] = ilosc_narodzin;
-        data.livingAtEnd_[year] = populationCount - zgon;
-        data.deaths_[year] = zgon;
+        basicData[year].families_ = familiesCount;
+        basicData[year].livingAtStart_ = populationCount;
+        basicData[year].births_ = ilosc_narodzin;
+        basicData[year].livingAtEnd_ = populationCount - zgon;
+        basicData[year].deaths_ = zgon;
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
             std::cout << "*";
     }
 
+    SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
+    data.setBasicData(std::move(basicData));
     output.saveBasicSimulationMetrics(data);
 
     const std::array<int, Config::bits_> ageDistribution{
@@ -121,13 +124,13 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     const std::array<int, Config::bits_> bitsDistribution{
         getBitsDistribution(individuals_)};
 
-    fillDistributions(data, ageDistribution, bitsDistribution,
-                      gompertzDeathsDistribution, gompertzAgeDistribution,
-                      populationCount);
+    data.setDistributions(ageDistribution, bitsDistribution,
+                          gompertzDeathsDistribution, gompertzAgeDistribution,
+                          populationCount);
 
-    output.saveAgeDistribution(data.ageDistribution_);
-    output.saveBitsDistribution(data.bitsDistribution_);
-    output.saveDeathsDistribution(data.deathsDistribution_);
+    output.saveDeathsDistribution(data.getDeathsDistribution());
+    output.saveBitsDistribution(data.getBitsDistribution());
+    output.saveAgeDistribution(data.getAgeDistribution());
 
     std::cout << "]";
 
@@ -165,29 +168,4 @@ std::array<int, Config::bits_> Simulation::getBitsDistribution(
             bitsDistribution[i] += individual.getGenomeBit(i);
     }
     return bitsDistribution;
-}
-
-void Simulation::fillDistributions(
-    SingleSimulationData& data,
-    const std::array<int, Config::bits_>& ageDistribution,
-    const std::array<int, Config::bits_>& bitsDistribution,
-    const std::array<int, Config::bits_>& gompertzDeathsDistribution,
-    const std::array<int, Config::bits_>& gompertzAgeDistribution,
-    int populationCount)
-{
-    for (size_t i{0}; i < Config::bits_; i++)
-    {
-        data.bitsDistribution_[i] =
-            (float)bitsDistribution[i] / (float)populationCount;
-        data.ageDistribution_[i] = ageDistribution[i];
-        if (gompertzAgeDistribution[i] > 0)
-        {
-            data.deathsDistribution_[i] = (float)gompertzDeathsDistribution[i] /
-                                          (float)gompertzAgeDistribution[i];
-        }
-        else
-        {
-            data.deathsDistribution_[i] = 1;
-        }
-    }
 }

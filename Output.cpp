@@ -24,24 +24,32 @@ void Output::saveAverages(const SimulationAverages& simulationData)
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
     *stats << std::setprecision(6) << std::fixed;
 
-    for (size_t i{0}; i < maxPopulationAge_; i++)
+    for (std::size_t i{0}; i < maxPopulationAge_; i++)
     {
-        if (simulationData.families_[i] > 1)
-            *families << i << "\t" << simulationData.families_[i] << std::endl;
+        const SimulationData<float>::BasicData& basicData{
+            simulationData.getBasicData(i)};
+        if (basicData.families_ > 1)
+            *families << i << "\t" << basicData.families_ << std::endl;
 
-        *stats << i << "\t" << simulationData.livingAtStart_[i] << "\t"
-               << simulationData.births_[i] << "\t"
-               << simulationData.livingAtEnd_[i] << "\t"
-               << simulationData.deaths_[i] << std::endl;
+        *stats << i << "\t" << basicData.livingAtStart_ << "\t"
+               << basicData.births_ << "\t" << basicData.livingAtEnd_ << "\t"
+               << basicData.deaths_ << std::endl;
     }
+
+    const std::array<float, Config::bits_>& deathsDistribution{
+        simulationData.getDeathsDistribution()};
+    const std::array<float, Config::bits_> bitsDistribution{
+        simulationData.getBitsDistribution()};
+    const std::array<float, Config::bits_> ageDistribution{
+        simulationData.getAgeDistribution()};
 
     for (size_t i{0}; i < Config::bits_; i++)
     {
-        *ages << i << "\t" << simulationData.ageDistribution_[i] << std::endl;
-        *bits << i << "\t" << simulationData.bitsDistribution_[i] << std::endl;
+        *ages << i << "\t" << ageDistribution[i] << std::endl;
+        *bits << i << "\t" << bitsDistribution[i] << std::endl;
 
-        if (simulationData.deathsDistribution_[i] > 0)
-            *deaths << i << "\t" << simulationData.deathsDistribution_[i] << std::endl;
+        if (deathsDistribution[i] > 0)
+            *deaths << i << "\t" << deathsDistribution[i] << std::endl;
         else
             *deaths << i << "\t" << 1 << std::endl;
     }
@@ -52,14 +60,16 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
 
-    for (size_t year{0}; year < data.livingAtStart_.size(); ++year)
+    for (size_t year{0}; year < maxPopulationAge_; ++year)
     {
-        if (data.families_[year] > 1)
-            *families << year << "\t" << data.families_[year] << std::endl;
+        const SingleSimulationData::BasicData& basicData{
+            data.getBasicData(year)};
+        if (basicData.families_ > 1)
+            *families << year << "\t" << basicData.families_ << std::endl;
 
-        *stats << year << "\t" << data.livingAtStart_[year] << "\t"
-               << data.births_[year] << "\t" << data.livingAtEnd_[year] << "\t"
-               << data.deaths_[year] << std::endl;
+        *stats << year << "\t" << basicData.livingAtStart_ << "\t"
+               << basicData.births_ << "\t" << basicData.livingAtEnd_ << "\t"
+               << basicData.deaths_ << std::endl;
     }
 }
 

@@ -76,11 +76,11 @@ TEST_CASE("Output averages", "[penna]")
         std::cout << std::endl;
 
         SimulationAverages simulationAverages{
-            prepareSimulationData<float>(config.years_)};
-        integrateData(simulationAverages, data1);
-        integrateData(simulationAverages, data2);
+            static_cast<std::size_t>(config.years_)};
+        simulationAverages.integrateData(data1);
+        simulationAverages.integrateData(data2);
 
-        prepareFinalResults(2, simulationAverages);
+        simulationAverages.finalize();
 
         output.reset();
         output.saveAverages(simulationAverages);

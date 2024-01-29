@@ -15,7 +15,7 @@ int main()
 #endif
         / static_cast<float>(config.simulationsCount_)};
 
-    SimulationAverages averages{prepareSimulationData<float>(config.years_)};
+    SimulationAverages averages{static_cast<std::size_t>(config.years_)};
 
     NumbersGenerator generator;
     for (int i{1}; i <= config.simulationsCount_; i++)
@@ -24,11 +24,11 @@ int main()
         Simulation simulation(config, i, krok_symulacji);
         FileOutput output(krok_symulacji, config.years_, i);
         const SingleSimulationData data{simulation.run(generator, output)};
-        integrateData(averages, data);
+        averages.integrateData(data);
     }
 
     FileOutput output(krok_symulacji, config.years_, 0);
-    prepareFinalResults(config.simulationsCount_, averages);
+    averages.finalize();
     output.saveAverages(averages);
 
     return EXIT_SUCCESS;
