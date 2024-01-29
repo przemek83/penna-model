@@ -80,7 +80,7 @@ TEST_CASE("Output averages", "[penna]")
         integrateData(simulationAverages, data1);
         integrateData(simulationAverages, data2);
 
-        prepareFinalResults(2, config.years_, simulationAverages);
+        prepareFinalResults(2, simulationAverages);
 
         output.reset();
         output.saveAverages(simulationAverages);

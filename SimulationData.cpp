@@ -1,6 +1,6 @@
 #include "SimulationData.h"
 
-void prepareFinalResults(float simulationCount, int maxPopulationAge,
+void prepareFinalResults(float simulationCount,
                          SimulationAverages& simulationData)
 {
     for (std::size_t v = 0; v < Config::bits_; v++)
@@ -10,10 +10,10 @@ void prepareFinalResults(float simulationCount, int maxPopulationAge,
         simulationData.ageDistribution_[v] /= simulationCount;
     }
 
-    for (std::size_t v = 0; v < maxPopulationAge; v++)
+    for (std::size_t v = 0; v < simulationData.families_.size(); v++)
         simulationData.families_[v] /= simulationCount;
 
-    for (std::size_t v = 0; v < maxPopulationAge; v++)
+    for (std::size_t v = 0; v < simulationData.livingAtStart_.size(); v++)
     {
         simulationData.livingAtStart_[v] /= simulationCount;
         simulationData.births_[v] /= simulationCount;

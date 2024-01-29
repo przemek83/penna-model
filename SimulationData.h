@@ -39,7 +39,7 @@ SimulationData<T> prepareSimulationData(int years)
     return data;
 }
 
-void prepareFinalResults(float simulationCount, int maxPopulationAge,
+void prepareFinalResults(float simulationCount,
                          SimulationAverages& simulationData);
 
 void integrateData(SimulationAverages& simulationAverages,

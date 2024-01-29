@@ -28,7 +28,7 @@ int main()
     }
 
     FileOutput output(krok_symulacji, config.years_, 0);
-    prepareFinalResults(config.simulationsCount_, config.years_, averages);
+    prepareFinalResults(config.simulationsCount_, averages);
     output.saveAverages(averages);
 
     return EXIT_SUCCESS;
