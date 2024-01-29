@@ -141,7 +141,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
 void Simulation::createInitialPopulation(Generator& generator)
 {
-    for (size_t i{0}; i < config_.livesOnStart_; i++)
+    for (std::size_t i{0}; i < config_.livesOnStart_; i++)
     {
         Individual individual(i);
         individual.assignRandomBits(generator, config_.startingMutations_);
