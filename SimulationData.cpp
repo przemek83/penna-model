@@ -44,16 +44,9 @@ void SimulationAverages::integrateData(const SingleSimulationData& data)
 }
 
 template <>
-void SimulationAverages::finalize()
+void SimulationAverages::finalizeBasicData()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
-    for (std::size_t v = 0; v < Config::bits_; v++)
-    {
-        deathsDistribution_[v] /= simulationsAsFloat;
-        bitsDistribution_[v] /= simulationsAsFloat;
-        ageDistribution_[v] /= simulationsAsFloat;
-    }
-
     for (std::size_t i{0}; i < years_; i++)
         basicData_[i].families_ /= simulationsAsFloat;
 
@@ -64,4 +57,23 @@ void SimulationAverages::finalize()
         basicData_[i].livingAtEnd_ /= simulationsAsFloat;
         basicData_[i].deaths_ /= simulationsAsFloat;
     }
+}
+
+template <>
+void SimulationAverages::finalizeDistributions()
+{
+    const float simulationsAsFloat{static_cast<float>(simulations_)};
+    for (std::size_t v = 0; v < Config::bits_; v++)
+    {
+        deathsDistribution_[v] /= simulationsAsFloat;
+        bitsDistribution_[v] /= simulationsAsFloat;
+        ageDistribution_[v] /= simulationsAsFloat;
+    }
+}
+
+template <>
+void SimulationAverages::finalize()
+{
+    finalizeBasicData();
+    finalizeDistributions();
 }

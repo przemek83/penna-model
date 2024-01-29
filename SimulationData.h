@@ -91,6 +91,10 @@ private:
 
     void integrateDistributions(const SingleSimulationData& data);
 
+    void finalizeBasicData();
+
+    void finalizeDistributions();
+
     std::array<float, Config::bits_> deathsDistribution_;
     std::array<float, Config::bits_> bitsDistribution_;
     std::array<T, Config::bits_> ageDistribution_;
