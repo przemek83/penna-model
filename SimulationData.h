@@ -87,6 +87,10 @@ public:
     }
 
 private:
+    void integrateBasicData(const SingleSimulationData& data);
+
+    void integrateDistributions(const SingleSimulationData& data);
+
     std::array<float, Config::bits_> deathsDistribution_;
     std::array<float, Config::bits_> bitsDistribution_;
     std::array<T, Config::bits_> ageDistribution_;

@@ -1,7 +1,7 @@
 #include "SimulationData.h"
 
 template <>
-void SimulationAverages::integrateData(const SingleSimulationData& data)
+void SimulationAverages::integrateBasicData(const SingleSimulationData& data)
 {
     for (std::size_t i{0}; i < years_; ++i)
     {
@@ -14,7 +14,12 @@ void SimulationAverages::integrateData(const SingleSimulationData& data)
         basicData_[i].livingAtEnd_ += static_cast<float>(other.livingAtEnd_);
         basicData_[i].deaths_ += static_cast<float>(other.deaths_);
     }
+}
 
+template <>
+void SimulationAverages::integrateDistributions(
+    const SingleSimulationData& data)
+{
     const std::array<float, Config::bits_>& deathsDistribution{
         data.getDeathsDistribution()};
     const std::array<float, Config::bits_> bitsDistribution{
@@ -28,7 +33,13 @@ void SimulationAverages::integrateData(const SingleSimulationData& data)
         ageDistribution_[i] += static_cast<float>(ageDistribution[i]);
         deathsDistribution_[i] += deathsDistribution[i];
     }
+}
 
+template <>
+void SimulationAverages::integrateData(const SingleSimulationData& data)
+{
+    integrateBasicData(data);
+    integrateDistributions(data);
     simulations_++;
 }
 
