@@ -70,13 +70,14 @@ public:
     {
         for (std::size_t i{0}; i < Config::bits_; i++)
         {
-            bitsDistribution_[i] =
-                (float)bitsDistribution[i] / (float)populationCount;
+            bitsDistribution_[i] = static_cast<float>(bitsDistribution[i]) /
+                                   static_cast<float>(populationCount);
             ageDistribution_[i] = ageDistribution[i];
             if (gompertzAgeDistribution[i] > 0)
             {
-                deathsDistribution_[i] = (float)gompertzDeathsDistribution[i] /
-                                         (float)gompertzAgeDistribution[i];
+                deathsDistribution_[i] =
+                    static_cast<float>(gompertzDeathsDistribution[i]) /
+                    static_cast<float>(gompertzAgeDistribution[i]);
             }
             else
             {
