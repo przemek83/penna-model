@@ -119,10 +119,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     data.setBasicData(std::move(basicData));
     output.saveBasicSimulationMetrics(data);
 
-    const std::array<int, Config::bits_> ageDistribution{
-        getAgeDistribution(individuals_)};
-    const std::array<int, Config::bits_> bitsDistribution{
-        getBitsDistribution(individuals_)};
+    const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
+    const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};
 
     data.setDistributions(ageDistribution, bitsDistribution,
                           gompertzDeathsDistribution, gompertzAgeDistribution,
@@ -149,19 +147,21 @@ void Simulation::createInitialPopulation(Generator& generator)
     }
 }
 
-std::array<int, Config::bits_> Simulation::getAgeDistribution(
+std::vector<int> Simulation::getAgeDistribution(
     const std::list<Individual>& individuals)
 {
-    std::array<int, Config::bits_> ageDistribution{};
+    std::vector<int> ageDistribution;
+    ageDistribution.resize(Config::bits_, 0);
     for (const auto& individual : individuals)
         ageDistribution[individual.getAge()]++;
     return ageDistribution;
 }
 
-std::array<int, Config::bits_> Simulation::getBitsDistribution(
+std::vector<int> Simulation::getBitsDistribution(
     const std::list<Individual>& individuals)
 {
-    std::array<int, Config::bits_> bitsDistribution{};
+    std::vector<int> bitsDistribution;
+    bitsDistribution.resize(Config::bits_, 0);
     for (const auto& individual : individuals)
     {
         for (size_t i{0}; i < Config::bits_; i++)

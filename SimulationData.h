@@ -62,8 +62,8 @@ public:
     }
 
     void setDistributions(
-        const std::array<int, Config::bits_>& ageDistribution,
-        const std::array<int, Config::bits_>& bitsDistribution,
+        const std::vector<int>& ageDistribution,
+        const std::vector<int>& bitsDistribution,
         const std::array<int, Config::bits_>& gompertzDeathsDistribution,
         const std::array<int, Config::bits_>& gompertzAgeDistribution,
         int populationCount)

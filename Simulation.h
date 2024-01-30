@@ -20,10 +20,10 @@ public:
 private:
     void createInitialPopulation(Generator& generator);
 
-    static std::array<int, Config::bits_> getAgeDistribution(
+    static std::vector<int> getAgeDistribution(
         const std::list<Individual>& individuals);
 
-    static std::array<int, Config::bits_> getBitsDistribution(
+    static std::vector<int> getBitsDistribution(
         const std::list<Individual>& individuals);
 
     std::list<Individual> individuals_;
