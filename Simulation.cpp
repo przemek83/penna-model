@@ -122,9 +122,10 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
     const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};
 
-    data.setDistributions(ageDistribution, bitsDistribution,
-                          gompertzDeathsDistribution, gompertzAgeDistribution,
-                          populationCount);
+    data.setAgeDistribution(ageDistribution);
+    data.setBitDistribution(bitsDistribution, populationCount);
+    data.setDeathDistribution(gompertzDeathsDistribution,
+                              gompertzAgeDistribution);
 
     output.saveDeathsDistribution(data.getDeathsDistribution());
     output.saveBitsDistribution(data.getBitsDistribution());

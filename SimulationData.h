@@ -61,18 +61,26 @@ public:
         return ageDistribution_;
     }
 
-    void setDistributions(
-        const std::vector<int>& ageDistribution,
-        const std::vector<int>& bitsDistribution,
+    void setAgeDistribution(const std::vector<int>& ageDistribution)
+    {
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            ageDistribution_[i] = ageDistribution[i];
+    }
+
+    void setBitDistribution(const std::vector<int>& bitsDistribution,
+                            int populationCount)
+    {
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            bitsDistribution_[i] = static_cast<float>(bitsDistribution[i]) /
+                                   static_cast<float>(populationCount);
+    }
+
+    void setDeathDistribution(
         const std::array<int, Config::bits_>& gompertzDeathsDistribution,
-        const std::array<int, Config::bits_>& gompertzAgeDistribution,
-        int populationCount)
+        const std::array<int, Config::bits_>& gompertzAgeDistribution)
     {
         for (std::size_t i{0}; i < Config::bits_; i++)
         {
-            bitsDistribution_[i] = static_cast<float>(bitsDistribution[i]) /
-                                   static_cast<float>(populationCount);
-            ageDistribution_[i] = ageDistribution[i];
             if (gompertzAgeDistribution[i] > 0)
             {
                 deathsDistribution_[i] =
