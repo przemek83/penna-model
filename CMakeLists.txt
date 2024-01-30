@@ -18,7 +18,6 @@ set(${PROJECT_NAME}_SOURCES
     Individual.cpp
     Common.h
     SimulationData.h
-    SimulationData.cpp
     Simulation.h
     Simulation.cpp
     Generator.h
