@@ -142,7 +142,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
 void Simulation::createInitialPopulation(Generator& generator)
 {
-    for (std::size_t i{0}; i < config_.livesOnStart_; i++)
+    for (std::size_t i{0}; i < static_cast<std::size_t>(config_.livesOnStart_);
+         i++)
     {
         Individual individual(i);
         individual.assignRandomBits(generator, config_.startingMutations_);
@@ -155,8 +156,10 @@ std::vector<int> Simulation::getAgeDistribution(
 {
     std::vector<int> ageDistribution;
     ageDistribution.resize(Config::bits_, 0);
+
     for (const auto& individual : individuals)
-        ageDistribution[individual.getAge()]++;
+        ageDistribution[static_cast<std::size_t>(individual.getAge())]++;
+
     return ageDistribution;
 }
 
@@ -165,10 +168,12 @@ std::vector<int> Simulation::getBitsDistribution(
 {
     std::vector<int> bitsDistribution;
     bitsDistribution.resize(Config::bits_, 0);
+
     for (const auto& individual : individuals)
     {
         for (size_t i{0}; i < Config::bits_; i++)
-            bitsDistribution[i] += individual.getGenomeBit(i);
+            bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
     }
+
     return bitsDistribution;
 }
