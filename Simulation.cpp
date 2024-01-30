@@ -13,7 +13,7 @@ Simulation::Simulation(const Config& config, int number, float step)
 
 SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
-    int year{0};
+    std::size_t year{0};
     bool singleFamilyLeft{false};
     int populationCount{config_.livesOnStart_};
 
@@ -23,9 +23,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
     std::vector<int> gompertzDeathsDistribution;
-    gompertzDeathsDistribution.resize(config_.bits_, 0);
+    gompertzDeathsDistribution.resize(Config::bits_, 0);
     std::vector<int> gompertzAgeDistribution;
-    gompertzAgeDistribution.resize(config_.bits_, 0);
+    gompertzAgeDistribution.resize(Config::bits_, 0);
 
     std::vector<SingleSimulationData::BasicData> basicData;
     basicData.resize(config_.years_);
