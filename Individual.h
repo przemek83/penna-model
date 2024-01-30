@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <bitset>
 #include <cstdio>
 #include <string>
