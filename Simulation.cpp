@@ -142,12 +142,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
 void Simulation::createInitialPopulation(Generator& generator)
 {
-    for (std::size_t i{0}; i < static_cast<std::size_t>(config_.livesOnStart_);
-         i++)
+    for (int i{0}; i < config_.livesOnStart_; i++)
     {
         Individual individual(i);
         individual.assignRandomBits(generator, config_.startingMutations_);
-        individuals_.emplace_back(std::move(individual));
+        individuals_.push_back(individual);
     }
 }
 
