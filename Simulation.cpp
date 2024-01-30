@@ -22,8 +22,10 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
 
-    std::array<int, Config::bits_> gompertzDeathsDistribution{};
-    std::array<int, Config::bits_> gompertzAgeDistribution{};
+    std::vector<int> gompertzDeathsDistribution;
+    gompertzDeathsDistribution.resize(config_.bits_, 0);
+    std::vector<int> gompertzAgeDistribution;
+    gompertzAgeDistribution.resize(config_.bits_, 0);
 
     std::vector<SingleSimulationData::BasicData> basicData;
     basicData.resize(config_.years_);

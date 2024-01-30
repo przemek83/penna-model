@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <vector>
 
 #include "Config.h"
@@ -76,8 +75,8 @@ public:
     }
 
     void setDeathDistribution(
-        const std::array<int, Config::bits_>& gompertzDeathsDistribution,
-        const std::array<int, Config::bits_>& gompertzAgeDistribution)
+        const std::vector<int>& gompertzDeathsDistribution,
+        const std::vector<int>& gompertzAgeDistribution)
     {
         for (std::size_t i{0}; i < Config::bits_; i++)
         {
