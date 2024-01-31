@@ -31,6 +31,9 @@ private:
     bool shouldDie(const Individual& individual, Generator& generator,
                    int chanceForDeathInPercent) const;
 
+    bool shouldHaveOffspring(const Individual& individual,
+                             Generator& generator) const;
+
     SingleSimulationData prepareData(
         std::vector<SingleSimulationData::BasicData> basicData,
         const std::vector<int>& gompertzDeathsDistribution,

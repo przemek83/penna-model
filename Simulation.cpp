@@ -65,8 +65,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                 continue;
             }
 
-            if ((individual.getAge() > config_.reproductionAge_) &&
-                generator.getInt(1, 100) <= config_.chanceForOffspring_)
+            if (shouldHaveOffspring(individual, generator))
             {
                 for (int l{0}; l < config_.offspringCount_; l++)
                 {
@@ -164,6 +163,13 @@ bool Simulation::shouldDie(const Individual& individual, Generator& generator,
                 START_ODLOWOW + number_ * step_))
 #endif
         ;
+}
+
+bool Simulation::shouldHaveOffspring(const Individual& individual,
+                                     Generator& generator) const
+{
+    return (individual.getAge() > config_.reproductionAge_) &&
+           generator.getInt(1, 100) <= config_.chanceForOffspring_;
 }
 
 SingleSimulationData Simulation::prepareData(
