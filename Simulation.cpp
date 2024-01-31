@@ -20,7 +20,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
 
-    printf("%d/%d Progress:       [", number_, config_.simulationsCount_);
+    std::cout << number_ << "/" << config_.simulationsCount_
+              << " Progress:       [";
 
     std::vector<int> gompertzDeathsDistribution;
     gompertzDeathsDistribution.resize(Config::bits_, 0);
@@ -28,7 +29,6 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     gompertzAgeDistribution.resize(Config::bits_, 0);
 
     std::vector<SingleSimulationData::BasicData> basicData;
-    basicData.resize(config_.years_);
 
     while (year < config_.years_)
     {
@@ -107,11 +107,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        basicData[year].families_ = familiesCount;
-        basicData[year].livingAtStart_ = populationCount;
-        basicData[year].births_ = ilosc_narodzin;
-        basicData[year].livingAtEnd_ = populationCount - zgon;
-        basicData[year].deaths_ = zgon;
+        basicData.push_back({familiesCount, populationCount, ilosc_narodzin,
+                             populationCount - zgon, zgon});
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
