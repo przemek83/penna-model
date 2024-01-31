@@ -146,8 +146,9 @@ std::vector<int> Simulation::getBitsDistribution(
 
 int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 {
-    return std::round(static_cast<float>(populationCount) /
-                      static_cast<float>(config_.maxPopulation_) * 100);
+    return static_cast<int>(
+        std::round(static_cast<float>(populationCount) /
+                   static_cast<float>(config_.maxPopulation_) * 100));
 }
 
 bool Simulation::shouldDie(const Individual& individual, Generator& generator,
