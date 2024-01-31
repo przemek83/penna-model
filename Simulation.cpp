@@ -97,18 +97,13 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             std::cout << "*";
     }
 
+    std::cout << "]";
+
     SingleSimulationData data{prepareData(std::move(basicData),
                                           gompertzDeathsDistribution,
                                           gompertzAgeDistribution)};
 
-    output.saveBasicSimulationMetrics(data);
-    output.saveDeathsDistribution(data.getDeathsDistribution());
-    output.saveBitsDistribution(data.getBitsDistribution());
-    output.saveAgeDistribution(data.getAgeDistribution());
-
-    std::cout << "]";
-
-    output.saveFinalPopulation(individuals_);
+    saveSimulationData(data, output);
 
     return data;
 }
@@ -188,4 +183,14 @@ SingleSimulationData Simulation::prepareData(
     data.setDeathDistribution(gompertzDeathsDistribution,
                               gompertzAgeDistribution);
     return data;
+}
+
+void Simulation::saveSimulationData(const SingleSimulationData& data,
+                                    Output& output) const
+{
+    output.saveBasicSimulationMetrics(data);
+    output.saveDeathsDistribution(data.getDeathsDistribution());
+    output.saveBitsDistribution(data.getBitsDistribution());
+    output.saveAgeDistribution(data.getAgeDistribution());
+    output.saveFinalPopulation(individuals_);
 }

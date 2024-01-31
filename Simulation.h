@@ -36,6 +36,9 @@ private:
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution) const;
 
+    void saveSimulationData(const SingleSimulationData& data,
+                            Output& output) const;
+
     std::list<Individual> individuals_;
 
     Config config_;
