@@ -38,14 +38,6 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
 
-#ifdef SYMULACJA_DORSZY
-        if (rok + 1 == MAX_POP_LAT)
-        {
-            if (ostatni_el - puste.size() == 0)
-                return;
-        }
-#endif
-
         const int chanceForDeathInPercent{
             getCurrentDeathChanceInPercent(populationCount)};
 
