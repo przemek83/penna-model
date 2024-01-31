@@ -46,8 +46,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         }
 #endif
 
-        const int chanceForDeath{static_cast<int>(
-            (float)populationCount / config_.maxPopulation_ * 100.0)};
+        const int chanceForDeathInPercent{
+            getCurrentDeathChanceInPercent(populationCount)};
 
         auto it{individuals_.begin()};
         while (it != individuals_.end())
@@ -65,9 +65,10 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                 gompertzAgeDistribution[individual.getAge()]++;
 
             if ((individual.getSurvivedMutations() >=
-                 config_.maxMutations_) ||                    // mutations
-                (individual.getAge() >= Config::bits_) ||     // ageing
-                (generator.getInt(0, 100) <= chanceForDeath)  // verhulst
+                 config_.maxMutations_) ||                 // mutations
+                (individual.getAge() >= Config::bits_) ||  // ageing
+                (generator.getInt(0, 100) <=
+                 chanceForDeathInPercent)                  // verhulst
 #ifdef SYMULACJA_DORSZY
                 || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                     ((float)generator.getInt(0, 10000) / 100 <=
@@ -175,4 +176,10 @@ std::vector<int> Simulation::getBitsDistribution(
     }
 
     return bitsDistribution;
+}
+
+int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
+{
+    return std::round(static_cast<float>(populationCount) /
+                      static_cast<float>(config_.maxPopulation_) * 100);
 }

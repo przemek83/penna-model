@@ -26,6 +26,8 @@ private:
     static std::vector<int> getBitsDistribution(
         const std::list<Individual>& individuals);
 
+    int getCurrentDeathChanceInPercent(int populationCount) const;
+
     std::list<Individual> individuals_;
 
     Config config_;
