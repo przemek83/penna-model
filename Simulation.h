@@ -28,6 +28,9 @@ private:
 
     int getCurrentDeathChanceInPercent(int populationCount) const;
 
+    bool shouldDie(const Individual& individual, Generator& generator,
+                   int chanceForDeathInPercent) const;
+
     std::list<Individual> individuals_;
 
     Config config_;

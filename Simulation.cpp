@@ -64,17 +64,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             if (year + 1 == config_.years_)
                 gompertzAgeDistribution[individual.getAge()]++;
 
-            if ((individual.getSurvivedMutations() >=
-                 config_.maxMutations_) ||                 // mutations
-                (individual.getAge() >= Config::bits_) ||  // ageing
-                (generator.getInt(0, 100) <=
-                 chanceForDeathInPercent)                  // verhulst
-#ifdef SYMULACJA_DORSZY
-                || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
-                    ((float)generator.getInt(0, 10000) / 100 <=
-                     START_ODLOWOW + number_ * step_))
-#endif
-            )
+            if (shouldDie(individual, generator, chanceForDeathInPercent))
             {
                 zgon++;
                 if (year + 1 == config_.years_)
@@ -179,4 +169,19 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 {
     return std::round(static_cast<float>(populationCount) /
                       static_cast<float>(config_.maxPopulation_) * 100);
+}
+
+bool Simulation::shouldDie(const Individual& individual, Generator& generator,
+                           int chanceForDeathInPercent) const
+{
+    return (individual.getSurvivedMutations() >=
+            config_.maxMutations_) ||                             // mutations
+           (individual.getAge() >= Config::bits_) ||              // ageing
+           (generator.getInt(0, 100) <= chanceForDeathInPercent)  // verhulst
+#ifdef SYMULACJA_DORSZY
+           || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
+               ((float)generator.getInt(0, 10000) / 100 <=
+                START_ODLOWOW + number_ * step_))
+#endif
+        ;
 }
