@@ -97,18 +97,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             std::cout << "*";
     }
 
-    SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
-    data.setBasicData(std::move(basicData));
+    SingleSimulationData data{prepareData(std::move(basicData),
+                                          gompertzDeathsDistribution,
+                                          gompertzAgeDistribution)};
+
     output.saveBasicSimulationMetrics(data);
-
-    const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
-    const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};
-
-    data.setAgeDistribution(ageDistribution);
-    data.setBitDistribution(bitsDistribution, populationCount);
-    data.setDeathDistribution(gompertzDeathsDistribution,
-                              gompertzAgeDistribution);
-
     output.saveDeathsDistribution(data.getDeathsDistribution());
     output.saveBitsDistribution(data.getBitsDistribution());
     output.saveAgeDistribution(data.getAgeDistribution());
@@ -176,4 +169,23 @@ bool Simulation::shouldDie(const Individual& individual, Generator& generator,
                 START_ODLOWOW + number_ * step_))
 #endif
         ;
+}
+
+SingleSimulationData Simulation::prepareData(
+    std::vector<SingleSimulationData::BasicData> basicData,
+    const std::vector<int>& gompertzDeathsDistribution,
+    const std::vector<int>& gompertzAgeDistribution) const
+{
+    const int populationCount{basicData.back().livingAtStart_};
+    SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
+    data.setBasicData(std::move(basicData));
+
+    const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
+    const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};
+
+    data.setAgeDistribution(ageDistribution);
+    data.setBitDistribution(bitsDistribution, populationCount);
+    data.setDeathDistribution(gompertzDeathsDistribution,
+                              gompertzAgeDistribution);
+    return data;
 }
