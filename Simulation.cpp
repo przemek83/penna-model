@@ -162,7 +162,7 @@ bool Simulation::shouldDie(const Individual& individual, Generator& generator,
     return (individual.getSurvivedMutations() >=
             config_.maxMutations_) ||                             // mutations
            (individual.getAge() >= Config::bits_) ||              // ageing
-           (generator.getInt(0, 100) <= chanceForDeathInPercent)  // verhulst
+           (generator.getInt(0, 100) <= chanceForDeathInPercent)  // Verhulst
 #ifdef SYMULACJA_DORSZY
            || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                ((float)generator.getInt(0, 10000) / 100 <=
