@@ -46,11 +46,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         {
             Individual& individual{*it};
 
-            if (!singleFamilyLeft)
+            if (int& element{families[individual.getAncestor()]};
+                !singleFamilyLeft && element != 1)
             {
-                families[individual.getAncestor()]++;
-                if (families[individual.getAncestor()] == 1)
-                    familiesCount++;
+                familiesCount++;
+                element = 1;
             }
 
             if (year + 1 == config_.years_)
