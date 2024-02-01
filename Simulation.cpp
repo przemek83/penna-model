@@ -84,8 +84,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         }
 
         const int livesAtYearStart{livesCount};
-        livesCount -= deaths;
-        livesCount += births;
+        livesCount = livesCount - deaths + births;
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
