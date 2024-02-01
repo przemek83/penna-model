@@ -83,13 +83,14 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             it++;
         }
 
+        const int livesAtYearStart{populationCount};
         populationCount -= zgon;
         populationCount += ilosc_narodzin;
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        basicData.push_back({familiesCount, populationCount, ilosc_narodzin,
-                             populationCount - zgon, zgon});
+        basicData.push_back({familiesCount, livesAtYearStart, ilosc_narodzin,
+                             populationCount, zgon});
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
@@ -178,7 +179,7 @@ SingleSimulationData Simulation::prepareData(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution) const
 {
-    const int populationCount{basicData.back().livingAtStart_};
+    const int populationCount{basicData.back().livingAtEnd_};
     SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
     data.setBasicData(std::move(basicData));
 
