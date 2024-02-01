@@ -15,7 +15,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
     std::size_t year{0};
     bool singleFamilyLeft{false};
-    int populationCount{config_.livesOnStart_};
+    int livesCount{config_.livesOnStart_};
 
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
@@ -32,14 +32,14 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     while (year < config_.years_)
     {
-        int ilosc_narodzin{0};
+        int births{0};
         int familiesCount{0};
-        int zgon{0};
+        int deaths{0};
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
 
         const int chanceForDeathInPercent{
-            getCurrentDeathChanceInPercent(populationCount)};
+            getCurrentDeathChanceInPercent(livesCount)};
 
         auto it{individuals_.begin()};
         while (it != individuals_.end())
@@ -58,7 +58,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
             if (shouldDie(individual, generator, chanceForDeathInPercent))
             {
-                zgon++;
+                deaths++;
                 if (year + 1 == config_.years_)
                     gompertzDeathsDistribution[individual.getAge()]++;
                 it = individuals_.erase(it);
@@ -70,7 +70,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                 for (int l{0}; l < config_.offspringCount_; l++)
                 {
                     Individual osobnik{individual.offspring()};
-                    ilosc_narodzin++;
+                    births++;
 
                     for (int m{0}; m < config_.mutationsDelta_; m++)
                         osobnik.applyMutation(generator);
@@ -83,14 +83,14 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             it++;
         }
 
-        const int livesAtYearStart{populationCount};
-        populationCount -= zgon;
-        populationCount += ilosc_narodzin;
+        const int livesAtYearStart{livesCount};
+        livesCount -= deaths;
+        livesCount += births;
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        basicData.push_back({familiesCount, livesAtYearStart, ilosc_narodzin,
-                             populationCount, zgon});
+        basicData.push_back(
+            {familiesCount, livesAtYearStart, births, livesCount, deaths});
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
