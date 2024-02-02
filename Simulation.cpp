@@ -119,8 +119,7 @@ void Simulation::createInitialPopulation(Generator& generator)
 std::vector<int> Simulation::getAgeDistribution(
     const std::list<Individual>& individuals)
 {
-    std::vector<int> ageDistribution;
-    ageDistribution.resize(Config::bits_, 0);
+    std::vector<int> ageDistribution(Config::bits_, 0);
 
     for (const auto& individual : individuals)
         ageDistribution[static_cast<std::size_t>(individual.getAge())]++;
@@ -131,8 +130,7 @@ std::vector<int> Simulation::getAgeDistribution(
 std::vector<int> Simulation::getBitsDistribution(
     const std::list<Individual>& individuals)
 {
-    std::vector<int> bitsDistribution;
-    bitsDistribution.resize(Config::bits_, 0);
+    std::vector<int> bitsDistribution(Config::bits_, 0);
 
     for (const auto& individual : individuals)
     {
