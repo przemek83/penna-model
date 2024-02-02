@@ -22,10 +22,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     std::cout << number_ << "/" << config_.simulationsCount_
               << " Progress:       [";
 
-    std::vector<int> gompertzDeathsDistribution;
-    gompertzDeathsDistribution.resize(Config::bits_, 0);
-    std::vector<int> gompertzAgeDistribution;
-    gompertzAgeDistribution.resize(Config::bits_, 0);
+    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
+    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
 
     std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
@@ -37,8 +35,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         SingleSimulationData::BasicMetrics yearMetrics{0, livesAtStart, 0, 0,
                                                        0};
 
-        std::vector<int> families;
-        families.resize(config_.livesOnStart_, 0);
+        std::vector<int> families(config_.livesOnStart_, 0);
 
         const int chanceForDeathInPercent{
             getCurrentDeathChanceInPercent(livesAtStart)};
