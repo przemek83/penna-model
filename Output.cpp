@@ -26,13 +26,14 @@ void Output::saveAverages(const SimulationAverages& data)
 
     for (std::size_t i{0}; i < maxPopulationAge_; i++)
     {
-        const SimulationData<float>::BasicData& basicData{data.getBasicData(i)};
-        if (basicData.families_ > 1)
-            *families << i << "\t" << basicData.families_ << std::endl;
+        const SimulationData<float>::BasicMetrics& basicMetrics{
+            data.getBasicBasicMetrics(i)};
+        if (basicMetrics.families_ > 1)
+            *families << i << "\t" << basicMetrics.families_ << std::endl;
 
-        *stats << i << "\t" << basicData.livingAtStart_ << "\t"
-               << basicData.births_ << "\t" << basicData.livingAtEnd_ << "\t"
-               << basicData.deaths_ << std::endl;
+        *stats << i << "\t" << basicMetrics.livingAtStart_ << "\t"
+               << basicMetrics.births_ << "\t" << basicMetrics.livingAtEnd_
+               << "\t" << basicMetrics.deaths_ << std::endl;
     }
 
     const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
@@ -58,14 +59,14 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
 
     for (size_t year{0}; year < maxPopulationAge_; ++year)
     {
-        const SingleSimulationData::BasicData& basicData{
-            data.getBasicData(year)};
-        if (basicData.families_ > 1)
-            *families << year << "\t" << basicData.families_ << std::endl;
+        const SingleSimulationData::BasicMetrics& basicMetrics{
+            data.getBasicBasicMetrics(year)};
+        if (basicMetrics.families_ > 1)
+            *families << year << "\t" << basicMetrics.families_ << std::endl;
 
-        *stats << year << "\t" << basicData.livingAtStart_ << "\t"
-               << basicData.births_ << "\t" << basicData.livingAtEnd_ << "\t"
-               << basicData.deaths_ << std::endl;
+        *stats << year << "\t" << basicMetrics.livingAtStart_ << "\t"
+               << basicMetrics.births_ << "\t" << basicMetrics.livingAtEnd_
+               << "\t" << basicMetrics.deaths_ << std::endl;
     }
 }
 

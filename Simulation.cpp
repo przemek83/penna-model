@@ -28,7 +28,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     std::vector<int> gompertzAgeDistribution;
     gompertzAgeDistribution.resize(Config::bits_, 0);
 
-    std::vector<SingleSimulationData::BasicData> basicData;
+    std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
 
     while (year < config_.years_)
     {
@@ -88,7 +88,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         if (familiesCount == 1)
             singleFamilyLeft = true;
 
-        basicData.push_back(
+        basicMetrics.push_back(
             {familiesCount, livesAtYearStart, births, livesCount, deaths});
 
         year++;
@@ -98,7 +98,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     std::cout << "]";
 
-    SingleSimulationData data{prepareData(std::move(basicData),
+    SingleSimulationData data{prepareData(std::move(basicMetrics),
                                           gompertzDeathsDistribution,
                                           gompertzAgeDistribution)};
 
@@ -174,13 +174,13 @@ bool Simulation::shouldHaveOffspring(const Individual& individual,
 }
 
 SingleSimulationData Simulation::prepareData(
-    std::vector<SingleSimulationData::BasicData> basicData,
+    std::vector<SingleSimulationData::BasicMetrics> basicMetrics,
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution) const
 {
-    const int populationCount{basicData.back().livingAtEnd_};
+    const int populationCount{basicMetrics.back().livingAtEnd_};
     SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
-    data.setBasicData(std::move(basicData));
+    data.setBasicMetrics(std::move(basicMetrics));
 
     const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
     const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};

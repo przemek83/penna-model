@@ -19,10 +19,10 @@ public:
         deathsDistribution_.resize(years_, 0);
         bitsDistribution_.resize(years_, 0);
         ageDistribution_.resize(years_, 0);
-        basicData_.resize(years_);
+        basicMetrics_.resize(years_);
     }
 
-    struct BasicData
+    struct BasicMetrics
     {
         T families_{0};
         T livingAtStart_{0};
@@ -31,14 +31,14 @@ public:
         T deaths_{0};
     };
 
-    void setBasicData(std::vector<BasicData> basicData)
+    void setBasicMetrics(std::vector<BasicMetrics> basicBasicMetrics)
     {
-        basicData_ = std::move(basicData);
+        basicMetrics_ = std::move(basicBasicMetrics);
     }
 
-    const BasicData& getBasicData(std::size_t year) const
+    const BasicMetrics& getBasicBasicMetrics(std::size_t year) const
     {
-        return basicData_[year];
+        return basicMetrics_[year];
     }
 
     const std::vector<float>& getDeathsDistribution() const
@@ -91,31 +91,32 @@ public:
 
     void integrateData(const SingleSimulationData& data)
     {
-        integrateBasicData(data);
+        integrateBasicMetrics(data);
         integrateDistributions(data);
         simulations_++;
     }
 
     void finalize()
     {
-        finalizeBasicData();
+        finalizeBasicMetrics();
         finalizeDistributions();
     }
 
 private:
-    void integrateBasicData(const SingleSimulationData& data)
+    void integrateBasicMetrics(const SingleSimulationData& data)
     {
         for (std::size_t i{0}; i < years_; ++i)
         {
-            const SingleSimulationData::BasicData& other{data.getBasicData(i)};
+            const SingleSimulationData::BasicMetrics& other{
+                data.getBasicBasicMetrics(i)};
 
-            basicData_[i].families_ += static_cast<float>(other.families_);
-            basicData_[i].livingAtStart_ +=
+            basicMetrics_[i].families_ += static_cast<float>(other.families_);
+            basicMetrics_[i].livingAtStart_ +=
                 static_cast<float>(other.livingAtStart_);
-            basicData_[i].births_ += static_cast<float>(other.births_);
-            basicData_[i].livingAtEnd_ +=
+            basicMetrics_[i].births_ += static_cast<float>(other.births_);
+            basicMetrics_[i].livingAtEnd_ +=
                 static_cast<float>(other.livingAtEnd_);
-            basicData_[i].deaths_ += static_cast<float>(other.deaths_);
+            basicMetrics_[i].deaths_ += static_cast<float>(other.deaths_);
         }
     }
 
@@ -134,18 +135,18 @@ private:
         }
     }
 
-    void finalizeBasicData()
+    void finalizeBasicMetrics()
     {
         const float simulationsAsFloat{static_cast<float>(simulations_)};
         for (std::size_t i{0}; i < years_; i++)
-            basicData_[i].families_ /= simulationsAsFloat;
+            basicMetrics_[i].families_ /= simulationsAsFloat;
 
         for (std::size_t i{0}; i < years_; i++)
         {
-            basicData_[i].livingAtStart_ /= simulationsAsFloat;
-            basicData_[i].births_ /= simulationsAsFloat;
-            basicData_[i].livingAtEnd_ /= simulationsAsFloat;
-            basicData_[i].deaths_ /= simulationsAsFloat;
+            basicMetrics_[i].livingAtStart_ /= simulationsAsFloat;
+            basicMetrics_[i].births_ /= simulationsAsFloat;
+            basicMetrics_[i].livingAtEnd_ /= simulationsAsFloat;
+            basicMetrics_[i].deaths_ /= simulationsAsFloat;
         }
     }
 
@@ -164,7 +165,7 @@ private:
     std::vector<float> bitsDistribution_;
     std::vector<T> ageDistribution_;
 
-    std::vector<BasicData> basicData_;
+    std::vector<BasicMetrics> basicMetrics_;
 
     int simulations_{0};
     std::size_t years_;

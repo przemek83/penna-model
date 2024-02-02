@@ -35,7 +35,7 @@ private:
                              Generator& generator) const;
 
     SingleSimulationData prepareData(
-        std::vector<SingleSimulationData::BasicData> basicData,
+        std::vector<SingleSimulationData::BasicMetrics> basicMetrics,
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution) const;
 
