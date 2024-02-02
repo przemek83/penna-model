@@ -28,20 +28,20 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     gompertzAgeDistribution.resize(Config::bits_, 0);
 
     std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
-    basicMetrics.resize(config_.years_);
+    basicMetrics.reserve(config_.years_);
 
     while (year < config_.years_)
     {
-        SingleSimulationData::BasicMetrics& yearMetrics{basicMetrics[year]};
-        yearMetrics.livingAtStart_ =
-            (year == 0 ? config_.livesOnStart_
-                       : basicMetrics[year - 1].livingAtEnd_);
+        const int livesAtStart{year == 0 ? config_.livesOnStart_
+                                         : basicMetrics[year - 1].livingAtEnd_};
+        SingleSimulationData::BasicMetrics yearMetrics{0, livesAtStart, 0, 0,
+                                                       0};
 
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
 
         const int chanceForDeathInPercent{
-            getCurrentDeathChanceInPercent(yearMetrics.livingAtStart_)};
+            getCurrentDeathChanceInPercent(livesAtStart)};
 
         auto it{individuals_.begin()};
         while (it != individuals_.end())
@@ -90,6 +90,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
         if (yearMetrics.families_ == 1)
             singleFamilyLeft = true;
+
+        basicMetrics.push_back(yearMetrics);
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
