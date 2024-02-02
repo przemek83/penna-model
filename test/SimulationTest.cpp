@@ -45,16 +45,13 @@ TEST_CASE("Simulation", "[penna]")
 
 TEST_CASE("Benchmark", "[penna]")
 {
-    SKIP();
+    // SKIP();
     Config config;
     MockedGenerator generator;
 
     SECTION("simulation short")
     {
-        // 18.01.2024 - 205.679 s
-        // 19.01.2024 - 83.274 s
-        // 24.01.2024 - 108.660 s
-        // 30.01.2024 - 105.830 s
+        // 02.02.2024 - 26.010 s
 
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
@@ -68,10 +65,7 @@ TEST_CASE("Benchmark", "[penna]")
 
     SECTION("simulation long")
     {
-        // 18.01.2024 - 846.279 s
-        // 19.01.2024 - 333.807 s
-        // 24.01.2024 - 430.467 s
-        // 30.01.2024 - 417.025 s
+        // 02.02.2024 - 114.283 s
 
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
