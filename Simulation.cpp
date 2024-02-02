@@ -13,9 +13,6 @@ Simulation::Simulation(const Config& config, int number, float step)
 
 SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
-    std::size_t year{0};
-    bool singleFamilyLeft{false};
-
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
 
@@ -28,12 +25,15 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
 
+    std::size_t year{0};
     while (year < config_.years_)
     {
+        const bool singleFamily{
+            year == 0 ? false : basicMetrics[year - 1].families_ == 1};
         const int livesAtStart{year == 0 ? config_.livesOnStart_
                                          : basicMetrics[year - 1].livingAtEnd_};
-        SingleSimulationData::BasicMetrics yearMetrics{0, livesAtStart, 0, 0,
-                                                       0};
+        SingleSimulationData::BasicMetrics yearMetrics{singleFamily ? 1 : 0,
+                                                       livesAtStart, 0, 0, 0};
 
         std::vector<int> families(config_.livesOnStart_, 0);
 
@@ -45,11 +45,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         {
             Individual& individual{*it};
 
-            if (int& element{families[individual.getAncestor()]};
-                !singleFamilyLeft && element != 1)
+            if (int& family{families[individual.getAncestor()]};
+                !singleFamily && family != 1)
             {
                 yearMetrics.families_++;
-                element = 1;
+                family = 1;
             }
 
             if (year + 1 == config_.years_)
@@ -84,9 +84,6 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
         yearMetrics.livingAtEnd_ = yearMetrics.livingAtStart_ -
                                    yearMetrics.deaths_ + yearMetrics.births_;
-
-        if (yearMetrics.families_ == 1)
-            singleFamilyLeft = true;
 
         basicMetrics.push_back(yearMetrics);
 
