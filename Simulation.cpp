@@ -15,7 +15,6 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 {
     std::size_t year{0};
     bool singleFamilyLeft{false};
-    int livesCount{config_.livesOnStart_};
 
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
@@ -29,17 +28,20 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     gompertzAgeDistribution.resize(Config::bits_, 0);
 
     std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
+    basicMetrics.resize(config_.years_);
 
     while (year < config_.years_)
     {
-        int births{0};
-        int familiesCount{0};
-        int deaths{0};
+        SingleSimulationData::BasicMetrics& yearMetrics{basicMetrics[year]};
+        yearMetrics.livingAtStart_ =
+            (year == 0 ? config_.livesOnStart_
+                       : basicMetrics[year - 1].livingAtEnd_);
+
         std::vector<int> families;
         families.resize(config_.livesOnStart_, 0);
 
         const int chanceForDeathInPercent{
-            getCurrentDeathChanceInPercent(livesCount)};
+            getCurrentDeathChanceInPercent(yearMetrics.livingAtStart_)};
 
         auto it{individuals_.begin()};
         while (it != individuals_.end())
@@ -49,7 +51,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             if (int& element{families[individual.getAncestor()]};
                 !singleFamilyLeft && element != 1)
             {
-                familiesCount++;
+                yearMetrics.families_++;
                 element = 1;
             }
 
@@ -58,7 +60,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
             if (shouldDie(individual, generator, chanceForDeathInPercent))
             {
-                deaths++;
+                yearMetrics.deaths_++;
                 if (year + 1 == config_.years_)
                     gompertzDeathsDistribution[individual.getAge()]++;
                 it = individuals_.erase(it);
@@ -70,7 +72,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                 for (int l{0}; l < config_.offspringCount_; l++)
                 {
                     Individual osobnik{individual.offspring()};
-                    births++;
+                    yearMetrics.births_++;
 
                     for (int m{0}; m < config_.mutationsDelta_; m++)
                         osobnik.applyMutation(generator);
@@ -83,13 +85,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             it++;
         }
 
-        const int livesAtYearStart{livesCount};
-        livesCount = livesCount - deaths + births;
-        if (familiesCount == 1)
-            singleFamilyLeft = true;
+        yearMetrics.livingAtEnd_ = yearMetrics.livingAtStart_ -
+                                   yearMetrics.deaths_ + yearMetrics.births_;
 
-        basicMetrics.push_back(
-            {familiesCount, livesAtYearStart, births, livesCount, deaths});
+        if (yearMetrics.families_ == 1)
+            singleFamilyLeft = true;
 
         year++;
         if ((year % (config_.years_ / 50)) == 0)
