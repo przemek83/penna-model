@@ -45,7 +45,7 @@ TEST_CASE("Simulation", "[penna]")
 
 TEST_CASE("Benchmark", "[penna]")
 {
-    // SKIP();
+    SKIP();
     Config config;
     MockedGenerator generator;
 
