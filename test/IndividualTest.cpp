@@ -112,9 +112,9 @@ TEST_CASE("Individual", "[penna]")
     {
         individual.setGenome(std::bitset<Config::bits_>(0));
         MockedGenerator generator;
-        individual.applyMutation(generator);
+        const Individual child{individual.offspring(generator, 1)};
 
-        REQUIRE_THAT(individual.asBitString(),
+        REQUIRE_THAT(child.asBitString(),
                      !Catch::Matchers::Equals(genomeString));
     }
 
@@ -123,9 +123,9 @@ TEST_CASE("Individual", "[penna]")
         individual.setGenome(std::bitset<Config::bits_>(8));
         MockedGenerator generator;
         const std::string genomeBeforeMutation{individual.asBitString()};
-        individual.applyMutation(generator);
+        const Individual child{individual.offspring(generator, 1)};
 
-        REQUIRE_THAT(individual.asBitString(),
+        REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(genomeBeforeMutation));
     }
 
@@ -133,13 +133,13 @@ TEST_CASE("Individual", "[penna]")
     {
         individual.setGenome(std::bitset<Config::bits_>(0));
         MockedGenerator generator;
-        individual.applyMutation(generator);
+        const Individual child{individual.offspring(generator, 1)};
 
         const std::string expectedGenome{
             "000000000000000000000000000000000000000000"
             "0000000000000000001000"};
 
-        REQUIRE_THAT(individual.asBitString(),
+        REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
     }
 
@@ -147,14 +147,12 @@ TEST_CASE("Individual", "[penna]")
     {
         individual.setGenome(std::bitset<Config::bits_>(0));
         MockedGenerator generator;
-        individual.applyMutation(generator);
-        individual.applyMutation(generator);
-        individual.applyMutation(generator);
+        const Individual child{individual.offspring(generator, 3)};
 
         const std::string expectedGenome{
             "0000000000000000010000000000000000000000100000000000000000001000"};
 
-        REQUIRE_THAT(individual.asBitString(),
+        REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
     }
 

@@ -25,8 +25,6 @@ public:
 
     Individual offspring(Generator& generator, int mutations) const;
 
-    void applyMutation(Generator& generator);
-
     void assignRandomBits(Generator& generator, int startingMutations);
 
     unsigned long long getGenomeAsNumber() const;
@@ -39,6 +37,8 @@ public:
     void setGenome(const std::bitset<Config::bits_>& genome);
 
 private:
+    void applyMutation(Generator& generator);
+
     std::bitset<Config::bits_> genome_;
 
     int age_{0};
