@@ -19,19 +19,15 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     std::cout << number_ << "/" << config_.simulationsCount_
               << " Progress:       [";
 
-    std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
+    std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
 
     std::size_t year{0};
     while (year < config_.years_)
     {
-        const bool singleFamily{
-            year == 0 ? false : basicMetrics[year - 1].families_ == 1};
-        const int livesAtStart{year == 0
-                                   ? config_.livesOnStart_
-                                   : basicMetrics[year - 1].getLivingAtEnd()};
-
-        const SingleSimulationData::BasicMetrics yearMetrics{
+        const bool singleFamily{isSingleFamily(year, basicMetrics)};
+        const int livesAtStart{getLivesOnYearStart(year, basicMetrics)};
+        const BasicMetrics yearMetrics{
             progressByOneYear(generator, singleFamily, livesAtStart)};
 
         basicMetrics.push_back(yearMetrics);
@@ -57,8 +53,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
     Generator& generator, bool singleFamily, int livesAtStart)
 {
-    SingleSimulationData::BasicMetrics yearMetrics{singleFamily ? 1 : 0,
-                                                   livesAtStart, 0, 0};
+    BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
     std::vector<int> families(config_.livesOnStart_, 0);
 
@@ -170,7 +165,7 @@ bool Simulation::shouldHaveOffspring(const Individual& individual,
 }
 
 SingleSimulationData Simulation::prepareData(
-    std::vector<SingleSimulationData::BasicMetrics> basicMetrics,
+    std::vector<BasicMetrics> basicMetrics,
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution) const
 {
@@ -221,4 +216,17 @@ Simulation::getDeathsDistributionData(Generator& generator) const
     }
 
     return {gompertzDeathsDistribution, gompertzAgeDistribution};
+}
+
+bool Simulation::isSingleFamily(
+    std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const
+{
+    return year == 0 ? false : basicMetrics[year - 1].families_ == 1;
+}
+
+int Simulation::getLivesOnYearStart(
+    std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const
+{
+    return year == 0 ? config_.livesOnStart_
+                     : basicMetrics[year - 1].getLivingAtEnd();
 }

@@ -18,9 +18,9 @@ public:
     SingleSimulationData run(Generator& generator, Output& output);
 
 private:
-    SingleSimulationData::BasicMetrics progressByOneYear(Generator& generator,
-                                                         bool singleFamily,
-                                                         int livesAtStart);
+    using BasicMetrics = SingleSimulationData::BasicMetrics;
+    BasicMetrics progressByOneYear(Generator& generator, bool singleFamily,
+                                   int livesAtStart);
 
     void createInitialPopulation(Generator& generator);
 
@@ -39,7 +39,7 @@ private:
                              Generator& generator) const;
 
     SingleSimulationData prepareData(
-        std::vector<SingleSimulationData::BasicMetrics> basicMetrics,
+        std::vector<BasicMetrics> basicMetrics,
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution) const;
 
@@ -48,6 +48,12 @@ private:
 
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData(
         Generator& generator) const;
+
+    bool isSingleFamily(std::size_t year,
+                        const std::vector<BasicMetrics>& basicMetrics) const;
+
+    int getLivesOnYearStart(
+        std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const;
 
     std::list<Individual> individuals_;
 
