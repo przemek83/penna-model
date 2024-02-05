@@ -86,24 +86,8 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     std::cout << "]";
 
-    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
-    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
-
-    const int chanceForDeathInPercent{
-        getCurrentDeathChanceInPercent(individuals_.size())};
-
-    auto it{individuals_.begin()};
-    while (it != individuals_.end())
-    {
-        const Individual& individual{*it};
-        const std::size_t age{static_cast<std::size_t>(individual.getAge())};
-
-        gompertzAgeDistribution[age]++;
-        if (shouldDie(individual, generator, chanceForDeathInPercent))
-            gompertzDeathsDistribution[age]++;
-
-        it++;
-    }
+    const auto [gompertzDeathsDistribution,
+                gompertzAgeDistribution]{getDeathsDistributionData(generator)};
 
     SingleSimulationData data{prepareData(std::move(basicMetrics),
                                           gompertzDeathsDistribution,
@@ -205,4 +189,29 @@ void Simulation::saveSimulationData(const SingleSimulationData& data,
     output.saveBitsDistribution(data.getBitsDistribution());
     output.saveAgeDistribution(data.getAgeDistribution());
     output.saveFinalPopulation(individuals_);
+}
+
+std::pair<std::vector<int>, std::vector<int> >
+Simulation::getDeathsDistributionData(Generator& generator) const
+{
+    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
+    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
+
+    const int chanceForDeathInPercent{
+        getCurrentDeathChanceInPercent(individuals_.size())};
+
+    auto it{individuals_.begin()};
+    while (it != individuals_.end())
+    {
+        const Individual& individual{*it};
+        const std::size_t age{static_cast<std::size_t>(individual.getAge())};
+
+        gompertzAgeDistribution[age]++;
+        if (shouldDie(individual, generator, chanceForDeathInPercent))
+            gompertzDeathsDistribution[age]++;
+
+        it++;
+    }
+
+    return {gompertzDeathsDistribution, gompertzAgeDistribution};
 }

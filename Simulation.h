@@ -42,6 +42,9 @@ private:
     void saveSimulationData(const SingleSimulationData& data,
                             Output& output) const;
 
+    std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData(
+        Generator& generator) const;
+
     std::list<Individual> individuals_;
 
     Config config_;
