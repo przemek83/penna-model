@@ -81,16 +81,10 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
 
         if (shouldHaveOffspring(individual, generator))
         {
-            for (int l{0}; l < config_.offspringCount_; l++)
-            {
-                Individual osobnik{individual.offspring()};
-                yearMetrics.births_++;
-
-                for (int m{0}; m < config_.mutationsDelta_; m++)
-                    osobnik.applyMutation(generator);
-
-                individuals_.push_front(osobnik);
-            }
+            for (int i{0}; i < config_.offspringCount_; i++)
+                individuals_.emplace_front(
+                    individual.offspring(generator, config_.mutationsDelta_));
+            yearMetrics.births_ += config_.offspringCount_;
         }
 
         individual.ageByOneYear();

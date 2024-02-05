@@ -23,7 +23,7 @@ public:
 
     std::string asBitString() const;
 
-    Individual offspring() const;
+    Individual offspring(Generator& generator, int mutations) const;
 
     void applyMutation(Generator& generator);
 

@@ -17,11 +17,15 @@ void Individual::ageByOneYear()
 
 std::string Individual::asBitString() const { return genome_.to_string(); }
 
-Individual Individual::offspring() const
+Individual Individual::offspring(Generator& generator, int mutations) const
 {
     Individual offspring{*this};
     offspring.age_ = 0;
     offspring.survivedMutations_ = 0;
+
+    for (int i{0}; i < mutations; i++)
+        offspring.applyMutation(generator);
+
     return offspring;
 }
 

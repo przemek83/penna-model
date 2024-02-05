@@ -74,7 +74,7 @@ TEST_CASE("Individual", "[penna]")
         individual.assignRandomBits(generator, 4);
         const std::string parentBits{individual.asBitString()};
 
-        const Individual child{individual.offspring()};
+        const Individual child{individual.offspring(generator, 0)};
 
         REQUIRE_THAT(child.asBitString(), Catch::Matchers::Equals(parentBits));
     }
@@ -83,24 +83,27 @@ TEST_CASE("Individual", "[penna]")
     {
         for (unsigned int i{0}; i < 10; ++i)
             individual.ageByOneYear();
-        const Individual child{individual.offspring()};
+        MockedGenerator generator;
+        const Individual child{individual.offspring(generator, 0)};
 
         REQUIRE(child.getAge() == 0);
     }
 
     SECTION("offspring ancestor")
     {
+        MockedGenerator generator;
         individual = Individual(77);
-        const Individual child{individual.offspring()};
+        const Individual child{individual.offspring(generator, 0)};
 
         REQUIRE(child.getAncestor() == 77);
     }
 
     SECTION("offspring survived ones")
     {
+        MockedGenerator generator;
         for (int i{0}; i <= 14; ++i)
             individual.ageByOneYear();
-        const Individual child{individual.offspring()};
+        const Individual child{individual.offspring(generator, 0)};
 
         REQUIRE(child.getSurvivedMutations() == 0);
     }
