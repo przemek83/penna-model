@@ -86,12 +86,11 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
 
     std::cout << "]";
 
-    const auto [gompertzDeathsDistribution,
-                gompertzAgeDistribution]{getDeathsDistributionData(generator)};
+    const auto [deathsDistribution,
+                ageDistribution]{getDeathsDistributionData(generator)};
 
     SingleSimulationData data{prepareData(std::move(basicMetrics),
-                                          gompertzDeathsDistribution,
-                                          gompertzAgeDistribution)};
+                                          deathsDistribution, ageDistribution)};
 
     saveSimulationData(data, output);
 
