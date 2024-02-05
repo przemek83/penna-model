@@ -30,7 +30,7 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         const int livesAtStart{year == 0 ? config_.livesOnStart_
                                          : basicMetrics[year - 1].livingAtEnd_};
 
-        SingleSimulationData::BasicMetrics yearMetrics{
+        const SingleSimulationData::BasicMetrics yearMetrics{
             progressByOneYear(generator, singleFamily, livesAtStart)};
 
         basicMetrics.push_back(yearMetrics);
