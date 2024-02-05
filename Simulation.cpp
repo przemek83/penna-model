@@ -27,8 +27,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     {
         const bool singleFamily{
             year == 0 ? false : basicMetrics[year - 1].families_ == 1};
-        const int livesAtStart{year == 0 ? config_.livesOnStart_
-                                         : basicMetrics[year - 1].livingAtEnd_};
+        const int livesAtStart{year == 0
+                                   ? config_.livesOnStart_
+                                   : basicMetrics[year - 1].getLivingAtEnd()};
 
         const SingleSimulationData::BasicMetrics yearMetrics{
             progressByOneYear(generator, singleFamily, livesAtStart)};
@@ -57,7 +58,7 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
     Generator& generator, bool singleFamily, int livesAtStart)
 {
     SingleSimulationData::BasicMetrics yearMetrics{singleFamily ? 1 : 0,
-                                                   livesAtStart, 0, 0, 0};
+                                                   livesAtStart, 0, 0};
 
     std::vector<int> families(config_.livesOnStart_, 0);
 
@@ -100,9 +101,6 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
         individual.ageByOneYear();
         it++;
     }
-
-    yearMetrics.livingAtEnd_ =
-        yearMetrics.livingAtStart_ - yearMetrics.deaths_ + yearMetrics.births_;
 
     return yearMetrics;
 }
@@ -176,7 +174,7 @@ SingleSimulationData Simulation::prepareData(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution) const
 {
-    const int populationCount{basicMetrics.back().livingAtEnd_};
+    const int populationCount{basicMetrics.back().getLivingAtEnd()};
     SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
     data.setBasicMetrics(std::move(basicMetrics));
 

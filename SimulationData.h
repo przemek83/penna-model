@@ -24,10 +24,14 @@ public:
 
     struct BasicMetrics
     {
+        inline T getLivingAtEnd() const
+        {
+            return livingAtStart_ - deaths_ + births_;
+        }
+
         T families_{0};
         T livingAtStart_{0};
         T births_{0};
-        T livingAtEnd_{0};
         T deaths_{0};
     };
 
@@ -114,8 +118,6 @@ private:
             basicMetrics_[i].livingAtStart_ +=
                 static_cast<float>(other.livingAtStart_);
             basicMetrics_[i].births_ += static_cast<float>(other.births_);
-            basicMetrics_[i].livingAtEnd_ +=
-                static_cast<float>(other.livingAtEnd_);
             basicMetrics_[i].deaths_ += static_cast<float>(other.deaths_);
         }
     }
@@ -145,7 +147,6 @@ private:
         {
             basicMetrics_[i].livingAtStart_ /= simulationsAsFloat;
             basicMetrics_[i].births_ /= simulationsAsFloat;
-            basicMetrics_[i].livingAtEnd_ /= simulationsAsFloat;
             basicMetrics_[i].deaths_ /= simulationsAsFloat;
         }
     }

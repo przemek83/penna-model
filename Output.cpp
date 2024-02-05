@@ -32,7 +32,7 @@ void Output::saveAverages(const SimulationAverages& data)
             *families << i << "\t" << basicMetrics.families_ << std::endl;
 
         *stats << i << "\t" << basicMetrics.livingAtStart_ << "\t"
-               << basicMetrics.births_ << "\t" << basicMetrics.livingAtEnd_
+               << basicMetrics.births_ << "\t" << basicMetrics.getLivingAtEnd()
                << "\t" << basicMetrics.deaths_ << std::endl;
     }
 
@@ -65,7 +65,7 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
             *families << year << "\t" << basicMetrics.families_ << std::endl;
 
         *stats << year << "\t" << basicMetrics.livingAtStart_ << "\t"
-               << basicMetrics.births_ << "\t" << basicMetrics.livingAtEnd_
+               << basicMetrics.births_ << "\t" << basicMetrics.getLivingAtEnd()
                << "\t" << basicMetrics.deaths_ << std::endl;
     }
 }
