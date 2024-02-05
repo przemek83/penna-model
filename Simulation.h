@@ -18,6 +18,10 @@ public:
     SingleSimulationData run(Generator& generator, Output& output);
 
 private:
+    SingleSimulationData::BasicMetrics progressByOneYear(Generator& generator,
+                                                         bool singleFamily,
+                                                         int livesAtStart);
+
     void createInitialPopulation(Generator& generator);
 
     static std::vector<int> getAgeDistribution(

@@ -29,53 +29,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
             year == 0 ? false : basicMetrics[year - 1].families_ == 1};
         const int livesAtStart{year == 0 ? config_.livesOnStart_
                                          : basicMetrics[year - 1].livingAtEnd_};
-        SingleSimulationData::BasicMetrics yearMetrics{singleFamily ? 1 : 0,
-                                                       livesAtStart, 0, 0, 0};
 
-        std::vector<int> families(config_.livesOnStart_, 0);
-
-        const int chanceForDeathInPercent{
-            getCurrentDeathChanceInPercent(livesAtStart)};
-
-        auto it{individuals_.begin()};
-        while (it != individuals_.end())
-        {
-            Individual& individual{*it};
-
-            if (int& family{families[individual.getAncestor()]};
-                !singleFamily && family != 1)
-            {
-                yearMetrics.families_++;
-                family = 1;
-            }
-
-            if (shouldDie(individual, generator, chanceForDeathInPercent))
-            {
-                yearMetrics.deaths_++;
-                it = individuals_.erase(it);
-                continue;
-            }
-
-            if (shouldHaveOffspring(individual, generator))
-            {
-                for (int l{0}; l < config_.offspringCount_; l++)
-                {
-                    Individual osobnik{individual.offspring()};
-                    yearMetrics.births_++;
-
-                    for (int m{0}; m < config_.mutationsDelta_; m++)
-                        osobnik.applyMutation(generator);
-
-                    individuals_.push_front(osobnik);
-                }
-            }
-
-            individual.ageByOneYear();
-            it++;
-        }
-
-        yearMetrics.livingAtEnd_ = yearMetrics.livingAtStart_ -
-                                   yearMetrics.deaths_ + yearMetrics.births_;
+        SingleSimulationData::BasicMetrics yearMetrics{
+            progressByOneYear(generator, singleFamily, livesAtStart)};
 
         basicMetrics.push_back(yearMetrics);
 
@@ -95,6 +51,60 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     saveSimulationData(data, output);
 
     return data;
+}
+
+SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
+    Generator& generator, bool singleFamily, int livesAtStart)
+{
+    SingleSimulationData::BasicMetrics yearMetrics{singleFamily ? 1 : 0,
+                                                   livesAtStart, 0, 0, 0};
+
+    std::vector<int> families(config_.livesOnStart_, 0);
+
+    const int chanceForDeathInPercent{
+        getCurrentDeathChanceInPercent(livesAtStart)};
+
+    auto it{individuals_.begin()};
+    while (it != individuals_.end())
+    {
+        Individual& individual{*it};
+
+        if (int& family{families[individual.getAncestor()]};
+            !singleFamily && family != 1)
+        {
+            yearMetrics.families_++;
+            family = 1;
+        }
+
+        if (shouldDie(individual, generator, chanceForDeathInPercent))
+        {
+            yearMetrics.deaths_++;
+            it = individuals_.erase(it);
+            continue;
+        }
+
+        if (shouldHaveOffspring(individual, generator))
+        {
+            for (int l{0}; l < config_.offspringCount_; l++)
+            {
+                Individual osobnik{individual.offspring()};
+                yearMetrics.births_++;
+
+                for (int m{0}; m < config_.mutationsDelta_; m++)
+                    osobnik.applyMutation(generator);
+
+                individuals_.push_front(osobnik);
+            }
+        }
+
+        individual.ageByOneYear();
+        it++;
+    }
+
+    yearMetrics.livingAtEnd_ =
+        yearMetrics.livingAtStart_ - yearMetrics.deaths_ + yearMetrics.births_;
+
+    return yearMetrics;
 }
 
 void Simulation::createInitialPopulation(Generator& generator)
