@@ -19,9 +19,6 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     std::cout << number_ << "/" << config_.simulationsCount_
               << " Progress:       [";
 
-    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
-    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
-
     std::vector<SingleSimulationData::BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
 
@@ -52,14 +49,9 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
                 family = 1;
             }
 
-            if (year + 1 == config_.years_)
-                gompertzAgeDistribution[individual.getAge()]++;
-
             if (shouldDie(individual, generator, chanceForDeathInPercent))
             {
                 yearMetrics.deaths_++;
-                if (year + 1 == config_.years_)
-                    gompertzDeathsDistribution[individual.getAge()]++;
                 it = individuals_.erase(it);
                 continue;
             }
@@ -93,6 +85,25 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
     }
 
     std::cout << "]";
+
+    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
+    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
+
+    const int chanceForDeathInPercent{
+        getCurrentDeathChanceInPercent(individuals_.size())};
+
+    auto it{individuals_.begin()};
+    while (it != individuals_.end())
+    {
+        const Individual& individual{*it};
+        const std::size_t age{static_cast<std::size_t>(individual.getAge())};
+
+        gompertzAgeDistribution[age]++;
+        if (shouldDie(individual, generator, chanceForDeathInPercent))
+            gompertzDeathsDistribution[age]++;
+
+        it++;
+    }
 
     SingleSimulationData data{prepareData(std::move(basicMetrics),
                                           gompertzDeathsDistribution,
