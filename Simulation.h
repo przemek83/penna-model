@@ -49,8 +49,8 @@ private:
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData(
         Generator& generator) const;
 
-    bool isSingleFamily(std::size_t year,
-                        const std::vector<BasicMetrics>& basicMetrics) const;
+    static bool isSingleFamily(std::size_t year,
+                               const std::vector<BasicMetrics>& basicMetrics);
 
     int getLivesOnYearStart(
         std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const;

@@ -218,8 +218,8 @@ Simulation::getDeathsDistributionData(Generator& generator) const
     return {gompertzDeathsDistribution, gompertzAgeDistribution};
 }
 
-bool Simulation::isSingleFamily(
-    std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const
+bool Simulation::isSingleFamily(std::size_t year,
+                                const std::vector<BasicMetrics>& basicMetrics)
 {
     return year == 0 ? false : basicMetrics[year - 1].families_ == 1;
 }
