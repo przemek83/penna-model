@@ -1,8 +1,29 @@
+#include <iostream>
+
 #include "FileOutput.h"
 #include "NumbersGenerator.h"
 #include "Simulation.h"
 #include "SimulationData.h"
 #include "Timer.h"
+
+namespace
+{
+std::function<void(int)> createProgressCallback(int sim, const Config& config)
+{
+    return [maxYears = config.years_, simNumber = sim,
+            maxSim = config.simulationsCount_](std::size_t year)
+    {
+        if (year == 1)
+            std::cout << simNumber << "/" << maxSim << " Progress:       [";
+
+        if ((year % (maxYears / 50)) == 0)
+            std::cout << "*";
+
+        if (year == maxYears)
+            std::cout << "]";
+    };
+}
+}  // namespace
 
 int main()
 {
@@ -23,7 +44,9 @@ int main()
         const Timer timer;
         Simulation simulation(config, i, step);
         FileOutput output(step, config.years_, i);
-        const SingleSimulationData data{simulation.run(generator, output)};
+        auto progressCallback{createProgressCallback(i, config)};
+        const SingleSimulationData data{
+            simulation.run(generator, output, progressCallback)};
         averages.integrateData(data);
     }
 

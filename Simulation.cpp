@@ -1,6 +1,5 @@
 #include "Simulation.h"
 
-#include <iostream>
 #include <vector>
 
 #include "Generator.h"
@@ -11,13 +10,12 @@ Simulation::Simulation(const Config& config, int number, float step)
 {
 }
 
-SingleSimulationData Simulation::run(Generator& generator, Output& output)
+SingleSimulationData Simulation::run(
+    Generator& generator, Output& output,
+    const std::function<void(std::size_t)> progressCallback)
 {
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
-
-    std::cout << number_ << "/" << config_.simulationsCount_
-              << " Progress:       [";
 
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
@@ -33,11 +31,10 @@ SingleSimulationData Simulation::run(Generator& generator, Output& output)
         basicMetrics.push_back(yearMetrics);
 
         year++;
-        if ((year % (config_.years_ / 50)) == 0)
-            std::cout << "*";
-    }
 
-    std::cout << "]";
+        if (progressCallback)
+            progressCallback(year);
+    }
 
     const auto [deathsDistribution,
                 ageDistribution]{getDeathsDistributionData(generator)};

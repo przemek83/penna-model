@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <list>
 #include <random>
 
@@ -15,7 +16,9 @@ class Simulation
 public:
     Simulation(const Config& config, int number, float step);
 
-    SingleSimulationData run(Generator& generator, Output& output);
+    SingleSimulationData run(
+        Generator& generator, Output& output,
+        const std::function<void(std::size_t)> progressCallback = nullptr);
 
 private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;
