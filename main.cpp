@@ -42,7 +42,7 @@ int main()
     for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
-        Simulation simulation(config, i, step);
+        Simulation simulation(config, step);
         FileOutput output(step, config.years_, i);
         auto progressCallback{createProgressCallback(i, config)};
         const SingleSimulationData data{

@@ -14,7 +14,7 @@ class Generator;
 class Simulation
 {
 public:
-    Simulation(const Config& config, int number, float step);
+    Simulation(const Config& config, float step);
 
     SingleSimulationData run(
         Generator& generator, Output& output,
@@ -61,6 +61,5 @@ private:
     std::list<Individual> individuals_;
 
     Config config_;
-    int number_;
     float step_;
 };

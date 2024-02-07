@@ -22,7 +22,7 @@ TEST_CASE("Simulation", "[penna]")
         MockedGenerator generator;
         StringOutput output(0, config.years_, 1);
 
-        Simulation simulation(config, 1, 100);
+        Simulation simulation(config, 100);
         simulation.run(generator, output);
         std::cout << std::endl;
 
@@ -57,7 +57,7 @@ TEST_CASE("Benchmark", "[penna]")
         config.years_ = 100'000;
 
         NullOutput output;
-        Simulation simulation(config, 1, 100);
+        Simulation simulation(config, 100);
         simulation.run(generator, output);
 
         std::cout << std::endl;
@@ -71,7 +71,7 @@ TEST_CASE("Benchmark", "[penna]")
         config.years_ = 200'000;
 
         NullOutput output;
-        Simulation simulation(config, 1, 100);
+        Simulation simulation(config, 100);
         simulation.run(generator, output);
 
         std::cout << std::endl;

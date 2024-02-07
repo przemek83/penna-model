@@ -5,8 +5,8 @@
 #include "Generator.h"
 #include "Output.h"
 
-Simulation::Simulation(const Config& config, int number, float step)
-    : config_(config), number_(number), step_{step}
+Simulation::Simulation(const Config& config, float step)
+    : config_(config), step_{step}
 {
 }
 
