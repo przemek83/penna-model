@@ -18,7 +18,7 @@ public:
 
     SingleSimulationData run(
         Generator& generator, Output& output,
-        const std::function<void(std::size_t)> progressCallback = nullptr);
+        std::function<void(std::size_t)> progressCallback = nullptr);
 
 private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;

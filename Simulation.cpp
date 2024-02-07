@@ -12,7 +12,7 @@ Simulation::Simulation(const Config& config, float step)
 
 SingleSimulationData Simulation::run(
     Generator& generator, Output& output,
-    const std::function<void(std::size_t)> progressCallback)
+    std::function<void(std::size_t)> progressCallback)
 {
     createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
