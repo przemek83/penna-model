@@ -35,6 +35,7 @@ public:
         MockedGenerator generator;
 
         Simulation simulation1(config, 50);
+        simulation1.createInitialPopulation(generator);
         const SingleSimulationData data1{simulation1.run(generator, output)};
         std::cout << std::endl;
     }
@@ -67,11 +68,13 @@ TEST_CASE("Output averages", "[penna]")
         NullOutput nullOutput;
 
         Simulation simulation1(config, 50);
+        simulation1.createInitialPopulation(generator);
         const SingleSimulationData data1{
             simulation1.run(generator, nullOutput)};
         std::cout << std::endl;
 
         Simulation simulation2(config, 50);
+        simulation2.createInitialPopulation(generator);
         const SingleSimulationData data2{
             simulation2.run(generator, nullOutput)};
         std::cout << std::endl;

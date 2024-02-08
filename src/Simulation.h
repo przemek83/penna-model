@@ -16,6 +16,8 @@ class Simulation
 public:
     Simulation(const Config& config, float step);
 
+    void createInitialPopulation(Generator& generator);
+
     SingleSimulationData run(
         Generator& generator, Output& output,
         std::function<void(std::size_t)> progressCallback = nullptr);
@@ -24,8 +26,6 @@ private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;
     BasicMetrics progressByOneYear(Generator& generator, bool singleFamily,
                                    int livesAtStart);
-
-    void createInitialPopulation(Generator& generator);
 
     static std::vector<int> getAgeDistribution(
         const std::list<Individual>& individuals);

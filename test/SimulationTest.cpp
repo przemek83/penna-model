@@ -24,6 +24,7 @@ TEST_CASE("Simulation", "[penna]")
         StringOutput output(0, config.years_, 1);
 
         Simulation simulation(config, 100);
+        simulation.createInitialPopulation(generator);
         simulation.run(generator, output);
         std::cout << std::endl;
 
@@ -59,6 +60,7 @@ TEST_CASE("Benchmark", "[penna]")
 
         NullOutput output;
         Simulation simulation(config, 100);
+        simulation.createInitialPopulation(generator);
         simulation.run(generator, output);
 
         std::cout << std::endl;
@@ -73,6 +75,7 @@ TEST_CASE("Benchmark", "[penna]")
 
         NullOutput output;
         Simulation simulation(config, 100);
+        simulation.createInitialPopulation(generator);
         simulation.run(generator, output);
 
         std::cout << std::endl;

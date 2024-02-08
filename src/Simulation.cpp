@@ -14,7 +14,6 @@ SingleSimulationData Simulation::run(
     Generator& generator, Output& output,
     std::function<void(std::size_t)> progressCallback)
 {
-    createInitialPopulation(generator);
     output.saveInitialPopulation(individuals_);
 
     std::vector<BasicMetrics> basicMetrics;

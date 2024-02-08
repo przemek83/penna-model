@@ -43,6 +43,7 @@ int main()
     {
         const Timer timer;
         Simulation simulation(config, step);
+        simulation.createInitialPopulation(initialPopulationGenerator);
         FileOutput output(step, config.years_, i);
         auto progressCallback{createProgressCallback(i, config)};
         const SingleSimulationData data{simulation.run(
