@@ -44,15 +44,9 @@ int main()
         const Timer timer;
         Simulation simulation(config, step);
         simulation.createInitialPopulation(initialPopulationGenerator);
-        FileOutput output(step, config.years_, i);
-        simulation.saveInitialPopulation(output);
         auto progressCallback{createProgressCallback(i, config)};
         const SingleSimulationData data{
             simulation.run(initialPopulationGenerator, progressCallback)};
-        simulation.saveFinalPopulation(output);
-
-        output.saveSimulationData(data);
-
         averages.integrateData(data);
     }
 
