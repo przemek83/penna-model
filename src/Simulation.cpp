@@ -1,5 +1,6 @@
 #include "Simulation.h"
 
+#include <cmath>
 #include <vector>
 
 #include "Generator.h"
@@ -11,11 +12,8 @@ Simulation::Simulation(const Config& config, float step)
 }
 
 SingleSimulationData Simulation::run(
-    Generator& generator, Output& output,
-    std::function<void(std::size_t)> progressCallback)
+    Generator& generator, std::function<void(std::size_t)> progressCallback)
 {
-    output.saveInitialPopulation(individuals_);
-
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
 
@@ -40,8 +38,6 @@ SingleSimulationData Simulation::run(
 
     SingleSimulationData data{prepareData(std::move(basicMetrics),
                                           deathsDistribution, ageDistribution)};
-
-    saveSimulationData(data, output);
 
     return data;
 }
@@ -98,6 +94,16 @@ void Simulation::createInitialPopulation(Generator& generator)
         individual.assignRandomBits(generator, config_.startingMutations_);
         individuals_.push_back(individual);
     }
+}
+
+void Simulation::saveInitialPopulation(Output& output)
+{
+    output.saveInitialPopulation(individuals_);
+}
+
+void Simulation::saveFinalPopulation(Output& output)
+{
+    output.saveFinalPopulation(individuals_);
 }
 
 std::vector<int> Simulation::getAgeDistribution(
@@ -171,16 +177,6 @@ SingleSimulationData Simulation::prepareData(
     data.setDeathDistribution(gompertzDeathsDistribution,
                               gompertzAgeDistribution);
     return data;
-}
-
-void Simulation::saveSimulationData(const SingleSimulationData& data,
-                                    Output& output) const
-{
-    output.saveBasicSimulationMetrics(data);
-    output.saveDeathsDistribution(data.getDeathsDistribution());
-    output.saveBitsDistribution(data.getBitsDistribution());
-    output.saveAgeDistribution(data.getAgeDistribution());
-    output.saveFinalPopulation(individuals_);
 }
 
 std::pair<std::vector<int>, std::vector<int> >

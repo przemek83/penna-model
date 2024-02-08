@@ -25,7 +25,15 @@ TEST_CASE("Simulation", "[penna]")
 
         Simulation simulation(config, 100);
         simulation.createInitialPopulation(generator);
-        simulation.run(generator, output);
+        simulation.saveInitialPopulation(output);
+        auto data{simulation.run(generator)};
+
+        simulation.saveFinalPopulation(output);
+        output.saveBasicSimulationMetrics(data);
+        output.saveDeathsDistribution(data.getDeathsDistribution());
+        output.saveBitsDistribution(data.getBitsDistribution());
+        output.saveAgeDistribution(data.getAgeDistribution());
+
         std::cout << std::endl;
 
         const std::vector<Output::OUTPUT_TYPE> outputTypes{
@@ -61,7 +69,7 @@ TEST_CASE("Benchmark", "[penna]")
         NullOutput output;
         Simulation simulation(config, 100);
         simulation.createInitialPopulation(generator);
-        simulation.run(generator, output);
+        simulation.run(generator);
 
         std::cout << std::endl;
     }
@@ -76,7 +84,7 @@ TEST_CASE("Benchmark", "[penna]")
         NullOutput output;
         Simulation simulation(config, 100);
         simulation.createInitialPopulation(generator);
-        simulation.run(generator, output);
+        simulation.run(generator);
 
         std::cout << std::endl;
     }

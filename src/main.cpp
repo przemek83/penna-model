@@ -45,9 +45,17 @@ int main()
         Simulation simulation(config, step);
         simulation.createInitialPopulation(initialPopulationGenerator);
         FileOutput output(step, config.years_, i);
+        simulation.saveInitialPopulation(output);
         auto progressCallback{createProgressCallback(i, config)};
-        const SingleSimulationData data{simulation.run(
-            initialPopulationGenerator, output, progressCallback)};
+        const SingleSimulationData data{
+            simulation.run(initialPopulationGenerator, progressCallback)};
+        simulation.saveFinalPopulation(output);
+
+        output.saveBasicSimulationMetrics(data);
+        output.saveDeathsDistribution(data.getDeathsDistribution());
+        output.saveBitsDistribution(data.getBitsDistribution());
+        output.saveAgeDistribution(data.getAgeDistribution());
+
         averages.integrateData(data);
     }
 

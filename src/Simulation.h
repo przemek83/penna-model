@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <list>
-#include <random>
 
 #include "Config.h"
 #include "Individual.h"
@@ -18,8 +17,12 @@ public:
 
     void createInitialPopulation(Generator& generator);
 
+    void saveInitialPopulation(Output& output);
+
+    void saveFinalPopulation(Output& output);
+
     SingleSimulationData run(
-        Generator& generator, Output& output,
+        Generator& generator,
         std::function<void(std::size_t)> progressCallback = nullptr);
 
 private:
@@ -45,9 +48,6 @@ private:
         std::vector<BasicMetrics> basicMetrics,
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution) const;
-
-    void saveSimulationData(const SingleSimulationData& data,
-                            Output& output) const;
 
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData(
         Generator& generator) const;
