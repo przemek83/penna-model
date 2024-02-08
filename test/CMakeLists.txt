@@ -16,15 +16,10 @@ set(${PROJECT_TEST}_SOURCES
     NullOutput.cpp
     StringOutput.h
     StringOutput.cpp
-    ../Simulation.cpp
-    ../Individual.cpp
-    ../FileOutput.cpp
-    ../Output.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
-target_link_libraries(${PROJECT_TEST} PRIVATE Catch2::Catch2WithMain
-)
+target_link_libraries(${PROJECT_TEST} PRIVATE Catch2::Catch2WithMain ${PROJECT_NAME}-lib)
 
 include(CTest)
 include(Catch)

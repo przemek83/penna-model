@@ -5,11 +5,12 @@
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
+#include <src/FileOutput.h>
+#include <src/Simulation.h>
+
 #include "Common.h"
-#include "FileOutput.h"
 #include "MockedGenerator.h"
 #include "NullOutput.h"
-#include "Simulation.h"
 #include "StringOutput.h"
 
 namespace

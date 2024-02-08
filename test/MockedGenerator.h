@@ -1,7 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include "Generator.h"
+
+#include <src/Generator.h>
 
 class MockedGenerator : public Generator
 {

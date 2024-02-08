@@ -5,7 +5,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #include "catch2/matchers/catch_matchers_string.hpp"
 
-#include "Individual.h"
+#include <src/Individual.h>
 #include "MockedGenerator.h"
 
 TEST_CASE("Individual", "[penna]")

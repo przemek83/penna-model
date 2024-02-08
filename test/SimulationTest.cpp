@@ -3,12 +3,13 @@
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <src/FileOutput.h>
+#include <src/Simulation.h>
+#include <src/SimulationData.h>
+
 #include "Common.h"
-#include "FileOutput.h"
 #include "MockedGenerator.h"
 #include "NullOutput.h"
-#include "Simulation.h"
-#include "SimulationData.h"
 #include "StringOutput.h"
 
 TEST_CASE("Simulation", "[penna]")

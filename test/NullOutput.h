@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Output.h"
+#include <src/Output.h>
 
 class NullOutput : public Output
 {
