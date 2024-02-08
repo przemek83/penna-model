@@ -11,6 +11,14 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 {
 }
 
+void Output::saveSimulationData(const SingleSimulationData& data)
+{
+    saveBasicSimulationMetrics(data);
+    saveDeathsDistribution(data.getDeathsDistribution());
+    saveBitsDistribution(data.getBitsDistribution());
+    saveAgeDistribution(data.getAgeDistribution());
+}
+
 void Output::saveAverages(const SimulationAverages& data)
 {
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};

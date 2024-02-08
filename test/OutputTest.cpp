@@ -40,10 +40,7 @@ public:
         const SingleSimulationData data1{simulation1.run(generator)};
 
         simulation1.saveFinalPopulation(output);
-        output.saveBasicSimulationMetrics(data1);
-        output.saveDeathsDistribution(data1.getDeathsDistribution());
-        output.saveBitsDistribution(data1.getBitsDistribution());
-        output.saveAgeDistribution(data1.getAgeDistribution());
+        output.saveSimulationData(data1);
 
         std::cout << std::endl;
     }

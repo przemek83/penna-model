@@ -25,13 +25,16 @@ public:
         FAMILIES
     };
 
-    void saveAverages(const SimulationAverages& data);
+    void saveSimulationData(const SingleSimulationData& data);
 
-    void saveBasicSimulationMetrics(const SingleSimulationData& data);
+    void saveAverages(const SimulationAverages& data);
 
     void saveInitialPopulation(const std::list<Individual>& individuals);
 
     void saveFinalPopulation(const std::list<Individual>& individuals);
+
+protected:
+    void saveBasicSimulationMetrics(const SingleSimulationData& data);
 
     void saveBitsDistribution(const std::vector<float>& bitsDistribution);
 
@@ -39,7 +42,6 @@ public:
 
     void saveDeathsDistribution(const std::vector<float>& deaths);
 
-protected:
     virtual std::shared_ptr<std::ostream> getStream(
         OUTPUT_TYPE outputType) const = 0;
 

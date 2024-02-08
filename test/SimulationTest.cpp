@@ -29,10 +29,7 @@ TEST_CASE("Simulation", "[penna]")
         auto data{simulation.run(generator)};
 
         simulation.saveFinalPopulation(output);
-        output.saveBasicSimulationMetrics(data);
-        output.saveDeathsDistribution(data.getDeathsDistribution());
-        output.saveBitsDistribution(data.getBitsDistribution());
-        output.saveAgeDistribution(data.getAgeDistribution());
+        output.saveSimulationData(data);
 
         std::cout << std::endl;
 

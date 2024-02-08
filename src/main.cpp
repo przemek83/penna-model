@@ -51,10 +51,7 @@ int main()
             simulation.run(initialPopulationGenerator, progressCallback)};
         simulation.saveFinalPopulation(output);
 
-        output.saveBasicSimulationMetrics(data);
-        output.saveDeathsDistribution(data.getDeathsDistribution());
-        output.saveBitsDistribution(data.getBitsDistribution());
-        output.saveAgeDistribution(data.getAgeDistribution());
+        output.saveSimulationData(data);
 
         averages.integrateData(data);
     }
