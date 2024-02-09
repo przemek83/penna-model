@@ -9,7 +9,6 @@
 
 #include "Common.h"
 #include "MockedGenerator.h"
-#include "NullOutput.h"
 #include "StringOutput.h"
 
 TEST_CASE("Simulation", "[penna]")
@@ -64,7 +63,6 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 100'000;
         config.years_ = 100'000;
 
-        NullOutput output;
         Simulation simulation(config, 100);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
@@ -80,7 +78,6 @@ TEST_CASE("Benchmark", "[penna]")
         config.maxPopulation_ = 200'000;
         config.years_ = 200'000;
 
-        NullOutput output;
         Simulation simulation(config, 100);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();

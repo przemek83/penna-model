@@ -10,7 +10,6 @@
 
 #include "Common.h"
 #include "MockedGenerator.h"
-#include "NullOutput.h"
 #include "StringOutput.h"
 
 namespace
@@ -71,7 +70,6 @@ TEST_CASE("Output averages", "[penna]")
         config.years_ = years;
 
         auto generator{std::make_shared<MockedGenerator>()};
-        NullOutput nullOutput;
 
         Simulation simulation1(config, 50);
         simulation1.setGenerator(generator);

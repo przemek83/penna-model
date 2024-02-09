@@ -12,8 +12,6 @@ set(${PROJECT_TEST}_SOURCES
     MockedGenerator.cpp
     Common.h
     Common.cpp
-    NullOutput.h
-    NullOutput.cpp
     StringOutput.h
     StringOutput.cpp
     )
