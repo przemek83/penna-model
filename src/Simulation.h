@@ -25,7 +25,7 @@ public:
     void setGenerator(std::shared_ptr<Generator> generator);
 
     SingleSimulationData run(
-        std::function<void(std::size_t)> progressCallback = nullptr);
+        std::function<void(int)> progressCallback = nullptr);
 
 private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;
@@ -52,11 +52,11 @@ private:
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData()
         const;
 
-    static bool isSingleFamily(std::size_t year,
+    static bool isSingleFamily(int year,
                                const std::vector<BasicMetrics>& basicMetrics);
 
     int getLivesOnYearStart(
-        std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const;
+        int year, const std::vector<BasicMetrics>& basicMetrics) const;
 
     std::list<Individual> individuals_;
 

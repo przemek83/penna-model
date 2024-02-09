@@ -11,13 +11,12 @@ Simulation::Simulation(const Config& config, float step)
 {
 }
 
-SingleSimulationData Simulation::run(
-    std::function<void(std::size_t)> progressCallback)
+SingleSimulationData Simulation::run(std::function<void(int)> progressCallback)
 {
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
 
-    std::size_t year{0};
+    int year{0};
     while (year < config_.years_)
     {
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
@@ -129,8 +128,8 @@ std::vector<int> Simulation::getBitsDistribution(
 
     for (const auto& individual : individuals)
     {
-        for (size_t i{0}; i < Config::bits_; i++)
-            bitsDistribution[i] += individual.getGenomeBit(i);
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
     }
 
     return bitsDistribution;
@@ -209,15 +208,19 @@ Simulation::getDeathsDistributionData() const
     return {gompertzDeathsDistribution, gompertzAgeDistribution};
 }
 
-bool Simulation::isSingleFamily(std::size_t year,
+bool Simulation::isSingleFamily(int year,
                                 const std::vector<BasicMetrics>& basicMetrics)
 {
-    return year == 0 ? false : basicMetrics[year - 1].families_ == 1;
+    return year == 0
+               ? false
+               : basicMetrics[static_cast<std::size_t>(year - 1)].families_ ==
+                     1;
 }
 
 int Simulation::getLivesOnYearStart(
-    std::size_t year, const std::vector<BasicMetrics>& basicMetrics) const
+    int year, const std::vector<BasicMetrics>& basicMetrics) const
 {
     return year == 0 ? config_.livesOnStart_
-                     : basicMetrics[year - 1].getLivingAtEnd();
+                     : basicMetrics[static_cast<std::size_t>(year - 1)]
+                           .getLivingAtEnd();
 }
