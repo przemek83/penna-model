@@ -12,7 +12,7 @@ Simulation::Simulation(const Config& config, float step)
 }
 
 SingleSimulationData Simulation::run(
-    Generator& generator, std::function<void(std::size_t)> progressCallback)
+    std::function<void(std::size_t)> progressCallback)
 {
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(config_.years_);
@@ -23,7 +23,7 @@ SingleSimulationData Simulation::run(
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
         const int livesAtStart{getLivesOnYearStart(year, basicMetrics)};
         const BasicMetrics yearMetrics{
-            progressByOneYear(generator, singleFamily, livesAtStart)};
+            progressByOneYear(singleFamily, livesAtStart)};
 
         basicMetrics.push_back(yearMetrics);
 
@@ -34,7 +34,7 @@ SingleSimulationData Simulation::run(
     }
 
     const auto [deathsDistribution,
-                ageDistribution]{getDeathsDistributionData(generator)};
+                ageDistribution]{getDeathsDistributionData()};
 
     SingleSimulationData data{prepareData(std::move(basicMetrics),
                                           deathsDistribution, ageDistribution)};
@@ -43,7 +43,7 @@ SingleSimulationData Simulation::run(
 }
 
 SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
-    Generator& generator, bool singleFamily, int livesAtStart)
+    bool singleFamily, int livesAtStart)
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
@@ -64,18 +64,18 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
             family = 1;
         }
 
-        if (shouldDie(individual, generator, chanceForDeathInPercent))
+        if (shouldDie(individual, chanceForDeathInPercent))
         {
             yearMetrics.deaths_++;
             it = individuals_.erase(it);
             continue;
         }
 
-        if (shouldHaveOffspring(individual, generator))
+        if (shouldHaveOffspring(individual))
         {
             for (int i{0}; i < config_.offspringCount_; i++)
                 individuals_.emplace_front(
-                    individual.offspring(generator, config_.mutationsDelta_));
+                    individual.offspring(*generator_, config_.mutationsDelta_));
             yearMetrics.births_ += config_.offspringCount_;
         }
 
@@ -86,12 +86,12 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
     return yearMetrics;
 }
 
-void Simulation::createInitialPopulation(Generator& generator)
+void Simulation::createInitialPopulation()
 {
     for (int i{0}; i < config_.livesOnStart_; i++)
     {
         Individual individual(i);
-        individual.assignRandomBits(generator, config_.startingMutations_);
+        individual.assignRandomBits(*generator_, config_.startingMutations_);
         individuals_.push_back(individual);
     }
 }
@@ -104,6 +104,11 @@ void Simulation::saveInitialPopulation(Output& output)
 void Simulation::saveFinalPopulation(Output& output)
 {
     output.saveFinalPopulation(individuals_);
+}
+
+void Simulation::setGenerator(std::shared_ptr<Generator> generator)
+{
+    generator_ = generator;
 }
 
 std::vector<int> Simulation::getAgeDistribution(
@@ -138,13 +143,13 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
                    static_cast<float>(config_.maxPopulation_) * 100));
 }
 
-bool Simulation::shouldDie(const Individual& individual, Generator& generator,
+bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
     return (individual.getSurvivedMutations() >=
-            config_.maxMutations_) ||                             // mutations
-           (individual.getAge() >= Config::bits_) ||              // ageing
-           (generator.getInt(0, 100) <= chanceForDeathInPercent)  // Verhulst
+            config_.maxMutations_) ||                               // mutations
+           (individual.getAge() >= Config::bits_) ||                // ageing
+           (generator_->getInt(0, 100) <= chanceForDeathInPercent)  // Verhulst
 #ifdef SYMULACJA_DORSZY
            || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                ((float)generator.getInt(0, 10000) / 100 <=
@@ -153,11 +158,10 @@ bool Simulation::shouldDie(const Individual& individual, Generator& generator,
         ;
 }
 
-bool Simulation::shouldHaveOffspring(const Individual& individual,
-                                     Generator& generator) const
+bool Simulation::shouldHaveOffspring(const Individual& individual) const
 {
     return (individual.getAge() > config_.reproductionAge_) &&
-           generator.getInt(1, 100) <= config_.chanceForOffspring_;
+           generator_->getInt(1, 100) <= config_.chanceForOffspring_;
 }
 
 SingleSimulationData Simulation::prepareData(
@@ -180,7 +184,7 @@ SingleSimulationData Simulation::prepareData(
 }
 
 std::pair<std::vector<int>, std::vector<int> >
-Simulation::getDeathsDistributionData(Generator& generator) const
+Simulation::getDeathsDistributionData() const
 {
     std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
     std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
@@ -195,7 +199,7 @@ Simulation::getDeathsDistributionData(Generator& generator) const
         const std::size_t age{static_cast<std::size_t>(individual.getAge())};
 
         gompertzAgeDistribution[age]++;
-        if (shouldDie(individual, generator, chanceForDeathInPercent))
+        if (shouldDie(individual, chanceForDeathInPercent))
             gompertzDeathsDistribution[age]++;
 
         it++;

@@ -32,12 +32,13 @@ public:
         config.maxPopulation_ = maxPopulation;
         config.years_ = years;
 
-        MockedGenerator generator;
+        auto generator{std::make_shared<MockedGenerator>()};
 
         Simulation simulation1(config, 50);
-        simulation1.createInitialPopulation(generator);
+        simulation1.setGenerator(generator);
+        simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
-        const SingleSimulationData data1{simulation1.run(generator)};
+        const SingleSimulationData data1{simulation1.run()};
 
         simulation1.saveFinalPopulation(output);
         output.saveSimulationData(data1);
@@ -69,17 +70,19 @@ TEST_CASE("Output averages", "[penna]")
         config.maxPopulation_ = maxPopulation;
         config.years_ = years;
 
-        MockedGenerator generator;
+        auto generator{std::make_shared<MockedGenerator>()};
         NullOutput nullOutput;
 
         Simulation simulation1(config, 50);
-        simulation1.createInitialPopulation(generator);
-        const SingleSimulationData data1{simulation1.run(generator)};
+        simulation1.setGenerator(generator);
+        simulation1.createInitialPopulation();
+        const SingleSimulationData data1{simulation1.run()};
         std::cout << std::endl;
 
         Simulation simulation2(config, 50);
-        simulation2.createInitialPopulation(generator);
-        const SingleSimulationData data2{simulation2.run(generator)};
+        simulation2.setGenerator(generator);
+        simulation2.createInitialPopulation();
+        const SingleSimulationData data2{simulation2.run()};
         std::cout << std::endl;
 
         SimulationAverages simulationAverages{

@@ -20,13 +20,14 @@ TEST_CASE("Simulation", "[penna]")
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
 
-        MockedGenerator generator;
+        auto generator{std::make_shared<MockedGenerator>()};
         StringOutput output(0, config.years_, 1);
 
         Simulation simulation(config, 100);
-        simulation.createInitialPopulation(generator);
+        simulation.setGenerator(generator);
+        simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
-        auto data{simulation.run(generator)};
+        auto data{simulation.run()};
 
         simulation.saveFinalPopulation(output);
         output.saveSimulationData(data);
@@ -54,7 +55,7 @@ TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
     Config config;
-    MockedGenerator generator;
+    auto generator{std::make_shared<MockedGenerator>()};
 
     SECTION("simulation short")
     {
@@ -65,8 +66,9 @@ TEST_CASE("Benchmark", "[penna]")
 
         NullOutput output;
         Simulation simulation(config, 100);
-        simulation.createInitialPopulation(generator);
-        simulation.run(generator);
+        simulation.setGenerator(generator);
+        simulation.createInitialPopulation();
+        simulation.run();
 
         std::cout << std::endl;
     }
@@ -80,8 +82,9 @@ TEST_CASE("Benchmark", "[penna]")
 
         NullOutput output;
         Simulation simulation(config, 100);
-        simulation.createInitialPopulation(generator);
-        simulation.run(generator);
+        simulation.setGenerator(generator);
+        simulation.createInitialPopulation();
+        simulation.run();
 
         std::cout << std::endl;
     }

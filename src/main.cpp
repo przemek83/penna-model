@@ -38,15 +38,15 @@ int main()
 
     SimulationAverages averages{static_cast<std::size_t>(config.years_)};
 
-    NumbersGenerator initialPopulationGenerator;
+    auto initialPopulationGenerator{std::make_shared<NumbersGenerator>()};
     for (int i{1}; i <= config.simulationsCount_; i++)
     {
         const Timer timer;
         Simulation simulation(config, step);
-        simulation.createInitialPopulation(initialPopulationGenerator);
+        simulation.setGenerator(initialPopulationGenerator);
+        simulation.createInitialPopulation();
         auto progressCallback{createProgressCallback(i, config)};
-        const SingleSimulationData data{
-            simulation.run(initialPopulationGenerator, progressCallback)};
+        const SingleSimulationData data{simulation.run(progressCallback)};
         averages.integrateData(data);
     }
 

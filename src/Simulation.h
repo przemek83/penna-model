@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <list>
+#include <memory>
 
 #include "Config.h"
 #include "Individual.h"
@@ -15,20 +16,20 @@ class Simulation
 public:
     Simulation(const Config& config, float step);
 
-    void createInitialPopulation(Generator& generator);
+    void createInitialPopulation();
 
     void saveInitialPopulation(Output& output);
 
     void saveFinalPopulation(Output& output);
 
+    void setGenerator(std::shared_ptr<Generator> generator);
+
     SingleSimulationData run(
-        Generator& generator,
         std::function<void(std::size_t)> progressCallback = nullptr);
 
 private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;
-    BasicMetrics progressByOneYear(Generator& generator, bool singleFamily,
-                                   int livesAtStart);
+    BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
     static std::vector<int> getAgeDistribution(
         const std::list<Individual>& individuals);
@@ -38,19 +39,18 @@ private:
 
     int getCurrentDeathChanceInPercent(int populationCount) const;
 
-    bool shouldDie(const Individual& individual, Generator& generator,
+    bool shouldDie(const Individual& individual,
                    int chanceForDeathInPercent) const;
 
-    bool shouldHaveOffspring(const Individual& individual,
-                             Generator& generator) const;
+    bool shouldHaveOffspring(const Individual& individual) const;
 
     SingleSimulationData prepareData(
         std::vector<BasicMetrics> basicMetrics,
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution) const;
 
-    std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData(
-        Generator& generator) const;
+    std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData()
+        const;
 
     static bool isSingleFamily(std::size_t year,
                                const std::vector<BasicMetrics>& basicMetrics);
@@ -62,4 +62,5 @@ private:
 
     Config config_;
     float step_;
+    std::shared_ptr<Generator> generator_;
 };
