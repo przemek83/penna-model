@@ -108,7 +108,7 @@ void Simulation::saveFinalPopulation(Output& output)
 
 void Simulation::setGenerator(std::shared_ptr<Generator> generator)
 {
-    generator_ = generator;
+    generator_ = std::move(generator);
 }
 
 std::vector<int> Simulation::getAgeDistribution(
