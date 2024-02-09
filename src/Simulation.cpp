@@ -161,7 +161,7 @@ bool Simulation::shouldDie(const Individual& individual,
 bool Simulation::shouldHaveOffspring(const Individual& individual) const
 {
     return (individual.getAge() > config_.reproductionAge_) &&
-           generator_->getInt(1, 100) <= config_.chanceForOffspring_;
+           generator_->getInt(0, 100) <= config_.chanceForOffspring_;
 }
 
 SingleSimulationData Simulation::prepareData(
