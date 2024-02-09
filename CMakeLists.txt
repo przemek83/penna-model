@@ -21,6 +21,7 @@ set(${PROJECT_NAME}_SOURCES
     src/Simulation.h
     src/Simulation.cpp
     src/Generator.h
+    src/Generator.cpp
     src/NumbersGenerator.h
     src/NumbersGenerator.cpp
     src/Config.h

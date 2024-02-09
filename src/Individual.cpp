@@ -31,7 +31,7 @@ Individual Individual::offspring(Generator& generator, int mutations) const
 
 void Individual::applyMutation(Generator& generator)
 {
-    const int mutationPosition{generator.getInt(0, Config::bits_ - 1)};
+    const int mutationPosition{generator.getBitPosition()};
     genome_[mutationPosition] = true;
 }
 
@@ -39,7 +39,7 @@ void Individual::assignRandomBits(Generator& generator, int startingMutations)
 {
     std::set<int> mutationPositions;
     while (mutationPositions.size() < startingMutations)
-        mutationPositions.insert(generator.getInt(0, Config::bits_ - 1));
+        mutationPositions.insert(generator.getBitPosition());
 
     for (const auto mutationPosition : mutationPositions)
         genome_[mutationPosition] = true;

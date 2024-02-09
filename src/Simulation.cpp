@@ -147,9 +147,10 @@ bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
     return (individual.getSurvivedMutations() >=
-            config_.maxMutations_) ||                               // mutations
-           (individual.getAge() >= Config::bits_) ||                // ageing
-           (generator_->getInt(0, 100) <= chanceForDeathInPercent)  // Verhulst
+            config_.maxMutations_) ||                 // mutations
+           (individual.getAge() >= Config::bits_) ||  // ageing
+           (generator_->getPercentChance() <=
+            chanceForDeathInPercent)                  // Verhulst
 #ifdef SYMULACJA_DORSZY
            || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                ((float)generator.getInt(0, 10000) / 100 <=
@@ -161,7 +162,7 @@ bool Simulation::shouldDie(const Individual& individual,
 bool Simulation::shouldHaveOffspring(const Individual& individual) const
 {
     return (individual.getAge() > config_.reproductionAge_) &&
-           generator_->getInt(0, 100) <= config_.chanceForOffspring_;
+           generator_->getPercentChance() <= config_.chanceForOffspring_;
 }
 
 SingleSimulationData Simulation::prepareData(
