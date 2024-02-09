@@ -29,9 +29,9 @@ public:
 
     unsigned long long getGenomeAsNumber() const;
 
-    inline bool getGenomeBit(size_t position) const
+    inline bool getGenomeBit(int position) const
     {
-        return genome_[position];
+        return genome_[static_cast<size_t>(position)];
     }
 
     void setGenome(const std::bitset<Config::bits_>& genome);

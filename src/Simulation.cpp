@@ -130,7 +130,7 @@ std::vector<int> Simulation::getBitsDistribution(
     for (const auto& individual : individuals)
     {
         for (size_t i{0}; i < Config::bits_; i++)
-            bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
+            bitsDistribution[i] += individual.getGenomeBit(i);
     }
 
     return bitsDistribution;
