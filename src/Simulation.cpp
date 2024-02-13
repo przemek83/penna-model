@@ -14,7 +14,7 @@ Simulation::Simulation(const Config& config, float step)
 SingleSimulationData Simulation::run(std::function<void(int)> progressCallback)
 {
     std::vector<BasicMetrics> basicMetrics;
-    basicMetrics.reserve(config_.years_);
+    basicMetrics.reserve(static_cast<std::size_t>(config_.years_));
 
     int year{0};
     while (year < config_.years_)
@@ -46,7 +46,8 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
-    std::vector<int> families(config_.livesOnStart_, 0);
+    std::vector<int> families(static_cast<std::size_t>(config_.livesOnStart_),
+                              0);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(livesAtStart)};
@@ -56,7 +57,8 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
     {
         Individual& individual{*it};
 
-        if (int& family{families[individual.getAncestor()]};
+        if (int& family{
+                families[static_cast<std::size_t>(individual.getAncestor())]};
             !singleFamily && family != 1)
         {
             yearMetrics.families_++;
@@ -190,7 +192,7 @@ Simulation::getDeathsDistributionData() const
     std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
 
     const int chanceForDeathInPercent{
-        getCurrentDeathChanceInPercent(individuals_.size())};
+        getCurrentDeathChanceInPercent(static_cast<int>(individuals_.size()))};
 
     auto it{individuals_.begin()};
     while (it != individuals_.end())
