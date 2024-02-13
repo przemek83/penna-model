@@ -11,7 +11,7 @@ namespace
 std::function<void(int)> createProgressCallback(int sim, const Config& config)
 {
     return [maxYears = config.years_, simNumber = sim,
-            maxSim = config.simulationsCount_](std::size_t year)
+            maxSim = config.simulationsCount_](int year)
     {
         if (year == 1)
             std::cout << simNumber << "/" << maxSim << " Progress:       [";
