@@ -40,8 +40,6 @@ protected:
     int getRunNumber() const;
 
 private:
-    void saveBasicSimulationMetrics(const SingleSimulationData& data);
-
     void saveBitsDistribution(const std::vector<float>& bitsDistribution);
 
     void saveAgeDistribution(const std::vector<int>& ageDistribution);

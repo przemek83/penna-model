@@ -121,6 +121,19 @@ public:
         }
     }
 
+    void saveBasicMetrics(std::shared_ptr<std::ostream> stream,
+                          char separator) const
+    {
+        for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+        {
+            const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+            *stream << year << separator << basicMetrics.livingAtStart_
+                    << separator << basicMetrics.births_ << separator
+                    << basicMetrics.getLivingAtEnd() << separator
+                    << basicMetrics.deaths_ << std::endl;
+        }
+    }
+
 private:
     void integrateBasicMetrics(const SingleSimulationData& data)
     {
