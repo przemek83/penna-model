@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iomanip>
-#include <memory>
 #include <ostream>
 #include <vector>
 
@@ -109,55 +107,49 @@ public:
         finalizeDistributions();
     }
 
-    void saveFamilies(std::shared_ptr<std::ostream> stream,
-                      char separator) const
+    void saveFamilies(std::ostream& stream, char separator) const
     {
-        *stream << "Year" << separator << "Families" << std::endl;
+        stream << "Year" << separator << "Families" << std::endl;
         for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
         {
             const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
             if (basicMetrics.families_ > 1)
-                *stream << year << separator << basicMetrics.families_
-                        << std::endl;
+                stream << year << separator << basicMetrics.families_
+                       << std::endl;
         }
     }
 
-    void saveBasicMetrics(std::shared_ptr<std::ostream> stream,
-                          char separator) const
+    void saveBasicMetrics(std::ostream& stream, char separator) const
     {
-        *stream << "Year" << separator << "Living_start" << separator
-                << "Births" << separator << "Living_end" << separator
-                << "Deaths" << std::endl;
+        stream << "Year" << separator << "Living_start" << separator << "Births"
+               << separator << "Living_end" << separator << "Deaths"
+               << std::endl;
         for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
         {
             const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
-            *stream << year << separator << basicMetrics.livingAtStart_
-                    << separator << basicMetrics.births_ << separator
-                    << basicMetrics.getLivingAtEnd() << separator
-                    << basicMetrics.deaths_ << std::endl;
+            stream << year << separator << basicMetrics.livingAtStart_
+                   << separator << basicMetrics.births_ << separator
+                   << basicMetrics.getLivingAtEnd() << separator
+                   << basicMetrics.deaths_ << std::endl;
         }
     }
 
-    void saveBitsDistibution(std::shared_ptr<std::ostream> stream,
-                             char separator) const
+    void saveBitsDistibution(std::ostream& stream, char separator) const
     {
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
-            *stream << bit << separator << bitsDistribution_[bit] << std::endl;
+            stream << bit << separator << bitsDistribution_[bit] << std::endl;
     }
 
-    void saveAgeDistibution(std::shared_ptr<std::ostream> stream,
-                            char separator) const
+    void saveAgeDistibution(std::ostream& stream, char separator) const
     {
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
-            *stream << bit << separator << ageDistribution_[bit] << std::endl;
+            stream << bit << separator << ageDistribution_[bit] << std::endl;
     }
 
-    void saveDeathsDistibution(std::shared_ptr<std::ostream> stream,
-                               char separator) const
+    void saveDeathsDistibution(std::ostream& stream, char separator) const
     {
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
-            *stream << bit << separator << deathsDistribution_[bit]
-                    << std::endl;
+            stream << bit << separator << deathsDistribution_[bit] << std::endl;
     }
 
 private:

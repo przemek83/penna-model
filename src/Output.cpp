@@ -14,44 +14,44 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 void Output::saveSimulationData(const SingleSimulationData& data)
 {
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
-    data.saveFamilies(families, separator_);
+    data.saveFamilies(*families, separator_);
 
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
-    data.saveBasicMetrics(stats, separator_);
+    data.saveBasicMetrics(*stats, separator_);
 
     const std::shared_ptr<std::ostream> bits{getStream(BITS_DISTRIBUTION)};
     *bits << std::setprecision(2) << std::fixed;
-    data.saveBitsDistibution(bits, separator_);
+    data.saveBitsDistibution(*bits, separator_);
 
     const std::shared_ptr<std::ostream> age{getStream(AGE_DISTRIBUTION)};
-    data.saveAgeDistibution(age, separator_);
+    data.saveAgeDistibution(*age, separator_);
 
     const std::shared_ptr<std::ostream> deaths{getStream(DEATHS_DISTRIBUTION)};
     *deaths << std::setprecision(3) << std::fixed;
-    data.saveDeathsDistibution(deaths, separator_);
+    data.saveDeathsDistibution(*deaths, separator_);
 }
 
 void Output::saveAverages(const SimulationAverages& data)
 {
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     *families << std::setprecision(6) << std::fixed;
-    data.saveFamilies(families, separator_);
+    data.saveFamilies(*families, separator_);
 
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
     *stats << std::setprecision(6) << std::fixed;
-    data.saveBasicMetrics(stats, separator_);
+    data.saveBasicMetrics(*stats, separator_);
 
     const std::shared_ptr<std::ostream> bits{getStream(BITS_DISTRIBUTION)};
     *bits << std::setprecision(2) << std::fixed;
-    data.saveBitsDistibution(bits, separator_);
+    data.saveBitsDistibution(*bits, separator_);
 
     const std::shared_ptr<std::ostream> age{getStream(AGE_DISTRIBUTION)};
     *age << std::setprecision(6) << std::fixed;
-    data.saveAgeDistibution(age, separator_);
+    data.saveAgeDistibution(*age, separator_);
 
     const std::shared_ptr<std::ostream> deaths{getStream(DEATHS_DISTRIBUTION)};
     *deaths << std::setprecision(3) << std::fixed;
-    data.saveDeathsDistibution(deaths, separator_);
+    data.saveDeathsDistibution(*deaths, separator_);
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals)
