@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iomanip>
 #include <memory>
 #include <ostream>
 #include <vector>
@@ -135,6 +136,27 @@ public:
                     << basicMetrics.getLivingAtEnd() << separator
                     << basicMetrics.deaths_ << std::endl;
         }
+    }
+
+    void saveBitsDistibution(std::shared_ptr<std::ostream> stream,
+                             char separator) const
+    {
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            *stream << i << separator << bitsDistribution_[i] << std::endl;
+    }
+
+    void saveAgeDistibution(std::shared_ptr<std::ostream> stream,
+                            char separator) const
+    {
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            *stream << i << separator << ageDistribution_[i] << std::endl;
+    }
+
+    void saveDeathsDistibution(std::shared_ptr<std::ostream> stream,
+                               char separator) const
+    {
+        for (std::size_t i{0}; i < Config::bits_; i++)
+            *stream << i << separator << deathsDistribution_[i] << std::endl;
     }
 
 private:
