@@ -66,7 +66,8 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
 
-    for (size_t year{0}; year < maxPopulationAge_; ++year)
+    for (size_t year{0}; year < static_cast<std::size_t>(maxPopulationAge_);
+         ++year)
     {
         const SingleSimulationData::BasicMetrics& basicMetrics{
             data.getBasicBasicMetrics(year)};
