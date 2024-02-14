@@ -103,6 +103,8 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
     }
 }
 
+int Output::getRunNumber() const { return run_; }
+
 void Output::saveBitsDistribution(const std::vector<float>& bitsDistribution)
 {
     const std::shared_ptr<std::ostream> file{getStream(BITS_DISTRIBUTION)};

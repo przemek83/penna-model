@@ -34,6 +34,12 @@ public:
     void saveFinalPopulation(const std::list<Individual>& individuals);
 
 protected:
+    virtual std::shared_ptr<std::ostream> getStream(
+        OUTPUT_TYPE outputType) const = 0;
+
+    int getRunNumber() const;
+
+private:
     void saveBasicSimulationMetrics(const SingleSimulationData& data);
 
     void saveBitsDistribution(const std::vector<float>& bitsDistribution);
@@ -41,9 +47,6 @@ protected:
     void saveAgeDistribution(const std::vector<int>& ageDistribution);
 
     void saveDeathsDistribution(const std::vector<float>& deaths);
-
-    virtual std::shared_ptr<std::ostream> getStream(
-        OUTPUT_TYPE outputType) const = 0;
 
     float simulationStep_;
     int maxPopulationAge_;

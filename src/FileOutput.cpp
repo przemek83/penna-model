@@ -18,7 +18,7 @@ std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 #ifndef SYMULACJA_DORSZY
     fileName.append("sim");
 #endif
-    fileName.append(std::to_string(run_));
+    fileName.append(std::to_string(getRunNumber()));
     fileName.append("_");
     fileName.append(fileNames_[outputType]);
 
