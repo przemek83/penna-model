@@ -32,11 +32,7 @@ SingleSimulationData Simulation::run(std::function<void(int)> progressCallback)
             progressCallback(year);
     }
 
-    const auto [deathsDistribution,
-                ageDistribution]{getDeathsDistributionData()};
-
-    SingleSimulationData data{prepareData(std::move(basicMetrics),
-                                          deathsDistribution, ageDistribution)};
+    SingleSimulationData data{prepareData(std::move(basicMetrics))};
 
     return data;
 }
@@ -167,9 +163,7 @@ bool Simulation::shouldHaveOffspring(const Individual& individual) const
 }
 
 SingleSimulationData Simulation::prepareData(
-    std::vector<BasicMetrics> basicMetrics,
-    const std::vector<int>& gompertzDeathsDistribution,
-    const std::vector<int>& gompertzAgeDistribution) const
+    std::vector<BasicMetrics> basicMetrics) const
 {
     const int populationCount{basicMetrics.back().getLivingAtEnd()};
     SingleSimulationData data{static_cast<std::size_t>(config_.years_)};
@@ -180,8 +174,10 @@ SingleSimulationData Simulation::prepareData(
 
     data.setAgeDistribution(ageDistribution);
     data.setBitDistribution(bitsDistribution, populationCount);
-    data.setDeathDistribution(gompertzDeathsDistribution,
-                              gompertzAgeDistribution);
+
+    const auto [deathsDistribution,
+                deathsAgeDistribution]{getDeathsDistributionData()};
+    data.setDeathDistribution(deathsDistribution, deathsAgeDistribution);
     return data;
 }
 

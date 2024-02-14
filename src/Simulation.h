@@ -45,9 +45,7 @@ private:
     bool shouldHaveOffspring(const Individual& individual) const;
 
     SingleSimulationData prepareData(
-        std::vector<BasicMetrics> basicMetrics,
-        const std::vector<int>& gompertzDeathsDistribution,
-        const std::vector<int>& gompertzAgeDistribution) const;
+        std::vector<BasicMetrics> basicMetrics) const;
 
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData()
         const;
