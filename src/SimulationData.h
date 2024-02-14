@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+#include <ostream>
 #include <vector>
 
 #include "Config.h"
@@ -104,6 +106,19 @@ public:
     {
         finalizeBasicMetrics();
         finalizeDistributions();
+    }
+
+    void saveFamilies(std::shared_ptr<std::ostream> stream,
+                      char separator) const
+    {
+        *stream << "Year" << separator << "Families" << std::endl;
+        for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+        {
+            const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+            if (basicMetrics.families_ > 1)
+                *stream << year << separator << basicMetrics.families_
+                        << std::endl;
+        }
     }
 
 private:

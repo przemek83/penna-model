@@ -13,6 +13,9 @@ Output::Output(float simulationStep, int maxPopulationAge, int run)
 
 void Output::saveSimulationData(const SingleSimulationData& data)
 {
+    const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
+    data.saveFamilies(families, separator_);
+
     saveBasicSimulationMetrics(data);
     saveDeathsDistribution(data.getDeathsDistribution());
     saveBitsDistribution(data.getBitsDistribution());
@@ -23,6 +26,8 @@ void Output::saveAverages(const SimulationAverages& data)
 {
     const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     *families << std::setprecision(6) << std::fixed;
+    data.saveFamilies(families, separator_);
+
     const std::shared_ptr<std::ostream> ages{getStream(AGE_DISTRIBUTION)};
     *ages << std::setprecision(6) << std::fixed;
     const std::shared_ptr<std::ostream> bits{getStream(BITS_DISTRIBUTION)};
@@ -34,11 +39,8 @@ void Output::saveAverages(const SimulationAverages& data)
 
     for (std::size_t i{0}; i < maxPopulationAge_; i++)
     {
-        const SimulationData<float>::BasicMetrics& basicMetrics{
+        const SimulationAverages::BasicMetrics& basicMetrics{
             data.getBasicBasicMetrics(i)};
-        if (basicMetrics.families_ > 1)
-            *families << i << separator_ << basicMetrics.families_ << std::endl;
-
         *stats << i << separator_ << basicMetrics.livingAtStart_ << separator_
                << basicMetrics.births_ << separator_
                << basicMetrics.getLivingAtEnd() << separator_
@@ -63,18 +65,12 @@ void Output::saveAverages(const SimulationAverages& data)
 
 void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
 {
-    const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
     const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
-
     for (size_t year{0}; year < static_cast<std::size_t>(maxPopulationAge_);
          ++year)
     {
         const SingleSimulationData::BasicMetrics& basicMetrics{
             data.getBasicBasicMetrics(year)};
-        if (basicMetrics.families_ > 1)
-            *families << year << separator_ << basicMetrics.families_
-                      << std::endl;
-
         *stats << year << separator_ << basicMetrics.livingAtStart_
                << separator_ << basicMetrics.births_ << separator_
                << basicMetrics.getLivingAtEnd() << separator_
