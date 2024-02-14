@@ -37,11 +37,12 @@ void Output::saveAverages(const SimulationAverages& data)
         const SimulationData<float>::BasicMetrics& basicMetrics{
             data.getBasicBasicMetrics(i)};
         if (basicMetrics.families_ > 1)
-            *families << i << "\t" << basicMetrics.families_ << std::endl;
+            *families << i << separator_ << basicMetrics.families_ << std::endl;
 
-        *stats << i << "\t" << basicMetrics.livingAtStart_ << "\t"
-               << basicMetrics.births_ << "\t" << basicMetrics.getLivingAtEnd()
-               << "\t" << basicMetrics.deaths_ << std::endl;
+        *stats << i << separator_ << basicMetrics.livingAtStart_ << separator_
+               << basicMetrics.births_ << separator_
+               << basicMetrics.getLivingAtEnd() << separator_
+               << basicMetrics.deaths_ << std::endl;
     }
 
     const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
@@ -50,13 +51,13 @@ void Output::saveAverages(const SimulationAverages& data)
 
     for (size_t i{0}; i < Config::bits_; i++)
     {
-        *ages << i << "\t" << ageDistribution[i] << std::endl;
-        *bits << i << "\t" << bitsDistribution[i] << std::endl;
+        *ages << i << separator_ << ageDistribution[i] << std::endl;
+        *bits << i << separator_ << bitsDistribution[i] << std::endl;
 
         if (deathsDistribution[i] > 0)
-            *deaths << i << "\t" << deathsDistribution[i] << std::endl;
+            *deaths << i << separator_ << deathsDistribution[i] << std::endl;
         else
-            *deaths << i << "\t" << 1 << std::endl;
+            *deaths << i << separator_ << 1 << std::endl;
     }
 }
 
@@ -70,11 +71,13 @@ void Output::saveBasicSimulationMetrics(const SingleSimulationData& data)
         const SingleSimulationData::BasicMetrics& basicMetrics{
             data.getBasicBasicMetrics(year)};
         if (basicMetrics.families_ > 1)
-            *families << year << "\t" << basicMetrics.families_ << std::endl;
+            *families << year << separator_ << basicMetrics.families_
+                      << std::endl;
 
-        *stats << year << "\t" << basicMetrics.livingAtStart_ << "\t"
-               << basicMetrics.births_ << "\t" << basicMetrics.getLivingAtEnd()
-               << "\t" << basicMetrics.deaths_ << std::endl;
+        *stats << year << separator_ << basicMetrics.livingAtStart_
+               << separator_ << basicMetrics.births_ << separator_
+               << basicMetrics.getLivingAtEnd() << separator_
+               << basicMetrics.deaths_ << std::endl;
     }
 }
 
@@ -109,7 +112,7 @@ void Output::saveBitsDistribution(const std::vector<float>& bitsDistribution)
 {
     const std::shared_ptr<std::ostream> file{getStream(BITS_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)
-        *file << i << "\t" << std::setprecision(2) << std::fixed
+        *file << i << separator_ << std::setprecision(2) << std::fixed
               << bitsDistribution[i] << std::endl;
 }
 
@@ -117,7 +120,7 @@ void Output::saveAgeDistribution(const std::vector<int>& ageDistribution)
 {
     const std::shared_ptr<std::ostream> file{getStream(AGE_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)
-        *file << i << "\t" << ageDistribution[i] << std::endl;
+        *file << i << separator_ << ageDistribution[i] << std::endl;
 }
 
 void Output::saveDeathsDistribution(const std::vector<float>& deaths)
@@ -125,7 +128,7 @@ void Output::saveDeathsDistribution(const std::vector<float>& deaths)
     const std::shared_ptr<std::ostream> file{getStream(DEATHS_DISTRIBUTION)};
     for (std::size_t i{0}; i < Config::bits_; i++)
     {
-        *file << i << "\t" << std::setprecision(3) << std::fixed << deaths[i]
-              << std::endl;
+        *file << i << separator_ << std::setprecision(3) << std::fixed
+              << deaths[i] << std::endl;
     }
 }

@@ -51,4 +51,6 @@ private:
     float simulationStep_;
     int maxPopulationAge_;
     int run_;
+
+    char separator_{'\t'};
 };
