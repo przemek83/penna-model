@@ -3,10 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
-Output::Output(float simulationStep, int maxPopulationAge, int run)
-    : simulationStep_{simulationStep},
-      maxPopulationAge_{maxPopulationAge},
-      run_{run}
+Output::Output(float step, int years, int runNumber)
+    : step_{step}, years_{years}, runNumber_{runNumber}
 {
 }
 
@@ -54,4 +52,4 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
     }
 }
 
-int Output::getRunNumber() const { return run_; }
+int Output::getRunNumber() const { return runNumber_; }

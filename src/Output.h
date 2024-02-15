@@ -12,7 +12,7 @@
 class Output
 {
 public:
-    Output(float simulationStep_, int maxPopulationAge, int run);
+    Output(float step, int years, int runNumber);
 
     virtual ~Output() = default;
 
@@ -73,9 +73,9 @@ private:
 
     void saveDeathsDistribution(const std::vector<float>& deaths);
 
-    float simulationStep_;
-    int maxPopulationAge_;
-    int run_;
+    float step_;
+    int years_;
+    int runNumber_;
 
     char separator_{'\t'};
 };
