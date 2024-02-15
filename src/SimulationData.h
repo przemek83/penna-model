@@ -136,18 +136,21 @@ public:
 
     void saveBitsDistibution(std::ostream& stream, char separator) const
     {
+        stream << "Bit" << separator << "Percent" << std::endl;
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
             stream << bit << separator << bitsDistribution_[bit] << std::endl;
     }
 
     void saveAgeDistibution(std::ostream& stream, char separator) const
     {
+        stream << "Bit" << separator << "Count" << std::endl;
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
             stream << bit << separator << ageDistribution_[bit] << std::endl;
     }
 
     void saveDeathsDistibution(std::ostream& stream, char separator) const
     {
+        stream << "Bit" << separator << "Percent" << std::endl;
         for (std::size_t bit{0}; bit < Config::bits_; bit++)
             stream << bit << separator << deathsDistribution_[bit] << std::endl;
     }
