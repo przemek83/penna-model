@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14)
 
 project(penna-model
         LANGUAGES CXX
@@ -9,6 +9,10 @@ project(penna-model
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+include(CMakeLists.txt.yaml-cpp)
+
+file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 
 set(${PROJECT_NAME}_SOURCES
     src/main.cpp
@@ -32,6 +36,7 @@ set(${PROJECT_NAME}_SOURCES
 )
 
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
+target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)

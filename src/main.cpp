@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "yaml-cpp/yaml.h"
+
 #include "FileOutput.h"
 #include "NumbersGenerator.h"
 #include "Simulation.h"
@@ -23,11 +25,22 @@ std::function<void(int)> createProgressCallback(int sim, const Config& config)
             std::cout << "]";
     };
 }
+
+Config loadConfig()
+{
+    Config config;
+    YAML::Node yaml = YAML::LoadFile("config.yaml");
+    config.years_ = yaml["years"].as<int>();
+    config.livesOnStart_ = yaml["livesOnStart"].as<int>();
+
+    return config;
+}
+
 }  // namespace
 
 int main()
 {
-    const Config config;
+    const Config config{loadConfig()};
     const float step{
 #ifdef SYMULACJA_DORSZY
         static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
