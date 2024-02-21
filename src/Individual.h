@@ -34,12 +34,12 @@ public:
         return genome_[position];
     }
 
-    void setGenome(const std::bitset<Config::bits_>& genome);
+    void setGenome(const std::bitset<Config::Params::bits_>& genome);
 
 private:
     void applyMutation(Generator& generator);
 
-    std::bitset<Config::bits_> genome_;
+    std::bitset<Config::Params::bits_> genome_;
 
     int age_{0};
 

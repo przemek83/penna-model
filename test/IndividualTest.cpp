@@ -25,7 +25,7 @@ TEST_CASE("Individual", "[penna]")
     }
 
     Individual individual(0);
-    individual.setGenome(std::bitset<Config::bits_>(genomeString));
+    individual.setGenome(std::bitset<Config::Params::bits_>(genomeString));
 
     SECTION("ageing passing 0")
     {
@@ -57,7 +57,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("ageing passing all bits")
     {
-        for (unsigned int i{1}; i < Config::bits_; ++i)
+        for (unsigned int i{1}; i < Config::Params::bits_; ++i)
             individual.ageByOneYear();
         REQUIRE(individual.getSurvivedMutations() == 4);
     }
@@ -110,7 +110,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation applied")
     {
-        individual.setGenome(std::bitset<Config::bits_>(0));
+        individual.setGenome(std::bitset<Config::Params::bits_>(0));
         MockedGenerator generator;
         const Individual child{individual.offspring(generator, 1)};
 
@@ -120,7 +120,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation applied on existing")
     {
-        individual.setGenome(std::bitset<Config::bits_>(8));
+        individual.setGenome(std::bitset<Config::Params::bits_>(8));
         MockedGenerator generator;
         const std::string genomeBeforeMutation{individual.asBitString()};
         const Individual child{individual.offspring(generator, 1)};
@@ -131,7 +131,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("single mutation exact match")
     {
-        individual.setGenome(std::bitset<Config::bits_>(0));
+        individual.setGenome(std::bitset<Config::Params::bits_>(0));
         MockedGenerator generator;
         const Individual child{individual.offspring(generator, 1)};
 
@@ -145,7 +145,7 @@ TEST_CASE("Individual", "[penna]")
 
     SECTION("multiple mutations exact match")
     {
-        individual.setGenome(std::bitset<Config::bits_>(0));
+        individual.setGenome(std::bitset<Config::Params::bits_>(0));
         MockedGenerator generator;
         const Individual child{individual.offspring(generator, 3)};
 
@@ -159,13 +159,13 @@ TEST_CASE("Individual", "[penna]")
     SECTION("genome as number")
     {
         unsigned long long number{GENERATE(0ULL, 1ULL, 21354634ULL)};
-        individual.setGenome(std::bitset<Config::bits_>(number));
+        individual.setGenome(std::bitset<Config::Params::bits_>(number));
         REQUIRE(individual.getGenomeAsNumber() == number);
     }
 
     SECTION("get genome bits")
     {
-        const std::bitset<Config::bits_> bitset(
+        const std::bitset<Config::Params::bits_> bitset(
             0b0000000000000000010000000000000000000000100000000000001000001000);
         individual.setGenome(bitset);
         for (size_t i{0}; i < bitset.size(); ++i)

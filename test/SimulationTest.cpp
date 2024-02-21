@@ -15,7 +15,7 @@ TEST_CASE("Simulation", "[penna]")
 {
     SECTION("single simulation")
     {
-        Config config;
+        Config::Params config;
         config.maxPopulation_ = 5000;
         config.years_ = 1000;
 
@@ -53,7 +53,7 @@ TEST_CASE("Simulation", "[penna]")
 TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
-    Config config;
+    Config::Params config;
     auto generator{std::make_shared<MockedGenerator>()};
 
     SECTION("simulation short")

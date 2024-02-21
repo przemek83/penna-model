@@ -1,6 +1,8 @@
 #pragma once
 
-struct Config
+namespace Config
+{
+struct Params
 {
     int maxPopulation_{50000};
     int years_{5000};
@@ -14,3 +16,4 @@ struct Config
     int simulationsCount_{2};
     static constexpr int bits_{64};
 };
+}  // namespace Config

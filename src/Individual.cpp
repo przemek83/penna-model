@@ -50,7 +50,7 @@ unsigned long long Individual::getGenomeAsNumber() const
     return genome_.to_ullong();
 }
 
-void Individual::setGenome(const std::bitset<Config::bits_>& genome)
+void Individual::setGenome(const std::bitset<Config::Params::bits_>& genome)
 {
     genome_ = genome;
 }

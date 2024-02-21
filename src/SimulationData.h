@@ -63,14 +63,14 @@ public:
 
     void setAgeDistribution(const std::vector<int>& ageDistribution)
     {
-        for (std::size_t i{0}; i < Config::bits_; i++)
+        for (std::size_t i{0}; i < Config::Params::bits_; i++)
             ageDistribution_[i] = ageDistribution[i];
     }
 
     void setBitDistribution(const std::vector<int>& bitsDistribution,
                             int populationCount)
     {
-        for (std::size_t i{0}; i < Config::bits_; i++)
+        for (std::size_t i{0}; i < Config::Params::bits_; i++)
             bitsDistribution_[i] = static_cast<float>(bitsDistribution[i]) /
                                    static_cast<float>(populationCount);
     }
@@ -79,7 +79,7 @@ public:
         const std::vector<int>& gompertzDeathsDistribution,
         const std::vector<int>& gompertzAgeDistribution)
     {
-        for (std::size_t i{0}; i < Config::bits_; i++)
+        for (std::size_t i{0}; i < Config::Params::bits_; i++)
         {
             if (gompertzAgeDistribution[i] > 0)
             {
@@ -137,21 +137,21 @@ public:
     void saveBitsDistibution(std::ostream& stream, char separator) const
     {
         stream << "Bit" << separator << "Percent" << std::endl;
-        for (std::size_t bit{0}; bit < Config::bits_; bit++)
+        for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
             stream << bit << separator << bitsDistribution_[bit] << std::endl;
     }
 
     void saveAgeDistibution(std::ostream& stream, char separator) const
     {
         stream << "Bit" << separator << "Count" << std::endl;
-        for (std::size_t bit{0}; bit < Config::bits_; bit++)
+        for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
             stream << bit << separator << ageDistribution_[bit] << std::endl;
     }
 
     void saveDeathsDistibution(std::ostream& stream, char separator) const
     {
         stream << "Bit" << separator << "Percent" << std::endl;
-        for (std::size_t bit{0}; bit < Config::bits_; bit++)
+        for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
             stream << bit << separator << deathsDistribution_[bit] << std::endl;
     }
 
@@ -178,7 +178,7 @@ private:
         const std::vector<float>& bitsDistribution{data.getBitsDistribution()};
         const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
-        for (std::size_t i{0}; i < Config::bits_; i++)
+        for (std::size_t i{0}; i < Config::Params::bits_; i++)
         {
             bitsDistribution_[i] += bitsDistribution[i];
             ageDistribution_[i] += static_cast<float>(ageDistribution[i]);
@@ -203,7 +203,7 @@ private:
     void finalizeDistributions()
     {
         const float simulationsAsFloat{static_cast<float>(simulations_)};
-        for (std::size_t v = 0; v < Config::bits_; v++)
+        for (std::size_t v = 0; v < Config::Params::bits_; v++)
         {
             deathsDistribution_[v] /= simulationsAsFloat;
             bitsDistribution_[v] /= simulationsAsFloat;

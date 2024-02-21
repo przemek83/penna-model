@@ -6,7 +6,7 @@
 #include "Generator.h"
 #include "Output.h"
 
-Simulation::Simulation(const Config& config, float step)
+Simulation::Simulation(const Config::Params& config, float step)
     : config_(config), step_{step}
 {
 }
@@ -111,7 +111,7 @@ void Simulation::setGenerator(std::shared_ptr<Generator> generator)
 std::vector<int> Simulation::getAgeDistribution(
     const std::list<Individual>& individuals)
 {
-    std::vector<int> ageDistribution(Config::bits_, 0);
+    std::vector<int> ageDistribution(Config::Params::bits_, 0);
 
     for (const auto& individual : individuals)
         ageDistribution[static_cast<std::size_t>(individual.getAge())]++;
@@ -122,11 +122,11 @@ std::vector<int> Simulation::getAgeDistribution(
 std::vector<int> Simulation::getBitsDistribution(
     const std::list<Individual>& individuals)
 {
-    std::vector<int> bitsDistribution(Config::bits_, 0);
+    std::vector<int> bitsDistribution(Config::Params::bits_, 0);
 
     for (const auto& individual : individuals)
     {
-        for (std::size_t i{0}; i < Config::bits_; i++)
+        for (std::size_t i{0}; i < Config::Params::bits_; i++)
             bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
     }
 
@@ -144,10 +144,10 @@ bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
     return (individual.getSurvivedMutations() >=
-            config_.maxMutations_) ||                 // mutations
-           (individual.getAge() >= Config::bits_) ||  // ageing
+            config_.maxMutations_) ||                         // mutations
+           (individual.getAge() >= Config::Params::bits_) ||  // ageing
            (generator_->getPercentChance() <=
-            chanceForDeathInPercent)                  // Verhulst
+            chanceForDeathInPercent)                          // Verhulst
 #ifdef SYMULACJA_DORSZY
            || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
                ((float)generator.getInt(0, 10000) / 100 <=
@@ -184,8 +184,8 @@ SingleSimulationData Simulation::prepareData(
 std::pair<std::vector<int>, std::vector<int> >
 Simulation::getDeathsDistributionData() const
 {
-    std::vector<int> gompertzDeathsDistribution(Config::bits_, 0);
-    std::vector<int> gompertzAgeDistribution(Config::bits_, 0);
+    std::vector<int> gompertzDeathsDistribution(Config::Params::bits_, 0);
+    std::vector<int> gompertzAgeDistribution(Config::Params::bits_, 0);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(static_cast<int>(individuals_.size()))};

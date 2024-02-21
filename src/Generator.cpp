@@ -4,4 +4,4 @@
 
 int Generator::getPercentChance() { return getInt(0, 100); }
 
-int Generator::getBitPosition() { return getInt(0, Config::bits_ - 1); }
+int Generator::getBitPosition() { return getInt(0, Config::Params::bits_ - 1); }
