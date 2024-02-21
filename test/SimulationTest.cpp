@@ -15,14 +15,14 @@ TEST_CASE("Simulation", "[penna]")
 {
     SECTION("single simulation")
     {
-        Config::Params config;
-        config.maxPopulation_ = 5000;
-        config.years_ = 1000;
+        Config::Params params;
+        params.maxPopulation_ = 5000;
+        params.years_ = 1000;
 
         auto generator{std::make_shared<MockedGenerator>()};
-        StringOutput output(0, config.years_, 1);
+        StringOutput output(0, params.years_, 1);
 
-        Simulation simulation(config, 100);
+        Simulation simulation(params, 100);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
@@ -39,7 +39,7 @@ TEST_CASE("Simulation", "[penna]")
             Output::BITS_DISTRIBUTION,   Output::AGE_DISTRIBUTION,
             Output::STATISTICS};
 
-        const FileOutput fileOutput(0, config.years_, 1);
+        const FileOutput fileOutput(0, params.years_, 1);
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
@@ -53,17 +53,17 @@ TEST_CASE("Simulation", "[penna]")
 TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
-    Config::Params config;
+    Config::Params params;
     auto generator{std::make_shared<MockedGenerator>()};
 
     SECTION("simulation short")
     {
         // 02.02.2024 - 26.010 s
 
-        config.maxPopulation_ = 100'000;
-        config.years_ = 100'000;
+        params.maxPopulation_ = 100'000;
+        params.years_ = 100'000;
 
-        Simulation simulation(config, 100);
+        Simulation simulation(params, 100);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.run();
@@ -75,10 +75,10 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 02.02.2024 - 114.283 s
 
-        config.maxPopulation_ = 200'000;
-        config.years_ = 200'000;
+        params.maxPopulation_ = 200'000;
+        params.years_ = 200'000;
 
-        Simulation simulation(config, 100);
+        Simulation simulation(params, 100);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.run();

@@ -16,4 +16,6 @@ struct Params
     int simulationsCount_{2};
     static constexpr int bits_{64};
 };
+
+Config::Params loadConfig();
 }  // namespace Config

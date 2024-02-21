@@ -29,6 +29,7 @@ set(${PROJECT_NAME}_SOURCES
     src/NumbersGenerator.h
     src/NumbersGenerator.cpp
     src/Config.h
+    src/Config.cpp
     src/Timer.h
     src/Timer.cpp
     src/FileOutput.h
