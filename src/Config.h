@@ -17,5 +17,7 @@ struct Params
     static constexpr int bits_{64};
 };
 
+static_assert(Params::bits_ > 0);
+
 Config::Params loadConfig();
 }  // namespace Config
