@@ -49,4 +49,24 @@ TEST_CASE("Config", "[penna]")
         const Config::Params configParams{Config::loadConfig(emptyCofigString)};
         REQUIRE(defaultParams == configParams);
     }
+
+    SECTION("config valid")
+    {
+        const Config::Params expectedParams{100000, 1000, 2000, 2, 6,
+                                            6,      4,    50,   2, 4};
+
+        std::istringstream emptyCofigString(R"(
+maxPopulation: 100000
+years: 1000
+livesOnStart: 2000
+mutationsDelta: 2
+maxMutations: 6
+startingMutations: 6
+reproductionAge: 4
+offspringChance: 50
+offspringCount: 2
+simulations: 4)");
+        const Config::Params configParams{Config::loadConfig(emptyCofigString)};
+        REQUIRE(configParams == expectedParams);
+    }
 }
