@@ -55,7 +55,7 @@ TEST_CASE("Config", "[penna]")
         const Config::Params expectedParams{100000, 1000, 2000, 2, 6,
                                             6,      4,    50,   2, 4};
 
-        std::istringstream emptyCofigString(R"(
+        std::istringstream configString(R"(
 maxPopulation: 100000
 years: 1000
 livesOnStart: 2000
@@ -66,7 +66,7 @@ reproductionAge: 4
 offspringChance: 50
 offspringCount: 2
 simulations: 4)");
-        const Config::Params configParams{Config::loadConfig(emptyCofigString)};
+        const Config::Params configParams{Config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);
     }
 }
