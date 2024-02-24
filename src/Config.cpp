@@ -34,10 +34,10 @@ std::map<Field, std::string> fieldToString{
 
 namespace Config
 {
-Config::Params loadConfig()
+Config::Params loadConfig(std::istream& configFile)
 {
     Config::Params params;
-    YAML::Node yaml = YAML::LoadFile("config.yaml");
+    YAML::Node yaml = YAML::Load(configFile);
 
     if (const YAML::Node value{yaml[fieldToString[Field::MAX_POPULATION]]})
         params.maxPopulation_ = value.as<int>();

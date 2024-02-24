@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 #include "FileOutput.h"
@@ -28,7 +29,8 @@ std::function<void(int)> createProgressCallback(int sim,
 
 int main()
 {
-    const Config::Params params{Config::loadConfig()};
+    std::ifstream configFile("config.yaml");
+    const Config::Params params{Config::loadConfig(configFile)};
     const float step{
 #ifdef SYMULACJA_DORSZY
         static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))

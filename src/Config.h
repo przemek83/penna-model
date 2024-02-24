@@ -1,5 +1,7 @@
 #pragma once
 
+#include <istream>
+
 namespace Config
 {
 struct Params
@@ -19,5 +21,5 @@ struct Params
 
 static_assert(Params::bits_ > 0);
 
-Config::Params loadConfig();
+Config::Params loadConfig(std::istream& stream);
 }  // namespace Config
