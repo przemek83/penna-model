@@ -1,2 +1,10 @@
-years:     5000
-livesOnStart:        3000
+maxPopulation: 50000
+years: 5000
+livesOnStart: 3000
+mutationsDelta: 1
+maxMutations: 4
+startingMutations: 4
+reproductionAge: 10
+offspringChance: 100
+offspringCount: 3
+simulations: 2
