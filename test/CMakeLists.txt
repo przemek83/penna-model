@@ -8,6 +8,7 @@ set(${PROJECT_TEST}_SOURCES
     SimulationTest.cpp
     IndividualTest.cpp
     OutputTest.cpp
+    ConfigTest.cpp
     MockedGenerator.h
     MockedGenerator.cpp
     Common.h
