@@ -50,7 +50,7 @@ TEST_CASE("Config", "[penna]")
         REQUIRE(defaultParams == configParams);
     }
 
-    SECTION("config valid")
+    SECTION("valid config")
     {
         const Config::Params expectedParams{100000, 1000, 2000, 2, 6,
                                             6,      4,    50,   2, 4};
@@ -70,9 +70,22 @@ simulations: 4)");
         REQUIRE(configParams == expectedParams);
     }
 
-    SECTION("config invalid")
+    SECTION("invalid config")
     {
         std::istringstream invalidConfigString("maxMutations: aaaa36");
         REQUIRE_THROWS(Config::loadConfig(invalidConfigString));
+    }
+
+    SECTION("partial config")
+    {
+        Config::Params expectedParams;
+        expectedParams.maxPopulation_ = 100000;
+        expectedParams.simulationsCount_ = 4;
+
+        std::istringstream configString(R"(
+maxPopulation: 100000
+simulations: 4)");
+        const Config::Params configParams{Config::loadConfig(configString)};
+        REQUIRE(configParams == expectedParams);
     }
 }
