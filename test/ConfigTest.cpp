@@ -69,4 +69,10 @@ simulations: 4)");
         const Config::Params configParams{Config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);
     }
+
+    SECTION("config invalid")
+    {
+        std::istringstream invalidConfigString("maxMutations: aaaa36");
+        REQUIRE_THROWS(Config::loadConfig(invalidConfigString));
+    }
 }
