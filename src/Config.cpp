@@ -1,4 +1,5 @@
 #include "Config.h"
+#include <iostream>
 
 #include "yaml-cpp/yaml.h"
 
@@ -30,6 +31,14 @@ std::map<Field, std::string> fieldToString{
     {Field::OFFSPRING_COUNT, "offspringCount"},
     {Field::SIMULATIONS, "simulations"},
 };
+
+std::string createErrorMsg(Field field, const std::string& condition)
+{
+    std::ostringstream os;
+    os << "check failed: " << fieldToString[field] << " " << condition
+       << std::endl;
+    return os.str();
+}
 }  // namespace
 
 namespace Config
@@ -70,6 +79,64 @@ Config::Params loadConfig(std::istream& configFile)
         params.simulationsCount_ = value.as<int>();
 
     return params;
+}
+
+bool isValid(const Params& params)
+{
+    std::string errorString;
+
+    if (params.maxPopulation_ <= 0)
+        errorString += createErrorMsg(Field::MAX_POPULATION, "> 0");
+
+    if (params.years_ <= 0)
+        errorString += createErrorMsg(Field::YEARS, "> 0");
+
+    if (params.livesOnStart_ <= 0)
+        errorString += createErrorMsg(Field::LIVES_ON_START, "> 0");
+
+    if (params.mutationsDelta_ < 0)
+        errorString += createErrorMsg(Field::MUTATIONS_DELTA, ">= 0");
+
+    if (params.maxMutations_ < 0)
+        errorString += createErrorMsg(Field::MAX_MUTATIONS, ">= 0");
+
+    if (params.startingMutations_ < 0)
+        errorString += createErrorMsg(Field::STARTING_MUTATIONS, ">= 0");
+
+    if (params.reproductionAge_ < 0)
+        errorString += createErrorMsg(Field::REPRODUCTION_AGE, ">= 0");
+
+    if (params.offspringCount_ < 0)
+        errorString += createErrorMsg(Field::OFFSPRING_COUNT, ">= 0");
+
+    if (params.chanceForOffspring_ < 0)
+        errorString += createErrorMsg(Field::OFFSPRING_CHANCE, ">= 0");
+
+    if (params.chanceForOffspring_ > 100)
+        errorString += createErrorMsg(Field::OFFSPRING_CHANCE, "<= 100");
+
+    if (params.simulationsCount_ < 1)
+        errorString += createErrorMsg(Field::SIMULATIONS, ">= 1");
+
+    if (params.startingMutations_ > Params::bits_)
+        errorString += createErrorMsg(Field::STARTING_MUTATIONS,
+                                      "<= " + std::to_string(Params::bits_));
+
+    if (params.reproductionAge_ > Params::bits_)
+        errorString += createErrorMsg(Field::REPRODUCTION_AGE,
+                                      "<= " + std::to_string(Params::bits_));
+
+    if (params.livesOnStart_ > params.maxPopulation_)
+        errorString += createErrorMsg(
+            Field::LIVES_ON_START,
+            "lover than " + fieldToString[Field::MAX_POPULATION]);
+
+    if (errorString.empty())
+        return true;
+
+    std::cerr << "Configuration is invalid:" << std::endl << errorString;
+
+    return false;
 }
 
 }  // namespace Config

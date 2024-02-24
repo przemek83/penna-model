@@ -22,4 +22,6 @@ struct Params
 static_assert(Params::bits_ > 0);
 
 Config::Params loadConfig(std::istream& stream);
+
+bool isValid(const Params& params);
 }  // namespace Config

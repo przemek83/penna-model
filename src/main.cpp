@@ -31,6 +31,10 @@ int main()
 {
     std::ifstream configFile("config.yaml");
     const Config::Params params{Config::loadConfig(configFile)};
+
+    if (!Config::isValid(params))
+        return EXIT_FAILURE;
+
     const float step{
 #ifdef SYMULACJA_DORSZY
         static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
