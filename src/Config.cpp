@@ -4,7 +4,7 @@
 
 namespace
 {
-enum class Fields
+enum class Field
 {
     MAX_POPULATION,
     YEARS,
@@ -18,17 +18,17 @@ enum class Fields
     SIMULATIONS
 };
 
-std::map<Fields, std::string> fieldToString{
-    {Fields::MAX_POPULATION, "maxPopulation"},
-    {Fields::YEARS, "years"},
-    {Fields::LIVES_ON_START, "livesOnStart"},
-    {Fields::MUTATIONS_DELTA, "mutationsDelta"},
-    {Fields::MAX_MUTATIONS, "maxMutations"},
-    {Fields::STARTING_MUTATIONS, "startingMutations"},
-    {Fields::REPRODUCTION_AGE, "reproductionAge"},
-    {Fields::OFFSPRING_CHANCE, "offspringChance"},
-    {Fields::OFFSPRING_COUNT, "offspringCount"},
-    {Fields::SIMULATIONS, "simulations"},
+std::map<Field, std::string> fieldToString{
+    {Field::MAX_POPULATION, "maxPopulation"},
+    {Field::YEARS, "years"},
+    {Field::LIVES_ON_START, "livesOnStart"},
+    {Field::MUTATIONS_DELTA, "mutationsDelta"},
+    {Field::MAX_MUTATIONS, "maxMutations"},
+    {Field::STARTING_MUTATIONS, "startingMutations"},
+    {Field::REPRODUCTION_AGE, "reproductionAge"},
+    {Field::OFFSPRING_CHANCE, "offspringChance"},
+    {Field::OFFSPRING_COUNT, "offspringCount"},
+    {Field::SIMULATIONS, "simulations"},
 };
 }  // namespace
 
@@ -38,9 +38,36 @@ Config::Params loadConfig()
 {
     Config::Params params;
     YAML::Node yaml = YAML::LoadFile("config.yaml");
-    params.years_ = yaml[fieldToString[Fields::YEARS]].as<int>();
-    params.livesOnStart_ =
-        yaml[fieldToString[Fields::LIVES_ON_START]].as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::MAX_POPULATION]]})
+        params.maxPopulation_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::YEARS]]})
+        params.years_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::LIVES_ON_START]]})
+        params.livesOnStart_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::MUTATIONS_DELTA]]})
+        params.mutationsDelta_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::MAX_MUTATIONS]]})
+        params.maxMutations_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::STARTING_MUTATIONS]]})
+        params.startingMutations_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::REPRODUCTION_AGE]]})
+        params.reproductionAge_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::OFFSPRING_CHANCE]]})
+        params.chanceForOffspring_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::OFFSPRING_COUNT]]})
+        params.offspringCount_ = value.as<int>();
+
+    if (const YAML::Node value{yaml[fieldToString[Field::SIMULATIONS]]})
+        params.simulationsCount_ = value.as<int>();
 
     return params;
 }
