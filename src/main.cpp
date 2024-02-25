@@ -51,6 +51,26 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     simulation.setProgressCallback(progressCallback);
     return simulation;
 }
+
+SimulationAverages calculateAverages(
+    const std::vector<SingleSimulationData>& simulationsData, int years)
+{
+    SimulationAverages averages{static_cast<std::size_t>(years)};
+    for (const auto& data : simulationsData)
+        averages.integrateData(data);
+
+    averages.finalize();
+    return averages;
+}
+
+void saveAverages(const SimulationAverages& averages,
+                  const Config::Params& params)
+{
+    const float step{getStep(params)};
+    FileOutput output(step, params.years_, 0);
+    output.saveAverages(averages);
+}
+
 }  // namespace
 
 int main()
@@ -70,15 +90,10 @@ int main()
     const std::vector<SingleSimulationData> simulationsData{
         runner.runSequential()};
 
-    SimulationAverages averages{static_cast<std::size_t>(params.years_)};
-    for (const auto& data : simulationsData)
-        averages.integrateData(data);
+    const SimulationAverages averages{
+        calculateAverages(simulationsData, params.years_)};
 
-    averages.finalize();
-
-    const float step{getStep(params)};
-    FileOutput output(step, params.years_, 0);
-    output.saveAverages(averages);
+    saveAverages(averages, params);
 
     return EXIT_SUCCESS;
 }
