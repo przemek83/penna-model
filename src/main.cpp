@@ -25,6 +25,32 @@ std::function<void(int)> createProgressCallback(int sim,
             std::cout << "]";
     };
 }
+
+float getStep(const Config::Params& params)
+{
+    const float step{
+#ifdef SYMULACJA_DORSZY
+        static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
+#else
+        100
+#endif
+        / static_cast<float>(params.simulationsCount_)};
+
+    return step;
+}
+
+Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
+                             std::shared_ptr<NumbersGenerator> generator)
+{
+    const float step{getStep(params)};
+
+    Simulation simulation(params, step);
+    simulation.setGenerator(generator);
+    simulation.createInitialPopulation();
+    auto progressCallback{createProgressCallback(simulationNumber, params)};
+    simulation.setProgressCallback(progressCallback);
+    return simulation;
+}
 }  // namespace
 
 int main()
@@ -35,35 +61,22 @@ int main()
     if (!Config::isValid(params))
         return EXIT_FAILURE;
 
-    const float step{
-#ifdef SYMULACJA_DORSZY
-        static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
-#else
-        100
-#endif
-        / static_cast<float>(params.simulationsCount_)};
-
     Runner runner;
+    auto generator{std::make_shared<NumbersGenerator>()};
 
-    auto initialPopulationGenerator{std::make_shared<NumbersGenerator>()};
     for (int i{1}; i <= params.simulationsCount_; i++)
-    {
-        Simulation simulation(params, step);
-        simulation.setGenerator(initialPopulationGenerator);
-        simulation.createInitialPopulation();
-        auto progressCallback{createProgressCallback(i, params)};
-        simulation.setProgressCallback(progressCallback);
-        runner.addSimulation(std::move(simulation));
-    }
+        runner.addSimulation(prepareSimulation(params, i, generator));
 
-    std::vector<SingleSimulationData> const dataVector{runner.runSequential()};
+    const std::vector<SingleSimulationData> simulationsData{
+        runner.runSequential()};
 
     SimulationAverages averages{static_cast<std::size_t>(params.years_)};
-    for (const auto& data : dataVector)
+    for (const auto& data : simulationsData)
         averages.integrateData(data);
 
     averages.finalize();
 
+    const float step{getStep(params)};
     FileOutput output(step, params.years_, 0);
     output.saveAverages(averages);
 
