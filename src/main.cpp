@@ -46,14 +46,19 @@ int main()
     SimulationAverages averages{static_cast<std::size_t>(params.years_)};
 
     auto initialPopulationGenerator{std::make_shared<NumbersGenerator>()};
+    std::vector<Simulation> simulations;
     for (int i{1}; i <= params.simulationsCount_; i++)
     {
-        const Timer timer;
-        Simulation simulation(params, step);
+        Simulation& simulation{simulations.emplace_back(params, step)};
         simulation.setGenerator(initialPopulationGenerator);
         simulation.createInitialPopulation();
-        auto progressCallback{createProgressCallback(i, params)};
-        const SingleSimulationData data{simulation.run(progressCallback)};
+    }
+
+    for (std::size_t i{0}; i < simulations.size(); ++i)
+    {
+        const Timer timer;
+        auto progressCallback{createProgressCallback(i + 1, params)};
+        const SingleSimulationData data{simulations[i].run(progressCallback)};
         averages.integrateData(data);
     }
 
