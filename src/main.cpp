@@ -3,9 +3,9 @@
 
 #include "FileOutput.h"
 #include "NumbersGenerator.h"
+#include "Runner.h"
 #include "Simulation.h"
 #include "SimulationData.h"
-#include "Timer.h"
 
 namespace
 {
@@ -43,24 +43,24 @@ int main()
 #endif
         / static_cast<float>(params.simulationsCount_)};
 
-    SimulationAverages averages{static_cast<std::size_t>(params.years_)};
+    Runner runner;
 
     auto initialPopulationGenerator{std::make_shared<NumbersGenerator>()};
-    std::vector<Simulation> simulations;
     for (int i{1}; i <= params.simulationsCount_; i++)
     {
-        Simulation& simulation{simulations.emplace_back(params, step)};
+        Simulation simulation(params, step);
         simulation.setGenerator(initialPopulationGenerator);
         simulation.createInitialPopulation();
+        auto progressCallback{createProgressCallback(i, params)};
+        simulation.setProgressCallback(progressCallback);
+        runner.addSimulation(std::move(simulation));
     }
 
-    for (std::size_t i{0}; i < simulations.size(); ++i)
-    {
-        const Timer timer;
-        auto progressCallback{createProgressCallback(i + 1, params)};
-        const SingleSimulationData data{simulations[i].run(progressCallback)};
+    std::vector<SingleSimulationData> const dataVector{runner.runSequential()};
+
+    SimulationAverages averages{static_cast<std::size_t>(params.years_)};
+    for (const auto& data : dataVector)
         averages.integrateData(data);
-    }
 
     averages.finalize();
 

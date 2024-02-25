@@ -34,6 +34,8 @@ set(${PROJECT_NAME}_SOURCES
     src/Timer.cpp
     src/FileOutput.h
     src/FileOutput.cpp
+    src/Runner.h
+    src/Runner.cpp
 )
 
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})

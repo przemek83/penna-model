@@ -24,8 +24,9 @@ public:
 
     void setGenerator(std::shared_ptr<Generator> generator);
 
-    SingleSimulationData run(
-        std::function<void(int)> progressCallback = nullptr);
+    SingleSimulationData run();
+
+    void setProgressCallback(std::function<void(int)> callback);
 
 private:
     using BasicMetrics = SingleSimulationData::BasicMetrics;
@@ -61,4 +62,6 @@ private:
     Config::Params params_;
     float step_;
     std::shared_ptr<Generator> generator_;
+
+    std::function<void(int)> progressCallback_{nullptr};
 };

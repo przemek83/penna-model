@@ -11,7 +11,7 @@ Simulation::Simulation(const Config::Params& params, float step)
 {
 }
 
-SingleSimulationData Simulation::run(std::function<void(int)> progressCallback)
+SingleSimulationData Simulation::run()
 {
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(static_cast<std::size_t>(params_.years_));
@@ -28,13 +28,18 @@ SingleSimulationData Simulation::run(std::function<void(int)> progressCallback)
 
         year++;
 
-        if (progressCallback)
-            progressCallback(year);
+        if (progressCallback_)
+            progressCallback_(year);
     }
 
     SingleSimulationData data{prepareData(std::move(basicMetrics))};
 
     return data;
+}
+
+void Simulation::setProgressCallback(std::function<void(int)> callback)
+{
+    progressCallback_ = std::move(callback);
 }
 
 SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
