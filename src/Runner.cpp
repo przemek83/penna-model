@@ -10,10 +10,10 @@ void Runner::addSimulation(Simulation simulation)
 
 std::vector<SingleSimulationData> Runner::runSequential()
 {
+    const Timer timer;
     std::vector<SingleSimulationData> dataToReturn;
     for (std::size_t i{0}; i < simulations_.size(); ++i)
     {
-        const Timer timer;
         SingleSimulationData data{simulations_[i].run()};
         dataToReturn.emplace_back(std::move(data));
     }
