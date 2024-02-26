@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <mutex>
 
 #include "FileOutput.h"
 #include "NumbersGenerator.h"
@@ -9,8 +10,15 @@
 
 namespace
 {
-std::function<void(int)> createProgressCallback(int sim,
-                                                const Config::Params& params)
+
+std::vector<int> getProgressVector(int simulations)
+{
+    std::vector<int> progresses(simulations, 0);
+    return progresses;
+}
+
+std::function<void(int)> createSequentialProgressCallback(
+    int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
             maxSim = params.simulationsCount_](int year)
@@ -22,7 +30,34 @@ std::function<void(int)> createProgressCallback(int sim,
             std::cout << "*";
 
         if (year == maxYears)
-            std::cout << "]";
+            std::cout << "]" << std::endl;
+    };
+}
+
+std::function<void(int)> createOverallProgressCallback(
+    int sim, const Config::Params& params)
+{
+    return [maxYears = params.years_, simNumber = sim,
+            maxSim = params.simulationsCount_](int year)
+    {
+        static std::vector<int> progresses{getProgressVector(maxSim + 1)};
+
+        if ((year % (maxYears / 100)) != 0)
+            return;
+
+        static std::mutex mutex;
+        mutex.lock();
+        progresses[simNumber] = (year) / (maxYears / 100);
+        int sumAfter{std::reduce(progresses.begin(), progresses.end())};
+
+        if (sumAfter == 1)
+            std::cout << "Progress:       [";
+        if (sumAfter % ((maxSim * 100) / 50) == 0)
+            std::cout << "*";
+        if (sumAfter >= maxSim * 100)
+            std::cout << "]" << std::endl;
+
+        mutex.unlock();
     };
 }
 
@@ -47,7 +82,8 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     Simulation simulation(params, step);
     simulation.setGenerator(generator);
     simulation.createInitialPopulation();
-    auto progressCallback{createProgressCallback(simulationNumber, params)};
+    auto progressCallback{
+        createOverallProgressCallback(simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
     return simulation;
 }
@@ -88,7 +124,7 @@ int main()
         runner.addSimulation(prepareSimulation(params, i, generator));
 
     const std::vector<SingleSimulationData> simulationsData{
-        runner.runSequential()};
+        runner.runParallel()};
 
     const SimulationAverages averages{
         calculateAverages(simulationsData, params.years_)};
