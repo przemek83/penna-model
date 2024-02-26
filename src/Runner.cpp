@@ -1,4 +1,5 @@
 #include "Runner.h"
+#include <future>
 
 #include "Timer.h"
 
@@ -14,6 +15,27 @@ std::vector<SingleSimulationData> Runner::runSequential()
     {
         const Timer timer;
         SingleSimulationData data{simulations_[i].run()};
+        dataToReturn.emplace_back(std::move(data));
+    }
+
+    return dataToReturn;
+}
+
+std::vector<SingleSimulationData> Runner::runParallel()
+{
+    const Timer timer;
+    std::vector<std::future<SingleSimulationData>> futures;
+    for (std::size_t i{0}; i < simulations_.size(); ++i)
+    {
+        futures.emplace_back(
+            std::async(std::launch::async, &Simulation::run, simulations_[i]));
+    }
+
+    std::vector<SingleSimulationData> dataToReturn;
+    for (auto& future : futures)
+    {
+        future.wait();
+        SingleSimulationData data{future.get()};
         dataToReturn.emplace_back(std::move(data));
     }
 
