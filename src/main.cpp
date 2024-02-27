@@ -82,6 +82,7 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     Simulation simulation(params, step);
     simulation.setGenerator(generator);
     simulation.createInitialPopulation();
+    simulation.setGenerator(std::make_shared<NumbersGenerator>());
     auto progressCallback{
         createOverallProgressCallback(simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
