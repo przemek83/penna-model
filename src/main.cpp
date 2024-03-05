@@ -50,13 +50,13 @@ const int progressLineLength{50};
         static std::mutex mutex;
         mutex.lock();
         progresses[simNumber] = (year + 1) / (maxYears / 100);
-        const int sumAfter{std::reduce(progresses.begin(), progresses.end())};
+        const int sum{std::reduce(progresses.begin(), progresses.end())};
 
-        if (sumAfter == 1)
+        if (sum == 1)
             std::cout << "Progress:       [";
-        if (sumAfter % ((maxSim * 100) / progressLineLength) == 0)
+        if (sum % ((maxSim * 100) / progressLineLength) == 0)
             std::cout << "*";
-        if (sumAfter >= maxSim * 100)
+        if (sum >= maxSim * 100)
             std::cout << "]" << std::endl;
 
         mutex.unlock();
