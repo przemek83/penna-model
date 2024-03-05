@@ -13,7 +13,7 @@ namespace
 
 std::vector<int> getProgressVector(int simulations)
 {
-    std::vector<int> progresses(simulations, 0);
+    std::vector<int> progresses(static_cast<std::size_t>(simulations), 0);
     return progresses;
 }
 
