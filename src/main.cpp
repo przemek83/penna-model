@@ -17,7 +17,7 @@ std::vector<int> getProgressVector(int simulations)
     return progresses;
 }
 
-std::function<void(int)> createSequentialProgressCallback(
+[[maybe_unused]] std::function<void(int)> createSequentialProgressCallback(
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
@@ -34,7 +34,7 @@ std::function<void(int)> createSequentialProgressCallback(
     };
 }
 
-std::function<void(int)> createOverallProgressCallback(
+[[maybe_unused]] std::function<void(int)> createOverallProgressCallback(
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
