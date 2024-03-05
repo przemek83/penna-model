@@ -26,10 +26,10 @@ SingleSimulationData Simulation::run()
 
         basicMetrics.push_back(yearMetrics);
 
-        year++;
-
         if (progressCallback_)
             progressCallback_(year);
+
+        year++;
     }
 
     SingleSimulationData data{prepareData(std::move(basicMetrics))};

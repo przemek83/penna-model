@@ -17,19 +17,21 @@ std::vector<int> getProgressVector(int simulations)
     return progresses;
 }
 
+const int progressLineLength{50};
+
 [[maybe_unused]] std::function<void(int)> createSequentialProgressCallback(
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
             maxSim = params.simulationsCount_](int year)
     {
-        if (year == 1)
+        if (year == 0)
             std::cout << simNumber << "/" << maxSim << " Progress:       [";
 
-        if ((year % (maxYears / 50)) == 0)
+        if ((year % (maxYears / progressLineLength)) == 0)
             std::cout << "*";
 
-        if (year == maxYears)
+        if (year + 1 == maxYears)
             std::cout << "]" << std::endl;
     };
 }
@@ -42,17 +44,17 @@ std::vector<int> getProgressVector(int simulations)
     {
         static std::vector<int> progresses{getProgressVector(maxSim + 1)};
 
-        if ((year % (maxYears / 100)) != 0)
+        if (((year + 1) % (maxYears / 100)) != 0)
             return;
 
         static std::mutex mutex;
         mutex.lock();
-        progresses[simNumber] = (year) / (maxYears / 100);
-        int sumAfter{std::reduce(progresses.begin(), progresses.end())};
+        progresses[simNumber] = (year + 1) / (maxYears / 100);
+        const int sumAfter{std::reduce(progresses.begin(), progresses.end())};
 
         if (sumAfter == 1)
             std::cout << "Progress:       [";
-        if (sumAfter % ((maxSim * 100) / 50) == 0)
+        if (sumAfter % ((maxSim * 100) / progressLineLength) == 0)
             std::cout << "*";
         if (sumAfter >= maxSim * 100)
             std::cout << "]" << std::endl;
