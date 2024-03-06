@@ -36,6 +36,8 @@ set(${PROJECT_NAME}_SOURCES
     src/FileOutput.cpp
     src/Runner.h
     src/Runner.cpp
+    src/ProgressCallback.h
+    src/ProgressCallback.cpp
 )
 
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
