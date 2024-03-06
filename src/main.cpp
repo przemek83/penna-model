@@ -44,23 +44,26 @@ const char progressLineMarker{'*'};
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
-            maxSim = params.simulationsCount_](int year)
+            simCount = params.simulationsCount_](int year)
     {
-        static std::vector<int> progresses{getProgressVector(maxSim + 1)};
+        static std::vector<int> progresses{getProgressVector(simCount + 1)};
 
-        if (((year + 1) % (maxYears / 100)) != 0)
+        const int sensitivity{maxYears / 100};
+        if ((year + 1) % sensitivity != 0)
             return;
 
         static std::mutex mutex;
         mutex.lock();
-        progresses[simNumber] = (year + 1) / (maxYears / 100);
-        const int sum{std::reduce(progresses.begin(), progresses.end())};
+        progresses[static_cast<std::size_t>(simNumber)] =
+            (year + 1) / sensitivity;
+        const int currentSum{std::reduce(progresses.begin(), progresses.end())};
 
-        if (sum == 1)
+        const int totalSum{simCount * 100};
+        if (currentSum == 1)
             std::cout << progressLinePreffix;
-        if (sum % ((maxSim * 100) / progressLineLength) == 0)
+        if (currentSum % (totalSum / progressLineLength) == 0)
             std::cout << progressLineMarker;
-        if (sum >= maxSim * 100)
+        if (currentSum >= totalSum)
             std::cout << progressLineSuffix << std::endl;
 
         mutex.unlock();
