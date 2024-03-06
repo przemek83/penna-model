@@ -15,7 +15,6 @@ include(CMakeLists.txt.yaml-cpp)
 file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 
 set(${PROJECT_NAME}_SOURCES
-    src/main.cpp
     src/Output.h
     src/Output.cpp
     src/Individual.h
