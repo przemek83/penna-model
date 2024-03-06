@@ -18,6 +18,9 @@ std::vector<int> getProgressVector(int simulations)
 }
 
 const int progressLineLength{50};
+const char progressLinePreffix{'['};
+const char progressLineSuffix{']'};
+const char progressLineMarker{'*'};
 
 [[maybe_unused]] std::function<void(int)> createSequentialProgressCallback(
     int sim, const Config::Params& params)
@@ -26,13 +29,14 @@ const int progressLineLength{50};
             maxSim = params.simulationsCount_](int year)
     {
         if (year == 0)
-            std::cout << simNumber << "/" << maxSim << " Progress:       [";
+            std::cout << simNumber << "/" << maxSim << " "
+                      << progressLinePreffix;
 
         if ((year % (maxYears / progressLineLength)) == 0)
-            std::cout << "*";
+            std::cout << progressLineMarker;
 
         if (year + 1 == maxYears)
-            std::cout << "]" << std::endl;
+            std::cout << progressLineSuffix << std::endl;
     };
 }
 
@@ -53,11 +57,11 @@ const int progressLineLength{50};
         const int sum{std::reduce(progresses.begin(), progresses.end())};
 
         if (sum == 1)
-            std::cout << "Progress:       [";
+            std::cout << progressLinePreffix;
         if (sum % ((maxSim * 100) / progressLineLength) == 0)
-            std::cout << "*";
+            std::cout << progressLineMarker;
         if (sum >= maxSim * 100)
-            std::cout << "]" << std::endl;
+            std::cout << progressLineSuffix << std::endl;
 
         mutex.unlock();
     };
