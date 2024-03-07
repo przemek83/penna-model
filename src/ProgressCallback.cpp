@@ -46,14 +46,14 @@ namespace ProgressCallback
     return [maxYears = params.years_, simNumber = sim,
             simCount = params.simulationsCount_](int year)
     {
-        static std::vector<int> progresses{getProgressVector(simCount + 1)};
-
         const int sensitivity{maxYears / 100};
         if ((year + 1) % sensitivity != 0)
             return;
 
         static std::mutex mutex;
         mutex.lock();
+
+        static std::vector<int> progresses{getProgressVector(simCount + 1)};
         progresses[static_cast<std::size_t>(simNumber)] =
             (year + 1) / sensitivity;
         const int currentSum{std::reduce(progresses.begin(), progresses.end())};
