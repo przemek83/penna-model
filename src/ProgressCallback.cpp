@@ -5,7 +5,7 @@
 #include <numeric>
 #include <vector>
 
-namespace ProgressCallback
+namespace
 {
 std::vector<int> getProgressVector(int simulations)
 {
@@ -17,6 +17,10 @@ const int progressLineLength{50};
 const char progressLinePreffix{'['};
 const char progressLineSuffix{']'};
 const char progressLineMarker{'*'};
+}  // namespace
+
+namespace ProgressCallback
+{
 
 [[maybe_unused]] std::function<void(int)> createSequentialProgressCallback(
     int sim, const Config::Params& params)
