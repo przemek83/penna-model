@@ -13,7 +13,17 @@ std::vector<int> getProgressVector(int simulations)
     return progresses;
 }
 
-const int progressLineLength{50};
+bool shouldAddProgress(int currentValue, int maxValue)
+{
+    const int progressLineLength{50};
+    return (currentValue % (maxValue / progressLineLength)) == 0;
+}
+
+bool isEnding(int currentValue, int maxValue)
+{
+    return currentValue >= maxValue;
+}
+
 const char progressLinePreffix{'['};
 const char progressLineSuffix{']'};
 const char progressLineMarker{'*'};
@@ -32,10 +42,10 @@ namespace ProgressCallback
             std::cout << simNumber << "/" << maxSim << " "
                       << progressLinePreffix;
 
-        if ((year % (maxYears / progressLineLength)) == 0)
+        if (shouldAddProgress(year, maxYears))
             std::cout << progressLineMarker;
 
-        if (year + 1 == maxYears)
+        if (isEnding(year + 1, maxYears))
             std::cout << progressLineSuffix << std::endl;
     };
 }
@@ -62,9 +72,9 @@ namespace ProgressCallback
         const int totalSum{simCount * 100};
         if (currentSum == 1)
             std::cout << progressLinePreffix;
-        if (currentSum % (totalSum / progressLineLength) == 0)
+        if (shouldAddProgress(currentSum, totalSum))
             std::cout << progressLineMarker;
-        if (currentSum >= totalSum)
+        if (isEnding(currentSum, totalSum))
             std::cout << progressLineSuffix << std::endl;
     };
 }
