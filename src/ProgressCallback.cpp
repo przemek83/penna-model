@@ -57,6 +57,7 @@ namespace ProgressCallback
         progresses[static_cast<std::size_t>(simNumber)] =
             (year + 1) / sensitivity;
         const int currentSum{std::reduce(progresses.begin(), progresses.end())};
+        mutex.unlock();
 
         const int totalSum{simCount * 100};
         if (currentSum == 1)
@@ -65,8 +66,6 @@ namespace ProgressCallback
             std::cout << progressLineMarker;
         if (currentSum >= totalSum)
             std::cout << progressLineSuffix << std::endl;
-
-        mutex.unlock();
     };
 }
 }  // namespace ProgressCallback
