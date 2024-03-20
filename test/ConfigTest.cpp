@@ -59,9 +59,10 @@ TEST_CASE("Config", "[penna]")
 maxPopulation: 100000
 years: 1000
 livesOnStart: 2000
-mutationsDelta: 2
-maxMutations: 6
-startingMutations: 6
+mutations:
+  addedWithBirth: 2
+  deathAfter: 6
+  starting: 6
 reproductionAge: 4
 offspringChance: 50
 offspringCount: 2
@@ -72,7 +73,10 @@ simulations: 4)");
 
     SECTION("invalid config")
     {
-        std::istringstream invalidConfigString("maxMutations: aaaa36");
+        std::istringstream invalidConfigString(R"(
+mutations:
+  deathAfter: aaaa36
+)");
         REQUIRE_THROWS(Config::loadConfig(invalidConfigString));
     }
 

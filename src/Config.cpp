@@ -10,9 +10,10 @@ enum class Field
     MAX_POPULATION,
     YEARS,
     LIVES_ON_START,
-    MUTATIONS_DELTA,
-    MAX_MUTATIONS,
-    STARTING_MUTATIONS,
+    MUTATIONS,
+    MUTATIONS_ADDED_WITH_BIRTH,
+    MUTATIONS_DEATH_AFTER,
+    MUTATIONS_STARTING,
     REPRODUCTION_AGE,
     OFFSPRING_CHANCE,
     OFFSPRING_COUNT,
@@ -23,9 +24,10 @@ std::map<Field, std::string> fieldToString{
     {Field::MAX_POPULATION, "maxPopulation"},
     {Field::YEARS, "years"},
     {Field::LIVES_ON_START, "livesOnStart"},
-    {Field::MUTATIONS_DELTA, "mutationsDelta"},
-    {Field::MAX_MUTATIONS, "maxMutations"},
-    {Field::STARTING_MUTATIONS, "startingMutations"},
+    {Field::MUTATIONS, "mutations"},
+    {Field::MUTATIONS_ADDED_WITH_BIRTH, "addedWithBirth"},
+    {Field::MUTATIONS_DEATH_AFTER, "deathAfter"},
+    {Field::MUTATIONS_STARTING, "starting"},
     {Field::REPRODUCTION_AGE, "reproductionAge"},
     {Field::OFFSPRING_CHANCE, "offspringChance"},
     {Field::OFFSPRING_COUNT, "offspringCount"},
@@ -40,6 +42,25 @@ std::string createErrorMsg(Field field, const std::string& condition,
        << ", got " << currentValue << std::endl;
     return os.str();
 }
+
+void loadMutations(const YAML::Node& yaml, Config::Params& params)
+{
+    const YAML::Node& node{yaml[fieldToString[Field::MUTATIONS]]};
+
+    if (!node)
+        return;
+
+    if (const YAML::Node value{
+            node[fieldToString[Field::MUTATIONS_ADDED_WITH_BIRTH]]})
+        params.mutationsDelta_ = value.as<int>();
+
+    if (const YAML::Node value{
+            node[fieldToString[Field::MUTATIONS_DEATH_AFTER]]})
+        params.maxMutations_ = value.as<int>();
+
+    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_STARTING]]})
+        params.startingMutations_ = value.as<int>();
+}
 }  // namespace
 
 namespace Config
@@ -47,7 +68,7 @@ namespace Config
 Config::Params loadConfig(std::istream& configFile)
 {
     Config::Params params;
-    YAML::Node yaml = YAML::Load(configFile);
+    YAML::Node yaml{YAML::Load(configFile)};
 
     if (const YAML::Node value{yaml[fieldToString[Field::MAX_POPULATION]]})
         params.maxPopulation_ = value.as<int>();
@@ -58,14 +79,7 @@ Config::Params loadConfig(std::istream& configFile)
     if (const YAML::Node value{yaml[fieldToString[Field::LIVES_ON_START]]})
         params.livesOnStart_ = value.as<int>();
 
-    if (const YAML::Node value{yaml[fieldToString[Field::MUTATIONS_DELTA]]})
-        params.mutationsDelta_ = value.as<int>();
-
-    if (const YAML::Node value{yaml[fieldToString[Field::MAX_MUTATIONS]]})
-        params.maxMutations_ = value.as<int>();
-
-    if (const YAML::Node value{yaml[fieldToString[Field::STARTING_MUTATIONS]]})
-        params.startingMutations_ = value.as<int>();
+    loadMutations(yaml, params);
 
     if (const YAML::Node value{yaml[fieldToString[Field::REPRODUCTION_AGE]]})
         params.reproductionAge_ = value.as<int>();
@@ -98,15 +112,15 @@ bool isValid(const Params& params)
             createErrorMsg(Field::LIVES_ON_START, "> 0", params.livesOnStart_);
 
     if (params.mutationsDelta_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_DELTA, ">= 0",
+        errorMsg += createErrorMsg(Field::MUTATIONS_ADDED_WITH_BIRTH, ">= 0",
                                    params.mutationsDelta_);
 
     if (params.maxMutations_ < 0)
-        errorMsg +=
-            createErrorMsg(Field::MAX_MUTATIONS, ">= 0", params.maxMutations_);
+        errorMsg += createErrorMsg(Field::MUTATIONS_DEATH_AFTER, ">= 0",
+                                   params.maxMutations_);
 
     if (params.startingMutations_ < 0)
-        errorMsg += createErrorMsg(Field::STARTING_MUTATIONS, ">= 0",
+        errorMsg += createErrorMsg(Field::MUTATIONS_STARTING, ">= 0",
                                    params.startingMutations_);
 
     if (params.reproductionAge_ < 0)
@@ -130,7 +144,7 @@ bool isValid(const Params& params)
                                    params.simulationsCount_);
 
     if (params.startingMutations_ > Params::bits_)
-        errorMsg += createErrorMsg(Field::STARTING_MUTATIONS,
+        errorMsg += createErrorMsg(Field::MUTATIONS_STARTING,
                                    "<= " + std::to_string(Params::bits_),
                                    params.startingMutations_);
 
