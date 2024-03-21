@@ -60,9 +60,9 @@ maxPopulation: 100000
 years: 1000
 livesOnStart: 2000
 mutations:
-  addedWithBirth: 2
-  deathAfter: 6
-  starting: 6
+  added: 2
+  lethal: 6
+  initial: 6
 reproductionAge: 4
 offspringChance: 50
 offspringCount: 2
@@ -75,7 +75,7 @@ simulations: 4)");
     {
         std::istringstream invalidConfigString(R"(
 mutations:
-  deathAfter: aaaa36
+  lethal: aaaa36
 )");
         REQUIRE_THROWS(Config::loadConfig(invalidConfigString));
     }

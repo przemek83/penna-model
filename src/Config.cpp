@@ -11,9 +11,9 @@ enum class Field
     YEARS,
     LIVES_ON_START,
     MUTATIONS,
-    MUTATIONS_ADDED_WITH_BIRTH,
-    MUTATIONS_DEATH_AFTER,
-    MUTATIONS_STARTING,
+    MUTATIONS_ADDED,
+    MUTATIONS_LETHAL,
+    MUTATIONS_INITIAL,
     REPRODUCTION_AGE,
     OFFSPRING_CHANCE,
     OFFSPRING_COUNT,
@@ -25,9 +25,9 @@ std::map<Field, std::string> fieldToString{
     {Field::YEARS, "years"},
     {Field::LIVES_ON_START, "livesOnStart"},
     {Field::MUTATIONS, "mutations"},
-    {Field::MUTATIONS_ADDED_WITH_BIRTH, "addedWithBirth"},
-    {Field::MUTATIONS_DEATH_AFTER, "deathAfter"},
-    {Field::MUTATIONS_STARTING, "starting"},
+    {Field::MUTATIONS_ADDED, "added"},
+    {Field::MUTATIONS_LETHAL, "lethal"},
+    {Field::MUTATIONS_INITIAL, "initial"},
     {Field::REPRODUCTION_AGE, "reproductionAge"},
     {Field::OFFSPRING_CHANCE, "offspringChance"},
     {Field::OFFSPRING_COUNT, "offspringCount"},
@@ -50,15 +50,13 @@ void loadMutations(const YAML::Node& yaml, Config::Params& params)
     if (!node)
         return;
 
-    if (const YAML::Node value{
-            node[fieldToString[Field::MUTATIONS_ADDED_WITH_BIRTH]]})
+    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_ADDED]]})
         params.mutationsDelta_ = value.as<int>();
 
-    if (const YAML::Node value{
-            node[fieldToString[Field::MUTATIONS_DEATH_AFTER]]})
+    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_LETHAL]]})
         params.maxMutations_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_STARTING]]})
+    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_INITIAL]]})
         params.startingMutations_ = value.as<int>();
 }
 }  // namespace
@@ -112,15 +110,15 @@ bool isValid(const Params& params)
             createErrorMsg(Field::LIVES_ON_START, "> 0", params.livesOnStart_);
 
     if (params.mutationsDelta_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_ADDED_WITH_BIRTH, ">= 0",
+        errorMsg += createErrorMsg(Field::MUTATIONS_ADDED, ">= 0",
                                    params.mutationsDelta_);
 
     if (params.maxMutations_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_DEATH_AFTER, ">= 0",
+        errorMsg += createErrorMsg(Field::MUTATIONS_LETHAL, ">= 0",
                                    params.maxMutations_);
 
     if (params.startingMutations_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_STARTING, ">= 0",
+        errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL, ">= 0",
                                    params.startingMutations_);
 
     if (params.reproductionAge_ < 0)
@@ -144,7 +142,7 @@ bool isValid(const Params& params)
                                    params.simulationsCount_);
 
     if (params.startingMutations_ > Params::bits_)
-        errorMsg += createErrorMsg(Field::MUTATIONS_STARTING,
+        errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL,
                                    "<= " + std::to_string(Params::bits_),
                                    params.startingMutations_);
 

@@ -2,9 +2,9 @@ maxPopulation: 50000
 years: 5000
 livesOnStart: 3000
 mutations:
-  addedWithBirth: 1
-  deathAfter: 4
-  starting: 4
+  added: 1
+  lethal: 4
+  initial: 4
 reproductionAge: 10
 offspringChance: 100
 offspringCount: 3
