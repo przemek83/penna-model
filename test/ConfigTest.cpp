@@ -11,9 +11,9 @@ bool operator==(const Config::Params& left, const Config::Params& right)
     return left.maxPopulation_ == right.maxPopulation_ &&
            left.years_ == right.years_ &&
            left.livesOnStart_ == right.livesOnStart_ &&
-           left.mutationsAdded_ == right.mutationsAdded_ &&
-           left.mutationsLethal_ == right.mutationsLethal_ &&
-           left.mutationsInitial_ == right.mutationsInitial_ &&
+           left.mutations_.added_ == right.mutations_.added_ &&
+           left.mutations_.lethal_ == right.mutations_.lethal_ &&
+           left.mutations_.initial_ == right.mutations_.initial_ &&
            left.reproductionAge_ == right.reproductionAge_ &&
            left.chanceForOffspring_ == right.chanceForOffspring_ &&
            left.offspringCount_ == right.offspringCount_ &&
@@ -30,10 +30,11 @@ struct StringMaker<Config::Params>
     {
         std::ostringstream os;
         os << "{" << value.maxPopulation_ << "," << value.years_ << ","
-           << value.livesOnStart_ << "," << value.mutationsAdded_ << ","
-           << value.mutationsLethal_ << "," << value.mutationsInitial_ << ","
-           << value.reproductionAge_ << "," << value.chanceForOffspring_ << ","
-           << value.offspringCount_ << "," << value.simulationsCount_ << "}";
+           << value.livesOnStart_ << "," << value.mutations_.added_ << ","
+           << value.mutations_.lethal_ << "," << value.mutations_.initial_
+           << "," << value.reproductionAge_ << "," << value.chanceForOffspring_
+           << "," << value.offspringCount_ << "," << value.simulationsCount_
+           << "}";
         return os.str();
     }
 };

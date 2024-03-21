@@ -76,8 +76,8 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
         if (shouldHaveOffspring(individual))
         {
             for (int i{0}; i < params_.offspringCount_; i++)
-                individuals_.emplace_front(
-                    individual.offspring(*generator_, params_.mutationsAdded_));
+                individuals_.emplace_front(individual.offspring(
+                    *generator_, params_.mutations_.added_));
             yearMetrics.births_ += params_.offspringCount_;
         }
 
@@ -93,7 +93,7 @@ void Simulation::createInitialPopulation()
     for (int i{0}; i < params_.livesOnStart_; i++)
     {
         Individual individual(i);
-        individual.assignRandomBits(*generator_, params_.mutationsInitial_);
+        individual.assignRandomBits(*generator_, params_.mutations_.initial_);
         individuals_.push_back(individual);
     }
 }
@@ -149,7 +149,7 @@ bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
     return (individual.getSurvivedMutations() >=
-            params_.mutationsLethal_) ||                         // mutations
+            params_.mutations_.lethal_) ||                    // mutations
            (individual.getAge() >= Config::Params::bits_) ||  // ageing
            (generator_->getPercentChance() <=
             chanceForDeathInPercent)                          // Verhulst
