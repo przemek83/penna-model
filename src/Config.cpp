@@ -59,7 +59,7 @@ Config::Mutations loadMutations(const YAML::Node& node)
     return mutations;
 }
 
-void checkMutations(const Config::Mutations& mutations, std::string& errorMsg)
+void checkMutations(Config::Mutations mutations, std::string& errorMsg)
 {
     if (mutations.added_ < 0)
         errorMsg +=
