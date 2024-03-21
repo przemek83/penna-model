@@ -43,21 +43,40 @@ std::string createErrorMsg(Field field, const std::string& condition,
     return os.str();
 }
 
-void loadMutations(const YAML::Node& yaml, Config::Params& params)
+Config::Mutations loadMutations(const YAML::Node& node)
 {
-    const YAML::Node& node{yaml[fieldToString[Field::MUTATIONS]]};
-
-    if (!node)
-        return;
+    Config::Mutations mutations;
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_ADDED]]})
-        params.mutations_.added_ = value.as<int>();
+        mutations.added_ = value.as<int>();
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_LETHAL]]})
-        params.mutations_.lethal_ = value.as<int>();
+        mutations.lethal_ = value.as<int>();
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_INITIAL]]})
-        params.mutations_.initial_ = value.as<int>();
+        mutations.initial_ = value.as<int>();
+
+    return mutations;
+}
+
+void checkMutations(const Config::Mutations& mutations, std::string& errorMsg)
+{
+    if (mutations.added_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::MUTATIONS_ADDED, ">= 0", mutations.added_);
+
+    if (mutations.lethal_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::MUTATIONS_LETHAL, ">= 0", mutations.lethal_);
+
+    if (mutations.initial_ < 0)
+        errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL, ">= 0",
+                                   mutations.initial_);
+
+    if (mutations.initial_ > Config::Params::bits_)
+        errorMsg += createErrorMsg(
+            Field::MUTATIONS_INITIAL,
+            "<= " + std::to_string(Config::Params::bits_), mutations.initial_);
 }
 }  // namespace
 
@@ -77,7 +96,8 @@ Config::Params loadConfig(std::istream& configFile)
     if (const YAML::Node value{yaml[fieldToString[Field::LIVES_ON_START]]})
         params.livesOnStart_ = value.as<int>();
 
-    loadMutations(yaml, params);
+    if (const YAML::Node& node{yaml[fieldToString[Field::MUTATIONS]]}; node)
+        params.mutations_ = loadMutations(node);
 
     if (const YAML::Node value{yaml[fieldToString[Field::REPRODUCTION_AGE]]})
         params.reproductionAge_ = value.as<int>();
@@ -109,18 +129,6 @@ bool isValid(const Params& params)
         errorMsg +=
             createErrorMsg(Field::LIVES_ON_START, "> 0", params.livesOnStart_);
 
-    if (params.mutations_.added_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_ADDED, ">= 0",
-                                   params.mutations_.added_);
-
-    if (params.mutations_.lethal_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_LETHAL, ">= 0",
-                                   params.mutations_.lethal_);
-
-    if (params.mutations_.initial_ < 0)
-        errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL, ">= 0",
-                                   params.mutations_.initial_);
-
     if (params.reproductionAge_ < 0)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE, ">= 0",
                                    params.reproductionAge_);
@@ -141,11 +149,6 @@ bool isValid(const Params& params)
         errorMsg += createErrorMsg(Field::SIMULATIONS, ">= 1",
                                    params.simulationsCount_);
 
-    if (params.mutations_.initial_ > Params::bits_)
-        errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL,
-                                   "<= " + std::to_string(Params::bits_),
-                                   params.mutations_.initial_);
-
     if (params.reproductionAge_ > Params::bits_)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE,
                                    "<= " + std::to_string(Params::bits_),
@@ -156,6 +159,8 @@ bool isValid(const Params& params)
             createErrorMsg(Field::LIVES_ON_START,
                            "lover than " + fieldToString[Field::MAX_POPULATION],
                            params.livesOnStart_);
+
+    checkMutations(params.mutations_, errorMsg);
 
     if (errorMsg.empty())
         return true;
