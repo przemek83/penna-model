@@ -51,13 +51,13 @@ void loadMutations(const YAML::Node& yaml, Config::Params& params)
         return;
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_ADDED]]})
-        params.mutationsDelta_ = value.as<int>();
+        params.mutationsAdded_ = value.as<int>();
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_LETHAL]]})
-        params.maxMutations_ = value.as<int>();
+        params.mutationsLethal_ = value.as<int>();
 
     if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_INITIAL]]})
-        params.startingMutations_ = value.as<int>();
+        params.mutationsInitial_ = value.as<int>();
 }
 }  // namespace
 
@@ -109,17 +109,17 @@ bool isValid(const Params& params)
         errorMsg +=
             createErrorMsg(Field::LIVES_ON_START, "> 0", params.livesOnStart_);
 
-    if (params.mutationsDelta_ < 0)
+    if (params.mutationsAdded_ < 0)
         errorMsg += createErrorMsg(Field::MUTATIONS_ADDED, ">= 0",
-                                   params.mutationsDelta_);
+                                   params.mutationsAdded_);
 
-    if (params.maxMutations_ < 0)
+    if (params.mutationsLethal_ < 0)
         errorMsg += createErrorMsg(Field::MUTATIONS_LETHAL, ">= 0",
-                                   params.maxMutations_);
+                                   params.mutationsLethal_);
 
-    if (params.startingMutations_ < 0)
+    if (params.mutationsInitial_ < 0)
         errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL, ">= 0",
-                                   params.startingMutations_);
+                                   params.mutationsInitial_);
 
     if (params.reproductionAge_ < 0)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE, ">= 0",
@@ -141,10 +141,10 @@ bool isValid(const Params& params)
         errorMsg += createErrorMsg(Field::SIMULATIONS, ">= 1",
                                    params.simulationsCount_);
 
-    if (params.startingMutations_ > Params::bits_)
+    if (params.mutationsInitial_ > Params::bits_)
         errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL,
                                    "<= " + std::to_string(Params::bits_),
-                                   params.startingMutations_);
+                                   params.mutationsInitial_);
 
     if (params.reproductionAge_ > Params::bits_)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE,
