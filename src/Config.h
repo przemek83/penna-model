@@ -11,6 +11,12 @@ struct Mutations
     int initial_{4};
 };
 
+struct Offspring
+{
+    int chance_{100};
+    int count_{3};
+};
+
 struct Params
 {
     int maxPopulation_{50000};
@@ -18,8 +24,7 @@ struct Params
     int livesOnStart_{3000};
     Mutations mutations_;
     int reproductionAge_{10};
-    int chanceForOffspring_{100};
-    int offspringCount_{3};
+    Offspring offspring_;
     int simulationsCount_{2};
     static constexpr int bits_{64};
 };

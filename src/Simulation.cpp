@@ -75,10 +75,10 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
 
         if (shouldHaveOffspring(individual))
         {
-            for (int i{0}; i < params_.offspringCount_; i++)
+            for (int i{0}; i < params_.offspring_.count_; i++)
                 individuals_.emplace_front(individual.offspring(
                     *generator_, params_.mutations_.added_));
-            yearMetrics.births_ += params_.offspringCount_;
+            yearMetrics.births_ += params_.offspring_.count_;
         }
 
         individual.ageByOneYear();
@@ -164,7 +164,7 @@ bool Simulation::shouldDie(const Individual& individual,
 bool Simulation::shouldHaveOffspring(const Individual& individual) const
 {
     return (individual.getAge() > params_.reproductionAge_) &&
-           generator_->getPercentChance() <= params_.chanceForOffspring_;
+           generator_->getPercentChance() <= params_.offspring_.chance_;
 }
 
 SingleSimulationData Simulation::prepareData(

@@ -15,8 +15,8 @@ bool operator==(const Config::Params& left, const Config::Params& right)
            left.mutations_.lethal_ == right.mutations_.lethal_ &&
            left.mutations_.initial_ == right.mutations_.initial_ &&
            left.reproductionAge_ == right.reproductionAge_ &&
-           left.chanceForOffspring_ == right.chanceForOffspring_ &&
-           left.offspringCount_ == right.offspringCount_ &&
+           left.offspring_.chance_ == right.offspring_.chance_ &&
+           left.offspring_.count_ == right.offspring_.count_ &&
            left.simulationsCount_ == right.simulationsCount_;
 }
 }  // namespace
@@ -32,8 +32,8 @@ struct StringMaker<Config::Params>
         os << "{" << value.maxPopulation_ << "," << value.years_ << ","
            << value.livesOnStart_ << "," << value.mutations_.added_ << ","
            << value.mutations_.lethal_ << "," << value.mutations_.initial_
-           << "," << value.reproductionAge_ << "," << value.chanceForOffspring_
-           << "," << value.offspringCount_ << "," << value.simulationsCount_
+           << "," << value.reproductionAge_ << "," << value.offspring_.chance_
+           << "," << value.offspring_.count_ << "," << value.simulationsCount_
            << "}";
         return os.str();
     }
@@ -65,8 +65,9 @@ mutations:
   lethal: 6
   initial: 6
 reproductionAge: 4
-offspringChance: 50
-offspringCount: 2
+offspring:
+  chance: 50
+  count: 2
 simulations: 4)");
         const Config::Params configParams{Config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);

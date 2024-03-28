@@ -15,6 +15,7 @@ enum class Field
     MUTATIONS_LETHAL,
     MUTATIONS_INITIAL,
     REPRODUCTION_AGE,
+    OFFSPRING,
     OFFSPRING_CHANCE,
     OFFSPRING_COUNT,
     SIMULATIONS
@@ -29,8 +30,9 @@ std::map<Field, std::string> fieldToString{
     {Field::MUTATIONS_LETHAL, "lethal"},
     {Field::MUTATIONS_INITIAL, "initial"},
     {Field::REPRODUCTION_AGE, "reproductionAge"},
-    {Field::OFFSPRING_CHANCE, "offspringChance"},
-    {Field::OFFSPRING_COUNT, "offspringCount"},
+    {Field::OFFSPRING, "offspring"},
+    {Field::OFFSPRING_CHANCE, "chance"},
+    {Field::OFFSPRING_COUNT, "count"},
     {Field::SIMULATIONS, "simulations"},
 };
 
@@ -59,6 +61,19 @@ Config::Mutations loadMutations(const YAML::Node& node)
     return mutations;
 }
 
+Config::Offspring loadOffspring(const YAML::Node& node)
+{
+    Config::Offspring offspring;
+
+    if (const YAML::Node value{node[fieldToString[Field::OFFSPRING_CHANCE]]})
+        offspring.chance_ = value.as<int>();
+
+    if (const YAML::Node value{node[fieldToString[Field::OFFSPRING_COUNT]]})
+        offspring.count_ = value.as<int>();
+
+    return offspring;
+}
+
 void checkMutations(Config::Mutations mutations, std::string& errorMsg)
 {
     if (mutations.added_ < 0)
@@ -78,6 +93,22 @@ void checkMutations(Config::Mutations mutations, std::string& errorMsg)
             Field::MUTATIONS_INITIAL,
             "<= " + std::to_string(Config::Params::bits_), mutations.initial_);
 }
+
+void checkOffspring(Config::Offspring offspring, std::string& errorMsg)
+{
+    if (offspring.count_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::OFFSPRING_COUNT, ">= 0", offspring.count_);
+
+    if (offspring.chance_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::OFFSPRING_CHANCE, ">= 0", offspring.chance_);
+
+    if (offspring.chance_ > 100)
+        errorMsg += createErrorMsg(Field::OFFSPRING_CHANCE, "<= 100",
+                                   offspring.chance_);
+}
+
 }  // namespace
 
 namespace Config
@@ -102,11 +133,8 @@ Config::Params loadConfig(std::istream& configFile)
     if (const YAML::Node value{yaml[fieldToString[Field::REPRODUCTION_AGE]]})
         params.reproductionAge_ = value.as<int>();
 
-    if (const YAML::Node value{yaml[fieldToString[Field::OFFSPRING_CHANCE]]})
-        params.chanceForOffspring_ = value.as<int>();
-
-    if (const YAML::Node value{yaml[fieldToString[Field::OFFSPRING_COUNT]]})
-        params.offspringCount_ = value.as<int>();
+    if (const YAML::Node& node{yaml[fieldToString[Field::OFFSPRING]]}; node)
+        params.offspring_ = loadOffspring(node);
 
     if (const YAML::Node value{yaml[fieldToString[Field::SIMULATIONS]]})
         params.simulationsCount_ = value.as<int>();
@@ -133,18 +161,6 @@ bool isValid(const Params& params)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE, ">= 0",
                                    params.reproductionAge_);
 
-    if (params.offspringCount_ < 0)
-        errorMsg += createErrorMsg(Field::OFFSPRING_COUNT, ">= 0",
-                                   params.offspringCount_);
-
-    if (params.chanceForOffspring_ < 0)
-        errorMsg += createErrorMsg(Field::OFFSPRING_CHANCE, ">= 0",
-                                   params.chanceForOffspring_);
-
-    if (params.chanceForOffspring_ > 100)
-        errorMsg += createErrorMsg(Field::OFFSPRING_CHANCE, "<= 100",
-                                   params.chanceForOffspring_);
-
     if (params.simulationsCount_ < 1)
         errorMsg += createErrorMsg(Field::SIMULATIONS, ">= 1",
                                    params.simulationsCount_);
@@ -161,6 +177,8 @@ bool isValid(const Params& params)
                            params.livesOnStart_);
 
     checkMutations(params.mutations_, errorMsg);
+
+    checkOffspring(params.offspring_, errorMsg);
 
     if (errorMsg.empty())
         return true;
