@@ -7,9 +7,10 @@ namespace
 {
 enum class Field
 {
-    MAX_POPULATION,
+    POPULATION,
+    POPULATION_INITIAL,
+    POPULATION_MAX,
     YEARS,
-    LIVES_ON_START,
     MUTATIONS,
     MUTATIONS_ADDED,
     MUTATIONS_LETHAL,
@@ -22,9 +23,10 @@ enum class Field
 };
 
 std::map<Field, std::string> fieldToString{
-    {Field::MAX_POPULATION, "maxPopulation"},
+    {Field::POPULATION, "population"},
+    {Field::POPULATION_INITIAL, "initial"},
+    {Field::POPULATION_MAX, "max"},
     {Field::YEARS, "years"},
-    {Field::LIVES_ON_START, "livesOnStart"},
     {Field::MUTATIONS, "mutations"},
     {Field::MUTATIONS_ADDED, "added"},
     {Field::MUTATIONS_LETHAL, "lethal"},
@@ -74,6 +76,19 @@ Config::Offspring loadOffspring(const YAML::Node& node)
     return offspring;
 }
 
+Config::Population loadPopulation(const YAML::Node& node)
+{
+    Config::Population population;
+
+    if (const YAML::Node value{node[fieldToString[Field::POPULATION_INITIAL]]})
+        population.initial_ = value.as<int>();
+
+    if (const YAML::Node value{node[fieldToString[Field::POPULATION_MAX]]})
+        population.max_ = value.as<int>();
+
+    return population;
+}
+
 void checkMutations(Config::Mutations mutations, std::string& errorMsg)
 {
     if (mutations.added_ < 0)
@@ -109,6 +124,23 @@ void checkOffspring(Config::Offspring offspring, std::string& errorMsg)
                                    offspring.chance_);
 }
 
+void checkPopulation(Config::Population population, std::string& errorMsg)
+{
+    if (population.max_ <= 0)
+        errorMsg +=
+            createErrorMsg(Field::POPULATION_MAX, "> 0", population.max_);
+
+    if (population.initial_ <= 0)
+        errorMsg += createErrorMsg(Field::POPULATION_INITIAL, "> 0",
+                                   population.initial_);
+
+    if (population.initial_ > population.max_)
+        errorMsg +=
+            createErrorMsg(Field::POPULATION_INITIAL,
+                           "lover than " + fieldToString[Field::POPULATION_MAX],
+                           population.initial_);
+}
+
 }  // namespace
 
 namespace Config
@@ -118,14 +150,11 @@ Config::Params loadConfig(std::istream& configFile)
     Config::Params params;
     YAML::Node yaml{YAML::Load(configFile)};
 
-    if (const YAML::Node value{yaml[fieldToString[Field::MAX_POPULATION]]})
-        params.maxPopulation_ = value.as<int>();
+    if (const YAML::Node& node{yaml[fieldToString[Field::POPULATION]]}; node)
+        params.population_ = loadPopulation(node);
 
     if (const YAML::Node value{yaml[fieldToString[Field::YEARS]]})
         params.years_ = value.as<int>();
-
-    if (const YAML::Node value{yaml[fieldToString[Field::LIVES_ON_START]]})
-        params.livesOnStart_ = value.as<int>();
 
     if (const YAML::Node& node{yaml[fieldToString[Field::MUTATIONS]]}; node)
         params.mutations_ = loadMutations(node);
@@ -146,16 +175,8 @@ bool isValid(const Params& params)
 {
     std::string errorMsg;
 
-    if (params.maxPopulation_ <= 0)
-        errorMsg +=
-            createErrorMsg(Field::MAX_POPULATION, "> 0", params.maxPopulation_);
-
     if (params.years_ <= 0)
         errorMsg += createErrorMsg(Field::YEARS, "> 0", params.years_);
-
-    if (params.livesOnStart_ <= 0)
-        errorMsg +=
-            createErrorMsg(Field::LIVES_ON_START, "> 0", params.livesOnStart_);
 
     if (params.reproductionAge_ < 0)
         errorMsg += createErrorMsg(Field::REPRODUCTION_AGE, ">= 0",
@@ -170,11 +191,7 @@ bool isValid(const Params& params)
                                    "<= " + std::to_string(Params::bits_),
                                    params.reproductionAge_);
 
-    if (params.livesOnStart_ > params.maxPopulation_)
-        errorMsg +=
-            createErrorMsg(Field::LIVES_ON_START,
-                           "lover than " + fieldToString[Field::MAX_POPULATION],
-                           params.livesOnStart_);
+    checkPopulation(params.population_, errorMsg);
 
     checkMutations(params.mutations_, errorMsg);
 

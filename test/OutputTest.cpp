@@ -28,7 +28,7 @@ public:
         [[maybe_unused]] Catch::TestRunInfo const& testRunInfo) override
     {
         Config::Params params;
-        params.maxPopulation_ = maxPopulation;
+        params.population_.max_ = maxPopulation;
         params.years_ = years;
 
         auto generator{std::make_shared<MockedGenerator>()};
@@ -66,7 +66,7 @@ TEST_CASE("Output averages", "[penna]")
     SECTION("save averages")
     {
         Config::Params params;
-        params.maxPopulation_ = maxPopulation;
+        params.population_.max_ = maxPopulation;
         params.years_ = years;
 
         auto generator{std::make_shared<MockedGenerator>()};

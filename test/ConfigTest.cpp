@@ -8,9 +8,9 @@ namespace
 {
 bool operator==(const Config::Params& left, const Config::Params& right)
 {
-    return left.maxPopulation_ == right.maxPopulation_ &&
+    return left.population_.max_ == right.population_.max_ &&
            left.years_ == right.years_ &&
-           left.livesOnStart_ == right.livesOnStart_ &&
+           left.population_.initial_ == right.population_.initial_ &&
            left.mutations_.added_ == right.mutations_.added_ &&
            left.mutations_.lethal_ == right.mutations_.lethal_ &&
            left.mutations_.initial_ == right.mutations_.initial_ &&
@@ -29,12 +29,12 @@ struct StringMaker<Config::Params>
     static std::string convert(Config::Params const& value)
     {
         std::ostringstream os;
-        os << "{" << value.maxPopulation_ << "," << value.years_ << ","
-           << value.livesOnStart_ << "," << value.mutations_.added_ << ","
-           << value.mutations_.lethal_ << "," << value.mutations_.initial_
-           << "," << value.reproductionAge_ << "," << value.offspring_.chance_
-           << "," << value.offspring_.count_ << "," << value.simulationsCount_
-           << "}";
+        os << "{" << value.population_.max_ << "," << value.years_ << ","
+           << value.population_.initial_ << "," << value.mutations_.added_
+           << "," << value.mutations_.lethal_ << ","
+           << value.mutations_.initial_ << "," << value.reproductionAge_ << ","
+           << value.offspring_.chance_ << "," << value.offspring_.count_ << ","
+           << value.simulationsCount_ << "}";
         return os.str();
     }
 };
@@ -53,13 +53,14 @@ TEST_CASE("Config", "[penna]")
 
     SECTION("valid config")
     {
-        const Config::Params expectedParams{100000, 1000, 2000, 2, 6,
-                                            6,      4,    50,   2, 4};
+        const Config::Params expectedParams{2000, 100000, 1000, 2, 6,
+                                            6,    4,      50,   2, 4};
 
         std::istringstream configString(R"(
-maxPopulation: 100000
+population:
+  initial: 2000
+  max: 100000
 years: 1000
-livesOnStart: 2000
 mutations:
   added: 2
   lethal: 6
@@ -85,11 +86,12 @@ mutations:
     SECTION("partial config")
     {
         Config::Params expectedParams;
-        expectedParams.maxPopulation_ = 100000;
+        expectedParams.population_.max_ = 100000;
         expectedParams.simulationsCount_ = 4;
 
         std::istringstream configString(R"(
-maxPopulation: 100000
+population:
+  max: 100000
 simulations: 4)");
         const Config::Params configParams{Config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);

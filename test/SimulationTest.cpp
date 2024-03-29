@@ -16,7 +16,7 @@ TEST_CASE("Simulation", "[penna]")
     SECTION("single simulation")
     {
         Config::Params params;
-        params.maxPopulation_ = 5000;
+        params.population_.max_ = 5000;
         params.years_ = 1000;
 
         auto generator{std::make_shared<MockedGenerator>()};
@@ -60,7 +60,7 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 02.02.2024 - 26.010 s
 
-        params.maxPopulation_ = 100'000;
+        params.population_.max_ = 100'000;
         params.years_ = 100'000;
 
         Simulation simulation(params, 100);
@@ -75,7 +75,7 @@ TEST_CASE("Benchmark", "[penna]")
     {
         // 02.02.2024 - 114.283 s
 
-        params.maxPopulation_ = 200'000;
+        params.population_.max_ = 200'000;
         params.years_ = 200'000;
 
         Simulation simulation(params, 100);

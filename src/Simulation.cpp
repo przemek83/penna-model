@@ -47,8 +47,8 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
-    std::vector<int> families(static_cast<std::size_t>(params_.livesOnStart_),
-                              0);
+    std::vector<int> families(
+        static_cast<std::size_t>(params_.population_.initial_), 0);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(livesAtStart)};
@@ -90,7 +90,7 @@ SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
 
 void Simulation::createInitialPopulation()
 {
-    for (int i{0}; i < params_.livesOnStart_; i++)
+    for (int i{0}; i < params_.population_.initial_; i++)
     {
         Individual individual(i);
         individual.assignRandomBits(*generator_, params_.mutations_.initial_);
@@ -142,7 +142,7 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 {
     return static_cast<int>(
         std::round(static_cast<float>(populationCount) /
-                   static_cast<float>(params_.maxPopulation_) * 100));
+                   static_cast<float>(params_.population_.max_) * 100));
 }
 
 bool Simulation::shouldDie(const Individual& individual,
@@ -223,7 +223,7 @@ bool Simulation::isSingleFamily(int year,
 int Simulation::getLivesOnYearStart(
     int year, const std::vector<BasicMetrics>& basicMetrics) const
 {
-    return year == 0 ? params_.livesOnStart_
+    return year == 0 ? params_.population_.initial_
                      : basicMetrics[static_cast<std::size_t>(year - 1)]
                            .getLivingAtEnd();
 }

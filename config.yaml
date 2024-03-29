@@ -1,6 +1,7 @@
-maxPopulation: 50000
+population:
+  initial: 3000
+  max: 50000
 years: 5000
-livesOnStart: 3000
 mutations:
   added: 1
   lethal: 4
