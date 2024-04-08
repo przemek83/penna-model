@@ -12,17 +12,28 @@ bool operator==(const Config::Catching& left, const Config::Catching& right)
            left.fromYear_ == right.fromYear_ && left.fromAge_ == right.fromAge_;
 }
 
+bool operator==(const Config::Population& left, const Config::Population& right)
+{
+    return left.max_ == right.max_ && left.initial_ == right.initial_;
+}
+
+bool operator==(const Config::Mutations& left, const Config::Mutations& right)
+{
+    return left.added_ == right.added_ && left.lethal_ == right.lethal_ &&
+           left.initial_ == right.initial_;
+}
+
+bool operator==(const Config::Offspring& left, const Config::Offspring& right)
+{
+    return left.chance_ == right.chance_ && left.count_ == right.count_;
+}
+
 bool operator==(const Config::Params& left, const Config::Params& right)
 {
-    return left.population_.max_ == right.population_.max_ &&
-           left.years_ == right.years_ &&
-           left.population_.initial_ == right.population_.initial_ &&
-           left.mutations_.added_ == right.mutations_.added_ &&
-           left.mutations_.lethal_ == right.mutations_.lethal_ &&
-           left.mutations_.initial_ == right.mutations_.initial_ &&
+    return left.population_ == right.population_ &&
+           left.years_ == right.years_ && left.mutations_ == right.mutations_ &&
            left.reproductionAge_ == right.reproductionAge_ &&
-           left.offspring_.chance_ == right.offspring_.chance_ &&
-           left.offspring_.count_ == right.offspring_.count_ &&
+           left.offspring_ == right.offspring_ &&
            left.simulationsCount_ == right.simulationsCount_ &&
            left.catching_ == right.catching_;
 }
