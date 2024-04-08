@@ -6,6 +6,12 @@
 
 namespace
 {
+bool operator==(const Config::Catching& left, const Config::Catching& right)
+{
+    return left.percent_ == right.percent_ &&
+           left.fromYear_ == right.fromYear_ && left.fromAge_ == right.fromAge_;
+}
+
 bool operator==(const Config::Params& left, const Config::Params& right)
 {
     return left.population_.max_ == right.population_.max_ &&
@@ -17,12 +23,14 @@ bool operator==(const Config::Params& left, const Config::Params& right)
            left.reproductionAge_ == right.reproductionAge_ &&
            left.offspring_.chance_ == right.offspring_.chance_ &&
            left.offspring_.count_ == right.offspring_.count_ &&
-           left.simulationsCount_ == right.simulationsCount_;
+           left.simulationsCount_ == right.simulationsCount_ &&
+           left.catching_ == right.catching_;
 }
 }  // namespace
 
 namespace Catch
 {
+
 template <>
 struct StringMaker<Config::Params>
 {
@@ -34,7 +42,9 @@ struct StringMaker<Config::Params>
            << "," << value.mutations_.lethal_ << ","
            << value.mutations_.initial_ << "," << value.reproductionAge_ << ","
            << value.offspring_.chance_ << "," << value.offspring_.count_ << ","
-           << value.simulationsCount_ << "}";
+           << value.simulationsCount_ << "," << value.catching_.percent_ << ","
+           << value.catching_.fromYear_ << "," << value.catching_.fromAge_
+           << "}";
         return os.str();
     }
 };
@@ -53,8 +63,8 @@ TEST_CASE("Config", "[penna]")
 
     SECTION("valid config")
     {
-        const Config::Params expectedParams{2000, 100000, 1000, 2, 6,
-                                            6,    4,      50,   2, 4};
+        const Config::Params expectedParams{2000, 100000, 1000, 2,  6,    6, 4,
+                                            50,   2,      4,    20, 2000, 5};
 
         std::istringstream configString(R"(
 population:
@@ -69,7 +79,11 @@ reproductionAge: 4
 offspring:
   chance: 50
   count: 2
-simulations: 4)");
+simulations: 4
+catching:
+  percent: 20
+  fromYear: 2000
+  fromAge: 5)");
         const Config::Params configParams{Config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);
     }
