@@ -19,7 +19,6 @@ set(${PROJECT_NAME}_SOURCES
     src/Output.cpp
     src/Individual.h
     src/Individual.cpp
-    src/Common.h
     src/SimulationData.h
     src/Simulation.h
     src/Simulation.cpp
