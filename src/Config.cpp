@@ -19,7 +19,11 @@ enum class Field
     OFFSPRING,
     OFFSPRING_CHANCE,
     OFFSPRING_COUNT,
-    SIMULATIONS
+    SIMULATIONS,
+    CATCHING,
+    CATCHING_PERCENT,
+    CATCHING_FROM_YEAR,
+    CATCHING_FROM_AGE
 };
 
 std::map<Field, std::string> fieldToString{
@@ -36,7 +40,10 @@ std::map<Field, std::string> fieldToString{
     {Field::OFFSPRING_CHANCE, "chance"},
     {Field::OFFSPRING_COUNT, "count"},
     {Field::SIMULATIONS, "simulations"},
-};
+    {Field::CATCHING, "catching"},
+    {Field::CATCHING_PERCENT, "percent"},
+    {Field::CATCHING_FROM_YEAR, "fromYear"},
+    {Field::CATCHING_FROM_AGE, "fromAge"}};
 
 std::string createErrorMsg(Field field, const std::string& condition,
                            int currentValue)
@@ -87,6 +94,22 @@ Config::Population loadPopulation(const YAML::Node& node)
         population.max_ = value.as<int>();
 
     return population;
+}
+
+Config::Catching loadCatching(const YAML::Node& node)
+{
+    Config::Catching catching;
+
+    if (const YAML::Node value{node[fieldToString[Field::CATCHING_PERCENT]]})
+        catching.percent_ = value.as<int>();
+
+    if (const YAML::Node value{node[fieldToString[Field::CATCHING_FROM_YEAR]]})
+        catching.fromYear_ = value.as<int>();
+
+    if (const YAML::Node value{node[fieldToString[Field::CATCHING_FROM_AGE]]})
+        catching.fromAge_ = value.as<int>();
+
+    return catching;
 }
 
 void checkMutations(Config::Mutations mutations, std::string& errorMsg)
@@ -141,6 +164,35 @@ void checkPopulation(Config::Population population, std::string& errorMsg)
                            population.initial_);
 }
 
+void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
+{
+    if (catching.percent_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::CATCHING_PERCENT, ">= 0", catching.percent_);
+
+    if (catching.percent_ > 100)
+        errorMsg += createErrorMsg(Field::CATCHING_PERCENT, "<= 100",
+                                   catching.percent_);
+
+    if (catching.fromYear_ < 0)
+        errorMsg += createErrorMsg(Field::CATCHING_FROM_YEAR, ">= 0",
+                                   catching.fromYear_);
+
+    if (catching.fromYear_ >= years)
+        errorMsg +=
+            createErrorMsg(Field::CATCHING_FROM_YEAR,
+                           "< " + std::to_string(years), catching.fromYear_);
+
+    if (catching.fromAge_ < 0)
+        errorMsg +=
+            createErrorMsg(Field::CATCHING_FROM_AGE, ">= 0", catching.fromAge_);
+
+    if (catching.fromAge_ > Config::Params::bits_)
+        errorMsg += createErrorMsg(Field::CATCHING_FROM_AGE,
+                                   "< " + std::to_string(Config::Params::bits_),
+                                   catching.fromAge_);
+}
+
 }  // namespace
 
 namespace Config
@@ -167,6 +219,9 @@ Config::Params loadConfig(std::istream& configFile)
 
     if (const YAML::Node value{yaml[fieldToString[Field::SIMULATIONS]]})
         params.simulationsCount_ = value.as<int>();
+
+    if (const YAML::Node& node{yaml[fieldToString[Field::CATCHING]]}; node)
+        params.catching_ = loadCatching(node);
 
     return params;
 }
@@ -196,6 +251,8 @@ bool isValid(const Params& params)
     checkMutations(params.mutations_, errorMsg);
 
     checkOffspring(params.offspring_, errorMsg);
+
+    checkCatching(params.catching_, params.years_, errorMsg);
 
     if (errorMsg.empty())
         return true;

@@ -23,6 +23,13 @@ struct Population
     int max_{50000};
 };
 
+struct Catching
+{
+    int percent_{0};
+    int fromYear_{1000};
+    int fromAge_{4};
+};
+
 struct Params
 {
     Population population_;
@@ -32,6 +39,7 @@ struct Params
     Offspring offspring_;
     int simulationsCount_{2};
     static constexpr int bits_{64};
+    Catching catching_;
 };
 
 static_assert(Params::bits_ > 0);
