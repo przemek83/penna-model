@@ -20,9 +20,9 @@ TEST_CASE("Simulation", "[penna]")
         params.years_ = 1000;
 
         auto generator{std::make_shared<MockedGenerator>()};
-        StringOutput output(0, params.years_, 1);
+        StringOutput output(params.years_, 1);
 
-        Simulation simulation(params, 100);
+        Simulation simulation(params);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
@@ -39,7 +39,7 @@ TEST_CASE("Simulation", "[penna]")
             Output::BITS_DISTRIBUTION,   Output::AGE_DISTRIBUTION,
             Output::STATISTICS};
 
-        const FileOutput fileOutput(0, params.years_, 1);
+        const FileOutput fileOutput(params.years_, 1);
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
@@ -63,7 +63,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.population_.max_ = 100'000;
         params.years_ = 100'000;
 
-        Simulation simulation(params, 100);
+        Simulation simulation(params);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.run();
@@ -78,7 +78,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.population_.max_ = 200'000;
         params.years_ = 200'000;
 
-        Simulation simulation(params, 100);
+        Simulation simulation(params);
         simulation.setGenerator(generator);
         simulation.createInitialPopulation();
         simulation.run();

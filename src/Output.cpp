@@ -3,8 +3,7 @@
 #include <filesystem>
 #include <iostream>
 
-Output::Output(float step, int years, int runNumber)
-    : step_{step}, years_{years}, runNumber_{runNumber}
+Output::Output(int years, int runNumber) : years_{years}, runNumber_{runNumber}
 {
 }
 

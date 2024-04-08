@@ -8,7 +8,7 @@
 class StringOutput : public Output
 {
 public:
-    StringOutput(float simulationStep, int maxPopulationAge, int run);
+    StringOutput(int maxPopulationAge, int run);
 
     std::string getContentForOutputType(OUTPUT_TYPE outputType);
 

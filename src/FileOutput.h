@@ -8,7 +8,7 @@
 class FileOutput : public Output
 {
 public:
-    FileOutput(float simulationStep_, int maxPopulationAge, int run);
+    FileOutput(int maxPopulationAge, int run);
 
     std::string getName(OUTPUT_TYPE outputType) const;
 

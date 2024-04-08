@@ -16,7 +16,7 @@ namespace
 {
 const int years{1000};
 const int maxPopulation{5000};
-StringOutput output(0, years, 0);
+StringOutput output(years, 0);
 }  // namespace
 
 class testRunListener : public Catch::EventListenerBase
@@ -33,7 +33,7 @@ public:
 
         auto generator{std::make_shared<MockedGenerator>()};
 
-        Simulation simulation1(params, 50);
+        Simulation simulation1(params);
         simulation1.setGenerator(generator);
         simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
@@ -55,7 +55,7 @@ TEST_CASE("Output", "[penna]")
                              Output::BITS_DISTRIBUTION,
                              Output::DEATHS_DISTRIBUTION, Output::FAMILIES)};
     CAPTURE(outputType);
-    const FileOutput fileOutput(0, years, 1);
+    const FileOutput fileOutput(years, 1);
     const std::string file{fileOutput.getName(outputType)};
     Common::compareStringWithFileContent(
         output.getContentForOutputType(outputType), file);
@@ -71,13 +71,13 @@ TEST_CASE("Output averages", "[penna]")
 
         auto generator{std::make_shared<MockedGenerator>()};
 
-        Simulation simulation1(params, 50);
+        Simulation simulation1(params);
         simulation1.setGenerator(generator);
         simulation1.createInitialPopulation();
         const SingleSimulationData data1{simulation1.run()};
         std::cout << std::endl;
 
-        Simulation simulation2(params, 50);
+        Simulation simulation2(params);
         simulation2.setGenerator(generator);
         simulation2.createInitialPopulation();
         const SingleSimulationData data2{simulation2.run()};
@@ -98,7 +98,7 @@ TEST_CASE("Output averages", "[penna]")
             Output::BITS_DISTRIBUTION, Output::AGE_DISTRIBUTION,
             Output::STATISTICS};
 
-        const FileOutput fileOutput(0, years, 0);
+        const FileOutput fileOutput(years, 0);
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);

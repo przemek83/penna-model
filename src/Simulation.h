@@ -14,7 +14,7 @@ class Generator;
 class Simulation
 {
 public:
-    Simulation(const Config::Params& params, float step);
+    explicit Simulation(const Config::Params& params);
 
     void createInitialPopulation();
 
@@ -60,7 +60,6 @@ private:
     std::list<Individual> individuals_;
 
     Config::Params params_;
-    float step_;
     std::shared_ptr<Generator> generator_;
 
     std::function<void(int)> progressCallback_{nullptr};

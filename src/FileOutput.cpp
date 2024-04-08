@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-FileOutput::FileOutput(float simulationStep, int maxPopulationAge, int run)
-    : Output(simulationStep, maxPopulationAge, run)
+FileOutput::FileOutput(int maxPopulationAge, int run)
+    : Output(maxPopulationAge, run)
 {
 }
 
@@ -11,13 +11,7 @@ std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 {
     std::string fileName;
 
-#ifdef SYMULACJA_DORSZY
-    sprintf(bufor, "%3.2f", START_ODLOWOW + przedrostek * simulationStep_);
-#endif
-
-#ifndef SYMULACJA_DORSZY
     fileName.append("sim");
-#endif
     fileName.append(std::to_string(getRunNumber()));
     fileName.append("_");
     fileName.append(fileNames_[outputType]);

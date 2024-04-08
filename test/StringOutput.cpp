@@ -1,7 +1,7 @@
 #include "StringOutput.h"
 
-StringOutput::StringOutput(float simulationStep, int maxPopulationAge, int run)
-    : Output(simulationStep, maxPopulationAge, run)
+StringOutput::StringOutput(int maxPopulationAge, int run)
+    : Output(maxPopulationAge, run)
 {
 }
 

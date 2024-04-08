@@ -9,25 +9,10 @@
 
 namespace
 {
-float getStep(const Config::Params& params)
-{
-    const float step{
-#ifdef SYMULACJA_DORSZY
-        static_cast<float>(abs(START_ODLOWOW - KONIEC_ODLOWOW))
-#else
-        100
-#endif
-        / static_cast<float>(params.simulationsCount_)};
-
-    return step;
-}
-
 Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
                              std::shared_ptr<NumbersGenerator> generator)
 {
-    const float step{getStep(params)};
-
-    Simulation simulation(params, step);
+    Simulation simulation(params);
     simulation.setGenerator(generator);
     simulation.createInitialPopulation();
     simulation.setGenerator(std::make_shared<NumbersGenerator>());
@@ -51,8 +36,7 @@ SimulationAverages calculateAverages(
 void saveAverages(const SimulationAverages& averages,
                   const Config::Params& params)
 {
-    const float step{getStep(params)};
-    FileOutput output(step, params.years_, 0);
+    FileOutput output(params.years_, 0);
     output.saveAverages(averages);
 }
 

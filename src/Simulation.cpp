@@ -6,10 +6,7 @@
 #include "Generator.h"
 #include "Output.h"
 
-Simulation::Simulation(const Config::Params& params, float step)
-    : params_(params), step_{step}
-{
-}
+Simulation::Simulation(const Config::Params& params) : params_(params) {}
 
 SingleSimulationData Simulation::run()
 {

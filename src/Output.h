@@ -12,7 +12,7 @@
 class Output
 {
 public:
-    Output(float step, int years, int runNumber);
+    Output(int years, int runNumber);
 
     virtual ~Output() = default;
 
@@ -73,7 +73,6 @@ private:
 
     void saveDeathsDistribution(const std::vector<float>& deaths);
 
-    float step_;
     int years_;
     int runNumber_;
 
