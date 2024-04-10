@@ -8,7 +8,7 @@
 class FileOutput : public Output
 {
 public:
-    FileOutput(int maxPopulationAge, int run);
+    explicit FileOutput(int maxPopulationAge);
 
     std::string getName(OUTPUT_TYPE outputType) const;
 

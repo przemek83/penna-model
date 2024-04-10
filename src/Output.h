@@ -12,7 +12,7 @@
 class Output
 {
 public:
-    Output(int years, int runNumber);
+    explicit Output(int years);
 
     virtual ~Output() = default;
 
@@ -38,8 +38,6 @@ public:
 protected:
     virtual std::shared_ptr<std::ostream> getStream(
         OUTPUT_TYPE outputType) const = 0;
-
-    int getRunNumber() const;
 
 private:
     template <typename T>
@@ -74,7 +72,6 @@ private:
     void saveDeathsDistribution(const std::vector<float>& deaths);
 
     int years_;
-    int runNumber_;
 
     char separator_{'\t'};
 };

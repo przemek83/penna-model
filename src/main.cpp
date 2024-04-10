@@ -36,7 +36,7 @@ SimulationAverages calculateAverages(
 void saveAverages(const SimulationAverages& averages,
                   const Config::Params& params)
 {
-    FileOutput output(params.years_, 0);
+    FileOutput output(params.years_);
     output.saveAverages(averages);
 }
 

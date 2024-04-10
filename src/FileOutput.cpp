@@ -2,18 +2,12 @@
 
 #include <fstream>
 
-FileOutput::FileOutput(int maxPopulationAge, int run)
-    : Output(maxPopulationAge, run)
-{
-}
+FileOutput::FileOutput(int maxPopulationAge) : Output(maxPopulationAge) {}
 
 std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 {
     std::string fileName;
-
-    fileName.append("sim");
-    fileName.append(std::to_string(getRunNumber()));
-    fileName.append("_");
+    fileName.append("output_");
     fileName.append(fileNames_[outputType]);
 
     return fileName;

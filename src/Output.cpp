@@ -3,9 +3,7 @@
 #include <filesystem>
 #include <iostream>
 
-Output::Output(int years, int runNumber) : years_{years}, runNumber_{runNumber}
-{
-}
+Output::Output(int years) : years_{years} {}
 
 void Output::saveSimulationData(const SingleSimulationData& data)
 {
@@ -50,5 +48,3 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals)
         counter++;
     }
 }
-
-int Output::getRunNumber() const { return runNumber_; }

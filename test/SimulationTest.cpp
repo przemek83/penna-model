@@ -20,7 +20,7 @@ TEST_CASE("Simulation", "[penna]")
         params.years_ = 1000;
 
         auto generator{std::make_shared<MockedGenerator>()};
-        StringOutput output(params.years_, 1);
+        StringOutput output(params.years_);
 
         Simulation simulation(params);
         simulation.setGenerator(generator);
@@ -39,13 +39,13 @@ TEST_CASE("Simulation", "[penna]")
             Output::BITS_DISTRIBUTION,   Output::AGE_DISTRIBUTION,
             Output::STATISTICS};
 
-        const FileOutput fileOutput(params.years_, 1);
+        const FileOutput fileOutput(params.years_);
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
             Common::compareStringWithFileContent(
                 output.getContentForOutputType(outputType),
-                fileOutput.getName(outputType));
+                "sim1_" + fileOutput.getName(outputType));
         }
     }
 }

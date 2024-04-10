@@ -8,7 +8,7 @@
 class StringOutput : public Output
 {
 public:
-    StringOutput(int maxPopulationAge, int run);
+    explicit StringOutput(int maxPopulationAge);
 
     std::string getContentForOutputType(OUTPUT_TYPE outputType);
 
