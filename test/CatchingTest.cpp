@@ -50,6 +50,22 @@ std::string fiftyPercentExpected{
 8	21	0	10	11
 9	10	0	6	4
 )"};
+
+void checkSimOutput(Config::Params params, std::string expected)
+{
+    StringOutput output(params.years_);
+
+    Simulation simulation(params);
+
+    auto generator{std::make_shared<MockedGenerator>()};
+    simulation.setGenerator(generator);
+    simulation.createInitialPopulation();
+    const SingleSimulationData data{simulation.run()};
+    output.saveSimulationData(data);
+
+    std::string current{output.getContentForOutputType(Output::STATISTICS)};
+    REQUIRE(current == expected);
+}
 }  // namespace
 
 TEST_CASE("Catching", "[penna]")
@@ -65,45 +81,18 @@ TEST_CASE("Catching", "[penna]")
     SECTION("0 percent")
     {
         params.catching_.percent_ = 0;
-        StringOutput output(params.years_);
-
-        Simulation simulation(params);
-        simulation.setGenerator(generator);
-        simulation.createInitialPopulation();
-        const SingleSimulationData data{simulation.run()};
-        output.saveSimulationData(data);
-
-        std::string current{output.getContentForOutputType(Output::STATISTICS)};
-        REQUIRE(current == zeroPercentExpected);
+        checkSimOutput(params, zeroPercentExpected);
     }
 
     SECTION("100 percent")
     {
         params.catching_.percent_ = 100;
-        StringOutput output(params.years_);
-
-        Simulation simulation(params);
-        simulation.setGenerator(generator);
-        simulation.createInitialPopulation();
-        const SingleSimulationData data{simulation.run()};
-        output.saveSimulationData(data);
-
-        std::string current{output.getContentForOutputType(Output::STATISTICS)};
-        REQUIRE(current == oneHundredPercentExpected);
+        checkSimOutput(params, oneHundredPercentExpected);
     }
 
     SECTION("50 percent")
     {
         params.catching_.percent_ = 50;
-        StringOutput output(params.years_);
-
-        Simulation simulation(params);
-        simulation.setGenerator(generator);
-        simulation.createInitialPopulation();
-        const SingleSimulationData data{simulation.run()};
-        output.saveSimulationData(data);
-
-        std::string current{output.getContentForOutputType(Output::STATISTICS)};
-        REQUIRE(current == fiftyPercentExpected);
+        checkSimOutput(params, fiftyPercentExpected);
     }
 }
