@@ -15,6 +15,7 @@ set(${PROJECT_TEST}_SOURCES
     Common.cpp
     StringOutput.h
     StringOutput.cpp
+    CatchingTest.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
