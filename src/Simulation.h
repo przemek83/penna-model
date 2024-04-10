@@ -40,6 +40,8 @@ private:
 
     int getCurrentDeathChanceInPercent(int populationCount) const;
 
+    bool isCatched(int age) const;
+
     bool shouldDie(const Individual& individual,
                    int chanceForDeathInPercent) const;
 
@@ -63,4 +65,6 @@ private:
     std::shared_ptr<Generator> generator_;
 
     std::function<void(int)> progressCallback_{nullptr};
+
+    bool catchingActive_{false};
 };

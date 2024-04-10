@@ -16,6 +16,9 @@ SingleSimulationData Simulation::run()
     int year{0};
     while (year < params_.years_)
     {
+        if (!catchingActive_ && params_.catching_.fromYear_ >= year)
+            catchingActive_ = true;
+
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
         const int livesAtStart{getLivesOnYearStart(year, basicMetrics)};
         const BasicMetrics yearMetrics{
@@ -142,6 +145,15 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
                    static_cast<float>(params_.population_.max_) * 100));
 }
 
+bool Simulation::isCatched(int age) const
+{
+    if (!catchingActive_ || params_.catching_.percent_ == 0 ||
+        age < params_.catching_.fromAge_)
+        return false;
+
+    return generator_->getPercentChance() <= params_.catching_.percent_;
+}
+
 bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
@@ -149,13 +161,8 @@ bool Simulation::shouldDie(const Individual& individual,
             params_.mutations_.lethal_) ||                    // mutations
            (individual.getAge() >= Config::Params::bits_) ||  // ageing
            (generator_->getPercentChance() <=
-            chanceForDeathInPercent)                          // Verhulst
-#ifdef SYMULACJA_DORSZY
-           || ((rok > ODLOWY_OD) && (individual.wiek >= MINIMALNY_WIEK) &&
-               ((float)generator.getInt(0, 10000) / 100 <=
-                START_ODLOWOW + number_ * step_))
-#endif
-        ;
+                chanceForDeathInPercent ||                    // Verhulst
+            isCatched(individual.getAge()));                  // catching
 }
 
 bool Simulation::shouldHaveOffspring(const Individual& individual) const
