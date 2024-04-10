@@ -16,7 +16,7 @@ SingleSimulationData Simulation::run()
     int year{0};
     while (year < params_.years_)
     {
-        if (!catchingActive_ && params_.catching_.fromYear_ >= year)
+        if (!catchingActive_ && params_.catching_.fromYear_ <= year)
             catchingActive_ = true;
 
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
