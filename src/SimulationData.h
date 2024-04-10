@@ -17,9 +17,9 @@ class SimulationData
 public:
     explicit SimulationData(std::size_t years) : years_(years)
     {
-        deathsDistribution_.resize(years_, 0);
-        bitsDistribution_.resize(years_, 0);
-        ageDistribution_.resize(years_, 0);
+        deathsDistribution_.resize(Config::Params::bits_, 0);
+        bitsDistribution_.resize(Config::Params::bits_, 0);
+        ageDistribution_.resize(Config::Params::bits_, 0);
         basicMetrics_.resize(years_);
     }
 
