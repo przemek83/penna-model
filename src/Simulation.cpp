@@ -178,11 +178,8 @@ SingleSimulationData Simulation::prepareData(
     SingleSimulationData data{static_cast<std::size_t>(params_.years_)};
     data.setBasicMetrics(std::move(basicMetrics));
 
-    const std::vector<int> ageDistribution{getAgeDistribution(individuals_)};
-    const std::vector<int> bitsDistribution{getBitsDistribution(individuals_)};
-
-    data.setAgeDistribution(ageDistribution);
-    data.setBitDistribution(bitsDistribution, populationCount);
+    data.setAgeDistribution(getAgeDistribution(individuals_));
+    data.setBitDistribution(getBitsDistribution(individuals_), populationCount);
 
     const auto [deathsDistribution,
                 deathsAgeDistribution]{getDeathsDistributionData()};
