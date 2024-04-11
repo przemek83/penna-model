@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 
 #include <src/Simulation.h>
 
@@ -78,9 +77,46 @@ std::string fromYearFiveExpected{
 8	55	0	25	30
 9	25	0	14	11
 )"};
+}  // namespace
 
-void checkSimOutput(Config::Params params, std::string expected)
+namespace Catch
 {
+
+template <>
+struct StringMaker<Config::Catching>
+{
+    static std::string convert(const Config::Catching& value)
+    {
+        std::ostringstream os;
+        os << "{" << value.percent_ << "," << value.fromYear_ << ","
+           << value.fromAge_ << "}";
+        return os.str();
+    }
+};
+}  // namespace Catch
+
+TEST_CASE("Catching", "[penna]")
+{
+    Config::Params params;
+    params.population_.max_ = 5000;
+    params.years_ = 10;
+
+    using TestCase = std::pair<Config::Catching, std::string>;
+    auto [catching, expected] =
+        GENERATE(TestCase{{0, 0, 4}, zeroPercentExpected},
+                 TestCase{{100, 0, 4}, oneHundredPercentExpected},
+                 TestCase{{50, 0, 4}, fiftyPercentExpected},
+                 TestCase{{50, 0, 0}, fromAgeZeroExpected},
+                 TestCase{{50, 0, 10}, zeroPercentExpected},
+                 TestCase{{50, 0, 4}, fiftyPercentExpected},
+                 TestCase{{50, 0, 4}, fiftyPercentExpected},
+                 TestCase{{50, 10, 4}, zeroPercentExpected},
+                 TestCase{{50, 5, 4}, fromYearFiveExpected});
+
+    CAPTURE(catching);
+
+    params.catching_ = catching;
+
     StringOutput output(params.years_);
 
     Simulation simulation(params);
@@ -93,70 +129,4 @@ void checkSimOutput(Config::Params params, std::string expected)
 
     std::string current{output.getContentForOutputType(Output::STATISTICS)};
     REQUIRE(current == expected);
-}
-}  // namespace
-
-TEST_CASE("Catching", "[penna]")
-{
-    auto generator{std::make_shared<MockedGenerator>()};
-    Config::Params params;
-    params.population_.max_ = 5000;
-    params.years_ = 10;
-    params.catching_.fromYear_ = 0;
-    params.catching_.fromAge_ = 4;
-    params.catching_.percent_ = 50;
-
-    SECTION("0 percent")
-    {
-        params.catching_.percent_ = 0;
-        checkSimOutput(params, zeroPercentExpected);
-    }
-
-    SECTION("100 percent")
-    {
-        params.catching_.percent_ = 100;
-        checkSimOutput(params, oneHundredPercentExpected);
-    }
-
-    SECTION("50 percent")
-    {
-        params.catching_.percent_ = 50;
-        checkSimOutput(params, fiftyPercentExpected);
-    }
-
-    SECTION("from age 0")
-    {
-        params.catching_.fromAge_ = 0;
-        checkSimOutput(params, fromAgeZeroExpected);
-    }
-
-    SECTION("from age 10")
-    {
-        params.catching_.fromAge_ = 10;
-        checkSimOutput(params, zeroPercentExpected);
-    }
-
-    SECTION("from age 4")
-    {
-        params.catching_.fromAge_ = 4;
-        checkSimOutput(params, fiftyPercentExpected);
-    }
-
-    SECTION("from year 0")
-    {
-        params.catching_.fromYear_ = 0;
-        checkSimOutput(params, fiftyPercentExpected);
-    }
-
-    SECTION("from year 10")
-    {
-        params.catching_.fromYear_ = 10;
-        checkSimOutput(params, zeroPercentExpected);
-    }
-
-    SECTION("from year 5")
-    {
-        params.catching_.fromYear_ = 5;
-        checkSimOutput(params, fromYearFiveExpected);
-    }
 }
