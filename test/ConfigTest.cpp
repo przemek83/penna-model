@@ -45,7 +45,7 @@ namespace Catch
 template <>
 struct StringMaker<Config::Params>
 {
-    static std::string convert(Config::Params const& value)
+    static std::string convert(const Config::Params& value)
     {
         std::ostringstream os;
         os << "{" << value.population_.max_ << "," << value.years_ << ","
