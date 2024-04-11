@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "AverageData.h"
 #include "FileOutput.h"
 #include "NumbersGenerator.h"
 #include "ProgressCallback.h"
@@ -22,10 +23,10 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     return simulation;
 }
 
-SimulationAverages calculateAverages(
+AverageData calculateAverages(
     const std::vector<SingleSimulationData>& simulationsData, int years)
 {
-    SimulationAverages averages{static_cast<std::size_t>(years)};
+    AverageData averages{static_cast<std::size_t>(years)};
     for (const auto& data : simulationsData)
         averages.integrateData(data);
 
@@ -33,8 +34,7 @@ SimulationAverages calculateAverages(
     return averages;
 }
 
-void saveAverages(const SimulationAverages& averages,
-                  const Config::Params& params)
+void saveAverages(const AverageData& averages, const Config::Params& params)
 {
     FileOutput output(params.years_);
     output.saveAverages(averages);
@@ -59,7 +59,7 @@ int main()
     const std::vector<SingleSimulationData> simulationsData{
         runner.runParallel()};
 
-    const SimulationAverages averages{
+    const AverageData averages{
         calculateAverages(simulationsData, params.years_)};
 
     saveAverages(averages, params);

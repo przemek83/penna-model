@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "AverageData.h"
+
 Output::Output(int years) : years_{years} {}
 
 void Output::saveSimulationData(const SingleSimulationData& data)
@@ -11,12 +13,12 @@ void Output::saveSimulationData(const SingleSimulationData& data)
         data, {{FAMILIES, 0}, {STATISTICS, 0}, {AGE_DISTRIBUTION, 0}});
 }
 
-void Output::saveAverages(const SimulationAverages& data)
+void Output::saveAverages(const AverageData& data)
 {
     const int floatPrecision{6};
-    saveData<SimulationAverages>(data, {{FAMILIES, floatPrecision},
-                                        {STATISTICS, floatPrecision},
-                                        {AGE_DISTRIBUTION, floatPrecision}});
+    saveData<AverageData>(data, {{FAMILIES, floatPrecision},
+                                 {STATISTICS, floatPrecision},
+                                 {AGE_DISTRIBUTION, floatPrecision}});
 }
 
 void Output::saveInitialPopulation(const std::list<Individual>& individuals)

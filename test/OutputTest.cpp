@@ -5,6 +5,7 @@
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
+#include <src/AverageData.h>
 #include <src/FileOutput.h>
 #include <src/Simulation.h>
 
@@ -83,15 +84,14 @@ TEST_CASE("Output averages", "[penna]")
         const SingleSimulationData data2{simulation2.run()};
         std::cout << std::endl;
 
-        SimulationAverages simulationAverages{
-            static_cast<std::size_t>(params.years_)};
-        simulationAverages.integrateData(data1);
-        simulationAverages.integrateData(data2);
+        AverageData averageData{static_cast<std::size_t>(params.years_)};
+        averageData.integrateData(data1);
+        averageData.integrateData(data2);
 
-        simulationAverages.finalize();
+        averageData.finalize();
 
         output.reset();
-        output.saveAverages(simulationAverages);
+        output.saveAverages(averageData);
 
         const std::vector<Output::OUTPUT_TYPE> outputTypes{
             Output::DEATHS_DISTRIBUTION, Output::FAMILIES,

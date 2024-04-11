@@ -9,6 +9,8 @@
 #include "Individual.h"
 #include "SimulationData.h"
 
+class AverageData;
+
 class Output
 {
 public:
@@ -29,7 +31,7 @@ public:
 
     void saveSimulationData(const SingleSimulationData& data);
 
-    void saveAverages(const SimulationAverages& data);
+    void saveAverages(const AverageData& data);
 
     void saveInitialPopulation(const std::list<Individual>& individuals);
 
