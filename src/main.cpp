@@ -24,7 +24,7 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
 }
 
 AverageData calculateAverages(
-    const std::vector<SingleSimulationData>& simulationsData, int years)
+    const std::vector<SimulationData>& simulationsData, int years)
 {
     AverageData averages{static_cast<std::size_t>(years)};
     for (const auto& data : simulationsData)
@@ -56,8 +56,7 @@ int main()
     for (int i{1}; i <= params.simulationsCount_; i++)
         runner.addSimulation(prepareSimulation(params, i, generator));
 
-    const std::vector<SingleSimulationData> simulationsData{
-        runner.runParallel()};
+    const std::vector<SimulationData> simulationsData{runner.runParallel()};
 
     const AverageData averages{
         calculateAverages(simulationsData, params.years_)};

@@ -7,9 +7,9 @@ class Runner
 public:
     void addSimulation(Simulation simulation);
 
-    std::vector<SingleSimulationData> runSequential();
+    std::vector<SimulationData> runSequential();
 
-    std::vector<SingleSimulationData> runParallel();
+    std::vector<SimulationData> runParallel();
 
 private:
     std::vector<Simulation> simulations_;

@@ -8,7 +8,7 @@
 
 Simulation::Simulation(const Config::Params& params) : params_(params) {}
 
-SingleSimulationData Simulation::run()
+SimulationData Simulation::run()
 {
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(static_cast<std::size_t>(params_.years_));
@@ -32,7 +32,7 @@ SingleSimulationData Simulation::run()
         year++;
     }
 
-    SingleSimulationData data{prepareData(std::move(basicMetrics))};
+    SimulationData data{prepareData(std::move(basicMetrics))};
 
     return data;
 }
@@ -42,8 +42,8 @@ void Simulation::setProgressCallback(std::function<void(int)> callback)
     progressCallback_ = std::move(callback);
 }
 
-SingleSimulationData::BasicMetrics Simulation::progressByOneYear(
-    bool singleFamily, int livesAtStart)
+SimulationData::BasicMetrics Simulation::progressByOneYear(bool singleFamily,
+                                                           int livesAtStart)
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
@@ -171,11 +171,11 @@ bool Simulation::shouldHaveOffspring(const Individual& individual) const
            generator_->getPercentChance() <= params_.offspring_.chance_;
 }
 
-SingleSimulationData Simulation::prepareData(
+SimulationData Simulation::prepareData(
     std::vector<BasicMetrics> basicMetrics) const
 {
     const int populationCount{basicMetrics.back().getLivingAtEnd()};
-    SingleSimulationData data{static_cast<std::size_t>(params_.years_)};
+    SimulationData data{static_cast<std::size_t>(params_.years_)};
     data.setBasicMetrics(std::move(basicMetrics));
 
     data.setAgeDistribution(getAgeDistribution(individuals_));

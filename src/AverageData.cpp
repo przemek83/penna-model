@@ -58,7 +58,7 @@ void AverageData::saveDeathsDistibution(std::ostream& stream,
         stream << bit << separator << deathsDistribution_[bit] << std::endl;
 }
 
-void AverageData::integrateData(const SingleSimulationData& data)
+void AverageData::integrateData(const SimulationData& data)
 {
     integrateBasicMetrics(data);
     integrateDistributions(data);
@@ -71,12 +71,11 @@ void AverageData::finalize()
     finalizeDistributions();
 }
 
-void AverageData::integrateBasicMetrics(const SingleSimulationData& data)
+void AverageData::integrateBasicMetrics(const SimulationData& data)
 {
     for (std::size_t i{0}; i < years_; ++i)
     {
-        const SingleSimulationData::BasicMetrics& other{
-            data.getBasicBasicMetrics(i)};
+        const SimulationData::BasicMetrics& other{data.getBasicBasicMetrics(i)};
 
         basicMetrics_[i].families_ += static_cast<float>(other.families_);
         basicMetrics_[i].livingAtStart_ +=
@@ -86,7 +85,7 @@ void AverageData::integrateBasicMetrics(const SingleSimulationData& data)
     }
 }
 
-void AverageData::integrateDistributions(const SingleSimulationData& data)
+void AverageData::integrateDistributions(const SimulationData& data)
 {
     const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
     const std::vector<float>& bitsDistribution{data.getBitsDistribution()};

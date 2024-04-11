@@ -24,12 +24,12 @@ public:
 
     void setGenerator(std::shared_ptr<Generator> generator);
 
-    SingleSimulationData run();
+    SimulationData run();
 
     void setProgressCallback(std::function<void(int)> callback);
 
 private:
-    using BasicMetrics = SingleSimulationData::BasicMetrics;
+    using BasicMetrics = SimulationData::BasicMetrics;
     BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
     static std::vector<int> getAgeDistribution(
@@ -47,8 +47,7 @@ private:
 
     bool shouldHaveOffspring(const Individual& individual) const;
 
-    SingleSimulationData prepareData(
-        std::vector<BasicMetrics> basicMetrics) const;
+    SimulationData prepareData(std::vector<BasicMetrics> basicMetrics) const;
 
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData()
         const;

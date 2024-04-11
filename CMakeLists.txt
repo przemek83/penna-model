@@ -20,6 +20,7 @@ set(${PROJECT_NAME}_SOURCES
     src/Individual.h
     src/Individual.cpp
     src/SimulationData.h
+    src/SimulationData.cpp
     src/Simulation.h
     src/Simulation.cpp
     src/Generator.h

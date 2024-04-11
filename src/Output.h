@@ -29,7 +29,7 @@ public:
         FAMILIES
     };
 
-    void saveSimulationData(const SingleSimulationData& data);
+    void saveSimulationData(const SimulationData& data);
 
     void saveAverages(const AverageData& data);
 

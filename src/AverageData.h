@@ -28,13 +28,13 @@ public:
     void saveAgeDistibution(std::ostream& stream, char separator) const;
     void saveDeathsDistibution(std::ostream& stream, char separator) const;
 
-    void integrateData(const SingleSimulationData& data);
+    void integrateData(const SimulationData& data);
 
     void finalize();
 
 private:
-    void integrateBasicMetrics(const SingleSimulationData& data);
-    void integrateDistributions(const SingleSimulationData& data);
+    void integrateBasicMetrics(const SimulationData& data);
+    void integrateDistributions(const SimulationData& data);
 
     void finalizeBasicMetrics();
     void finalizeDistributions();

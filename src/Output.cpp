@@ -7,9 +7,9 @@
 
 Output::Output(int years) : years_{years} {}
 
-void Output::saveSimulationData(const SingleSimulationData& data)
+void Output::saveSimulationData(const SimulationData& data)
 {
-    saveData<SingleSimulationData>(
+    saveData<SimulationData>(
         data, {{FAMILIES, 0}, {STATISTICS, 0}, {AGE_DISTRIBUTION, 0}});
 }
 

@@ -38,7 +38,7 @@ public:
         simulation1.setGenerator(generator);
         simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
-        const SingleSimulationData data1{simulation1.run()};
+        const SimulationData data1{simulation1.run()};
 
         simulation1.saveFinalPopulation(output);
         output.saveSimulationData(data1);
@@ -75,13 +75,13 @@ TEST_CASE("Output averages", "[penna]")
         Simulation simulation1(params);
         simulation1.setGenerator(generator);
         simulation1.createInitialPopulation();
-        const SingleSimulationData data1{simulation1.run()};
+        const SimulationData data1{simulation1.run()};
         std::cout << std::endl;
 
         Simulation simulation2(params);
         simulation2.setGenerator(generator);
         simulation2.createInitialPopulation();
-        const SingleSimulationData data2{simulation2.run()};
+        const SimulationData data2{simulation2.run()};
         std::cout << std::endl;
 
         AverageData averageData{static_cast<std::size_t>(params.years_)};

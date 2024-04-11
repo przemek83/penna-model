@@ -120,7 +120,7 @@ TEST_CASE("Catching", "[penna]")
     Simulation simulation(params);
     simulation.setGenerator(std::make_shared<MockedGenerator>());
     simulation.createInitialPopulation();
-    const SingleSimulationData data{simulation.run()};
+    const SimulationData data{simulation.run()};
 
     StringOutput output(params.years_);
     output.saveSimulationData(data);
