@@ -14,7 +14,7 @@ void SimulationData::setBasicMetrics(
     basicMetrics_ = std::move(basicBasicMetrics);
 }
 
-const SimulationData::BasicMetrics<int>& SimulationData::getBasicBasicMetrics(
+const SimulationData::BasicMetrics<int>& SimulationData::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];
@@ -62,7 +62,7 @@ void SimulationData::saveFamilies(std::ostream& stream, char separator) const
     stream << "Year" << separator << "Families" << std::endl;
     for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
     {
-        const BasicMetrics<int>& basicMetrics{getBasicBasicMetrics(year)};
+        const BasicMetrics<int>& basicMetrics{getBasicMetrics(year)};
         if (basicMetrics.families_ > 1)
             stream << year << separator << basicMetrics.families_ << std::endl;
     }

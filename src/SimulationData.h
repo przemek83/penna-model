@@ -10,7 +10,7 @@ class SimulationData : public ResultsData
 public:
     explicit SimulationData(std::size_t years);
 
-    const BasicMetrics<int>& getBasicBasicMetrics(std::size_t year) const;
+    const BasicMetrics<int>& getBasicMetrics(std::size_t year) const;
     void setBasicMetrics(std::vector<BasicMetrics<int>> basicBasicMetrics);
 
     void setDeathDistribution(

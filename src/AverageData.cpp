@@ -50,8 +50,7 @@ void AverageData::integrateBasicMetrics(const SimulationData& data)
 {
     for (std::size_t i{0}; i < getYears(); ++i)
     {
-        const SimulationData::BasicMetrics<int>& other{
-            data.getBasicBasicMetrics(i)};
+        const SimulationData::BasicMetrics<int>& other{data.getBasicMetrics(i)};
 
         basicMetrics_[i].families_ += static_cast<float>(other.families_);
         basicMetrics_[i].livingAtStart_ +=
