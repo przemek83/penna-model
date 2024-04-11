@@ -42,8 +42,8 @@ void Simulation::setProgressCallback(std::function<void(int)> callback)
     progressCallback_ = std::move(callback);
 }
 
-SimulationData::BasicMetrics Simulation::progressByOneYear(bool singleFamily,
-                                                           int livesAtStart)
+SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
+    bool singleFamily, int livesAtStart)
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 

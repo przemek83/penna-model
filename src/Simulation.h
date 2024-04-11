@@ -29,7 +29,7 @@ public:
     void setProgressCallback(std::function<void(int)> callback);
 
 private:
-    using BasicMetrics = SimulationData::BasicMetrics;
+    using BasicMetrics = SimulationData::BasicMetrics<int>;
     BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
     static std::vector<int> getAgeDistribution(

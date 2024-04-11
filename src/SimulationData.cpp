@@ -2,34 +2,22 @@
 
 #include "Config.h"
 
-SimulationData::SimulationData(std::size_t years) : years_(years)
+SimulationData::SimulationData(std::size_t years) : ResultsData(years)
 {
-    deathsDistribution_.resize(Config::Params::bits_, 0);
-    bitsDistribution_.resize(Config::Params::bits_, 0);
     ageDistribution_.resize(Config::Params::bits_, 0);
-    basicMetrics_.resize(years_);
+    basicMetrics_.resize(getYears());
 }
 
 void SimulationData::setBasicMetrics(
-    std::vector<BasicMetrics> basicBasicMetrics)
+    std::vector<BasicMetrics<int>> basicBasicMetrics)
 {
     basicMetrics_ = std::move(basicBasicMetrics);
 }
 
-const SimulationData::BasicMetrics& SimulationData::getBasicBasicMetrics(
+const SimulationData::BasicMetrics<int>& SimulationData::getBasicBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];
-}
-
-const std::vector<float>& SimulationData::getDeathsDistribution() const
-{
-    return deathsDistribution_;
-}
-
-const std::vector<float>& SimulationData::getBitsDistribution() const
-{
-    return bitsDistribution_;
 }
 
 const std::vector<int>& SimulationData::getAgeDistribution() const
@@ -47,8 +35,11 @@ void SimulationData::setBitDistribution(
     const std::vector<int>& bitsDistribution, int populationCount)
 {
     for (std::size_t i{0}; i < Config::Params::bits_; i++)
-        bitsDistribution_[i] = static_cast<float>(bitsDistribution[i]) /
-                               static_cast<float>(populationCount);
+    {
+        const float value{static_cast<float>(bitsDistribution[i]) /
+                          static_cast<float>(populationCount)};
+        setBitsDistributionValue(i, value);
+    }
 }
 
 void SimulationData::setDeathDistribution(
@@ -57,25 +48,21 @@ void SimulationData::setDeathDistribution(
 {
     for (std::size_t i{0}; i < Config::Params::bits_; i++)
     {
+        float value{1};
         if (gompertzAgeDistribution[i] > 0)
-        {
-            deathsDistribution_[i] =
-                static_cast<float>(gompertzDeathsDistribution[i]) /
-                static_cast<float>(gompertzAgeDistribution[i]);
-        }
-        else
-        {
-            deathsDistribution_[i] = 1;
-        }
+            value = static_cast<float>(gompertzDeathsDistribution[i]) /
+                    static_cast<float>(gompertzAgeDistribution[i]);
+
+        setDeathsDistributionValue(i, value);
     }
 }
 
 void SimulationData::saveFamilies(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Families" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+        const BasicMetrics<int>& basicMetrics{getBasicBasicMetrics(year)};
         if (basicMetrics.families_ > 1)
             stream << year << separator << basicMetrics.families_ << std::endl;
     }
@@ -86,9 +73,9 @@ void SimulationData::saveBasicMetrics(std::ostream& stream,
 {
     stream << "Year" << separator << "Living_start" << separator << "Births"
            << separator << "Living_end" << separator << "Deaths" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+        const BasicMetrics<int>& basicMetrics{getBasicBasicMetrics(year)};
         stream << year << separator << basicMetrics.livingAtStart_ << separator
                << basicMetrics.births_ << separator
                << basicMetrics.getLivingAtEnd() << separator
@@ -101,7 +88,8 @@ void SimulationData::saveBitsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent" << std::endl;
     for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << bitsDistribution_[bit] << std::endl;
+        stream << bit << separator << getBitsDistributionValue(bit)
+               << std::endl;
 }
 
 void SimulationData::saveAgeDistibution(std::ostream& stream,
@@ -117,5 +105,6 @@ void SimulationData::saveDeathsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent" << std::endl;
     for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << deathsDistribution_[bit] << std::endl;
+        stream << bit << separator << getDeathsDistributionValue(bit)
+               << std::endl;
 }

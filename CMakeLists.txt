@@ -39,6 +39,8 @@ set(${PROJECT_NAME}_SOURCES
     src/ProgressCallback.cpp
     src/AverageData.h
     src/AverageData.cpp
+    src/ResultsData.h
+    src/ResultsData.cpp
 )
 
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})

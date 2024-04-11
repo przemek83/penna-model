@@ -2,20 +2,18 @@
 
 #include "Config.h"
 
-AverageData::AverageData(std::size_t years) : years_(years)
+AverageData::AverageData(std::size_t years) : ResultsData(years)
 {
-    deathsDistribution_.resize(Config::Params::bits_, 0);
-    bitsDistribution_.resize(Config::Params::bits_, 0);
     ageDistribution_.resize(Config::Params::bits_, 0);
-    basicMetrics_.resize(years_);
+    basicMetrics_.resize(getYears());
 }
 
 void AverageData::saveFamilies(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Families" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicMetrics(year)};
+        const BasicMetrics<float>& basicMetrics{getBasicMetrics(year)};
         if (basicMetrics.families_ > 1)
             stream << year << separator << basicMetrics.families_ << std::endl;
     }
@@ -25,9 +23,9 @@ void AverageData::saveBasicMetrics(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Living_start" << separator << "Births"
            << separator << "Living_end" << separator << "Deaths" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicMetrics(year)};
+        const BasicMetrics<float>& basicMetrics{getBasicMetrics(year)};
         stream << year << separator << basicMetrics.livingAtStart_ << separator
                << basicMetrics.births_ << separator
                << basicMetrics.getLivingAtEnd() << separator
@@ -40,7 +38,8 @@ void AverageData::saveBitsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent" << std::endl;
     for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << bitsDistribution_[bit] << std::endl;
+        stream << bit << separator << getBitsDistributionValue(bit)
+               << std::endl;
 }
 
 void AverageData::saveAgeDistibution(std::ostream& stream, char separator) const
@@ -55,7 +54,8 @@ void AverageData::saveDeathsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent" << std::endl;
     for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << deathsDistribution_[bit] << std::endl;
+        stream << bit << separator << getDeathsDistributionValue(bit)
+               << std::endl;
 }
 
 void AverageData::integrateData(const SimulationData& data)
@@ -73,9 +73,10 @@ void AverageData::finalize()
 
 void AverageData::integrateBasicMetrics(const SimulationData& data)
 {
-    for (std::size_t i{0}; i < years_; ++i)
+    for (std::size_t i{0}; i < getYears(); ++i)
     {
-        const SimulationData::BasicMetrics& other{data.getBasicBasicMetrics(i)};
+        const SimulationData::BasicMetrics<int>& other{
+            data.getBasicBasicMetrics(i)};
 
         basicMetrics_[i].families_ += static_cast<float>(other.families_);
         basicMetrics_[i].livingAtStart_ +=
@@ -87,25 +88,25 @@ void AverageData::integrateBasicMetrics(const SimulationData& data)
 
 void AverageData::integrateDistributions(const SimulationData& data)
 {
-    const std::vector<float>& deathsDistribution{data.getDeathsDistribution()};
-    const std::vector<float>& bitsDistribution{data.getBitsDistribution()};
     const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
     for (std::size_t i{0}; i < Config::Params::bits_; i++)
     {
-        bitsDistribution_[i] += bitsDistribution[i];
+        setBitsDistributionValue(
+            i, getBitsDistributionValue(i) + data.getBitsDistributionValue(i));
         ageDistribution_[i] += static_cast<float>(ageDistribution[i]);
-        deathsDistribution_[i] += deathsDistribution[i];
+        setDeathsDistributionValue(i, getDeathsDistributionValue(i) +
+                                          data.getDeathsDistributionValue(i));
     }
 }
 
 void AverageData::finalizeBasicMetrics()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
-    for (std::size_t i{0}; i < years_; i++)
+    for (std::size_t i{0}; i < getYears(); i++)
         basicMetrics_[i].families_ /= simulationsAsFloat;
 
-    for (std::size_t i{0}; i < years_; i++)
+    for (std::size_t i{0}; i < getYears(); i++)
     {
         basicMetrics_[i].livingAtStart_ /= simulationsAsFloat;
         basicMetrics_[i].births_ /= simulationsAsFloat;
@@ -118,13 +119,15 @@ void AverageData::finalizeDistributions()
     const float simulationsAsFloat{static_cast<float>(simulations_)};
     for (std::size_t v = 0; v < Config::Params::bits_; v++)
     {
-        deathsDistribution_[v] /= simulationsAsFloat;
-        bitsDistribution_[v] /= simulationsAsFloat;
+        setDeathsDistributionValue(
+            v, getDeathsDistributionValue(v) / simulationsAsFloat);
+        setBitsDistributionValue(
+            v, getBitsDistributionValue(v) / simulationsAsFloat);
         ageDistribution_[v] /= simulationsAsFloat;
     }
 }
 
-const AverageData::BasicMetrics& AverageData::getBasicMetrics(
+const AverageData::BasicMetrics<float>& AverageData::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];
