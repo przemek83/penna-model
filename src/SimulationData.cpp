@@ -68,19 +68,11 @@ void SimulationData::saveFamilies(std::ostream& stream, char separator) const
     }
 }
 
-void SimulationData::saveBasicMetrics(std::ostream& stream,
-                                      char separator) const
+void SimulationData::serializeLifeRelatedMetricData(std::size_t year,
+                                                    std::ostream& stream,
+                                                    char separator) const
 {
-    stream << "Year" << separator << "Living_start" << separator << "Births"
-           << separator << "Living_end" << separator << "Deaths" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
-    {
-        const BasicMetrics<int>& basicMetrics{getBasicBasicMetrics(year)};
-        stream << year << separator << basicMetrics.livingAtStart_ << separator
-               << basicMetrics.births_ << separator
-               << basicMetrics.getLivingAtEnd() << separator
-               << basicMetrics.deaths_ << std::endl;
-    }
+    basicMetrics_[year].serializeLifeRelatedData(stream, separator);
 }
 
 void SimulationData::saveAgeDistibution(std::ostream& stream,

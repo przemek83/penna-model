@@ -12,12 +12,15 @@ public:
     explicit AverageData(std::size_t years);
 
     void saveFamilies(std::ostream& stream, char separator) const;
-    void saveBasicMetrics(std::ostream& stream, char separator) const;
     void saveAgeDistibution(std::ostream& stream, char separator) const;
 
     void integrateData(const SimulationData& data);
 
     void finalize();
+
+protected:
+    void serializeLifeRelatedMetricData(std::size_t year, std::ostream& stream,
+                                        char separator) const override;
 
 private:
     void integrateBasicMetrics(const SimulationData& data);

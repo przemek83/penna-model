@@ -19,20 +19,6 @@ void AverageData::saveFamilies(std::ostream& stream, char separator) const
     }
 }
 
-void AverageData::saveBasicMetrics(std::ostream& stream, char separator) const
-{
-    stream << "Year" << separator << "Living_start" << separator << "Births"
-           << separator << "Living_end" << separator << "Deaths" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
-    {
-        const BasicMetrics<float>& basicMetrics{getBasicMetrics(year)};
-        stream << year << separator << basicMetrics.livingAtStart_ << separator
-               << basicMetrics.births_ << separator
-               << basicMetrics.getLivingAtEnd() << separator
-               << basicMetrics.deaths_ << std::endl;
-    }
-}
-
 void AverageData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
     stream << "Bit" << separator << "Count" << std::endl;
@@ -51,6 +37,13 @@ void AverageData::finalize()
 {
     finalizeBasicMetrics();
     finalizeDistributions();
+}
+
+void AverageData::serializeLifeRelatedMetricData(std::size_t year,
+                                                 std::ostream& stream,
+                                                 char separator) const
+{
+    getBasicMetrics(year).serializeLifeRelatedData(stream, separator);
 }
 
 void AverageData::integrateBasicMetrics(const SimulationData& data)

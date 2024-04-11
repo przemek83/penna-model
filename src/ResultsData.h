@@ -16,6 +16,19 @@ public:
             return livingAtStart_ - deaths_ + births_;
         }
 
+        void serializeLifeRelatedData(std::ostream& stream,
+                                      char separator) const
+        {
+            stream << livingAtStart_ << separator << births_ << separator
+                   << getLivingAtEnd() << separator << deaths_;
+        }
+
+        void serializeFamily(std::ostream& stream, char separator) const
+        {
+            stream << livingAtStart_ << separator << births_ << separator
+                   << getLivingAtEnd() << separator << deaths_;
+        }
+
         T families_{0};
         T livingAtStart_{0};
         T births_{0};
@@ -24,11 +37,16 @@ public:
 
     void saveBitsDistibution(std::ostream& stream, char separator) const;
     void saveDeathsDistibution(std::ostream& stream, char separator) const;
+    void saveBasicMetrics(std::ostream& stream, char separator) const;
 
     float getDeathsDistributionValue(std::size_t index) const;
     float getBitsDistributionValue(std::size_t index) const;
 
 protected:
+    virtual void serializeLifeRelatedMetricData(std::size_t year,
+                                                std::ostream& stream,
+                                                char separator) const = 0;
+
     void setDeathsDistributionValue(std::size_t index, float value);
     void setBitsDistributionValue(std::size_t index, float value);
 
