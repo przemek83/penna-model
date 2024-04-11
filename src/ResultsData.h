@@ -7,6 +7,7 @@ class ResultsData
 {
 public:
     explicit ResultsData(std::size_t years);
+    virtual ~ResultsData() = default;
 
     template <typename T>
     struct BasicMetrics
