@@ -8,7 +8,7 @@
 
 namespace
 {
-std::string zeroPercentExpected{
+const std::string zeroPercentExpected{
     R"(Year	Living_start	Births	Living_end	Deaths
 0	3000	0	1198	1802
 1	1198	0	901	297
@@ -22,7 +22,7 @@ std::string zeroPercentExpected{
 9	354	0	328	26
 )"};
 
-std::string oneHundredPercentExpected{
+const std::string oneHundredPercentExpected{
     R"(Year	Living_start	Births	Living_end	Deaths
 0	3000	0	1198	1802
 1	1198	0	901	297
@@ -36,7 +36,7 @@ std::string oneHundredPercentExpected{
 9	0	0	0	0
 )"};
 
-std::string fiftyPercentExpected{
+const std::string fiftyPercentExpected{
     R"(Year	Living_start	Births	Living_end	Deaths
 0	3000	0	1198	1802
 1	1198	0	901	297
@@ -50,7 +50,7 @@ std::string fiftyPercentExpected{
 9	10	0	6	4
 )"};
 
-std::string fromAgeZeroExpected{
+const std::string fromAgeZeroExpected{
     R"(Year	Living_start	Births	Living_end	Deaths
 0	3000	0	582	2418
 1	582	0	234	348
@@ -64,7 +64,7 @@ std::string fromAgeZeroExpected{
 9	1	0	0	1
 )"};
 
-std::string fromYearFiveExpected{
+const std::string fromYearFiveExpected{
     R"(Year	Living_start	Births	Living_end	Deaths
 0	3000	0	1198	1802
 1	1198	0	901	297
@@ -102,31 +102,30 @@ TEST_CASE("Catching", "[penna]")
     params.years_ = 10;
 
     using TestCase = std::pair<Config::Catching, std::string>;
-    auto [catching, expected] =
-        GENERATE(TestCase{{0, 0, 4}, zeroPercentExpected},
-                 TestCase{{100, 0, 4}, oneHundredPercentExpected},
-                 TestCase{{50, 0, 4}, fiftyPercentExpected},
-                 TestCase{{50, 0, 0}, fromAgeZeroExpected},
-                 TestCase{{50, 0, 10}, zeroPercentExpected},
-                 TestCase{{50, 0, 4}, fiftyPercentExpected},
-                 TestCase{{50, 0, 4}, fiftyPercentExpected},
-                 TestCase{{50, 10, 4}, zeroPercentExpected},
-                 TestCase{{50, 5, 4}, fromYearFiveExpected});
+    auto [catching,
+          expected]{GENERATE(TestCase{{0, 0, 4}, zeroPercentExpected},
+                             TestCase{{100, 0, 4}, oneHundredPercentExpected},
+                             TestCase{{50, 0, 4}, fiftyPercentExpected},
+                             TestCase{{50, 0, 0}, fromAgeZeroExpected},
+                             TestCase{{50, 0, 10}, zeroPercentExpected},
+                             TestCase{{50, 0, 4}, fiftyPercentExpected},
+                             TestCase{{50, 0, 4}, fiftyPercentExpected},
+                             TestCase{{50, 10, 4}, zeroPercentExpected},
+                             TestCase{{50, 5, 4}, fromYearFiveExpected})};
 
     CAPTURE(catching);
 
     params.catching_ = catching;
 
-    StringOutput output(params.years_);
-
     Simulation simulation(params);
-
-    auto generator{std::make_shared<MockedGenerator>()};
-    simulation.setGenerator(generator);
+    simulation.setGenerator(std::make_shared<MockedGenerator>());
     simulation.createInitialPopulation();
     const SingleSimulationData data{simulation.run()};
+
+    StringOutput output(params.years_);
     output.saveSimulationData(data);
 
-    std::string current{output.getContentForOutputType(Output::STATISTICS)};
+    const std::string current{
+        output.getContentForOutputType(Output::STATISTICS)};
     REQUIRE(current == expected);
 }
