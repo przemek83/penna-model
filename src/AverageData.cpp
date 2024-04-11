@@ -15,7 +15,7 @@ void AverageData::saveFamilies(std::ostream& stream, char separator) const
     stream << "Year" << separator << "Families" << std::endl;
     for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+        const BasicMetrics& basicMetrics{getBasicMetrics(year)};
         if (basicMetrics.families_ > 1)
             stream << year << separator << basicMetrics.families_ << std::endl;
     }
@@ -27,7 +27,7 @@ void AverageData::saveBasicMetrics(std::ostream& stream, char separator) const
            << separator << "Living_end" << separator << "Deaths" << std::endl;
     for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
     {
-        const BasicMetrics& basicMetrics{getBasicBasicMetrics(year)};
+        const BasicMetrics& basicMetrics{getBasicMetrics(year)};
         stream << year << separator << basicMetrics.livingAtStart_ << separator
                << basicMetrics.births_ << separator
                << basicMetrics.getLivingAtEnd() << separator
@@ -124,7 +124,7 @@ void AverageData::finalizeDistributions()
     }
 }
 
-const AverageData::BasicMetrics& AverageData::getBasicBasicMetrics(
+const AverageData::BasicMetrics& AverageData::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];

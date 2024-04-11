@@ -39,7 +39,7 @@ private:
     void finalizeBasicMetrics();
     void finalizeDistributions();
 
-    const BasicMetrics& getBasicBasicMetrics(std::size_t year) const;
+    const BasicMetrics& getBasicMetrics(std::size_t year) const;
 
     int simulations_{0};
 
