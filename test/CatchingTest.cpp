@@ -51,6 +51,20 @@ std::string fiftyPercentExpected{
 9	10	0	6	4
 )"};
 
+std::string fromAgeZero{
+    R"(Year	Living_start	Births	Living_end	Deaths
+0	3000	0	582	2418
+1	582	0	234	348
+2	234	0	103	131
+3	103	0	50	53
+4	50	0	22	28
+5	22	0	11	11
+6	11	0	6	5
+7	6	0	4	2
+8	4	0	1	3
+9	1	0	0	1
+)"};
+
 void checkSimOutput(Config::Params params, std::string expected)
 {
     StringOutput output(params.years_);
@@ -93,6 +107,24 @@ TEST_CASE("Catching", "[penna]")
     SECTION("50 percent")
     {
         params.catching_.percent_ = 50;
+        checkSimOutput(params, fiftyPercentExpected);
+    }
+
+    SECTION("from age 0")
+    {
+        params.catching_.fromAge_ = 0;
+        checkSimOutput(params, fromAgeZero);
+    }
+
+    SECTION("from age 10")
+    {
+        params.catching_.fromAge_ = 10;
+        checkSimOutput(params, zeroPercentExpected);
+    }
+
+    SECTION("from age 4")
+    {
+        params.catching_.fromAge_ = 4;
         checkSimOutput(params, fiftyPercentExpected);
     }
 }
