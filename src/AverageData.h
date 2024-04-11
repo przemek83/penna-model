@@ -13,9 +13,7 @@ public:
 
     void saveFamilies(std::ostream& stream, char separator) const;
     void saveBasicMetrics(std::ostream& stream, char separator) const;
-    void saveBitsDistibution(std::ostream& stream, char separator) const;
     void saveAgeDistibution(std::ostream& stream, char separator) const;
-    void saveDeathsDistibution(std::ostream& stream, char separator) const;
 
     void integrateData(const SimulationData& data);
 

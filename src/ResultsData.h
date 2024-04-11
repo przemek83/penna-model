@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <vector>
 
 class ResultsData
@@ -20,6 +21,9 @@ public:
         T births_{0};
         T deaths_{0};
     };
+
+    void saveBitsDistibution(std::ostream& stream, char separator) const;
+    void saveDeathsDistibution(std::ostream& stream, char separator) const;
 
     float getDeathsDistributionValue(std::size_t index) const;
     float getBitsDistributionValue(std::size_t index) const;

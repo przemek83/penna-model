@@ -83,28 +83,10 @@ void SimulationData::saveBasicMetrics(std::ostream& stream,
     }
 }
 
-void SimulationData::saveBitsDistibution(std::ostream& stream,
-                                         char separator) const
-{
-    stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << getBitsDistributionValue(bit)
-               << std::endl;
-}
-
 void SimulationData::saveAgeDistibution(std::ostream& stream,
                                         char separator) const
 {
     stream << "Bit" << separator << "Count" << std::endl;
     for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
         stream << bit << separator << ageDistribution_[bit] << std::endl;
-}
-
-void SimulationData::saveDeathsDistibution(std::ostream& stream,
-                                           char separator) const
-{
-    stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << getDeathsDistributionValue(bit)
-               << std::endl;
 }
