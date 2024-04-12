@@ -1,7 +1,10 @@
 #include "Config.h"
+
+#include <fstream>
 #include <iostream>
 
-#include "yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
+#include <argparse/argparse.hpp>
 
 namespace
 {
@@ -193,6 +196,26 @@ void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
                                    catching.fromAge_);
 }
 
+[[noreturn]] void exitWithMsg(const std::exception& e,
+                              const argparse::ArgumentParser& parser)
+{
+    std::cerr << e.what() << std::endl;
+    std::cerr << parser;
+    abort();
+}
+
+void fillParser(argparse::ArgumentParser& parser)
+{
+    parser.add_argument("config")
+        .default_value(std::string("config.yaml"))
+        .help("name of config file to use.");
+    parser.add_description(
+        "Implementation of Penna model of population aging.");
+    parser.add_epilog(
+        "After simulation one can use script for graph generation using "
+        "result files.");
+}
+
 }  // namespace
 
 namespace Config
@@ -260,6 +283,43 @@ bool isValid(const Params& params)
     std::cerr << "Configuration is invalid:" << std::endl << errorMsg;
 
     return false;
+}
+
+std::string getConfigFileName(int argc, char* argv[])
+{
+    argparse::ArgumentParser parser("penna", "1.0",
+                                    argparse::default_arguments::help);
+    fillParser(parser);
+
+    std::string configFileName;
+    try
+    {
+        parser.parse_args(argc, argv);
+        configFileName = parser.get<std::string>("config");
+    }
+    catch (const std::exception& e)
+    {
+        exitWithMsg(e, parser);
+    }
+
+    return configFileName;
+}
+
+Config::Params getParams(const std::string& configFileName)
+{
+    std::ifstream configFileStream(configFileName);
+    if (configFileStream.fail())
+    {
+        std::cerr << "Cannot read config file " + configFileName << std::endl;
+        abort();
+    }
+
+    const Config::Params params{Config::loadConfig(configFileStream)};
+
+    if (!Config::isValid(params))
+        abort();
+
+    return params;
 }
 
 }  // namespace Config

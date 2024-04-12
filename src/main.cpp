@@ -1,8 +1,4 @@
 #include <filesystem>
-#include <fstream>
-#include <iostream>
-
-#include <argparse/argparse.hpp>
 
 #include "AverageData.h"
 #include "FileOutput.h"
@@ -43,70 +39,12 @@ void saveAverages(const AverageData& averages, const Config::Params& params)
     FileOutput output(params.years_);
     output.saveAverages(averages);
 }
-
-[[noreturn]] void exitWithMsg(const std::exception& e,
-                              const argparse::ArgumentParser& parser)
-{
-    std::cerr << e.what() << std::endl;
-    std::cerr << parser;
-    abort();
-}
-
-void fillParser(argparse::ArgumentParser& parser)
-{
-    parser.add_argument("config")
-        .default_value(std::string("config.yaml"))
-        .help("name of config file to use.");
-    parser.add_description(
-        "Implementation of Penna model of population aging.");
-    parser.add_epilog(
-        "After simulation one can use script for graph generation using "
-        "result files.");
-}
-
-std::string getConfigFileName(int argc, char* argv[])
-{
-    argparse::ArgumentParser parser("penna", "1.0",
-                                    argparse::default_arguments::help);
-    fillParser(parser);
-
-    std::string configFileName;
-    try
-    {
-        parser.parse_args(argc, argv);
-        configFileName = parser.get<std::string>("config");
-    }
-    catch (const std::exception& e)
-    {
-        exitWithMsg(e, parser);
-    }
-
-    return configFileName;
-}
-
-Config::Params getParams(const std::string& configFileName)
-{
-    std::ifstream configFileStream(configFileName);
-    if (configFileStream.fail())
-    {
-        std::cerr << "Cannot read config file " + configFileName << std::endl;
-        abort();
-    }
-
-    const Config::Params params{Config::loadConfig(configFileStream)};
-
-    if (!Config::isValid(params))
-        abort();
-
-    return params;
-}
-
 }  // namespace
 
 int main(int argc, char* argv[])
 {
-    const std::string configFileName{getConfigFileName(argc, argv)};
-    const Config::Params params{getParams(configFileName)};
+    const std::string configFileName{Config::getConfigFileName(argc, argv)};
+    const Config::Params params{Config::getParams(configFileName)};
 
     Runner runner;
     auto generator{std::make_shared<NumbersGenerator>()};
