@@ -23,22 +23,6 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     return simulation;
 }
 
-AverageData calculateAverages(
-    const std::vector<SimulationData>& simulationsData, int years)
-{
-    AverageData averages{static_cast<std::size_t>(years)};
-    for (const auto& data : simulationsData)
-        averages.integrateData(data);
-
-    averages.finalize();
-    return averages;
-}
-
-void saveAverages(const AverageData& averages, const Config::Params& params)
-{
-    FileOutput output(params.years_);
-    output.saveAverages(averages);
-}
 }  // namespace
 
 int main(int argc, char* argv[])
@@ -54,10 +38,11 @@ int main(int argc, char* argv[])
 
     const std::vector<SimulationData> simulationsData{runner.runParallel()};
 
-    const AverageData averages{
-        calculateAverages(simulationsData, params.years_)};
+    const AverageData averages{simulationsData,
+                               static_cast<std::size_t>(params.years_)};
 
-    saveAverages(averages, params);
+    FileOutput output(params.years_);
+    output.saveAverages(averages);
 
     return EXIT_SUCCESS;
 }

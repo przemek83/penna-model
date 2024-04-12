@@ -2,13 +2,20 @@
 
 #include "Config.h"
 
-AverageData::AverageData(std::size_t years) : ResultsData(years)
+AverageData::AverageData(const std::vector<SimulationData>& simulationsData,
+                         std::size_t years)
+    : ResultsData(years)
 {
     ageDistribution_.resize(Config::Params::bits_, 0);
     basicMetrics_.resize(getYears());
+
+    for (const auto& data : simulationsData)
+        integrate(data);
+
+    finalize();
 }
 
-void AverageData::integrateData(const SimulationData& data)
+void AverageData::integrate(const SimulationData& data)
 {
     integrateBasicMetrics(data);
     integrateDistributions(data);

@@ -9,11 +9,8 @@
 class AverageData : public ResultsData
 {
 public:
-    explicit AverageData(std::size_t years);
-
-    void integrateData(const SimulationData& data);
-
-    void finalize();
+    AverageData(const std::vector<SimulationData>& simulationsData,
+                std::size_t years);
 
 protected:
     void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,
@@ -28,6 +25,9 @@ protected:
     bool isSingleFamily(std::size_t year) const override;
 
 private:
+    void integrate(const SimulationData& data);
+    void finalize();
+
     void integrateBasicMetrics(const SimulationData& data);
     void integrateDistributions(const SimulationData& data);
 

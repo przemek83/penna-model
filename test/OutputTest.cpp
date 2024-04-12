@@ -84,11 +84,8 @@ TEST_CASE("Output averages", "[penna]")
         const SimulationData data2{simulation2.run()};
         std::cout << std::endl;
 
-        AverageData averageData{static_cast<std::size_t>(params.years_)};
-        averageData.integrateData(data1);
-        averageData.integrateData(data2);
-
-        averageData.finalize();
+        const AverageData averageData{{data1, data2},
+                                      static_cast<std::size_t>(params.years_)};
 
         output.reset();
         output.saveAverages(averageData);
