@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CMakeLists.txt.yaml-cpp)
+include(CMakeLists.txt.argparse)
 
 file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 
@@ -47,7 +48,7 @@ add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
 target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib argparse)
 
 enable_testing()
 Include(Tests.cmake)
