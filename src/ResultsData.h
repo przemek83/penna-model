@@ -39,6 +39,7 @@ public:
     void saveDeathsDistibution(std::ostream& stream, char separator) const;
     void saveBasicMetrics(std::ostream& stream, char separator) const;
     void saveFamilies(std::ostream& stream, char separator) const;
+    void saveAgeDistibution(std::ostream& stream, char separator) const;
 
     float getDeathsDistributionValue(std::size_t index) const;
     float getBitsDistributionValue(std::size_t index) const;
@@ -50,6 +51,9 @@ protected:
 
     virtual void writeFamiliesMetricData(std::ostream& stream,
                                          std::size_t year) const = 0;
+
+    virtual void writeBitDistributionData(std::ostream& stream,
+                                          std::size_t bit) const = 0;
 
     void setDeathsDistributionValue(std::size_t index, float value);
     void setBitsDistributionValue(std::size_t index, float value);

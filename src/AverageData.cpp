@@ -8,13 +8,6 @@ AverageData::AverageData(std::size_t years) : ResultsData(years)
     basicMetrics_.resize(getYears());
 }
 
-void AverageData::saveAgeDistibution(std::ostream& stream, char separator) const
-{
-    stream << "Bit" << separator << "Count" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << ageDistribution_[bit] << std::endl;
-}
-
 void AverageData::integrateData(const SimulationData& data)
 {
     integrateBasicMetrics(data);
@@ -39,6 +32,12 @@ void AverageData::writeFamiliesMetricData(std::ostream& stream,
                                           std::size_t year) const
 {
     getBasicMetrics(year).serializeFamily(stream);
+}
+
+void AverageData::writeBitDistributionData(std::ostream& stream,
+                                           std::size_t bit) const
+{
+    stream << ageDistribution_[bit];
 }
 
 bool AverageData::isSingleFamily(std::size_t year) const

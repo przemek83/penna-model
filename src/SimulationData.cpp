@@ -70,15 +70,13 @@ void SimulationData::writeFamiliesMetricData(std::ostream& stream,
     basicMetrics_[year].serializeFamily(stream);
 }
 
+void SimulationData::writeBitDistributionData(std::ostream& stream,
+                                              std::size_t bit) const
+{
+    stream << ageDistribution_[bit];
+}
+
 bool SimulationData::isSingleFamily(std::size_t year) const
 {
     return basicMetrics_[year].families_ <= 1;
-}
-
-void SimulationData::saveAgeDistibution(std::ostream& stream,
-                                        char separator) const
-{
-    stream << "Bit" << separator << "Count" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
-        stream << bit << separator << ageDistribution_[bit] << std::endl;
 }

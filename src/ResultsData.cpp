@@ -51,6 +51,17 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
     }
 }
 
+void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
+{
+    stream << "Bit" << separator << "Count" << std::endl;
+    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
+    {
+        stream << bit << separator;
+        writeBitDistributionData(stream, bit);
+        stream << std::endl;
+    }
+}
+
 float ResultsData::getDeathsDistributionValue(std::size_t index) const
 {
     return deathsDistribution_[index];
