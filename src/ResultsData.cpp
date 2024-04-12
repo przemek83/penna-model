@@ -30,7 +30,7 @@ void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Living_start" << separator << "Births"
            << separator << "Living_end" << separator << "Deaths" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
+    for (size_t year{0}; year < getYears(); ++year)
     {
         stream << year << separator;
         serializeLifeRelatedMetricData(year, stream, separator);
