@@ -8,17 +8,6 @@ AverageData::AverageData(std::size_t years) : ResultsData(years)
     basicMetrics_.resize(getYears());
 }
 
-void AverageData::saveFamilies(std::ostream& stream, char separator) const
-{
-    stream << "Year" << separator << "Families" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
-    {
-        const BasicMetrics<float>& basicMetrics{getBasicMetrics(year)};
-        if (basicMetrics.families_ > 1)
-            stream << year << separator << basicMetrics.families_ << std::endl;
-    }
-}
-
 void AverageData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
     stream << "Bit" << separator << "Count" << std::endl;
@@ -44,6 +33,17 @@ void AverageData::writeLifeRelatedMetricData(std::ostream& stream,
                                              char separator) const
 {
     basicMetrics_[year].serializeLifeRelatedData(stream, separator);
+}
+
+void AverageData::writeFamiliesMetricData(std::ostream& stream,
+                                          std::size_t year) const
+{
+    getBasicMetrics(year).serializeFamily(stream);
+}
+
+bool AverageData::isSingleFamily(std::size_t year) const
+{
+    return getBasicMetrics(year).families_ <= 1;
 }
 
 void AverageData::integrateBasicMetrics(const SimulationData& data)

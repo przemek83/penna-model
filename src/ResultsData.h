@@ -24,10 +24,9 @@ public:
                    << getLivingAtEnd() << separator << deaths_;
         }
 
-        void serializeFamily(std::ostream& stream, char separator) const
+        void serializeFamily(std::ostream& stream) const
         {
-            stream << livingAtStart_ << separator << births_ << separator
-                   << getLivingAtEnd() << separator << deaths_;
+            stream << families_;
         }
 
         T families_{0};
@@ -39,6 +38,7 @@ public:
     void saveBitsDistibution(std::ostream& stream, char separator) const;
     void saveDeathsDistibution(std::ostream& stream, char separator) const;
     void saveBasicMetrics(std::ostream& stream, char separator) const;
+    void saveFamilies(std::ostream& stream, char separator) const;
 
     float getDeathsDistributionValue(std::size_t index) const;
     float getBitsDistributionValue(std::size_t index) const;
@@ -48,10 +48,15 @@ protected:
                                             std::size_t year,
                                             char separator) const = 0;
 
+    virtual void writeFamiliesMetricData(std::ostream& stream,
+                                         std::size_t year) const = 0;
+
     void setDeathsDistributionValue(std::size_t index, float value);
     void setBitsDistributionValue(std::size_t index, float value);
 
     std::size_t getYears() const { return years_; }
+
+    virtual bool isSingleFamily(std::size_t year) const = 0;
 
 private:
     std::vector<float> deathsDistribution_;

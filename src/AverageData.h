@@ -11,7 +11,6 @@ class AverageData : public ResultsData
 public:
     explicit AverageData(std::size_t years);
 
-    void saveFamilies(std::ostream& stream, char separator) const;
     void saveAgeDistibution(std::ostream& stream, char separator) const;
 
     void integrateData(const SimulationData& data);
@@ -21,6 +20,11 @@ public:
 protected:
     void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,
                                     char separator) const override;
+
+    void writeFamiliesMetricData(std::ostream& stream,
+                                 std::size_t year) const override;
+
+    bool isSingleFamily(std::size_t year) const override;
 
 private:
     void integrateBasicMetrics(const SimulationData& data);

@@ -38,6 +38,19 @@ void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
     }
 }
 
+void ResultsData::saveFamilies(std::ostream& stream, char separator) const
+{
+    stream << "Year" << separator << "Families" << std::endl;
+    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
+    {
+        if (isSingleFamily(year))
+            return;
+        stream << year << separator;
+        writeFamiliesMetricData(stream, year);
+        stream << std::endl;
+    }
+}
+
 float ResultsData::getDeathsDistributionValue(std::size_t index) const
 {
     return deathsDistribution_[index];

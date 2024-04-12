@@ -23,12 +23,16 @@ public:
     const std::vector<int>& getAgeDistribution() const;
     void setAgeDistribution(const std::vector<int>& ageDistribution);
 
-    void saveFamilies(std::ostream& stream, char separator) const;
     void saveAgeDistibution(std::ostream& stream, char separator) const;
 
 protected:
     void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,
                                     char separator) const override;
+
+    void writeFamiliesMetricData(std::ostream& stream,
+                                 std::size_t year) const override;
+
+    bool isSingleFamily(std::size_t year) const override;
 
 private:
     std::vector<int> ageDistribution_;

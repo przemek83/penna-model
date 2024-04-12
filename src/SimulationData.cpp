@@ -57,22 +57,22 @@ void SimulationData::setDeathDistribution(
     }
 }
 
-void SimulationData::saveFamilies(std::ostream& stream, char separator) const
-{
-    stream << "Year" << separator << "Families" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(getYears()); ++year)
-    {
-        const BasicMetrics<int>& basicMetrics{getBasicMetrics(year)};
-        if (basicMetrics.families_ > 1)
-            stream << year << separator << basicMetrics.families_ << std::endl;
-    }
-}
-
 void SimulationData::writeLifeRelatedMetricData(std::ostream& stream,
                                                 std::size_t year,
                                                 char separator) const
 {
     basicMetrics_[year].serializeLifeRelatedData(stream, separator);
+}
+
+void SimulationData::writeFamiliesMetricData(std::ostream& stream,
+                                             std::size_t year) const
+{
+    basicMetrics_[year].serializeFamily(stream);
+}
+
+bool SimulationData::isSingleFamily(std::size_t year) const
+{
+    return basicMetrics_[year].families_ <= 1;
 }
 
 void SimulationData::saveAgeDistibution(std::ostream& stream,
