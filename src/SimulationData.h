@@ -27,8 +27,8 @@ public:
     void saveAgeDistibution(std::ostream& stream, char separator) const;
 
 protected:
-    void serializeLifeRelatedMetricData(std::size_t year, std::ostream& stream,
-                                        char separator) const override;
+    void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,
+                                    char separator) const override;
 
 private:
     std::vector<int> ageDistribution_;

@@ -44,9 +44,9 @@ public:
     float getBitsDistributionValue(std::size_t index) const;
 
 protected:
-    virtual void serializeLifeRelatedMetricData(std::size_t year,
-                                                std::ostream& stream,
-                                                char separator) const = 0;
+    virtual void writeLifeRelatedMetricData(std::ostream& stream,
+                                            std::size_t year,
+                                            char separator) const = 0;
 
     void setDeathsDistributionValue(std::size_t index, float value);
     void setBitsDistributionValue(std::size_t index, float value);

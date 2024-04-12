@@ -39,11 +39,11 @@ void AverageData::finalize()
     finalizeDistributions();
 }
 
-void AverageData::serializeLifeRelatedMetricData(std::size_t year,
-                                                 std::ostream& stream,
-                                                 char separator) const
+void AverageData::writeLifeRelatedMetricData(std::ostream& stream,
+                                             std::size_t year,
+                                             char separator) const
 {
-    getBasicMetrics(year).serializeLifeRelatedData(stream, separator);
+    basicMetrics_[year].serializeLifeRelatedData(stream, separator);
 }
 
 void AverageData::integrateBasicMetrics(const SimulationData& data)

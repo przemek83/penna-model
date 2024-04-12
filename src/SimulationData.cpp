@@ -68,9 +68,9 @@ void SimulationData::saveFamilies(std::ostream& stream, char separator) const
     }
 }
 
-void SimulationData::serializeLifeRelatedMetricData(std::size_t year,
-                                                    std::ostream& stream,
-                                                    char separator) const
+void SimulationData::writeLifeRelatedMetricData(std::ostream& stream,
+                                                std::size_t year,
+                                                char separator) const
 {
     basicMetrics_[year].serializeLifeRelatedData(stream, separator);
 }
