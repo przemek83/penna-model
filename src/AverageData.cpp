@@ -65,11 +65,15 @@ void AverageData::integrateDistributions(const SimulationData& data)
 
     for (std::size_t i{0}; i < Config::Params::bits_; i++)
     {
-        setBitsDistributionValue(
-            i, getBitsDistributionValue(i) + data.getBitsDistributionValue(i));
+        const float newBitsValue{getBitsDistributionValue(i) +
+                                 data.getBitsDistributionValue(i)};
+        setBitsDistributionValue(i, newBitsValue);
+
         ageDistribution_[i] += static_cast<float>(ageDistribution[i]);
-        setDeathsDistributionValue(i, getDeathsDistributionValue(i) +
-                                          data.getDeathsDistributionValue(i));
+
+        const float newDeathsValue{getDeathsDistributionValue(i) +
+                                   data.getDeathsDistributionValue(i)};
+        setDeathsDistributionValue(i, newDeathsValue);
     }
 }
 
@@ -90,13 +94,15 @@ void AverageData::finalizeBasicMetrics()
 void AverageData::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
-    for (std::size_t v = 0; v < Config::Params::bits_; v++)
+    for (std::size_t i{0}; i < Config::Params::bits_; i++)
     {
-        setDeathsDistributionValue(
-            v, getDeathsDistributionValue(v) / simulationsAsFloat);
-        setBitsDistributionValue(
-            v, getBitsDistributionValue(v) / simulationsAsFloat);
-        ageDistribution_[v] /= simulationsAsFloat;
+        const float newDeathsValue{getDeathsDistributionValue(i) /
+                                   simulationsAsFloat};
+        setDeathsDistributionValue(i, newDeathsValue);
+        const float newBitsValue{getBitsDistributionValue(i) /
+                                 simulationsAsFloat};
+        setBitsDistributionValue(i, newBitsValue);
+        ageDistribution_[i] /= simulationsAsFloat;
     }
 }
 
