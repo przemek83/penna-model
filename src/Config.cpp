@@ -29,7 +29,7 @@ enum class Field
     CATCHING_FROM_AGE
 };
 
-std::map<Field, std::string> fieldToString{
+const std::map<Field, std::string> fieldToString{
     {Field::POPULATION, "population"},
     {Field::POPULATION_INITIAL, "initial"},
     {Field::POPULATION_MAX, "max"},
@@ -52,7 +52,7 @@ std::string createErrorMsg(Field field, const std::string& condition,
                            int currentValue)
 {
     std::ostringstream os;
-    os << "check failed: " << fieldToString[field] << " " << condition
+    os << "check failed: " << fieldToString.at(field) << " " << condition
        << ", got " << currentValue << std::endl;
     return os.str();
 }
@@ -61,13 +61,14 @@ Config::Mutations loadMutations(const YAML::Node& node)
 {
     Config::Mutations mutations;
 
-    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_ADDED]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::MUTATIONS_ADDED)]})
         mutations.added_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_LETHAL]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::MUTATIONS_LETHAL)]})
         mutations.lethal_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::MUTATIONS_INITIAL]]})
+    if (const YAML::Node value{
+            node[fieldToString.at(Field::MUTATIONS_INITIAL)]})
         mutations.initial_ = value.as<int>();
 
     return mutations;
@@ -77,10 +78,10 @@ Config::Offspring loadOffspring(const YAML::Node& node)
 {
     Config::Offspring offspring;
 
-    if (const YAML::Node value{node[fieldToString[Field::OFFSPRING_CHANCE]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::OFFSPRING_CHANCE)]})
         offspring.chance_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::OFFSPRING_COUNT]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::OFFSPRING_COUNT)]})
         offspring.count_ = value.as<int>();
 
     return offspring;
@@ -90,10 +91,11 @@ Config::Population loadPopulation(const YAML::Node& node)
 {
     Config::Population population;
 
-    if (const YAML::Node value{node[fieldToString[Field::POPULATION_INITIAL]]})
+    if (const YAML::Node value{
+            node[fieldToString.at(Field::POPULATION_INITIAL)]})
         population.initial_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::POPULATION_MAX]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::POPULATION_MAX)]})
         population.max_ = value.as<int>();
 
     return population;
@@ -103,13 +105,15 @@ Config::Catching loadCatching(const YAML::Node& node)
 {
     Config::Catching catching;
 
-    if (const YAML::Node value{node[fieldToString[Field::CATCHING_PERCENT]]})
+    if (const YAML::Node value{node[fieldToString.at(Field::CATCHING_PERCENT)]})
         catching.percent_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::CATCHING_FROM_YEAR]]})
+    if (const YAML::Node value{
+            node[fieldToString.at(Field::CATCHING_FROM_YEAR)]})
         catching.fromYear_ = value.as<int>();
 
-    if (const YAML::Node value{node[fieldToString[Field::CATCHING_FROM_AGE]]})
+    if (const YAML::Node value{
+            node[fieldToString.at(Field::CATCHING_FROM_AGE)]})
         catching.fromAge_ = value.as<int>();
 
     return catching;
@@ -161,10 +165,10 @@ void checkPopulation(Config::Population population, std::string& errorMsg)
                                    population.initial_);
 
     if (population.initial_ > population.max_)
-        errorMsg +=
-            createErrorMsg(Field::POPULATION_INITIAL,
-                           "lover than " + fieldToString[Field::POPULATION_MAX],
-                           population.initial_);
+        errorMsg += createErrorMsg(
+            Field::POPULATION_INITIAL,
+            "lover than " + fieldToString.at(Field::POPULATION_MAX),
+            population.initial_);
 }
 
 void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
@@ -220,30 +224,30 @@ void fillParser(argparse::ArgumentParser& parser)
 
 namespace Config
 {
-Config::Params loadConfig(std::istream& configFile)
+Config::Params loadConfig(std::istream& stream)
 {
     Config::Params params;
-    YAML::Node yaml{YAML::Load(configFile)};
+    YAML::Node yaml{YAML::Load(stream)};
 
-    if (const YAML::Node& node{yaml[fieldToString[Field::POPULATION]]}; node)
+    if (const YAML::Node& node{yaml[fieldToString.at(Field::POPULATION)]}; node)
         params.population_ = loadPopulation(node);
 
-    if (const YAML::Node value{yaml[fieldToString[Field::YEARS]]})
+    if (const YAML::Node value{yaml[fieldToString.at(Field::YEARS)]})
         params.years_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString[Field::MUTATIONS]]}; node)
+    if (const YAML::Node& node{yaml[fieldToString.at(Field::MUTATIONS)]}; node)
         params.mutations_ = loadMutations(node);
 
-    if (const YAML::Node value{yaml[fieldToString[Field::REPRODUCTION_AGE]]})
+    if (const YAML::Node value{yaml[fieldToString.at(Field::REPRODUCTION_AGE)]})
         params.reproductionAge_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString[Field::OFFSPRING]]}; node)
+    if (const YAML::Node& node{yaml[fieldToString.at(Field::OFFSPRING)]}; node)
         params.offspring_ = loadOffspring(node);
 
-    if (const YAML::Node value{yaml[fieldToString[Field::SIMULATIONS]]})
+    if (const YAML::Node value{yaml[fieldToString.at(Field::SIMULATIONS)]})
         params.simulationsCount_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString[Field::CATCHING]]}; node)
+    if (const YAML::Node& node{yaml[fieldToString.at(Field::CATCHING)]}; node)
         params.catching_ = loadCatching(node);
 
     return params;
