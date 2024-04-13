@@ -27,14 +27,14 @@ const std::vector<int>& SimulationData::getAgeDistribution() const
 
 void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
 {
-    for (std::size_t i{0}; i < Config::Params::bits_; i++)
+    for (std::size_t i{0}; i < ageDistribution.size(); i++)
         ageDistribution_[i] = ageDistribution[i];
 }
 
 void SimulationData::setBitDistribution(
     const std::vector<int>& bitsDistribution, int populationCount)
 {
-    for (std::size_t i{0}; i < Config::Params::bits_; i++)
+    for (std::size_t i{0}; i < bitsDistribution.size(); i++)
     {
         const float value{static_cast<float>(bitsDistribution[i]) /
                           static_cast<float>(populationCount)};
@@ -46,7 +46,7 @@ void SimulationData::setDeathDistribution(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution)
 {
-    for (std::size_t i{0}; i < Config::Params::bits_; i++)
+    for (std::size_t i{0}; i < gompertzAgeDistribution.size(); i++)
     {
         float value{1};
         if (gompertzAgeDistribution[i] > 0)
