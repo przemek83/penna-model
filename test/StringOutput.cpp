@@ -1,7 +1,5 @@
 #include "StringOutput.h"
 
-StringOutput::StringOutput(int maxPopulationAge) : Output(maxPopulationAge) {}
-
 std::string StringOutput::getContentForOutputType(OUTPUT_TYPE outputType)
 {
     return stringStreams_[outputType]->str();

@@ -122,7 +122,7 @@ TEST_CASE("Catching", "[penna]")
     simulation.createInitialPopulation();
     const SimulationData data{simulation.run()};
 
-    StringOutput output(params.years_);
+    StringOutput output;
     output.saveSimulationData(data);
 
     const std::string current{

@@ -2,12 +2,14 @@
 
 #include <fstream>
 
-FileOutput::FileOutput(int maxPopulationAge) : Output(maxPopulationAge) {}
+FileOutput::FileOutput(const std::string& prefix) : prefix_(prefix) {}
 
 std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 {
     std::string fileName;
     fileName.append("output_");
+    fileName.append(prefix_);
+    fileName.append("_");
     fileName.append(fileNames_[outputType]);
 
     return fileName;

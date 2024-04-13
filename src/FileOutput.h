@@ -8,7 +8,7 @@
 class FileOutput : public Output
 {
 public:
-    explicit FileOutput(int maxPopulationAge);
+    explicit FileOutput(const std::string& prefix);
 
     std::string getName(OUTPUT_TYPE outputType) const;
 
@@ -22,4 +22,6 @@ private:
         "finalPopulation.txt",   "age_distribution.txt",
         "bits_distribution.txt", "deaths_distribution.txt",
         "families.txt"};
+
+    std::string prefix_;
 };

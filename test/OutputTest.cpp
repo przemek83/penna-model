@@ -17,7 +17,7 @@ namespace
 {
 const int years{1000};
 const int maxPopulation{5000};
-StringOutput output(years);
+StringOutput output;
 }  // namespace
 
 class testRunListener : public Catch::EventListenerBase
@@ -56,10 +56,10 @@ TEST_CASE("Output", "[penna]")
                              Output::BITS_DISTRIBUTION,
                              Output::DEATHS_DISTRIBUTION, Output::FAMILIES)};
     CAPTURE(outputType);
-    const FileOutput fileOutput(years);
-    const std::string file{"sim1_" + fileOutput.getName(outputType)};
+    const FileOutput fileOutput("sim1");
     Common::compareStringWithFileContent(
-        output.getContentForOutputType(outputType), file);
+        output.getContentForOutputType(outputType),
+        fileOutput.getName(outputType));
 }
 
 TEST_CASE("Output averages", "[penna]")
@@ -95,13 +95,13 @@ TEST_CASE("Output averages", "[penna]")
             Output::BITS_DISTRIBUTION, Output::AGE_DISTRIBUTION,
             Output::STATISTICS};
 
-        const FileOutput fileOutput(years);
+        const FileOutput fileOutput("averages");
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
             Common::compareStringWithFileContent(
                 output.getContentForOutputType(outputType),
-                "sim0_" + fileOutput.getName(outputType));
+                fileOutput.getName(outputType));
         }
     }
 }

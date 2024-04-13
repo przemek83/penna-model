@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     const AverageData averages{simulationsData,
                                static_cast<std::size_t>(params.years_)};
 
-    FileOutput output(params.years_);
+    FileOutput output("averages");
     output.saveAverages(averages);
 
     return EXIT_SUCCESS;

@@ -27,8 +27,6 @@ public:
 
     void assignRandomBits(Generator& generator, int startingMutations);
 
-    unsigned long long getGenomeAsNumber() const;
-
     inline bool getGenomeBit(std::size_t position) const
     {
         return genome_[position];

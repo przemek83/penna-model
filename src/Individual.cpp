@@ -45,11 +45,6 @@ void Individual::assignRandomBits(Generator& generator, int startingMutations)
         genome_[mutationPosition] = true;
 }
 
-unsigned long long Individual::getGenomeAsNumber() const
-{
-    return genome_.to_ullong();
-}
-
 void Individual::setGenome(const std::bitset<Config::Params::bits_>& genome)
 {
     genome_ = genome;

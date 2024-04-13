@@ -19,9 +19,7 @@ TEST_CASE("Individual", "[penna]")
         MockedGenerator generator;
         Individual individual(0);
         individual.assignRandomBits(generator, 4);
-        REQUIRE(
-            individual.getGenomeAsNumber() ==
-            0b0000000000000000010000000000000000000000100000000000001000001000);
+        individual.asBitString(), Catch::Matchers::Equals(genomeString);
     }
 
     Individual individual(0);
@@ -154,13 +152,6 @@ TEST_CASE("Individual", "[penna]")
 
         REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
-    }
-
-    SECTION("genome as number")
-    {
-        unsigned long long number{GENERATE(0ULL, 1ULL, 21354634ULL)};
-        individual.setGenome(std::bitset<Config::Params::bits_>(number));
-        REQUIRE(individual.getGenomeAsNumber() == number);
     }
 
     SECTION("get genome bits")

@@ -14,8 +14,7 @@ class AverageData;
 class Output
 {
 public:
-    explicit Output(int years);
-
+    Output() = default;
     virtual ~Output() = default;
 
     enum OUTPUT_TYPE
@@ -72,8 +71,6 @@ private:
     void saveAgeDistribution(const std::vector<int>& ageDistribution);
 
     void saveDeathsDistribution(const std::vector<float>& deaths);
-
-    int years_;
 
     char separator_{'\t'};
 };
