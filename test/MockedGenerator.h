@@ -7,6 +7,8 @@
 class MockedGenerator : public Generator
 {
 public:
+    explicit MockedGenerator(int bits);
+
     int getInt(int low, int high) override;
 
 private:

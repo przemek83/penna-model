@@ -19,7 +19,7 @@ TEST_CASE("Simulation", "[penna]")
         params.population_.max_ = 5000;
         params.years_ = 1000;
 
-        auto generator{std::make_shared<MockedGenerator>()};
+        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
         StringOutput output;
 
         Simulation simulation(params);
@@ -54,7 +54,7 @@ TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
     Config::Params params;
-    auto generator{std::make_shared<MockedGenerator>()};
+    auto generator{std::make_shared<MockedGenerator>(params.bits_)};
 
     SECTION("simulation short")
     {

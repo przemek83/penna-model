@@ -3,7 +3,7 @@
 class Generator
 {
 public:
-    Generator() = default;
+    explicit Generator(int bits);
     virtual ~Generator() = default;
 
     Generator(const Generator&) = delete;
@@ -17,4 +17,7 @@ public:
 
 protected:
     virtual int getInt(int low, int high) = 0;
+
+private:
+    int bits_;
 };

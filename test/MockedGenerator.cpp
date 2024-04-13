@@ -1,5 +1,7 @@
 #include "MockedGenerator.h"
 
+MockedGenerator::MockedGenerator(int bits) : Generator(bits) {}
+
 int MockedGenerator::getInt(int low, int high)
 {
     // Following SplitMix64 algorithm described in

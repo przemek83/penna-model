@@ -118,7 +118,7 @@ TEST_CASE("Catching", "[penna]")
     params.catching_ = catching;
 
     Simulation simulation(params);
-    simulation.setGenerator(std::make_shared<MockedGenerator>());
+    simulation.setGenerator(std::make_shared<MockedGenerator>(params.bits_));
     simulation.createInitialPopulation();
     const SimulationData data{simulation.run()};
 

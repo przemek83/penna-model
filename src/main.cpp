@@ -16,7 +16,7 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     Simulation simulation(params);
     simulation.setGenerator(generator);
     simulation.createInitialPopulation();
-    simulation.setGenerator(std::make_shared<NumbersGenerator>());
+    simulation.setGenerator(std::make_shared<NumbersGenerator>(params.bits_));
     auto progressCallback{ProgressCallback::createOverallProgressCallback(
         simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     const Config::Params params{Config::getParams(configFileName)};
 
     Runner runner;
-    auto generator{std::make_shared<NumbersGenerator>()};
+    auto generator{std::make_shared<NumbersGenerator>(params.bits_)};
 
     for (int i{1}; i <= params.simulationsCount_; i++)
         runner.addSimulation(prepareSimulation(params, i, generator));

@@ -32,7 +32,7 @@ public:
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 
-        auto generator{std::make_shared<MockedGenerator>()};
+        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
 
         Simulation simulation1(params);
         simulation1.setGenerator(generator);
@@ -70,7 +70,7 @@ TEST_CASE("Output averages", "[penna]")
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 
-        auto generator{std::make_shared<MockedGenerator>()};
+        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
 
         Simulation simulation1(params);
         simulation1.setGenerator(generator);
