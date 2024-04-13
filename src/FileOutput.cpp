@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-FileOutput::FileOutput(const std::string& prefix) : prefix_(prefix) {}
+FileOutput::FileOutput(std::string prefix) : prefix_(std::move(prefix)) {}
 
 std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 {

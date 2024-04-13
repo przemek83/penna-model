@@ -1,6 +1,6 @@
 #include "NumbersGenerator.h"
 
-NumbersGenerator::NumbersGenerator() : Generator(), engine_{std::random_device()()} {}
+NumbersGenerator::NumbersGenerator() : engine_{std::random_device()()} {}
 
 int NumbersGenerator::getInt(int low, int high)
 {

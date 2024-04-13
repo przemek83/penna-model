@@ -32,9 +32,7 @@ SimulationData Simulation::run()
         year++;
     }
 
-    SimulationData data{prepareData(std::move(basicMetrics))};
-
-    return data;
+    return prepareData(std::move(basicMetrics));
 }
 
 void Simulation::setProgressCallback(std::function<void(int)> callback)

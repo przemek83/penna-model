@@ -9,6 +9,11 @@ public:
     explicit ResultsData(std::size_t years);
     virtual ~ResultsData() = default;
 
+    ResultsData(const ResultsData&) = default;
+    ResultsData(ResultsData&&) = default;
+    ResultsData& operator=(const ResultsData&) = default;
+    ResultsData& operator=(ResultsData&&) = default;
+
     template <typename T>
     struct BasicMetrics
     {

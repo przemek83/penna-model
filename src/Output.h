@@ -17,6 +17,11 @@ public:
     Output() = default;
     virtual ~Output() = default;
 
+    Output(const Output&) = delete;
+    Output(Output&&) = delete;
+    Output& operator=(const Output&) = delete;
+    Output& operator=(Output&&) = delete;
+
     enum OUTPUT_TYPE
     {
         STATISTICS = 0,
@@ -42,7 +47,7 @@ protected:
 
 private:
     template <typename T>
-    void saveData(T data, std::map<OUTPUT_TYPE, int> precisions)
+    void saveData(const T& data, std::map<OUTPUT_TYPE, int> precisions)
     {
         const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
         *families << std::setprecision(precisions[FAMILIES]) << std::fixed;

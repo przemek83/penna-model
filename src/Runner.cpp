@@ -12,11 +12,10 @@ std::vector<SimulationData> Runner::runSequential()
 {
     const Timer timer;
     std::vector<SimulationData> dataToReturn;
+    dataToReturn.reserve(simulations_.size());
+
     for (std::size_t i{0}; i < simulations_.size(); ++i)
-    {
-        SimulationData data{simulations_[i].run()};
-        dataToReturn.emplace_back(std::move(data));
-    }
+        dataToReturn.push_back(simulations_[i].run());
 
     return dataToReturn;
 }
@@ -35,8 +34,7 @@ std::vector<SimulationData> Runner::runParallel()
     for (auto& future : futures)
     {
         future.wait();
-        SimulationData data{future.get()};
-        dataToReturn.emplace_back(std::move(data));
+        dataToReturn.push_back(future.get());
     }
 
     return dataToReturn;

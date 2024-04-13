@@ -8,7 +8,7 @@
 class FileOutput : public Output
 {
 public:
-    explicit FileOutput(const std::string& prefix);
+    explicit FileOutput(std::string prefix);
 
     std::string getName(OUTPUT_TYPE outputType) const;
 
