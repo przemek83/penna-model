@@ -22,7 +22,10 @@ TEST_CASE("Individual", "[penna]")
         MockedGenerator generator(bits);
         Individual individual(0);
         individual.assignRandomBits(generator, 4);
-        individual.asBitString(), Catch::Matchers::Equals(genomeString);
+        REQUIRE_THAT(
+            individual.asBitString(),
+            Catch::Matchers::Equals("000000000000000001000000000000000000000010"
+                                    "0000000000001000001000"));
     }
 
     Individual individual(0);
