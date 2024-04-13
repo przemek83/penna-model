@@ -6,7 +6,7 @@
 class ResultsData
 {
 public:
-    explicit ResultsData(std::size_t years);
+    ResultsData(std::size_t years, int bits);
     virtual ~ResultsData() = default;
 
     ResultsData(const ResultsData&) = default;
@@ -63,7 +63,9 @@ protected:
     void setDeathsDistributionValue(std::size_t index, float value);
     void setBitsDistributionValue(std::size_t index, float value);
 
-    std::size_t getYears() const { return years_; }
+    std::size_t getYears() const;
+
+    int getBits() const;
 
     virtual bool isSingleFamily(std::size_t year) const = 0;
 
@@ -72,4 +74,5 @@ private:
     std::vector<float> bitsDistribution_;
 
     std::size_t years_;
+    int bits_;
 };

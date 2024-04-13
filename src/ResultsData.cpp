@@ -1,18 +1,17 @@
 #include "ResultsData.h"
 
-#include "Config.h"
-
-ResultsData::ResultsData(std::size_t years) : years_(years)
+ResultsData::ResultsData(std::size_t years, int bits)
+    : years_(years), bits_(bits)
 {
-    deathsDistribution_.resize(Config::Params::bits_, 0);
-    bitsDistribution_.resize(Config::Params::bits_, 0);
+    deathsDistribution_.resize(bits_, 0);
+    bitsDistribution_.resize(bits_, 0);
 }
 
 void ResultsData::saveBitsDistibution(std::ostream& stream,
                                       char separator) const
 {
     stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; bit++)
         stream << bit << separator << getBitsDistributionValue(bit)
                << std::endl;
 }
@@ -21,7 +20,7 @@ void ResultsData::saveDeathsDistibution(std::ostream& stream,
                                         char separator) const
 {
     stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; bit++)
         stream << bit << separator << getDeathsDistributionValue(bit)
                << std::endl;
 }
@@ -54,7 +53,7 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
     stream << "Bit" << separator << "Count" << std::endl;
-    for (std::size_t bit{0}; bit < Config::Params::bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; bit++)
     {
         stream << bit << separator;
         writeBitDistributionData(stream, bit);
@@ -81,3 +80,7 @@ void ResultsData::setBitsDistributionValue(std::size_t index, float value)
 {
     bitsDistribution_[index] = value;
 }
+
+std::size_t ResultsData::getYears() const { return years_; }
+
+int ResultsData::getBits() const { return bits_; }

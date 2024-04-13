@@ -85,7 +85,8 @@ TEST_CASE("Output averages", "[penna]")
         std::cout << std::endl;
 
         const AverageData averageData{{data1, data2},
-                                      static_cast<std::size_t>(params.years_)};
+                                      static_cast<std::size_t>(params.years_),
+                                      params.bits_};
 
         output.reset();
         output.saveAverages(averageData);

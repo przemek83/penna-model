@@ -3,10 +3,10 @@
 #include "Config.h"
 
 AverageData::AverageData(const std::vector<SimulationData>& simulationsData,
-                         std::size_t years)
-    : ResultsData(years)
+                         std::size_t years, int bits)
+    : ResultsData(years, bits)
 {
-    ageDistribution_.resize(Config::Params::bits_, 0);
+    ageDistribution_.resize(getBits(), 0);
     basicMetrics_.resize(getYears());
 
     for (const auto& data : simulationsData)
@@ -70,7 +70,7 @@ void AverageData::integrateDistributions(const SimulationData& data)
 {
     const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
-    for (std::size_t i{0}; i < Config::Params::bits_; i++)
+    for (std::size_t i{0}; i < getBits(); i++)
     {
         const float newBitsValue{getBitsDistributionValue(i) +
                                  data.getBitsDistributionValue(i)};
@@ -101,7 +101,7 @@ void AverageData::finalizeBasicMetrics()
 void AverageData::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
-    for (std::size_t i{0}; i < Config::Params::bits_; i++)
+    for (std::size_t i{0}; i < getBits(); i++)
     {
         const float newDeathsValue{getDeathsDistributionValue(i) /
                                    simulationsAsFloat};

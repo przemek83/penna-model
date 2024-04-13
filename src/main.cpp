@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
 
     const std::vector<SimulationData> simulationsData{runner.runParallel()};
 
-    const AverageData averages{simulationsData,
-                               static_cast<std::size_t>(params.years_)};
+    const AverageData averages{
+        simulationsData, static_cast<std::size_t>(params.years_), params.bits_};
 
     FileOutput output("averages");
     output.saveAverages(averages);

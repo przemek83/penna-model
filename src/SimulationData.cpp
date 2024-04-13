@@ -1,10 +1,9 @@
 #include "SimulationData.h"
 
-#include "Config.h"
-
-SimulationData::SimulationData(std::size_t years) : ResultsData(years)
+SimulationData::SimulationData(std::size_t years, int bits)
+    : ResultsData(years, bits)
 {
-    ageDistribution_.resize(Config::Params::bits_, 0);
+    ageDistribution_.resize(static_cast<std::size_t>(getBits()), 0);
     basicMetrics_.resize(getYears());
 }
 
@@ -27,14 +26,14 @@ const std::vector<int>& SimulationData::getAgeDistribution() const
 
 void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
 {
-    for (std::size_t i{0}; i < ageDistribution.size(); i++)
+    for (std::size_t i{0}; i < getBits(); i++)
         ageDistribution_[i] = ageDistribution[i];
 }
 
 void SimulationData::setBitDistribution(
     const std::vector<int>& bitsDistribution, int populationCount)
 {
-    for (std::size_t i{0}; i < bitsDistribution.size(); i++)
+    for (std::size_t i{0}; i < getBits(); i++)
     {
         const float value{static_cast<float>(bitsDistribution[i]) /
                           static_cast<float>(populationCount)};
@@ -46,7 +45,7 @@ void SimulationData::setDeathDistribution(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution)
 {
-    for (std::size_t i{0}; i < gompertzAgeDistribution.size(); i++)
+    for (std::size_t i{0}; i < getBits(); i++)
     {
         float value{1};
         if (gompertzAgeDistribution[i] > 0)

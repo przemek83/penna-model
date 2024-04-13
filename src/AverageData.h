@@ -10,7 +10,7 @@ class AverageData : public ResultsData
 {
 public:
     AverageData(const std::vector<SimulationData>& simulationsData,
-                std::size_t years);
+                std::size_t years, int bits);
 
 protected:
     void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,

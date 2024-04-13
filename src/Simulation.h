@@ -32,11 +32,11 @@ private:
     using BasicMetrics = SimulationData::BasicMetrics<int>;
     BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
-    static std::vector<int> getAgeDistribution(
-        const std::list<Individual>& individuals);
+    std::vector<int> getAgeDistribution(
+        const std::list<Individual>& individuals) const;
 
-    static std::vector<int> getBitsDistribution(
-        const std::list<Individual>& individuals);
+    std::vector<int> getBitsDistribution(
+        const std::list<Individual>& individuals) const;
 
     int getCurrentDeathChanceInPercent(int populationCount) const;
 
