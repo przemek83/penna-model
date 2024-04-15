@@ -1,5 +1,4 @@
 # Table of content
-- [Table of content](#table-of-content)
 - [About project](#about-project)
 - [Building](#building)
    * [Used tools and libs for C++ part](#used-tools-and-libs-for-c-part)
