@@ -104,10 +104,10 @@ TODO
 # Licensing
 Software is licenced under MIT licence.
 
-The project uses the following software and licenses:    
-* yaml-cpp TODO,    
-* Catch2 TODO,
-* Argparse TODO.
+The project uses the following open-source software:    
+* Yaml-cpp is a YAML parser library for C++ with a MIT license (more info: https://github.com/jbeder/yaml-cpp),    
+* Catch2 is a testing framework for C++ with a BSL-1.0 license (more info: https://github.com/catchorg/Catch2).
+* Argparse is an argument parser for C++ with a MIT license (more info: https://github.com/p-ranav/argparse).
 
 # Testing
 TODO
