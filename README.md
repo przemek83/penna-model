@@ -21,7 +21,7 @@ Clone and use CMake directly or via any CMake supporting IDE. CMake **should**:
 
 As a result of compilation binary for simulations and binary for testing should be created.
 
-## Used tools and libs
+## Used tools and libs for C++ part
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
 | OS version | 10 22H2 | 22.04 |
@@ -30,10 +30,28 @@ As a result of compilation binary for simulations and binary for testing should 
 | Git | 2.38.1 | 2.34.1 |
 | Qt Creator | 10.0.2 | 10.0.2 |
 
+## Used tools and libs for Python part
+TODO
+
 # Usage
 TODO
 
-## Licensing
+## Parameters
+TODO
+
+## Sequential run
+TODO
+
+## Parallel run
+TODO
+
+## Progress indicators
+TODO
+
+# Plots
+TODO
+
+# Licensing
 Software is licenced under MIT licence.
 
 The project uses the following software and licenses:    
@@ -41,10 +59,10 @@ The project uses the following software and licenses:
 * Catch2 TODO,
 * Argparse TODO.
 
-## Testing
+# Testing
 TODO
 
-## Potential further improvements
+# Potential further improvements
 * Upgrade code to use C++20/23.
 * Measure and increase test coverage.
 * Setup static analysis (CppCheck, Clang Tidy, Clazy).
