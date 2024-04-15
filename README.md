@@ -63,25 +63,25 @@ To show help, use the common option `-h` or the more verbose version `--help`. T
 
 ## Parameters
  Example `config.yaml` configuration file:
-
-    population:
-      initial: 3000
-      max: 50000
-    years: 5000
-    mutations:
-      added: 1
-      lethal: 4
-      initial: 4
-    reproductionAge: 10
-    offspring:
-      chance: 100
-      count: 3
-    simulations: 2
-    catching:
-      percent: 0
-      fromYear: 1000
-      fromAge: 4
-
+```yaml
+population:
+  initial: 3000
+  max: 50000
+years: 5000
+mutations:
+  added: 1
+  lethal: 4
+  initial: 4
+reproductionAge: 10
+offspring:
+  chance: 100
+  count: 3
+simulations: 2
+catching:
+  percent: 0
+  fromYear: 1000
+  fromAge: 4
+```
 The following parameters are supported via the configuration file:
 | Parameter | Sub-parameter | Default value | Description |
 | --- | --- | --- | --- |
