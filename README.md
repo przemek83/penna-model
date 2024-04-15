@@ -1,11 +1,19 @@
-## Table of content
+# Table of content
+- [Table of content](#table-of-content)
 - [About project](#about-project)
 - [Building](#building)
+   * [Used tools and libs for C++ part](#used-tools-and-libs-for-c-part)
+   * [Used tools and libs for Python part](#used-tools-and-libs-for-python-part)
 - [Usage](#usage)
+   * [Parameters](#parameters)
+   * [Sequential run](#sequential-run)
+   * [Parallel run](#parallel-run)
+   * [Progress indicators](#progress-indicators)
+   * [Genome length](#genome-length)
+- [Plots](#plots)
 - [Licensing](#licensing)
 - [Testing](#testing)
 - [Potential further improvements](#potential-further-improvements)
-
 
 # About project
 [WIP] - Work In Progress
