@@ -104,7 +104,15 @@ The following parameters are supported via the configuration file:
 | | fromAge | 4 | Age from which individuals are taken into consideration when catching is applied. |
 
 ## Sequential run
-TODO
+To run simulation after simulation instead all at once (in sequence) use `Runner::runSequential` method in `main` function replacing line
+```cpp
+const std::vector<SimulationData> simulationsData{runner.runParallel()};
+```
+with
+```cpp
+const std::vector<SimulationData> simulationsData{runner.runSequential()}; 
+```
+Computation will be executed using one thread only.
 
 ## Parallel run
 TODO
