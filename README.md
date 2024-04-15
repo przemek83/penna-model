@@ -41,7 +41,25 @@ As a result of compilation binary for simulations and binary for testing should 
 TODO
 
 # Usage
-TODO
+Call `penna-model` binary passing appropriate configuration file as parameter:
+
+    penna-model config.yaml
+
+Omitting the configuration parameter will result in default behavior, and the application will try to load the configuration file `config.yaml` from the local directory. 
+
+To show help, use the common option `-h` or the more verbose version `--help`. The application should display the following information:
+
+    Usage: penna-model [--help] config
+    
+    Implementation of Penna model of population aging.
+    
+    Positional arguments:
+      config      name of config file to use [nargs=0..1] [default: "config.yaml"]
+    
+    Optional arguments:
+      -h, --help  shows help message and exits
+    
+    After simulation, one can use a script for graph generation using result files.
 
 ## Parameters
  Example `config.yaml` configuration file:
