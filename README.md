@@ -37,7 +37,35 @@ TODO
 TODO
 
 ## Parameters
-TODO
+ Example `config.yaml` configuration file:
+
+    population:
+      initial: 3000
+      max: 50000
+    years: 5000
+    mutations:
+      added: 1
+      lethal: 4
+      initial: 4
+    reproductionAge: 10
+    offspring:
+      chance: 100
+      count: 3
+    simulations: 2
+    catching:
+      percent: 0
+      fromYear: 1000
+      fromAge: 4
+
+Following parameters are supported via configuration file:
+| Parameter | sub-parameter |  Default value | Description |
+| --- | --- | --- | --- |
+| population | | | |
+| | initial | 3000 | Size of population ans simulation start. |
+| | max | 50000 | |
+| years | | 5000 | Length of simulation in years. |
+| mutations | | |
+| | added | 1 | |
 
 ## Sequential run
 TODO
