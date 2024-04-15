@@ -212,7 +212,7 @@ void fillParser(argparse::ArgumentParser& parser)
 {
     parser.add_argument("config")
         .default_value(std::string("config.yaml"))
-        .help("name of config file to use.");
+        .help("name of config file to use");
     parser.add_description(
         "Implementation of Penna model of population aging.");
     parser.add_epilog(
