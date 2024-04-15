@@ -57,26 +57,26 @@ TODO
       fromYear: 1000
       fromAge: 4
 
-Following parameters are supported via configuration file:
-| Parameter | sub-parameter |  Default value | Description |
+The following parameters are supported via the configuration file:
+| Parameter | Sub-parameter | Default value | Description |
 | --- | --- | --- | --- |
 | population | | |
-| | initial | 3000 | Size of population ans simulation start. |
-| | max | 50000 | Maximal allowed population. Used in Verhulst factor calculations. |
+| | initial | 3000 | Size of population on simulation start. |
+| | max | 50000 | Maximal allowed population. Value used in Verhulst factor calculations. |
 | years | | 5000 | Length of simulation in years. |
 | mutations | | |
-| | added | 1 | Mutations applied on offspring. |
+| | added | 1 | Mutations applied to offspring. |
 | | lethal | 4 | Number of mutations becoming lethal when accumulated. |
-| | initial | 4 | Number of mutations in genome of population on start. |
-| reproductionAge | | 10 | Age in which individual stars to have offspring. |
+| | initial | 4 | Number of mutations in genome for eacvh individual on simulation start. |
+| reproductionAge | | 10 | Age in which individual stars have offspring. |
 | offspring | | |
-| | chance | 100 | TODO |
-| | count | 3 | TODO |
-| simulations | | 2 | TODO |
+| | chance | 100 | Chance for having offspring each year. |
+| | count | 3 | Number of new individuals born. |
+| simulations | | 2 | Number of simulations to run. Results are created using averages values. |
 | catching | | |
-| | percent | 0 | TODO |
-| | fromYear | 1000 | TODO |
-| | fromAge | 4 | TODO |
+| | percent | 0 | Percent of individuals caught each year. Zero means no catching. |
+| | fromYear | 1000 | Year when catching starts. |
+| | fromAge | 4 | Age from which individuals are taken into consideration when catching is applied. |
 
 ## Sequential run
 TODO
