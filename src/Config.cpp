@@ -216,7 +216,7 @@ void fillParser(argparse::ArgumentParser& parser)
     parser.add_description(
         "Implementation of Penna model of population aging.");
     parser.add_epilog(
-        "After simulation one can use script for graph generation using "
+        "After simulation, one can use a script for plots generation based on "
         "result files.");
 }
 
@@ -291,7 +291,7 @@ bool isValid(const Params& params)
 
 std::string getConfigFileName(int argc, char* argv[])
 {
-    argparse::ArgumentParser parser("penna", "1.0",
+    argparse::ArgumentParser parser("penna-model", "1.0",
                                     argparse::default_arguments::help);
     fillParser(parser);
 
