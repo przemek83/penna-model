@@ -60,12 +60,23 @@ TODO
 Following parameters are supported via configuration file:
 | Parameter | sub-parameter |  Default value | Description |
 | --- | --- | --- | --- |
-| population | | | |
+| population | | |
 | | initial | 3000 | Size of population ans simulation start. |
-| | max | 50000 | |
+| | max | 50000 | Maximal allowed population. Used in Verhulst factor calculations. |
 | years | | 5000 | Length of simulation in years. |
 | mutations | | |
-| | added | 1 | |
+| | added | 1 | Mutations applied on offspring. |
+| | lethal | 4 | Number of mutations becoming lethal when accumulated. |
+| | initial | 4 | Number of mutations in genome of population on start. |
+| reproductionAge | | 10 | Age in which individual stars to have offspring. |
+| offspring | | |
+| | chance | 100 | TODO |
+| | count | 3 | TODO |
+| simulations | | 2 | TODO |
+| catching | | |
+| | percent | 0 | TODO |
+| | fromYear | 1000 | TODO |
+| | fromAge | 4 | TODO |
 
 ## Sequential run
 TODO
