@@ -87,6 +87,9 @@ TODO
 ## Progress indicators
 TODO
 
+## Genome length
+Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, change the value of `bits_` to a different one and rebuild the binary. As of April 2024, there is no plan to make it configurable in yaml, as resigning from `std::bitset` and introducing something more flexible like `std::vector<bool>` impacts greatly performance.
+
 # Plots
 TODO
 
