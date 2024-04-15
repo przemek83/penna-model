@@ -35,7 +35,6 @@ As a result of compilation binary for simulations and binary for testing should 
 | GCC | 11.2.0 | 11.3.0 |
 | CMake | 3.25.0 | 3.25.0 |
 | Git | 2.38.1 | 2.34.1 |
-| Qt Creator | 10.0.2 | 10.0.2 |
 
 ## Used tools and libs for Python part
 TODO
