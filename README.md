@@ -127,7 +127,7 @@ Genome length is hard-coded in the `Config::Params` structure at field `bits_`. 
 TODO
 
 # Licensing
-Software is licenced under MIT licence.
+Software is released under the MIT license.
 
 The project uses the following open-source software:    
 * Yaml-cpp is a YAML parser library for C++ with a MIT license (more info: https://github.com/jbeder/yaml-cpp),    
