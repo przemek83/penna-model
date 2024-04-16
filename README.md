@@ -117,7 +117,7 @@ const std::vector<SimulationData> simulationsData{runner.runSequential()};
 Computation will be executed using one thread only.
 
 ## Parallel run
-TODO
+By default, simulations are run in parallel using method `Runner::runParallel`. For those purposes, the functionality of `std::future` combined with `std::async` is used. Launching all simulations at once might take additional workload when there are more simulations than threads on a machine. This behavior might be improved by modifying the mentioned `Runner::runParallel` and allowing it to run a limited number of simulations in parallel at once.
 
 ## Progress indicators
 TODO
