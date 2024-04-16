@@ -175,10 +175,10 @@ For testing of code logic, there is a responsible `Catch2` framework. As it is w
     -------------------------------------------------------------------------------
     Benchmark
     -------------------------------------------------------------------------------
-    C:\Code\github\penna-model\test\SimulationTest.cpp:53
+    <build path>\test\SimulationTest.cpp:53
     ...............................................................................
     
-    C:\Code\github\penna-model\test\SimulationTest.cpp:55: SKIPPED:
+    <build path>\test\SimulationTest.cpp:55: SKIPPED:
     
     ===============================================================================
     test cases:   7 |   6 passed | 1 skipped
@@ -189,7 +189,7 @@ For testing of code logic, there is a responsible `Catch2` framework. As it is w
 As an alternative, CTest can be used to run tests (performance tests switched on):
 
     $ CTest
-    Test project <build path>/test
+    Test project <build path>\test
         Start 1: Catching
     1/7 Test #1: Catching .........................   Passed    0.03 sec
         Start 2: Config
