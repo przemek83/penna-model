@@ -43,7 +43,7 @@ As a result of compilation binary for simulations and binary for testing should 
 TODO
 
 # Usage
-Call `penna-model` binary passing appropriate configuration file as parameter:
+Call `penna-model` binary and pass appropriate configuration file as parameter:
 
     penna-model config.yaml
 
@@ -144,6 +144,3 @@ TODO
 * Measure and increase test coverage.
 * Setup static analysis (CppCheck, Clang Tidy, Clazy).
 * Make size of genome configurable (use something different than std::bitset).
-
-
-TODO
