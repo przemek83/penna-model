@@ -120,7 +120,30 @@ Computation will be executed using one thread only.
 By default, simulations are run in parallel using method `Runner::runParallel`. For those purposes, the functionality of `std::future` combined with `std::async` is used. Launching all simulations at once might take additional workload when there are more simulations than threads on a machine. This behavior might be improved by modifying the mentioned `Runner::runParallel` and allowing it to run a limited number of simulations in parallel at once.
 
 ## Progress indicators
-TODO
+The implementation contains 2 optional progress callbacks available to use to visualize the current status of the run. Both are located in namespace `ProgressCallback`. 
+
+> **_NOTE:_**  Progress callback are optional and application can run without it. Remove call of `Simulation::setProgressCallback` to not use it.
+
+### Overall progress
+The first progress callback shows overall information. The output is as follows:
+
+    [**************************************************]
+    Execution time: 10s.
+
+The overall progress callback can be combined with both ways of execution: parallel and sequential.
+
+### Sequential progress
+The second type of progress callback is a sequential one. Example execution output is as follows:
+
+    1/6 [**************************************************]
+    2/6 [**************************************************]
+    3/6 [**************************************************]
+    4/6 [**************************************************]
+    5/6 [**************************************************]
+    6/6 [**************************************************]
+    Execution time: 7s.
+
+The sequential progress callback should be combined with sequential execution.
 
 ## Genome length
 Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, change the value of `bits_` to a different one and rebuild the binary. As of April 2024, there is no plan to make it configurable in yaml, as resigning from `std::bitset` and introducing something more flexible like `std::vector<bool>` impacts greatly performance.
