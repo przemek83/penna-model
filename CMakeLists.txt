@@ -14,6 +14,7 @@ include(CMakeLists.txt.yaml-cpp)
 include(CMakeLists.txt.argparse)
 
 file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY plots DESTINATION ${CMAKE_BINARY_DIR})
 
 set(${PROJECT_NAME}_SOURCES
     src/Output.h
