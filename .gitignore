@@ -35,3 +35,7 @@
 # Other
 /.vscode
 /build
+
+# Plots
+/plots/**/*.png
+/plots/**/*.txt
