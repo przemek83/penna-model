@@ -1,9 +1,10 @@
 set terminal push
 set terminal png
-set output "osobniki.png"
-set xlabel "rok"
-set ylabel "ilosc"
-plot "output_averages_statistics.txt" using (column("Year")) : (column("Living_start")) title "na poczatku roku" with lines,"output_averages_statistics.txt" using (column("Year")) : (column("Living_start") - column("Deaths")) with lines title "na koniec roku"
+set output "population.png"
+set xlabel "year"
+set ylabel "individuals"
+plot "output_averages_statistics.txt" using (column("Year")) : (column("Living_start")) title "living on year start" with lines, \
+     "output_averages_statistics.txt" using (column("Year")) : (column("Living_start") - column("Deaths")) with lines title "survived on year end"
 set terminal pop
 set output
 replot
