@@ -1,4 +1,4 @@
-# load "init.plt"
+load "init.plt"
 set output "population.png"
 set xlabel "year"
 set ylabel "individuals"
