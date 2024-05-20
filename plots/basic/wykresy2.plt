@@ -1,7 +1,7 @@
-set output "zycia.png"
+load "init.plt"
+set output "births_and_deaths.png"
 set xlabel "rok" 
 set ylabel "ilosc"
-plot "proces0_symulacja0_1.txt" using 1:3 title "przyrost" with lines smooth bezier,"proces0_symulacja0_1.txt" using 1:5 with lines title "zgony" smooth bezier
-set terminal png
-replot
-pause -1
+plot "output_averages_statistics.txt" using (column("Year")) : (column("Births")) title "births" smooth csplines with lines, \
+     "output_averages_statistics.txt" using (column("Year")) : (column("Deaths")) title "deaths" smooth csplines with lines
+load "finalize.plt"
