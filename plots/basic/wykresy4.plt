@@ -1,7 +1,6 @@
-set output "rozk_wieku.png"
-set xlabel "rok" 
-set ylabel "ilosc"
-plot "proces0_symulacja0_3.txt" title "rozklad wieku" with boxes
-set terminal png
-replot
-pause -1
+load "init.plt"
+set output "age_distribution.png"
+set xlabel "year" 
+set ylabel "count"
+plot "output_averages_age_distribution.txt" using (column("Bit")) : (column("Count")) title "age distribution" with boxes
+load "finalize.plt"
