@@ -1,7 +1,6 @@
-set output "rodziny.png"
-set xlabel "rok" 
-set ylabel "ilosc"
-plot "proces0_symulacja0_6.txt" title "rodziny" with lines
-set terminal png
-replot
-pause -1
+load "init.plt"
+set output "families.png"
+set xlabel "year" 
+set ylabel "count"
+plot "output_averages_families.txt" using (column("Year")) : (column("Families")) title "families" with lines
+load "finalize.plt"
