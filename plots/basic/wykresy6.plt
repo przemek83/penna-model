@@ -1,7 +1,7 @@
-set output "gompertz.png"
-set xlabel "rok" 
-set ylabel "ilosc"
-plot "proces0_symulacja0_5.txt" title "gompertz" with boxes
-set terminal png
-replot
-pause -1
+load "init.plt"
+set output "deaths_distribution.png"
+set xlabel "year" 
+set ylabel "risk of death"
+set yrange [0:1.1]
+plot "output_averages_deaths_distribution.txt" using (column("Bit")) : (column("Percent")) title "mortality" with lines
+load "finalize.plt"
