@@ -1,8 +1,7 @@
-set output "rozk_bitow.png"
-set xlabel "rok" 
-set ylabel "ilosc"
+load "init.plt"
+set output "bits_distribution.png"
+set xlabel "bit" 
+set ylabel "percent of 1s"
 set yrange [0:1.1]
-plot "proces0_symulacja0_4.txt" title "rozklad bitow" with boxes
-set terminal png
-replot
-pause -1
+plot "output_averages_bits_distribution.txt" using (column("Bit")) : (column("Percent")) title "bits distribution" with boxes
+load "finalize.plt"
