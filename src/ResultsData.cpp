@@ -52,7 +52,7 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 
 void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
-    stream << "Bit" << separator << "Count" << std::endl;
+    stream << "Age" << separator << "Count" << std::endl;
     for (std::size_t bit{0}; bit < bits_; bit++)
     {
         stream << bit << separator;
