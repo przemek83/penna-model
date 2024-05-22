@@ -2,9 +2,14 @@ import subprocess
 import os
 import sys
 
-print(os.getcwd())
+
 os.chdir("basic")
-print(os.getcwd())
+result = subprocess.run("../../penna-model ../../config.yaml", shell=True)
+try:
+    result.check_returncode()
+except subprocess.CalledProcessError:
+    print("Problem when calling 'penna-model' command. Binary not available?")
+    sys.exit(1)
 
 result = subprocess.run("gnuplot -V", shell=True)
 try:
