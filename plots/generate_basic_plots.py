@@ -4,7 +4,7 @@ import sys
 
 
 os.chdir("basic")
-result = subprocess.run("../../penna-model ../../config.yaml", shell=True)
+result = subprocess.run("../../penna-model config.yaml", shell=True)
 try:
     result.check_returncode()
 except subprocess.CalledProcessError:
