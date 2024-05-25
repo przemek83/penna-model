@@ -7,7 +7,6 @@ FileOutput::FileOutput(std::string prefix) : prefix_(std::move(prefix)) {}
 std::string FileOutput::getName(OUTPUT_TYPE outputType) const
 {
     std::string fileName;
-    fileName.append("output_");
     fileName.append(prefix_);
     fileName.append("_");
     fileName.append(fileNames_[outputType]);
