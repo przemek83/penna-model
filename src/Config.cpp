@@ -213,6 +213,9 @@ void fillParser(argparse::ArgumentParser& parser)
     parser.add_argument("config")
         .default_value(std::string("config.yaml"))
         .help("name of config file to use");
+    parser.add_argument("-p", "--prefix")
+        .default_value(std::string("averages"))
+        .help("prefix used for output file names");
     parser.add_description(
         "Implementation of Penna model of population aging.");
     parser.add_epilog(
@@ -289,24 +292,26 @@ bool isValid(const Params& params)
     return false;
 }
 
-std::string getConfigFileName(int argc, char* argv[])
+std::pair<std::string, std::string> getAppArguments(int argc, char* argv[])
 {
     argparse::ArgumentParser parser("penna-model", "1.0",
                                     argparse::default_arguments::help);
     fillParser(parser);
 
     std::string configFileName;
+    std::string prefix;
     try
     {
         parser.parse_args(argc, argv);
         configFileName = parser.get<std::string>("config");
+        prefix = parser.get<std::string>("prefix");
     }
     catch (const std::exception& e)
     {
         exitWithMsg(e, parser);
     }
 
-    return configFileName;
+    return {configFileName, prefix};
 }
 
 Config::Params getParams(const std::string& configFileName)

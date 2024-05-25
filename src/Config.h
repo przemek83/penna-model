@@ -48,7 +48,7 @@ Config::Params loadConfig(std::istream& stream);
 
 bool isValid(const Params& params);
 
-std::string getConfigFileName(int argc, char* argv[]);
+std::pair<std::string, std::string> getAppArguments(int argc, char* argv[]);
 
 Config::Params getParams(const std::string& configFileName);
 

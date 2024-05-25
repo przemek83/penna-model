@@ -27,7 +27,7 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
 
 int main(int argc, char* argv[])
 {
-    const std::string configFileName{Config::getConfigFileName(argc, argv)};
+    const auto [configFileName, prefix]{Config::getAppArguments(argc, argv)};
     const Config::Params params{Config::getParams(configFileName)};
 
     Runner runner;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     const AverageData averages{
         simulationsData, static_cast<std::size_t>(params.years_), params.bits_};
 
-    FileOutput output("averages");
+    FileOutput output(prefix);
     output.saveAverages(averages);
 
     return EXIT_SUCCESS;
