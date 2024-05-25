@@ -53,6 +53,8 @@ namespace ProgressCallback
 
         if (isEnding(year + 1, maxYears))
             std::cout << progressLineSuffix << std::endl;
+
+        std::cout.flush();
     };
 }
 
@@ -82,6 +84,8 @@ namespace ProgressCallback
             std::cout << progressLineMarker;
         if (isEnding(currentSum, totalSum))
             std::cout << progressLineSuffix << std::endl;
+
+        std::cout.flush();
     };
 }
 }  // namespace ProgressCallback
