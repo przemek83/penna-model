@@ -10,7 +10,7 @@ reproductionAge: 10
 offspring:
   chance: 100
   count: 3
-simulations: 2
+simulations: 12
 catching:
   percent: 0
   fromYear: 1000
