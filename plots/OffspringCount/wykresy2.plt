@@ -1,12 +1,11 @@
 load "../init.plt"
-set output "1_2_zycia.png"
-set xlabel "rok" 
-set ylabel "ilosc"
-plot [0:150000] \
-"1/proces0_symulacja0_1.txt" using 1:3 title "przyrost: N_0 = 30000, b = 4" with lines,\
-"1/proces0_symulacja0_1.txt" using 1:5 with lines title "zgony: N_0 = 30000, b = 4", \
-"4/proces0_symulacja0_1.txt" using 1:3 title "przyrost: N_0 = 30000, b = 2" with lines,\
-"4/proces0_symulacja0_1.txt" using 1:5 with lines title "zgony: N_0 = 30000, b = 2", \
-"7/proces0_symulacja0_1.txt" using 1:3 title "przyrost: N_0 = 300000, b = 3" with lines,\
-"7/proces0_symulacja0_1.txt" using 1:5 with lines title "zgony: N_0 = 300000, b = 3"
+set output "births_and_deaths.png"
+set xlabel "year" 
+set ylabel "count"
+plot "count_2_statistics.txt" using (column("Year")) : (column("Births")) title "births - 2 x offspring" smooth csplines with lines, \
+     "count_2_statistics.txt" using (column("Year")) : (column("Deaths")) title "deaths - 2 x offspring" smooth csplines with lines, \
+     "count_3_statistics.txt" using (column("Year")) : (column("Births")) title "births - 3 x offspring" smooth csplines with lines, \
+     "count_3_statistics.txt" using (column("Year")) : (column("Deaths")) title "deaths - 3 x offspring" smooth csplines with lines, \
+     "count_4_statistics.txt" using (column("Year")) : (column("Births")) title "births - 4 x offspring" smooth csplines with lines, \
+     "count_4_statistics.txt" using (column("Year")) : (column("Deaths")) title "deaths - 4 x offspring" smooth csplines with lines
 load "../finalize.plt"
