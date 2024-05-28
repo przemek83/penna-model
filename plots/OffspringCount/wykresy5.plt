@@ -1,11 +1,9 @@
 load "../init.plt"
-set output "1_5_rozk_bitow.png"
-set xlabel "wiek" 
-set ylabel "prawdopodobienstwo"
+set output "bits_distribution.png"
+set xlabel "bit" 
+set ylabel "percent of 1s"
 set yrange [0:1.2]
-#set style fill solid border -1
-plot [0:20] \
-"1/proces0_symulacja0_4.txt" title "rozklad bitow: N_0 = 30000, b = 4" with  boxes, \
-"4/proces0_symulacja0_4.txt" title "rozklad bitow: N_0 = 30000, b = 2" with  boxes,\
-"7/proces0_symulacja0_4.txt" title "rozklad bitow: N_0 = 300000, b = 3" with  boxes
+plot "count_2_bits_distribution.txt" using (column("Bit")) : (column("Percent")) title "bits distribution - 2 x offspring" with boxes, \
+     "count_3_bits_distribution.txt" using (column("Bit")) : (column("Percent")) title "bits distribution - 3 x offspring" with boxes, \
+     "count_4_bits_distribution.txt" using (column("Bit")) : (column("Percent")) title "bits distribution - 4 x offspring" with boxes
 load "../finalize.plt"
