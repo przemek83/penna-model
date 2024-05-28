@@ -1,11 +1,9 @@
 load "../init.plt"
-set output "1_6_gompertz.png"
-set xlabel "wiek" 
-set ylabel "prawdopodobienstwo"
+set output "deaths_distribution.png"
+set xlabel "age" 
+set ylabel "risk of death"
 set yrange [0:1.2]
-set style fill solid border -1
-plot [0:20] \
-"1/proces0_symulacja0_5.txt" title "rozklad bitow: N_0 = 30000, b = 4" with  boxes, \
-"7/proces0_symulacja0_5.txt" title "rozklad bitow: N_0 = 300000, b = 3" with  boxes,\
-"4/proces0_symulacja0_5.txt" title "rozklad bitow: N_0 = 30000, b = 2" with  boxes	
+plot "count_4_deaths_distribution.txt" using (column("Bit")) : (column("Percent")) title "mortality - 2 x offspring" with lines, \
+     "count_3_deaths_distribution.txt" using (column("Bit")) : (column("Percent")) title "mortality - 3 x offspring" with lines, \
+     "count_2_deaths_distribution.txt" using (column("Bit")) : (column("Percent")) title "mortality - 4 x offspring" with lines
 load "../finalize.plt"
