@@ -1,11 +1,10 @@
 load "../init.plt"
-set output "1_4_1_rozk_wieku.png"
-set xlabel "wiek" 
-set ylabel "ilosc"
-set logscale y 
-#set style fill solid border -1
-plot [0:20] \
-"1/proces0_symulacja0_3.txt" title "rozklad wieku: N_0 = 30000, b = 4" with  lp, \
-"4/proces0_symulacja0_3.txt" title "rozklad wieku: N_0 = 30000, b = 2" with  lp,\
-"7/proces0_symulacja0_3.txt" title "rozklad wieku: N_0 = 300000, b = 3" with  lp
+
+set output "age_distribution.png"
+set xlabel "age" 
+set ylabel "count"
+set logscale y
+plot "count_2_age_distribution.txt" using (column("Age")) : (column("Count")) title "age distribution - 2 x offspring" with lp, \
+     "count_3_age_distribution.txt" using (column("Age")) : (column("Count")) title "age distribution - 3 x offspring" with lp, \
+     "count_4_age_distribution.txt" using (column("Age")) : (column("Count")) title "age distribution - 4 x offspring" with lp
 load "../finalize.plt"
