@@ -3,6 +3,7 @@ import os
 import sys
 import common
 
+common.check_gnuplot_availability()
 
 os.chdir("OffspringCount")
 
@@ -15,5 +16,4 @@ for prefix in ("count_2", "count_3", "count_4"):
         print("Problem when calling 'penna-model' command. Binary not available?")
         sys.exit(1)
 
-common.check_gnuplot_availability()
 common.generate_plots()

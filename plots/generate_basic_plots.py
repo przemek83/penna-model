@@ -4,6 +4,8 @@ import sys
 import common
 
 
+common.check_gnuplot_availability()
+
 os.chdir("basic")
 
 result = subprocess.run("../../penna-model config.yaml", shell=True)
@@ -13,5 +15,4 @@ except subprocess.CalledProcessError:
     print("Problem when calling 'penna-model' command. Binary not available?")
     sys.exit(1)
 
-common.check_gnuplot_availability()
 common.generate_plots()
