@@ -13,4 +13,5 @@ except subprocess.CalledProcessError:
     print("Problem when calling 'penna-model' command. Binary not available?")
     sys.exit(1)
 
+common.check_gnuplot_availability()
 common.generate_plots()

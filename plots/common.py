@@ -11,8 +11,6 @@ def check_gnuplot_availability():
         sys.exit(1)
 
 def generate_plots():
-    check_gnuplot_availability()
-
     for path in os.listdir("."):
         if path.endswith(".plt"):
             gnuplot_cmd = 'gnuplot -c ' + path
