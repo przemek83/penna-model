@@ -3,13 +3,16 @@ import os
 import sys
 import common
 
+
 common.check_gnuplot_availability()
 
 os.chdir("OffspringCount")
 
 for prefix in ("count_2", "count_3", "count_4"):
     config_name = prefix + "_config.yaml"
-    result = subprocess.run("../../penna-model -p " + prefix + " " + config_name, shell=True)
+    result = subprocess.run("../../penna-model -p " + prefix + " " + config_name,
+                            shell=True,
+                            check=False)
     try:
         result.check_returncode()
     except subprocess.CalledProcessError:

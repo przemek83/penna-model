@@ -8,7 +8,9 @@ common.check_gnuplot_availability()
 
 os.chdir("basic")
 
-result = subprocess.run("../../penna-model config.yaml", shell=True)
+result = subprocess.run("../../penna-model config.yaml",
+                        shell=True,
+                        check=False)
 try:
     result.check_returncode()
 except subprocess.CalledProcessError:
