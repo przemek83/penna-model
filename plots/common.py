@@ -11,6 +11,7 @@ def check_gnuplot_availability():
         print("Problem when calling 'gnuplot' command. Gnuplot not available?")
         sys.exit(1)
 
+
 def generate_plots():
     for path in os.listdir("."):
         if path.endswith(".plt"):
@@ -27,5 +28,6 @@ def run_simulation(prefix: str):
     try:
         result.check_returncode()
     except subprocess.CalledProcessError:
-        print("Problem when calling 'penna-model' command. Binary not available?")
+        print("Problem when calling 'penna-model' command. "
+              "Binary not available?")
         sys.exit(1)
