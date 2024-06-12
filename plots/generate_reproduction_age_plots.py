@@ -9,4 +9,4 @@ os.chdir("ReproductionAge")
 for prefix in ("age_8", "age_10", "age_12"):
     common.run_simulation(prefix)
 
-# common.generate_plots()
+common.generate_plots()
