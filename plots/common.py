@@ -20,9 +20,12 @@ def generate_plots():
 
 
 def run_simulation(prefix: str):
-    config_name: str = prefix + "_config.yaml"
+    config_name: str = "config.yaml"
+    if prefix:
+        config_name: str = prefix + "_" + config_name
+        
     result = subprocess.run(
-        "../../penna-model -p " + prefix + " " + config_name,
+        "../../penna-model " + config_name + " -p " + prefix,
         shell=True,
         check=False)
     try:
