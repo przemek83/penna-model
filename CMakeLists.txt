@@ -48,8 +48,29 @@ set(${PROJECT_NAME}_SOURCES
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
 target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse)
 
-add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
+add_library (${PROJECT_NAME}32-lib STATIC ${${PROJECT_NAME}_SOURCES})
+target_link_libraries(${PROJECT_NAME}32-lib yaml-cpp::yaml-cpp argparse)
+target_compile_definitions(${PROJECT_NAME}32-lib PUBLIC GENOME_BITS=32)
+
+add_library (${PROJECT_NAME}64-lib STATIC ${${PROJECT_NAME}_SOURCES})
+target_link_libraries(${PROJECT_NAME}64-lib yaml-cpp::yaml-cpp argparse)
+target_compile_definitions(${PROJECT_NAME}64-lib PUBLIC GENOME_BITS=64)
+
+add_library (${PROJECT_NAME}128-lib STATIC ${${PROJECT_NAME}_SOURCES})
+target_link_libraries(${PROJECT_NAME}128-lib yaml-cpp::yaml-cpp argparse)
+target_compile_definitions(${PROJECT_NAME}128-lib PUBLIC GENOME_BITS=128)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
+
+add_executable(${CMAKE_PROJECT_NAME}32 src/main.cpp)
+target_link_libraries(${PROJECT_NAME}32 ${PROJECT_NAME}32-lib)
+
+add_executable(${PROJECT_NAME}64 src/main.cpp)
+target_link_libraries(${PROJECT_NAME}64  ${PROJECT_NAME}64-lib)
+
+add_executable(${PROJECT_NAME}128 src/main.cpp)
+target_link_libraries(${PROJECT_NAME}128  ${PROJECT_NAME}128-lib)
 
 enable_testing()
 Include(Tests.cmake)
