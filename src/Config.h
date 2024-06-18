@@ -38,7 +38,13 @@ struct Params
     int reproductionAge_{10};
     Offspring offspring_;
     int simulationsCount_{2};
-    static constexpr int bits_{64};
+    static constexpr int bits_{
+#ifdef GENOME_BITS
+        GENOME_BITS
+#else
+        64
+#endif
+        };
     Catching catching_;
 };
 
