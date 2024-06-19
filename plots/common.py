@@ -19,18 +19,28 @@ def generate_plots():
             subprocess.run(gnuplot_cmd, shell=True, check=False)
 
 
-def run_simulation(prefix: str):
-    config_name: str = "config.yaml"
-    if prefix:
-        config_name: str = prefix + "_" + config_name
-        
+def _run_binary(binary: str, config: str, prefix: str ) -> subprocess.CompletedProcess:
     result = subprocess.run(
-        "../../penna-model " + config_name + " -p " + prefix,
+        binary + " " + config + " -p " + prefix,
         shell=True,
         check=False)
+    return result
+
+
+def _check_result(result: subprocess.CompletedProcess):
     try:
         result.check_returncode()
     except subprocess.CalledProcessError:
         print("Problem when calling 'penna-model' command. "
               "Binary not available?")
         sys.exit(1)
+
+
+def run_simulation(prefix: str):
+    config_name: str = "config.yaml"
+    if prefix:
+        config_name: str = prefix + "_" + config_name
+    
+    result = _run_binary("../../penna-model", config_name, prefix)
+          
+    _check_result(result)
