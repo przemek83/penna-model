@@ -53,7 +53,7 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
 
 # Create binaries with different genome length.
-foreach( bit_length IN ITEMS 32 64 128 256 )
+foreach( bit_length IN ITEMS 32 64 128 )
     add_library (${PROJECT_NAME}${bit_length}-lib STATIC ${${PROJECT_NAME}_SOURCES})
     target_link_libraries(${PROJECT_NAME}${bit_length}-lib yaml-cpp::yaml-cpp argparse)
     target_compile_definitions(${PROJECT_NAME}${bit_length}-lib PRIVATE GENOME_BITS=${bit_length})
