@@ -4,7 +4,7 @@ import common
 
 common.check_gnuplot_availability()
 
-os.chdir("basic")
+os.chdir("Basic")
 
 common.run_simulation("")
 
