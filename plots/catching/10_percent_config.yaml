@@ -1,0 +1,17 @@
+population:
+  initial: 3000
+  max: 50000
+years: 5000
+mutations:
+  added: 1
+  lethal: 4
+  initial: 4
+reproductionAge: 10
+offspring:
+  chance: 100
+  count: 3
+simulations: 12
+catching:
+  percent: 10
+  fromYear: 1000
+  fromAge: 4
