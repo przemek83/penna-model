@@ -12,6 +12,6 @@ offspring:
   count: 3
 simulations: 12
 catching:
-  percent: 30
+  percent: 15
   fromYear: 1000
   fromAge: 4
