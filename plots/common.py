@@ -4,7 +4,7 @@ import sys
 
 
 def check_gnuplot_availability():
-    result = subprocess.run("gnuplot -V", shell=True, check=False)
+    result = subprocess.run("gnuplot -V", shell=True, check=False, stdout = subprocess.DEVNULL)
     try:
         result.check_returncode()
     except subprocess.CalledProcessError:
@@ -15,7 +15,7 @@ def check_gnuplot_availability():
 def generate_plots():
     for path in os.listdir("."):
         if path.endswith(".plt"):
-            gnuplot_cmd: str = 'gnuplot -c ' + path
+            gnuplot_cmd: str = "gnuplot -c " + path
             subprocess.run(gnuplot_cmd, shell=True, check=False)
 
 
