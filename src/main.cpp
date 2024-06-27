@@ -30,9 +30,9 @@ int main(int argc, char* argv[])
     const auto [configFileName, prefix]{Config::getAppArguments(argc, argv)};
     const Config::Params params{Config::getParams(configFileName)};
 
-    Runner runner;
     auto generator{std::make_shared<NumbersGenerator>(params.bits_)};
 
+    Runner runner;
     for (int i{1}; i <= params.simulationsCount_; i++)
         runner.addSimulation(prepareSimulation(params, i, generator));
 
