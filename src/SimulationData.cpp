@@ -35,8 +35,10 @@ void SimulationData::setBitDistribution(
 {
     for (std::size_t i{0}; i < getBits(); i++)
     {
-        const float value{static_cast<float>(bitsDistribution[i]) /
-                          static_cast<float>(populationCount)};
+        const float value{populationCount > 0
+                              ? static_cast<float>(bitsDistribution[i]) /
+                                    static_cast<float>(populationCount)
+                              : 1.F};
         setBitsDistributionValue(i, value);
     }
 }
