@@ -214,3 +214,4 @@ As an alternative, CTest can be used to run tests (performance tests switched on
 * Measure and increase test coverage.
 * Setup static analysis (CppCheck, Clang Tidy, Clazy).
 * Make size of genome configurable (use something different than std::bitset).
+* Simplify the generation of results. Currently, it is somewhat complex and advanced.
