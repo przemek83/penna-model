@@ -53,15 +53,19 @@ target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse)
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
 
-# Create binaries with different genome length.
-foreach( bit_length IN ITEMS 32 64 128 )
-    add_library (${PROJECT_NAME}${bit_length}-lib STATIC ${${PROJECT_NAME}_SOURCES})
-    target_link_libraries(${PROJECT_NAME}${bit_length}-lib yaml-cpp::yaml-cpp argparse)
-    target_compile_definitions(${PROJECT_NAME}${bit_length}-lib PRIVATE GENOME_BITS=${bit_length})
+function(GENERATE_OTHER_GENOME_BIT_LENGHTS_BINARIES)
+    foreach( bit_length IN ITEMS 32 64 128 )
+        add_library (${PROJECT_NAME}${bit_length}-lib STATIC ${${PROJECT_NAME}_SOURCES})
+        target_link_libraries(${PROJECT_NAME}${bit_length}-lib yaml-cpp::yaml-cpp argparse)
+        target_compile_definitions(${PROJECT_NAME}${bit_length}-lib PRIVATE GENOME_BITS=${bit_length})
+    
+        add_executable(${CMAKE_PROJECT_NAME}${bit_length} src/main.cpp)
+        target_link_libraries(${PROJECT_NAME}${bit_length} ${PROJECT_NAME}${bit_length}-lib)
+    endforeach( bit_length IN ITEMS 32 64 128 )
+endfunction()
 
-    add_executable(${CMAKE_PROJECT_NAME}${bit_length} src/main.cpp)
-    target_link_libraries(${PROJECT_NAME}${bit_length} ${PROJECT_NAME}${bit_length}-lib)
-endforeach( bit_length IN ITEMS 32 64 128 )
+# Uncommment to generate binaries for different genome lengths.
+# generate_other_genome_bit_lenghts_binaries()
 
 enable_testing()
 Include(Tests.cmake)
