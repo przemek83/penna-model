@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
@@ -42,8 +40,6 @@ public:
 
         simulation1.saveFinalPopulation(output);
         output.saveSimulationData(data1);
-
-        std::cout << std::endl;
     }
 };
 
@@ -75,13 +71,11 @@ TEST_CASE("Output averages", "[penna]")
         simulation1.setGenerator(generator);
         simulation1.createInitialPopulation();
         const SimulationData data1{simulation1.run()};
-        std::cout << std::endl;
 
         Simulation simulation2(params);
         simulation2.setGenerator(generator);
         simulation2.createInitialPopulation();
         const SimulationData data2{simulation2.run()};
-        std::cout << std::endl;
 
         const AverageData averageData{{data1, data2},
                                       static_cast<std::size_t>(params.years_),
