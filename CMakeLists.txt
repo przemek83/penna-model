@@ -43,9 +43,10 @@ set(${PROJECT_NAME}_SOURCES
     src/AverageData.cpp
     src/ResultsData.h
     src/ResultsData.cpp
+    src/OutputType.h
 )
 
-# Create default binary.
+# Create default binaries.
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
 target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse)
 
