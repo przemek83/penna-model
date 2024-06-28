@@ -30,10 +30,8 @@ public:
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 
-        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
-
         Simulation simulation1(params);
-        simulation1.setGenerator(generator);
+        simulation1.setGenerator(Common::getTestGenerator(params.bits_));
         simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
         const SimulationData data1{simulation1.run()};
@@ -65,15 +63,15 @@ TEST_CASE("Output averages", "[penna]")
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 
-        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
-
         Simulation simulation1(params);
-        simulation1.setGenerator(generator);
+        simulation1.setGenerator(Common::getTestGenerator(params.bits_));
         simulation1.createInitialPopulation();
         const SimulationData data1{simulation1.run()};
 
+        auto generator{std::make_unique<MockedGenerator>(params.bits_)};
+        generator->setX(14947405050666326135ULL);
         Simulation simulation2(params);
-        simulation2.setGenerator(generator);
+        simulation2.setGenerator(std::move(generator));
         simulation2.createInitialPopulation();
         const SimulationData data2{simulation2.run()};
 

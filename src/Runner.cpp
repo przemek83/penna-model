@@ -1,6 +1,8 @@
 #include "Runner.h"
+
 #include <future>
 
+#include "Generator.h"
 #include "Timer.h"
 
 void Runner::addSimulation(Simulation simulation)
@@ -25,10 +27,9 @@ std::vector<SimulationData> Runner::runParallel()
     const Timer timer;
     std::vector<std::future<SimulationData>> futures;
     for (std::size_t i{0}; i < simulations_.size(); ++i)
-    {
-        futures.emplace_back(
-            std::async(std::launch::async, &Simulation::run, simulations_[i]));
-    }
+        futures.emplace_back(std::async(std::launch::async,
+                                        [&simulation = simulations_[i]]
+                                        { return simulation.run(); }));
 
     std::vector<SimulationData> dataToReturn;
     for (auto& future : futures)

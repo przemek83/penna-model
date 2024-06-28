@@ -11,12 +11,12 @@
 namespace
 {
 Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
-                             std::shared_ptr<NumbersGenerator> generator)
+                             long int seed)
 {
     Simulation simulation(params);
-    simulation.setGenerator(generator);
+    simulation.setGenerator(
+        std::make_unique<NumbersGenerator>(params.bits_, seed));
     simulation.createInitialPopulation();
-    simulation.setGenerator(std::make_shared<NumbersGenerator>(params.bits_));
     auto progressCallback{ProgressCallback::createOverallProgressCallback(
         simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
@@ -30,11 +30,11 @@ int main(int argc, char* argv[])
     const auto [configFileName, prefix]{Config::getAppArguments(argc, argv)};
     const Config::Params params{Config::getParams(configFileName)};
 
-    auto generator{std::make_shared<NumbersGenerator>(params.bits_)};
-
+    const long int seed{
+        std::chrono::system_clock::now().time_since_epoch().count()};
     Runner runner;
     for (int i{1}; i <= params.simulationsCount_; i++)
-        runner.addSimulation(prepareSimulation(params, i, generator));
+        runner.addSimulation(prepareSimulation(params, i, seed + i));
 
     const std::vector<SimulationData> simulationsData{runner.runParallel()};
 

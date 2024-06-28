@@ -1,9 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+#include <src/Generator.h>
 #include <src/Simulation.h>
 
-#include "MockedGenerator.h"
+#include "Common.h"
 #include "StringOutput.h"
 
 namespace
@@ -118,7 +119,7 @@ TEST_CASE("Catching", "[penna]")
     params.catching_ = catching;
 
     Simulation simulation(params);
-    simulation.setGenerator(std::make_shared<MockedGenerator>(params.bits_));
+    simulation.setGenerator(Common::getTestGenerator(params.bits_));
     simulation.createInitialPopulation();
     const SimulationData data{simulation.run()};
 

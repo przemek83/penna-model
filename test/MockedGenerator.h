@@ -11,6 +11,8 @@ public:
 
     int getInt(int low, int high) override;
 
+    void setX(uint64_t x);
+
 private:
-    uint64_t x_{12};
+    unsigned long int x_{12};
 };

@@ -106,7 +106,7 @@ void Simulation::saveFinalPopulation(Output& output)
     output.saveFinalPopulation(individuals_);
 }
 
-void Simulation::setGenerator(std::shared_ptr<Generator> generator)
+void Simulation::setGenerator(std::unique_ptr<Generator> generator)
 {
     generator_ = std::move(generator);
 }
@@ -159,8 +159,8 @@ bool Simulation::shouldDie(const Individual& individual,
             params_.mutations_.lethal_) ||            // mutations
            (individual.getAge() >= params_.bits_) ||  // ageing
            (generator_->getPercentChance() <=
-                chanceForDeathInPercent ||            // Verhulst
-            isCatched(individual.getAge()));          // catching
+                chanceForDeathInPercent ||    // Verhulst
+            isCatched(individual.getAge()));  // catching
 }
 
 bool Simulation::shouldHaveOffspring(const Individual& individual) const

@@ -4,11 +4,11 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <src/FileOutput.h>
+#include <src/Generator.h>
 #include <src/Simulation.h>
 #include <src/SimulationData.h>
 
 #include "Common.h"
-#include "MockedGenerator.h"
 #include "StringOutput.h"
 
 TEST_CASE("Simulation", "[penna]")
@@ -19,11 +19,10 @@ TEST_CASE("Simulation", "[penna]")
         params.population_.max_ = 5000;
         params.years_ = 1000;
 
-        auto generator{std::make_shared<MockedGenerator>(params.bits_)};
         StringOutput output;
 
         Simulation simulation(params);
-        simulation.setGenerator(generator);
+        simulation.setGenerator(Common::getTestGenerator(params.bits_));
         simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
         auto data{simulation.run()};
@@ -52,7 +51,6 @@ TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
     Config::Params params;
-    auto generator{std::make_shared<MockedGenerator>(params.bits_)};
 
     SECTION("simulation short")
     {
@@ -62,7 +60,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.years_ = 100'000;
 
         Simulation simulation(params);
-        simulation.setGenerator(generator);
+        simulation.setGenerator(Common::getTestGenerator(params.bits_));
         simulation.createInitialPopulation();
         simulation.run();
 
@@ -77,7 +75,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.years_ = 200'000;
 
         Simulation simulation(params);
-        simulation.setGenerator(generator);
+        simulation.setGenerator(Common::getTestGenerator(params.bits_));
         simulation.createInitialPopulation();
         simulation.run();
 

@@ -1,7 +1,7 @@
 #include "NumbersGenerator.h"
 
-NumbersGenerator::NumbersGenerator(int bits)
-    : Generator(bits), engine_{std::random_device()()}
+NumbersGenerator::NumbersGenerator(int bits, unsigned long seed)
+    : Generator(bits), engine_{seed}
 {
 }
 

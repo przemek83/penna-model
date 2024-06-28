@@ -4,7 +4,11 @@
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
-#include "catch2/matchers/catch_matchers_string.hpp"
+#include <catch2/matchers/catch_matchers_string.hpp>
+
+#include <src/Generator.h>
+
+#include "MockedGenerator.h"
 
 namespace Common
 {
@@ -31,6 +35,11 @@ void compareStringWithFileContent(const std::string& currentContent,
         getFileContent("TestFiles/" + expectedFileName)};
     CAPTURE(expectedFileName);
     REQUIRE_THAT(currentContent, Catch::Matchers::Equals(expectedContent));
+}
+
+std::unique_ptr<Generator> getTestGenerator(int bits)
+{
+    return std::make_unique<MockedGenerator>(bits);
 }
 
 }  // namespace Common

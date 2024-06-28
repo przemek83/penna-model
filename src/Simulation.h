@@ -22,7 +22,7 @@ public:
 
     void saveFinalPopulation(Output& output);
 
-    void setGenerator(std::shared_ptr<Generator> generator);
+    void setGenerator(std::unique_ptr<Generator> generator);
 
     SimulationData run();
 
@@ -61,7 +61,7 @@ private:
     std::list<Individual> individuals_;
 
     Config::Params params_;
-    std::shared_ptr<Generator> generator_;
+    std::unique_ptr<Generator> generator_{nullptr};
 
     std::function<void(int)> progressCallback_{nullptr};
 
