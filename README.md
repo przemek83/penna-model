@@ -51,17 +51,18 @@ Omitting the configuration parameter will result in default behavior, and the ap
 
 To show help, use the common option `-h` or the more verbose version `--help`. The application should display the following information:
 
-    Usage: penna-model [--help] config
-    
+    Usage: penna-model [--help] [--prefix VAR] config
+
     Implementation of Penna model of population aging.
-    
+
     Positional arguments:
-      config      name of config file to use [nargs=0..1] [default: "config.yaml"]
-    
+    config        name of config file to use [nargs=0..1] [default: "config.yaml"]
+
     Optional arguments:
-      -h, --help  shows help message and exits
-    
-    After simulation, one can use a script for graph generation using result files.
+    -h, --help    shows help message and exits 
+    -p, --prefix  prefix used for output file names [nargs=0..1] [default: "averages"]
+
+    Run outputs results into .txt files. You may use scripts placed in the 'plots' directory to generate plots.
 
 ## Parameters
  Example `config.yaml` configuration file:
