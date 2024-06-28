@@ -47,7 +47,7 @@ Call `penna-model` binary and pass appropriate configuration file as parameter:
 
     penna-model config.yaml
 
-Omitting the configuration parameter will result in default behavior, and the application will try to load the configuration file `config.yaml` from the local directory. 
+Omitting the configuration parameter will result in default behavior, and the application will try to load the configuration file `config.yaml` from the local directory. Use the optional prefix parameter (`-p, --prefix`) to store simulation output data with other than default names. Default names for output data files start with the word `averages`.
 
 To show help, use the common option `-h` or the more verbose version `--help`. The application should display the following information:
 
