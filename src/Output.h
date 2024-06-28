@@ -7,6 +7,7 @@
 #include <string>
 
 #include "Individual.h"
+#include "OutputType.h"
 #include "SimulationData.h"
 
 class AverageData;
@@ -21,17 +22,6 @@ public:
     Output(Output&&) = delete;
     Output& operator=(const Output&) = delete;
     Output& operator=(Output&&) = delete;
-
-    enum OUTPUT_TYPE
-    {
-        STATISTICS = 0,
-        INITIAL_POPULATION,
-        FINAL_POPULATION,
-        AGE_DISTRIBUTION,
-        BITS_DISTRIBUTION,
-        DEATHS_DISTRIBUTION,
-        FAMILIES
-    };
 
     void saveSimulationData(const SimulationData& data);
 
