@@ -219,8 +219,8 @@ void fillParser(argparse::ArgumentParser& parser)
     parser.add_description(
         "Implementation of Penna model of population aging.");
     parser.add_epilog(
-        "After simulation, one can use a script for plots generation based on "
-        "result files.");
+        "Run outputs results into .txt files. You may use scripts "
+        "placed in the 'plots' directory to generate plots.");
 }
 
 }  // namespace
