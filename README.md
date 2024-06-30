@@ -39,8 +39,13 @@ As a result of compilation binary for simulations and binary for testing should 
 | Catch2 | 3.3.0 | 3.3.0 | 
 | Argparse | 3.0 | 3.0 |
 
-## Used tools and libs for Python part
-TODO
+## Used tools and libs for plots part
+| Tool | Lubuntu |
+| --- | --- |
+| OS version | 22.04 |
+| Python | 3.11.4 |
+| Gnuplot | 5.4 patchlevel 2 |
+| Visual Studio Code | 1.80.0 |
 
 # Usage
 Call `penna-model` binary and pass appropriate configuration file as parameter:
