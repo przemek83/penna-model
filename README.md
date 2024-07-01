@@ -159,7 +159,16 @@ Genome length is hard-coded in the `Config::Params` structure at field `bits_`. 
 As of April 2024, there is no plan to make it configurable in yaml. Replacing `std::bitset` with something more flexible like `std::vector<bool>` impacts performance greatly.
 
 # Plots
-TODO
+Plots are generated using Gnuplot. Multiple categories of plots can be found in `plots` directory. Categories are:
+| category name | generate using | Description |
+| --- | --- | --- |
+| AddedMutations | generate_added_mutations_plots.py | Category showing impact on simulation of different number of mutations applied to offspring. |
+| Basic | generate_basic_plots.py | Category is showing some simulation fundamentals like Eve Effect, age/bits distribution, deaths distribution with Gompertz law, phases of population (rise, fall, fluctuation, stabilisation). |
+| Catching | generate_catching_plots.py | TODO |
+| GenomeLength | generate_genome_length_plots.py | TODO |
+| LethalMutations | generate_lethal_mutations_plots.py | TODO |
+| OffspringCount | generate_offspring_count_plots.py | TODO |
+| ReproductionAge | generate_reproduction_age_plots.py | TODO |
 
 # Licensing
 Software is released under the MIT license.
