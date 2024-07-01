@@ -212,7 +212,17 @@ Example plots for simulations with different genome length (32, 64, 128 bits) an
 </p>
 
 ## Example reproduction age plots
-TODO
+Examples of plots created for runs with different reproduction age (8, 10, 12 years) and 50k years long simulation:
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/reproduction_age_distribution.png" >
+    <img width="32%" src="plots/Examples/reproduction_bits_distribution.png" >
+    <img width="32%" src="plots/Examples/reproduction_deaths_distribution.png" >
+</p>
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/reproduction_population.png" >
+    <img width="32%" src="plots/Examples/reproduction_families.png" >
+    <img width="32%" src="plots/Examples/reproduction_births_and_deaths.png" >
+</p>
 
 # Licensing
 Software is released under the MIT license.
