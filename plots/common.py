@@ -47,7 +47,8 @@ def run_simulation(prefix: str):
     config_name: str = "config.yaml"
     if prefix:
         config_name: str = prefix + "_" + config_name
-    
-    result = _run_binary("../../penna-model", config_name, prefix)
+
+    binary: str = "penna-model"
+    result = _run_binary("../../" + binary, config_name, prefix)
           
-    _check_result(result)
+    _check_result(result, binary)
