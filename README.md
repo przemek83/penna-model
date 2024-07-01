@@ -152,7 +152,11 @@ The second type of progress callback is a sequential one. Example execution outp
 The sequential progress callback should be combined with sequential execution.
 
 ## Genome length
-Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, change the value of `bits_` to a different one and rebuild the binary. As of April 2024, there is no plan to make it configurable in yaml, as resigning from `std::bitset` and introducing something more flexible like `std::vector<bool>` impacts greatly performance.
+Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, one can do 2 things:
+- change the value of `bits_` to a different one and rebuild the binaries,
+- in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lenghts_binaries()` and rebuild project to have 32, 64 and 128 genome lengths binaries.
+
+As of April 2024, there is no plan to make it configurable in yaml. Replacing `std::bitset` with something more flexible like `std::vector<bool>` impacts performance greatly.
 
 # Plots
 TODO
