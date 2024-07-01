@@ -172,6 +172,28 @@ Plots are generated using Gnuplot. Multiple categories of plots can be found in 
 
 All plots can be generated using `generate_all.py` script. Make sure that you preapre 32, 64 and 128 genome length binaries first (check [genome length](#genome-length) section for more details).
 
+## Example basic plots
+Example basic category plots generated for 50k long simulation:
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/basic_age_distribution.png" >
+    <img width="32%" src="plots/Examples/basic_bits_distribution.png" >
+    <img width="32%" src="plots/Examples/basic_deaths_distribution.png" >
+</p>
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/basic_population.png" >
+    <img width="32%" src="plots/Examples/basic_families.png" >
+    <img width="32%" src="plots/Examples/basic_births_and_deaths.png" >
+</p>
+
+## Example catching plots
+TODO
+
+## Example genome length plots
+TODO
+
+## Example reproduction age plots
+TODO
+
 # Licensing
 Software is released under the MIT license.
 
