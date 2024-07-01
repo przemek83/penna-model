@@ -164,11 +164,11 @@ Plots are generated using Gnuplot. Multiple categories of plots can be found in 
 | --- | --- | --- |
 | AddedMutations | generate_added_mutations_plots.py | Category showing impact on simulation of different number of mutations applied to offspring. |
 | Basic | generate_basic_plots.py | Category is showing some simulation fundamentals like Eve Effect, age/bits distribution, deaths distribution with Gompertz law, phases of population (rise, fall, fluctuation, stabilisation). |
-| Catching | generate_catching_plots.py | TODO |
-| GenomeLength | generate_genome_length_plots.py | TODO |
-| LethalMutations | generate_lethal_mutations_plots.py | TODO |
-| OffspringCount | generate_offspring_count_plots.py | TODO |
-| ReproductionAge | generate_reproduction_age_plots.py | TODO |
+| Catching | generate_catching_plots.py | Category used for visualization of impact of catching/killing of individuals according to set percent, staring year and starting age. Used for determining what percent of population (for example Atlantic or Baltic cod population) can be catched per year to sustain population and maximize profits of fishery. |
+| GenomeLength | generate_genome_length_plots.py | Category for analysis of population according to different genome length of individuals. By default 32, 64 and 128 bits genomes are checked. |
+| LethalMutations | generate_lethal_mutations_plots.py | Presented changes between simulations when number of lethal mutations which individual need to suffer before deaths is set to 2,3 and 4. |
+| OffspringCount | generate_offspring_count_plots.py | Plots are showing how population behave with different offspring count set in configuration parameters. |
+| ReproductionAge | generate_reproduction_age_plots.py | Visualize of differences between simulations having reproduction age set to 8, 10 and 12 years. |
 
 All plots can be generated using `generate_all.py` script. Make sure that you preapre 32, 64 and 128 genome length binaries first (check [genome length](#genome-length) section for more details).
 
