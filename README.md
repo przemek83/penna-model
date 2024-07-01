@@ -199,7 +199,17 @@ Example plots for simulations with catching and 50k years duration:
 </p>
 
 ## Example genome length plots
-TODO
+Example plots for simulations with different genome length (32, 64, 128 bits) and 50k years duration:
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/genome_age_distribution.png" >
+    <img width="32%" src="plots/Examples/genome_bits_distribution.png" >
+    <img width="32%" src="plots/Examples/genome_deaths_distribution.png" >
+</p>
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/genome_population.png" >
+    <img width="32%" src="plots/Examples/genome_families.png" >
+    <img width="32%" src="plots/Examples/genome_births_and_deaths.png" >
+</p>
 
 ## Example reproduction age plots
 TODO
