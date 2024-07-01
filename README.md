@@ -186,7 +186,17 @@ Example basic category plots generated for 50k years long simulation:
 </p>
 
 ## Example catching plots
-TODO
+Example plots for simulations with catching and 50k years duration:
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/catching_age_distribution.png" >
+    <img width="32%" src="plots/Examples/catching_bits_distribution.png" >
+    <img width="32%" src="plots/Examples/catching_deaths_distribution.png" >
+</p>
+<p align="center" width="100%">
+    <img width="32%" src="plots/Examples/catching_population.png" >
+    <img width="32%" src="plots/Examples/catching_families.png" >
+    <img width="32%" src="plots/Examples/catching_births_and_deaths.png" >
+</p>
 
 ## Example genome length plots
 TODO
