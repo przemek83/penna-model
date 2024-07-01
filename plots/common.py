@@ -27,11 +27,11 @@ def _run_binary(binary: str, config: str, prefix: str) -> subprocess.CompletedPr
     return result
 
 
-def _check_result(result: subprocess.CompletedProcess):
+def _check_result(result: subprocess.CompletedProcess, binary: str):
     try:
         result.check_returncode()
     except subprocess.CalledProcessError:
-        print("Problem when calling 'penna-model' command. "
+        print("Problem when calling '" + binary + "' command. "
               "Binary not available?")
         sys.exit(1)
 
@@ -40,7 +40,7 @@ def run_simulation_using_binary(binary: str, prefix: str):
 
     result = _run_binary(binary, config_name, prefix)
           
-    _check_result(result)
+    _check_result(result, binary)
 
 
 def run_simulation(prefix: str):
