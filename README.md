@@ -170,6 +170,8 @@ Plots are generated using Gnuplot. Multiple categories of plots can be found in 
 | OffspringCount | generate_offspring_count_plots.py | TODO |
 | ReproductionAge | generate_reproduction_age_plots.py | TODO |
 
+All plots can be generated using `generate_all.py` script. Make sure that you preapre 32, 64 and 128 genome length binaries first (check [genome length](#genome-length) section for more details).
+
 # Licensing
 Software is released under the MIT license.
 
