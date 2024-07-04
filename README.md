@@ -20,20 +20,18 @@
 - [Testing](#testing)
 
 # About project
-[WIP] - Work In Progress
-
 Implementation of the Penna population aging model with multiple configuration options. The program runs a given number of simulations in a sequential or parallel manner and saves the averages into output files. The initial implementation was part of my master thesis and was created in the first decade of the 21st century. Reworked heavily in the years 2023–2024 and published as open source.
 
 The implementation is written in C++17, with a focus on speed and configurability.
   
 # Building
-Clone and use CMake directly or via any CMake supporting IDE. CMake **should**:
+Clone and use CMake directly or via any IDE supporting it. CMake **should**:
 + configure everything automatically,
 + compile and create binaries.
 
-As a result of compilation binary for simulations and binary for testing should be created.
+As a result of compilation, binary for simulations and binary for testing should be created.
 
-## Used tools and libs for C++ part
+## Used tools and libraries for the C++ part
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
 | OS version | 10 22H2 | 22.04 |
@@ -44,7 +42,7 @@ As a result of compilation binary for simulations and binary for testing should 
 | Catch2 | 3.3.0 | 3.3.0 | 
 | Argparse | 3.0 | 3.0 |
 
-## Used tools and libs for plots part
+## Used tools for plots part
 | Tool | Lubuntu |
 | --- | --- |
 | OS version | 22.04 |
@@ -105,7 +103,7 @@ The following parameters are supported via the configuration file:
 | mutations | | |
 | | added | 1 | Mutations applied to offspring. |
 | | lethal | 4 | Number of mutations becoming lethal when accumulated. |
-| | initial | 4 | Number of mutations in genome for eacvh individual on simulation start. |
+| | initial | 4 | Number of mutations in genome for each individual on simulation start. |
 | reproductionAge | | 10 | Age in which individual stars have offspring. |
 | offspring | | |
 | | chance | 100 | Chance for having offspring each year. |
@@ -159,7 +157,7 @@ The sequential progress callback should be combined with sequential execution.
 ## Genome length
 Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, one can do 2 things:
 - change the value of `bits_` to a different one and rebuild the binaries,
-- in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lenghts_binaries()` and rebuild project to have 32, 64 and 128 genome lengths binaries.
+- in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lenghts_binaries()` and rebuild project to have 32, 64 and 128 genome length binaries.
 
 As of April 2024, there is no plan to make it configurable in yaml. Replacing `std::bitset` with something more flexible like `std::vector<bool>` impacts performance greatly.
 
@@ -168,14 +166,14 @@ Plots are generated using Gnuplot. Multiple categories of plots can be found in 
 | category name | generate using | Description |
 | --- | --- | --- |
 | AddedMutations | generate_added_mutations_plots.py | Category showing impact on simulation of different number of mutations applied to offspring. |
-| Basic | generate_basic_plots.py | Category is showing some simulation fundamentals like Eve Effect, age/bits distribution, deaths distribution with Gompertz law, phases of population (rise, fall, fluctuation, stabilisation). |
-| Catching | generate_catching_plots.py | Category used for visualization of impact of catching/killing of individuals according to set percent, staring year and starting age. Used for determining what percent of population (for example Atlantic or Baltic cod population) can be catched per year to sustain population and maximize profits of fishery. |
-| GenomeLength | generate_genome_length_plots.py | Category for analysis of population according to different genome length of individuals. By default 32, 64 and 128 bits genomes are checked. |
-| LethalMutations | generate_lethal_mutations_plots.py | Presented changes between simulations when number of lethal mutations which individual need to suffer before deaths is set to 2,3 and 4. |
-| OffspringCount | generate_offspring_count_plots.py | Plots are showing how population behave with different offspring count set in configuration parameters. |
-| ReproductionAge | generate_reproduction_age_plots.py | Visualize of differences between simulations having reproduction age set to 8, 10 and 12 years. |
+| Basic | generate_basic_plots.py | Category is showing some simulation fundamentals like Eve Effect, age/bits distribution, deaths distribution with Gompertz law, phases of population (rise, fall, fluctuation, stabilization). |
+| Catching | generate_catching_plots.py | Category used for visualization of impact of catching/killing of individuals according to set percent, starting year, and starting age. Used for determining what percent of the population (for example, the Atlantic or Baltic cod population) can be caught per year to sustain the population and maximize the profits of the fishery. |
+| GenomeLength | generate_genome_length_plots.py | Category for analysis of population according to different genome lengths of individuals. By default, 32, 64 and 128-bit genomes are checked. |
+| LethalMutations | generate_lethal_mutations_plots.py | Presented changes between simulations when the number of lethal mutations which individual need to suffer before deaths is set to 2,3 and 4. |
+| OffspringCount | generate_offspring_count_plots.py | Plots show how populations behave with different offspring count set in configuration parameters. |
+| ReproductionAge | generate_reproduction_age_plots.py | Visualize differences between simulations having reproduction age set to 8, 10 and 12 years. |
 
-All plots can be generated using `generate_all.py` script. Make sure that you preapre 32, 64 and 128 genome length binaries first (check [genome length](#genome-length) section for more details).
+All plots can be generated using the `generate_all.py` script. Make sure that you prepare 32, 64 and 128 genome length binaries first (check the [genome length](#genome-length) section for more details).
 
 ## Example basic plots
 Example basic category plots generated for 50k years long simulation:
@@ -204,7 +202,7 @@ Example plots for simulations with catching and 50k years duration:
 </p>
 
 ## Example genome length plots
-Example plots for simulations with different genome length (32, 64, 128 bits) and 50k years duration:
+Example plots for simulations with different genome lengths (32, 64, and 128 bits) and 50k years duration:
 <p align="center" width="100%">
     <img width="32%" src="plots/Examples/genome_age_distribution.png" >
     <img width="32%" src="plots/Examples/genome_bits_distribution.png" >
@@ -217,7 +215,7 @@ Example plots for simulations with different genome length (32, 64, 128 bits) an
 </p>
 
 ## Example reproduction age plots
-Examples of plots created for runs with different reproduction age (8, 10, 12 years) and 50k years long simulation:
+Examples of plots created for runs with different reproduction ages (8, 10, and 12 years) and 50k years long simulation:
 <p align="center" width="100%">
     <img width="32%" src="plots/Examples/reproduction_age_distribution.png" >
     <img width="32%" src="plots/Examples/reproduction_bits_distribution.png" >
@@ -233,7 +231,7 @@ Examples of plots created for runs with different reproduction age (8, 10, 12 ye
 Software is released under the MIT license.
 
 The project uses the following open-source software:
-| Name | Licence | Home | Description |
+| Name | License | Home | Description |
 | --- | --- | --- | --- |
 | yaml-cpp | MIT | https://github.com/jbeder/yaml-cpp | YAML parser library for C++ |
 | Catch2 | BSL-1.0 | https://github.com/catchorg/Catch2 | testing framework for C++ |
@@ -291,5 +289,5 @@ As an alternative, CTest can be used to run tests (performance tests switched on
 * Upgrade code to use C++20/23.
 * Measure and increase test coverage.
 * Setup static analysis (CppCheck, Clang Tidy, Clazy).
-* Make size of genome configurable (use something different than std::bitset).
+* Make the size of the genome configurable (use something different from std::bitset).
 * Simplify the generation of results. Currently, it is somewhat complex and advanced.
