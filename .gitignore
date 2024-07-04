@@ -35,6 +35,7 @@
 # Other
 /.vscode
 /build
+/**/__pycache__
 
 # Plots
 /plots/**/*.png
