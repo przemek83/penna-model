@@ -55,6 +55,7 @@ TEST_CASE("Benchmark", "[penna]")
     SECTION("simulation short")
     {
         // 02.02.2024 - 26.010 s
+        // 04.07.2024 - 16.734 s
 
         params.population_.max_ = 100'000;
         params.years_ = 100'000;
@@ -70,6 +71,7 @@ TEST_CASE("Benchmark", "[penna]")
     SECTION("simulation long")
     {
         // 02.02.2024 - 114.283 s
+        // 04.07.2024 - 84.883 s
 
         params.population_.max_ = 200'000;
         params.years_ = 200'000;
