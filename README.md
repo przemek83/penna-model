@@ -1,8 +1,8 @@
 # Table of content
 - [About project](#about-project)
 - [Building](#building)
-   * [Used tools and libs for C++ part](#used-tools-and-libs-for-c-part)
-   * [Used tools and libs for plots part](#used-tools-and-libs-for-plots-part)
+   * [Used tools and libraries for the C++ part](#used-tools-and-libraries-for-the-c-part)
+   * [Used tools for plots part](#used-tools-for-plots-part)
 - [Usage](#usage)
    * [Parameters](#parameters)
    * [Sequential run](#sequential-run)
