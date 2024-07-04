@@ -1,7 +1,7 @@
 population:
-  initial: 30000
-  max: 500000
-years: 50000
+  initial: 3000
+  max: 50000
+years: 5000
 mutations:
   added: 1
   lethal: 4
