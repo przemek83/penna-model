@@ -266,7 +266,7 @@ For testing of code logic, there is a responsible `Catch2` framework. As it is w
 
 As an alternative, CTest can be used to run tests (performance tests switched on):
 
-    $ CTest
+    $ ctest
     Test project <build path>\test
         Start 1: Catching
     1/7 Test #1: Catching .........................   Passed    0.03 sec
