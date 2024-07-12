@@ -1,3 +1,5 @@
+"""Module generating plots for genome length category."""
+
 import os
 import common
 

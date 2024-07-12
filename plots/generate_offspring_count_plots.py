@@ -1,3 +1,5 @@
+"""Module generating plots for offspring category."""
+
 import os
 import common
 

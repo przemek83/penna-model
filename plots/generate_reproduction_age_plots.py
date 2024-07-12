@@ -1,3 +1,5 @@
+"""Module generating plots for reproduction age category."""
+
 import os
 import common
 

@@ -1,3 +1,5 @@
+"""Module generating plots for basic category."""
+
 import os
 import common
 

@@ -1,3 +1,5 @@
+"""Module generating plots for catching category."""
+
 import os
 import common
 

@@ -1,3 +1,5 @@
+"""Module generating plots for lethal mutations category."""
+
 import os
 import common
 
