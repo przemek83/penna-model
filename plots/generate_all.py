@@ -12,7 +12,7 @@ def _generate(category: str):
     os.chdir(sys.path[0])
     print("Finished " + category)
 
-categories = ("basic", "added_mutations", "catching", "genome_length", 
+categories = ("basic", "added_mutations", "catching", "genome_length",
               "lethal_mutations", "offspring_count", "reproduction_age")
 
 for current_category in categories:
