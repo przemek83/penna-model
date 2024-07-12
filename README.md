@@ -1,5 +1,5 @@
 [![Build & test on Linux ](https://github.com/przemek83/penna-model/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/cmake-single-platform.yml)
-
+[![CodeQL](https://github.com/przemek83/penna-model/actions/workflows/codeql.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/codeql.yml)
 # Table of content
 - [About project](#about-project)
 - [Building](#building)
