@@ -37,4 +37,5 @@ jobs:
       with:
         file: ${{github.workspace}}/coverage.xml
         directory: ${{github.workspace}}/src
+        disable_search: yes
         token: ${{ secrets.CODECOV_TOKEN }}
