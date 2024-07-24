@@ -44,3 +44,4 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         exclude: ${{github.workspace}}/build/test
         verbose: true
+        disable_search: true
