@@ -25,17 +25,20 @@ jobs:
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
+    - name: Run tests
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}} -E 'Benchmark'
 
     - name: Generate coverage xml
       run: gcovr -f ${{github.workspace}}/src -xml-pretty > coverage.xml
 
+    - name: Remove not needed files
+      run: |
+          rm -rf ${{github.workspace}}/build/_deps
+          rm -rf ${{github.workspace}}/build/test
+          
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
+      uses: codecov/codecov-action@v4.5.0
       with:
         file: ${{github.workspace}}/coverage.xml
-        directory: ${{github.workspace}}/src
-        disable_search: yes
         token: ${{ secrets.CODECOV_TOKEN }}
