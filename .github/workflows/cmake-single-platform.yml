@@ -38,3 +38,4 @@ jobs:
         file: ${{github.workspace}}/coverage.xml
         token: ${{ secrets.CODECOV_TOKEN }}
         exclude: ${{github.workspace}}/test
+        verbose: true
