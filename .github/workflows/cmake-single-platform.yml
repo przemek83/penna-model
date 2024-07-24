@@ -32,6 +32,9 @@ jobs:
     # - name: Generate coverage xml
     #   run: gcovr -f ${{github.workspace}}/src -xml-pretty > coverage.xml
 
+    - name: remove not needed files
+      run: rm -rf ${{github.workspace}}/build/_deps; rm -rf {{github.workspace}}/test
+          
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
