@@ -32,8 +32,8 @@ jobs:
     - name: Generate coverage xml
       run: |
           gcovr -f ${{github.workspace}}/src -xml-pretty > coverage.xml
-          ll
-          ll ${{github.workspace}}/coverage.xml
+          ls -laF
+          ls -laF ${{github.workspace}}/coverage.xml
 
     # Could not make Codecov action v4.5 working properly as it was reporting also tests dir. Workaround.
     - name: Remove not needed files
