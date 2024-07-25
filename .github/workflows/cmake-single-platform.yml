@@ -31,7 +31,7 @@ jobs:
 
     - name: Generate coverage xml
       run: |
-          gcovr -f ${{github.workspace}}/src -xml-pretty > coverage.xml
+          gcovr --filter ${{github.workspace}}/src --xml --output coverage.xml
           ls -laF
           ls -laF ${{github.workspace}}/coverage.xml
 
