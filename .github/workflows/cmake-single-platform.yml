@@ -36,10 +36,10 @@ jobs:
           ls -laF ${{github.workspace}}/coverage.xml
 
     # Could not make Codecov action v4.5 working properly as it was reporting also tests dir. Workaround.
-    - name: Remove not needed files
-      run: |
-          rm -rf ${{github.workspace}}/build/_deps
-          rm -rf ${{github.workspace}}/build/test
+    # - name: Remove not needed files
+    #   run: |
+    #       rm -rf ${{github.workspace}}/build/_deps
+    #       rm -rf ${{github.workspace}}/build/test
           
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.5.0
