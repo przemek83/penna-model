@@ -39,11 +39,8 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}} -E 'Benchmark'
 
-      - name: Generate coverage for Codecov
+      - name: Generate coverage xml
         run: gcovr --filter ${{github.workspace}}/src --xml --exclude-throw-branches --output coverage.xml
-
-      - name: Generate coverage for Sonar
-        run: gcovr --filter ${{github.workspace}}/src --sonarqube --exclude-throw-branches --output coverage_sonar.xml 
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.5.0
