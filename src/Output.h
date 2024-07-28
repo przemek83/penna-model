@@ -61,11 +61,5 @@ private:
         data.saveDeathsDistibution(*deaths, separator_);
     }
 
-    void saveBitsDistribution(const std::vector<float>& bitsDistribution);
-
-    void saveAgeDistribution(const std::vector<int>& ageDistribution);
-
-    void saveDeathsDistribution(const std::vector<float>& deaths);
-
     char separator_{'\t'};
 };
