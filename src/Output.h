@@ -23,7 +23,7 @@ public:
     Output& operator=(const Output&) = delete;
     Output& operator=(Output&&) = delete;
 
-    void saveSimulationData(const SimulationData& data);
+    [[maybe_unused]] void saveSimulationData(const SimulationData& data);
 
     void saveAverages(const AverageData& data);
 
