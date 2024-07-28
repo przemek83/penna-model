@@ -1,7 +1,6 @@
 #pragma once
 
 #include <bitset>
-#include <cstdio>
 #include <string>
 
 #include "Config.h"
