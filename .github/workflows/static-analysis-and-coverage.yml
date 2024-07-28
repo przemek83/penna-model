@@ -32,8 +32,11 @@ jobs:
         run: |
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-      - name: Generate coverage xml
-        run: gcovr --filter ${{github.workspace}}/src --xml --exclude-throw-branches --output coverage.xml 
+      - name: Generate coverage for Codecov
+        run: gcovr --filter ${{github.workspace}}/src --xml --exclude-throw-branches --output coverage.xml
+
+      - name: Generate coverage for Sonar
+        run: gcovr --filter ${{github.workspace}}/src --sonarqube --exclude-throw-branches --output coverage_sonar.xml 
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.5.0
@@ -49,5 +52,5 @@ jobs:
         run: |
           sonar-scanner \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
-            --define sonar.coverageReportPaths=${{github.workspace}}/coverage.xml
+            --define sonar.coverageReportPaths=${{github.workspace}}/coverage_sonar.xml
 
