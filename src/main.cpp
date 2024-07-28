@@ -28,7 +28,9 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
 int main(int argc, char* argv[])
 {
     const auto [configFileName, prefix]{Config::getAppArguments(argc, argv)};
-    const Config::Params params{Config::getParams(configFileName)};
+    const auto [success, params]{Config::getParams(configFileName)};
+    if (!success)
+        return EXIT_FAILURE;
 
     const long int seed{
         std::chrono::system_clock::now().time_since_epoch().count()};

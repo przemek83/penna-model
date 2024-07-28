@@ -232,25 +232,26 @@ Config::Params loadConfig(std::istream& stream)
     Config::Params params;
     YAML::Node yaml{YAML::Load(stream)};
 
-    if (const YAML::Node& node{yaml[fieldToString.at(Field::POPULATION)]}; node)
+    if (const YAML::Node & node{yaml[fieldToString.at(Field::POPULATION)]};
+        node)
         params.population_ = loadPopulation(node);
 
     if (const YAML::Node value{yaml[fieldToString.at(Field::YEARS)]})
         params.years_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString.at(Field::MUTATIONS)]}; node)
+    if (const YAML::Node & node{yaml[fieldToString.at(Field::MUTATIONS)]}; node)
         params.mutations_ = loadMutations(node);
 
     if (const YAML::Node value{yaml[fieldToString.at(Field::REPRODUCTION_AGE)]})
         params.reproductionAge_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString.at(Field::OFFSPRING)]}; node)
+    if (const YAML::Node & node{yaml[fieldToString.at(Field::OFFSPRING)]}; node)
         params.offspring_ = loadOffspring(node);
 
     if (const YAML::Node value{yaml[fieldToString.at(Field::SIMULATIONS)]})
         params.simulationsCount_ = value.as<int>();
 
-    if (const YAML::Node& node{yaml[fieldToString.at(Field::CATCHING)]}; node)
+    if (const YAML::Node & node{yaml[fieldToString.at(Field::CATCHING)]}; node)
         params.catching_ = loadCatching(node);
 
     return params;
@@ -314,21 +315,21 @@ std::pair<std::string, std::string> getAppArguments(int argc, char* argv[])
     return {configFileName, prefix};
 }
 
-Config::Params getParams(const std::string& configFileName)
+std::pair<bool, Config::Params> getParams(const std::string& configFileName)
 {
     std::ifstream configFileStream(configFileName);
     if (configFileStream.fail())
     {
         std::cerr << "Cannot read config file " + configFileName << std::endl;
-        abort();
+        return {false, {}};
     }
 
     const Config::Params params{Config::loadConfig(configFileStream)};
 
     if (!Config::isValid(params))
-        abort();
+        return {false, {}};
 
-    return params;
+    return {true, params};
 }
 
 }  // namespace Config
