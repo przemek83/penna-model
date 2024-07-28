@@ -30,7 +30,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-c-cpp@v3
       - name: Run build-wrapper
         run: |
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} \
+          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel 4
 
       - name: Generate coverage for Codecov
         run: gcovr --filter ${{github.workspace}}/src --xml --exclude-throw-branches --output coverage.xml
