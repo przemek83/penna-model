@@ -57,5 +57,5 @@ jobs:
         run: |
           sonar-scanner \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
-            --define sonar.coverageReportPaths=${{github.workspace}}/coverage_sonar.xml
+            --define sonar.cfamily.gcov.reportsPath=${{github.workspace}}/coverage_sonar.xml
 
