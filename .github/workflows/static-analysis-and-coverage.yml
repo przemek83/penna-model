@@ -45,6 +45,10 @@ jobs:
       - name: Generate coverage for Sonar
         run: gcovr --filter ${{github.workspace}}/src --sonarqube --exclude-throw-branches --output coverage_sonar.xml 
 
+
+      - name: Debug
+        run: ls -laF
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.5.0
         with:
