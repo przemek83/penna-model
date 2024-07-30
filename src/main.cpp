@@ -23,6 +23,11 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
     return simulation;
 }
 
+long int getSeed()
+{
+    return std::chrono::system_clock::now().time_since_epoch().count();
+}
+
 }  // namespace
 
 int main(int argc, char* argv[])
@@ -36,8 +41,7 @@ int main(int argc, char* argv[])
     if (!paramsOK)
         return EXIT_FAILURE;
 
-    const long int seed{
-        std::chrono::system_clock::now().time_since_epoch().count()};
+    const long int seed{getSeed()};
     Runner runner;
     for (int i{1}; i <= params.simulationsCount_; i++)
         runner.addSimulation(prepareSimulation(params, i, seed + i));
