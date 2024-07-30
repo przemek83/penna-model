@@ -200,12 +200,11 @@ void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
                                    catching.fromAge_);
 }
 
-[[noreturn]] void exitWithMsg(const std::exception& e,
-                              const argparse::ArgumentParser& parser)
+void printErrorMsg(const std::exception& e,
+                   const argparse::ArgumentParser& parser)
 {
     std::cerr << e.what() << std::endl;
     std::cerr << parser;
-    abort();
 }
 
 void fillParser(argparse::ArgumentParser& parser)
@@ -293,7 +292,8 @@ bool isValid(const Params& params)
     return false;
 }
 
-std::pair<std::string, std::string> getAppArguments(int argc, char* argv[])
+std::tuple<bool, std::string, std::string> getAppArguments(int argc,
+                                                           char* argv[])
 {
     argparse::ArgumentParser parser("penna-model", "1.0",
                                     argparse::default_arguments::help);
@@ -309,10 +309,11 @@ std::pair<std::string, std::string> getAppArguments(int argc, char* argv[])
     }
     catch (const std::exception& e)
     {
-        exitWithMsg(e, parser);
+        printErrorMsg(e, parser);
+        return {false, configFileName, prefix};
     }
 
-    return {configFileName, prefix};
+    return {true, configFileName, prefix};
 }
 
 std::pair<bool, Config::Params> getParams(const std::string& configFileName)
