@@ -321,7 +321,7 @@ std::pair<bool, Config::Params> getParams(const std::string& configFileName)
     std::ifstream configFileStream(configFileName);
     if (configFileStream.fail())
     {
-        std::cerr << "Cannot read config file " + configFileName << std::endl;
+        std::cerr << "Cannot read config file " << configFileName << std::endl;
         return {false, {}};
     }
 
