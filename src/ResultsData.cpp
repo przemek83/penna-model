@@ -40,7 +40,7 @@ void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
 void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Families" << std::endl;
-    for (size_t year{0}; year < static_cast<std::size_t>(years_); ++year)
+    for (size_t year{0}; year < years_; ++year)
     {
         if (isSingleFamily(year))
             return;
