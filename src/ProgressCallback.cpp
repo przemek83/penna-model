@@ -38,7 +38,7 @@ const char progressLineMarker{'*'};
 namespace ProgressCallback
 {
 
-[[maybe_unused]] std::function<void(int)> createSequentialProgressCallback(
+[[maybe_unused]] std::function<void(int)> getSequentialProgressCallback(
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
@@ -58,7 +58,7 @@ namespace ProgressCallback
     };
 }
 
-[[maybe_unused]] std::function<void(int)> createOverallProgressCallback(
+[[maybe_unused]] std::function<void(int)> getOverallProgressCallback(
     int sim, const Config::Params& params)
 {
     return [maxYears = params.years_, simNumber = sim,
