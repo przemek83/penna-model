@@ -18,9 +18,9 @@ public:
 
     void createInitialPopulation();
 
-    [[maybe_unused]] void saveInitialPopulation(Output& output);
+    [[maybe_unused]] void saveInitialPopulation(Output& output) const;
 
-    [[maybe_unused]] void saveFinalPopulation(Output& output);
+    [[maybe_unused]] void saveFinalPopulation(Output& output) const;
 
     void setGenerator(std::unique_ptr<Generator> generator);
 

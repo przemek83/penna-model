@@ -27,9 +27,9 @@ public:
 
     void saveAverages(const AverageData& data);
 
-    void saveInitialPopulation(const std::list<Individual>& individuals);
+    void saveInitialPopulation(const std::list<Individual>& individuals) const;
 
-    void saveFinalPopulation(const std::list<Individual>& individuals);
+    void saveFinalPopulation(const std::list<Individual>& individuals) const;
 
 protected:
     virtual std::shared_ptr<std::ostream> getStream(

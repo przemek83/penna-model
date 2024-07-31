@@ -19,7 +19,8 @@ void Output::saveAverages(const AverageData& data)
                                  {AGE_DISTRIBUTION, floatPrecision}});
 }
 
-void Output::saveInitialPopulation(const std::list<Individual>& individuals)
+void Output::saveInitialPopulation(
+    const std::list<Individual>& individuals) const
 {
     int counter{0};
     const std::shared_ptr<std::ostream> file{getStream(INITIAL_POPULATION)};
@@ -32,7 +33,7 @@ void Output::saveInitialPopulation(const std::list<Individual>& individuals)
     }
 }
 
-void Output::saveFinalPopulation(const std::list<Individual>& individuals)
+void Output::saveFinalPopulation(const std::list<Individual>& individuals) const
 {
     int counter{0};
     const std::shared_ptr<std::ostream> file{getStream(FINAL_POPULATION)};
