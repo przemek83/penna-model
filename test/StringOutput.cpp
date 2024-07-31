@@ -1,6 +1,6 @@
 #include "StringOutput.h"
 
-std::string StringOutput::getContentForOutputType(OUTPUT_TYPE outputType)
+std::string StringOutput::getContentForOutputType(OutputType outputType)
 {
     return stringStreams_[outputType]->str();
 }
@@ -12,7 +12,7 @@ void StringOutput::reset()
 }
 
 std::shared_ptr<std::ostream> StringOutput::getStream(
-    OUTPUT_TYPE outputType) const
+    OutputType outputType) const
 {
     return stringStreams_.at(outputType);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-enum class OUTPUT_TYPE
+enum class OutputType
 {
     STATISTICS = 0,
     INITIAL_POPULATION,

@@ -127,6 +127,6 @@ TEST_CASE("Catching", "[penna]")
     output.saveSimulationData(data);
 
     const std::string current{
-        output.getContentForOutputType(OUTPUT_TYPE::STATISTICS)};
+        output.getContentForOutputType(OutputType::STATISTICS)};
     REQUIRE(current == expected);
 }

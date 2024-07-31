@@ -7,18 +7,18 @@
 
 void Output::saveSimulationData(const SimulationData& data)
 {
-    saveData<SimulationData>(data, {{OUTPUT_TYPE::FAMILIES, 0},
-                                    {OUTPUT_TYPE::STATISTICS, 0},
-                                    {OUTPUT_TYPE::AGE_DISTRIBUTION, 0}});
+    saveData<SimulationData>(data, {{OutputType::FAMILIES, 0},
+                                    {OutputType::STATISTICS, 0},
+                                    {OutputType::AGE_DISTRIBUTION, 0}});
 }
 
 void Output::saveAverages(const AverageData& data)
 {
     const int floatPrecision{6};
     saveData<AverageData>(data,
-                          {{OUTPUT_TYPE::FAMILIES, floatPrecision},
-                           {OUTPUT_TYPE::STATISTICS, floatPrecision},
-                           {OUTPUT_TYPE::AGE_DISTRIBUTION, floatPrecision}});
+                          {{OutputType::FAMILIES, floatPrecision},
+                           {OutputType::STATISTICS, floatPrecision},
+                           {OutputType::AGE_DISTRIBUTION, floatPrecision}});
 }
 
 void Output::saveInitialPopulation(
@@ -26,7 +26,7 @@ void Output::saveInitialPopulation(
 {
     int counter{0};
     const std::shared_ptr<std::ostream> file{
-        getStream(OUTPUT_TYPE::INITIAL_POPULATION)};
+        getStream(OutputType::INITIAL_POPULATION)};
     *file << "Id" << separator_ << "Genome" << std::endl;
 
     for (const auto& individual : individuals)
@@ -40,7 +40,7 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals) const
 {
     int counter{0};
     const std::shared_ptr<std::ostream> file{
-        getStream(OUTPUT_TYPE::FINAL_POPULATION)};
+        getStream(OutputType::FINAL_POPULATION)};
     *file << "Id" << separator_ << "Ancestor" << separator_ << "Age"
           << separator_ << "Survived_mutations" << separator_ << "Genome"
           << std::endl;

@@ -33,37 +33,37 @@ public:
 
 protected:
     virtual std::shared_ptr<std::ostream> getStream(
-        OUTPUT_TYPE outputType) const = 0;
+        OutputType outputType) const = 0;
 
 private:
     template <typename T>
-    void saveData(const T& data, std::map<OUTPUT_TYPE, int> precisions)
+    void saveData(const T& data, std::map<OutputType, int> precisions)
     {
         const std::shared_ptr<std::ostream> families{
-            getStream(OUTPUT_TYPE::FAMILIES)};
-        *families << std::setprecision(precisions[OUTPUT_TYPE::FAMILIES])
+            getStream(OutputType::FAMILIES)};
+        *families << std::setprecision(precisions[OutputType::FAMILIES])
                   << std::fixed;
         data.saveFamilies(*families, separator_);
 
         const std::shared_ptr<std::ostream> stats{
-            getStream(OUTPUT_TYPE::STATISTICS)};
-        *stats << std::setprecision(precisions[OUTPUT_TYPE::STATISTICS])
+            getStream(OutputType::STATISTICS)};
+        *stats << std::setprecision(precisions[OutputType::STATISTICS])
                << std::fixed;
         data.saveBasicMetrics(*stats, separator_);
 
         const std::shared_ptr<std::ostream> bits{
-            getStream(OUTPUT_TYPE::BITS_DISTRIBUTION)};
+            getStream(OutputType::BITS_DISTRIBUTION)};
         *bits << std::setprecision(2) << std::fixed;
         data.saveBitsDistibution(*bits, separator_);
 
         const std::shared_ptr<std::ostream> age{
-            getStream(OUTPUT_TYPE::AGE_DISTRIBUTION)};
-        *age << std::setprecision(precisions[OUTPUT_TYPE::AGE_DISTRIBUTION])
+            getStream(OutputType::AGE_DISTRIBUTION)};
+        *age << std::setprecision(precisions[OutputType::AGE_DISTRIBUTION])
              << std::fixed;
         data.saveAgeDistibution(*age, separator_);
 
         const std::shared_ptr<std::ostream> deaths{
-            getStream(OUTPUT_TYPE::DEATHS_DISTRIBUTION)};
+            getStream(OutputType::DEATHS_DISTRIBUTION)};
         *deaths << std::setprecision(3) << std::fixed;
         data.saveDeathsDistibution(*deaths, separator_);
     }

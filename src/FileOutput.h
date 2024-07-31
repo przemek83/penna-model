@@ -10,21 +10,21 @@ class FileOutput : public Output
 public:
     explicit FileOutput(std::string prefix);
 
-    std::string getName(OUTPUT_TYPE outputType) const;
+    std::string getName(OutputType outputType) const;
 
 protected:
     std::shared_ptr<std::ostream> getStream(
-        OUTPUT_TYPE outputType) const override;
+        OutputType outputType) const override;
 
 private:
-    const std::map<OUTPUT_TYPE, std::string> fileNames_{
-        {OUTPUT_TYPE::STATISTICS, "statistics.txt"},
-        {OUTPUT_TYPE::INITIAL_POPULATION, "initialPopulation.txt"},
-        {OUTPUT_TYPE::FINAL_POPULATION, "finalPopulation.txt"},
-        {OUTPUT_TYPE::AGE_DISTRIBUTION, "age_distribution.txt"},
-        {OUTPUT_TYPE::BITS_DISTRIBUTION, "bits_distribution.txt"},
-        {OUTPUT_TYPE::DEATHS_DISTRIBUTION, "deaths_distribution.txt"},
-        {OUTPUT_TYPE::FAMILIES, "families.txt"}};
+    const std::map<OutputType, std::string> fileNames_{
+        {OutputType::STATISTICS, "statistics.txt"},
+        {OutputType::INITIAL_POPULATION, "initialPopulation.txt"},
+        {OutputType::FINAL_POPULATION, "finalPopulation.txt"},
+        {OutputType::AGE_DISTRIBUTION, "age_distribution.txt"},
+        {OutputType::BITS_DISTRIBUTION, "bits_distribution.txt"},
+        {OutputType::DEATHS_DISTRIBUTION, "deaths_distribution.txt"},
+        {OutputType::FAMILIES, "families.txt"}};
 
     std::string prefix_;
 };
