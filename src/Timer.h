@@ -6,7 +6,13 @@
 class Timer
 {
 public:
+    Timer() = default;
     ~Timer();
+
+    Timer(const Timer&) = delete;
+    Timer(Timer&&) = delete;
+    Timer& operator=(const Timer&) = delete;
+    Timer& operator=(Timer&&) = delete;
 
 private:
     std::chrono::time_point<std::chrono::steady_clock> start_{
