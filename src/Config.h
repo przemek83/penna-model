@@ -19,21 +19,21 @@ struct Offspring
 
 struct Population
 {
-    int initial_{3000};
-    int max_{50000};
+    int initial_{3'000};
+    int max_{50'000};
 };
 
 struct Catching
 {
     int percent_{0};
-    int fromYear_{1000};
+    int fromYear_{1'000};
     int fromAge_{4};
 };
 
 struct Params
 {
     Population population_;
-    int years_{5000};
+    int years_{5'000};
     Mutations mutations_;
     int reproductionAge_{10};
     Offspring offspring_;
