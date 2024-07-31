@@ -45,9 +45,11 @@ CATCH_REGISTER_LISTENER(testRunListener)
 
 TEST_CASE("Output", "[penna]")
 {
-    auto outputType{GENERATE(STATISTICS, INITIAL_POPULATION, FINAL_POPULATION,
-                             AGE_DISTRIBUTION, BITS_DISTRIBUTION,
-                             DEATHS_DISTRIBUTION, FAMILIES)};
+    auto outputType{
+        GENERATE(OUTPUT_TYPE::STATISTICS, OUTPUT_TYPE::INITIAL_POPULATION,
+                 OUTPUT_TYPE::FINAL_POPULATION, OUTPUT_TYPE::AGE_DISTRIBUTION,
+                 OUTPUT_TYPE::BITS_DISTRIBUTION,
+                 OUTPUT_TYPE::DEATHS_DISTRIBUTION, OUTPUT_TYPE::FAMILIES)};
     CAPTURE(outputType);
     const FileOutput fileOutput("sim1");
     Common::compareStringWithFileContent(
@@ -83,8 +85,9 @@ TEST_CASE("Output averages", "[penna]")
         output.saveAverages(averageData);
 
         const std::vector<OUTPUT_TYPE> outputTypes{
-            DEATHS_DISTRIBUTION, FAMILIES, BITS_DISTRIBUTION, AGE_DISTRIBUTION,
-            STATISTICS};
+            OUTPUT_TYPE::DEATHS_DISTRIBUTION, OUTPUT_TYPE::FAMILIES,
+            OUTPUT_TYPE::BITS_DISTRIBUTION, OUTPUT_TYPE::AGE_DISTRIBUTION,
+            OUTPUT_TYPE::STATISTICS};
 
         const FileOutput fileOutput("averages");
         for (const auto outputType : outputTypes)

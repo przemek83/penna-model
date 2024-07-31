@@ -39,24 +39,31 @@ private:
     template <typename T>
     void saveData(const T& data, std::map<OUTPUT_TYPE, int> precisions)
     {
-        const std::shared_ptr<std::ostream> families{getStream(FAMILIES)};
-        *families << std::setprecision(precisions[FAMILIES]) << std::fixed;
+        const std::shared_ptr<std::ostream> families{
+            getStream(OUTPUT_TYPE::FAMILIES)};
+        *families << std::setprecision(precisions[OUTPUT_TYPE::FAMILIES])
+                  << std::fixed;
         data.saveFamilies(*families, separator_);
 
-        const std::shared_ptr<std::ostream> stats{getStream(STATISTICS)};
-        *stats << std::setprecision(precisions[STATISTICS]) << std::fixed;
+        const std::shared_ptr<std::ostream> stats{
+            getStream(OUTPUT_TYPE::STATISTICS)};
+        *stats << std::setprecision(precisions[OUTPUT_TYPE::STATISTICS])
+               << std::fixed;
         data.saveBasicMetrics(*stats, separator_);
 
-        const std::shared_ptr<std::ostream> bits{getStream(BITS_DISTRIBUTION)};
+        const std::shared_ptr<std::ostream> bits{
+            getStream(OUTPUT_TYPE::BITS_DISTRIBUTION)};
         *bits << std::setprecision(2) << std::fixed;
         data.saveBitsDistibution(*bits, separator_);
 
-        const std::shared_ptr<std::ostream> age{getStream(AGE_DISTRIBUTION)};
-        *age << std::setprecision(precisions[AGE_DISTRIBUTION]) << std::fixed;
+        const std::shared_ptr<std::ostream> age{
+            getStream(OUTPUT_TYPE::AGE_DISTRIBUTION)};
+        *age << std::setprecision(precisions[OUTPUT_TYPE::AGE_DISTRIBUTION])
+             << std::fixed;
         data.saveAgeDistibution(*age, separator_);
 
         const std::shared_ptr<std::ostream> deaths{
-            getStream(DEATHS_DISTRIBUTION)};
+            getStream(OUTPUT_TYPE::DEATHS_DISTRIBUTION)};
         *deaths << std::setprecision(3) << std::fixed;
         data.saveDeathsDistibution(*deaths, separator_);
     }

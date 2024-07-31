@@ -33,8 +33,10 @@ TEST_CASE("Simulation", "[penna]")
         std::cout << std::endl;
 
         const std::vector<OUTPUT_TYPE> outputTypes{
-            DEATHS_DISTRIBUTION, INITIAL_POPULATION, FINAL_POPULATION, FAMILIES,
-            BITS_DISTRIBUTION,   AGE_DISTRIBUTION,   STATISTICS};
+            OUTPUT_TYPE::DEATHS_DISTRIBUTION, OUTPUT_TYPE::INITIAL_POPULATION,
+            OUTPUT_TYPE::FINAL_POPULATION,    OUTPUT_TYPE::FAMILIES,
+            OUTPUT_TYPE::BITS_DISTRIBUTION,   OUTPUT_TYPE::AGE_DISTRIBUTION,
+            OUTPUT_TYPE::STATISTICS};
 
         const FileOutput fileOutput("sim1");
         for (const auto outputType : outputTypes)

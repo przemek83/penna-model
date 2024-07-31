@@ -20,11 +20,14 @@ protected:
 
 private:
     std::map<OUTPUT_TYPE, std::shared_ptr<std::ostringstream>> stringStreams_{
-        {STATISTICS, std::make_shared<std::ostringstream>()},
-        {INITIAL_POPULATION, std::make_shared<std::ostringstream>()},
-        {FINAL_POPULATION, std::make_shared<std::ostringstream>()},
-        {AGE_DISTRIBUTION, std::make_shared<std::ostringstream>()},
-        {BITS_DISTRIBUTION, std::make_shared<std::ostringstream>()},
-        {DEATHS_DISTRIBUTION, std::make_shared<std::ostringstream>()},
-        {FAMILIES, std::make_shared<std::ostringstream>()}};
+        {OUTPUT_TYPE::STATISTICS, std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::INITIAL_POPULATION,
+         std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::FINAL_POPULATION, std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::AGE_DISTRIBUTION, std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::BITS_DISTRIBUTION,
+         std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::DEATHS_DISTRIBUTION,
+         std::make_shared<std::ostringstream>()},
+        {OUTPUT_TYPE::FAMILIES, std::make_shared<std::ostringstream>()}};
 };

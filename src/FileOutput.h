@@ -17,11 +17,14 @@ protected:
         OUTPUT_TYPE outputType) const override;
 
 private:
-    std::vector<std::string> fileNames_{
-        "statistics.txt",        "initialPopulation.txt",
-        "finalPopulation.txt",   "age_distribution.txt",
-        "bits_distribution.txt", "deaths_distribution.txt",
-        "families.txt"};
+    const std::map<OUTPUT_TYPE, std::string> fileNames_{
+        {OUTPUT_TYPE::STATISTICS, "statistics.txt"},
+        {OUTPUT_TYPE::INITIAL_POPULATION, "initialPopulation.txt"},
+        {OUTPUT_TYPE::FINAL_POPULATION, "finalPopulation.txt"},
+        {OUTPUT_TYPE::AGE_DISTRIBUTION, "age_distribution.txt"},
+        {OUTPUT_TYPE::BITS_DISTRIBUTION, "bits_distribution.txt"},
+        {OUTPUT_TYPE::DEATHS_DISTRIBUTION, "deaths_distribution.txt"},
+        {OUTPUT_TYPE::FAMILIES, "families.txt"}};
 
     std::string prefix_;
 };

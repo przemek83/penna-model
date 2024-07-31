@@ -9,7 +9,7 @@ std::string FileOutput::getName(OUTPUT_TYPE outputType) const
     std::string fileName;
     fileName.append(prefix_);
     fileName.append("_");
-    fileName.append(fileNames_[outputType]);
+    fileName.append(fileNames_.at(outputType));
 
     return fileName;
 }
