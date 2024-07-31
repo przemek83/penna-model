@@ -96,12 +96,12 @@ void Simulation::createInitialPopulation()
     }
 }
 
-void Simulation::saveInitialPopulation(Output& output) const
+void Simulation::saveInitialPopulation(const Output& output) const
 {
     output.saveInitialPopulation(individuals_);
 }
 
-void Simulation::saveFinalPopulation(Output& output) const
+void Simulation::saveFinalPopulation(const Output& output) const
 {
     output.saveFinalPopulation(individuals_);
 }
