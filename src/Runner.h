@@ -7,7 +7,7 @@ class Runner
 public:
     void addSimulation(Simulation simulation);
 
-    std::vector<SimulationData> runSequential();
+    [[maybe_unused]] std::vector<SimulationData> runSequential();
 
     std::vector<SimulationData> runParallel();
 
