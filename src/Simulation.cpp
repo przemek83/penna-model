@@ -29,7 +29,7 @@ SimulationData Simulation::run()
         if (progressCallback_)
             progressCallback_(year);
 
-        year++;
+        ++year;
     }
 
     return prepareData(std::move(basicMetrics));
@@ -60,13 +60,13 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
                 families[static_cast<std::size_t>(individual.getAncestor())]};
             !singleFamily && (family != 1))
         {
-            yearMetrics.families_++;
+            ++yearMetrics.families_;
             family = 1;
         }
 
         if (shouldDie(individual, chanceForDeathInPercent))
         {
-            yearMetrics.deaths_++;
+            ++yearMetrics.deaths_;
             it = individuals_.erase(it);
             continue;
         }
@@ -80,7 +80,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
         }
 
         individual.ageByOneYear();
-        it++;
+        ++it;
     }
 
     return yearMetrics;
@@ -88,7 +88,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 
 void Simulation::createInitialPopulation()
 {
-    for (int i{0}; i < params_.population_.initial_; i++)
+    for (int i{0}; i < params_.population_.initial_; ++i)
     {
         Individual individual(i);
         individual.assignRandomBits(*generator_, params_.mutations_.initial_);
@@ -117,7 +117,7 @@ std::vector<int> Simulation::getAgeDistribution(
     std::vector<int> ageDistribution(params_.bits_, 0);
 
     for (const auto& individual : individuals)
-        ageDistribution[static_cast<std::size_t>(individual.getAge())]++;
+        ++ageDistribution[static_cast<std::size_t>(individual.getAge())];
 
     return ageDistribution;
 }
@@ -129,7 +129,7 @@ std::vector<int> Simulation::getBitsDistribution(
 
     for (const auto& individual : individuals)
     {
-        for (std::size_t i{0}; i < params_.bits_; i++)
+        for (std::size_t i{0}; i < params_.bits_; ++i)
             bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
     }
 
@@ -199,11 +199,11 @@ Simulation::getDeathsDistributionData() const
         const Individual& individual{*it};
         const std::size_t age{static_cast<std::size_t>(individual.getAge())};
 
-        gompertzAgeDistribution[age]++;
+        ++gompertzAgeDistribution[age];
         if (shouldDie(individual, chanceForDeathInPercent))
-            gompertzDeathsDistribution[age]++;
+            ++gompertzDeathsDistribution[age];
 
-        it++;
+        ++it;
     }
 
     return {gompertzDeathsDistribution, gompertzAgeDistribution};

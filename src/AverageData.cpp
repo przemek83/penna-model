@@ -19,7 +19,7 @@ void AverageData::integrate(const SimulationData& data)
 {
     integrateBasicMetrics(data);
     integrateDistributions(data);
-    simulations_++;
+    ++simulations_;
 }
 
 void AverageData::finalize()
@@ -72,7 +72,7 @@ void AverageData::integrateDistributions(const SimulationData& data)
     const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
     const int bits{getBits()};
-    for (std::size_t i{0}; i < bits; i++)
+    for (std::size_t i{0}; i < bits; ++i)
     {
         const float newBitsValue{getBitsDistributionValue(i) +
                                  data.getBitsDistributionValue(i)};
@@ -90,10 +90,10 @@ void AverageData::finalizeBasicMetrics()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
     const std::size_t years{getYears()};
-    for (std::size_t i{0}; i < years; i++)
+    for (std::size_t i{0}; i < years; ++i)
         basicMetrics_[i].families_ /= simulationsAsFloat;
 
-    for (std::size_t i{0}; i < years; i++)
+    for (std::size_t i{0}; i < years; ++i)
     {
         basicMetrics_[i].livingAtStart_ /= simulationsAsFloat;
         basicMetrics_[i].births_ /= simulationsAsFloat;
@@ -105,7 +105,7 @@ void AverageData::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
     const int bits{getBits()};
-    for (std::size_t i{0}; i < bits; i++)
+    for (std::size_t i{0}; i < bits; ++i)
     {
         const float newDeathsValue{getDeathsDistributionValue(i) /
                                    simulationsAsFloat};

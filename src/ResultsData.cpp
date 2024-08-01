@@ -11,7 +11,7 @@ void ResultsData::saveBitsDistibution(std::ostream& stream,
                                       char separator) const
 {
     stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; ++bit)
         stream << bit << separator << getBitsDistributionValue(bit)
                << std::endl;
 }
@@ -20,7 +20,7 @@ void ResultsData::saveDeathsDistibution(std::ostream& stream,
                                         char separator) const
 {
     stream << "Bit" << separator << "Percent" << std::endl;
-    for (std::size_t bit{0}; bit < bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; ++bit)
         stream << bit << separator << getDeathsDistributionValue(bit)
                << std::endl;
 }
@@ -53,7 +53,7 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
     stream << "Age" << separator << "Count" << std::endl;
-    for (std::size_t bit{0}; bit < bits_; bit++)
+    for (std::size_t bit{0}; bit < bits_; ++bit)
     {
         stream << bit << separator;
         writeBitDistributionData(stream, bit);

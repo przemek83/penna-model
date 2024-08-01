@@ -32,7 +32,7 @@ void Output::saveInitialPopulation(
     for (const auto& individual : individuals)
     {
         *file << counter << separator_ << individual.asBitString() << std::endl;
-        counter++;
+        ++counter;
     }
 }
 
@@ -51,6 +51,6 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals) const
               << individual.getAge() << separator_
               << individual.getSurvivedMutations() << separator_
               << individual.asBitString() << std::endl;
-        counter++;
+        ++counter;
     }
 }

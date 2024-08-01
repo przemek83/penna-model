@@ -11,8 +11,8 @@ Individual::Individual(int ancestor) : ancestor_{ancestor} {}
 void Individual::ageByOneYear()
 {
     if (genome_[age_])
-        survivedMutations_++;
-    age_++;
+        ++survivedMutations_;
+    ++age_;
 }
 
 std::string Individual::asBitString() const { return genome_.to_string(); }
@@ -23,7 +23,7 @@ Individual Individual::offspring(Generator& generator, int mutations) const
     offspring.age_ = 0;
     offspring.survivedMutations_ = 0;
 
-    for (int i{0}; i < mutations; i++)
+    for (int i{0}; i < mutations; ++i)
         offspring.applyMutation(generator);
 
     return offspring;
