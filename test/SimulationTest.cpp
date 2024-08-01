@@ -15,7 +15,7 @@ TEST_CASE("Simulation", "[penna]")
 {
     SECTION("single simulation")
     {
-        Config::Params params;
+        config::Params params;
         params.population_.max_ = 5000;
         params.years_ = 1000;
 
@@ -52,7 +52,7 @@ TEST_CASE("Simulation", "[penna]")
 TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
-    Config::Params params;
+    config::Params params;
 
     SECTION("simulation short")
     {

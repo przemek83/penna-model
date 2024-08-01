@@ -6,7 +6,7 @@
 #include "Generator.h"
 #include "Output.h"
 
-Simulation::Simulation(const Config::Params& params) : params_(params) {}
+Simulation::Simulation(const config::Params& params) : params_(params) {}
 
 SimulationData Simulation::run()
 {

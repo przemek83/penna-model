@@ -6,29 +6,29 @@
 
 namespace
 {
-bool operator==(const Config::Catching& left, const Config::Catching& right)
+bool operator==(const config::Catching& left, const config::Catching& right)
 {
     return left.percent_ == right.percent_ &&
            left.fromYear_ == right.fromYear_ && left.fromAge_ == right.fromAge_;
 }
 
-bool operator==(const Config::Population& left, const Config::Population& right)
+bool operator==(const config::Population& left, const config::Population& right)
 {
     return left.max_ == right.max_ && left.initial_ == right.initial_;
 }
 
-bool operator==(const Config::Mutations& left, const Config::Mutations& right)
+bool operator==(const config::Mutations& left, const config::Mutations& right)
 {
     return left.added_ == right.added_ && left.lethal_ == right.lethal_ &&
            left.initial_ == right.initial_;
 }
 
-bool operator==(const Config::Offspring& left, const Config::Offspring& right)
+bool operator==(const config::Offspring& left, const config::Offspring& right)
 {
     return left.chance_ == right.chance_ && left.count_ == right.count_;
 }
 
-bool operator==(const Config::Params& left, const Config::Params& right)
+bool operator==(const config::Params& left, const config::Params& right)
 {
     return left.population_ == right.population_ &&
            left.years_ == right.years_ && left.mutations_ == right.mutations_ &&
@@ -43,9 +43,9 @@ namespace Catch
 {
 
 template <>
-struct StringMaker<Config::Params>
+struct StringMaker<config::Params>
 {
-    static std::string convert(const Config::Params& value)
+    static std::string convert(const config::Params& value)
     {
         std::ostringstream os;
         os << "{" << value.population_.max_ << "," << value.years_ << ","
@@ -65,16 +65,16 @@ TEST_CASE("Config", "[penna]")
 {
     SECTION("empty config")
     {
-        const Config::Params defaultParams;
+        const config::Params defaultParams;
 
         std::istringstream emptyCofigString("");
-        const Config::Params configParams{Config::loadConfig(emptyCofigString)};
+        const config::Params configParams{config::loadConfig(emptyCofigString)};
         REQUIRE(defaultParams == configParams);
     }
 
     SECTION("valid config")
     {
-        const Config::Params expectedParams{2000, 100000, 1000, 2,  6,    6, 4,
+        const config::Params expectedParams{2000, 100000, 1000, 2,  6,    6, 4,
                                             50,   2,      4,    20, 2000, 5};
 
         std::istringstream configString(R"(
@@ -95,7 +95,7 @@ catching:
   percent: 20
   fromYear: 2000
   fromAge: 5)");
-        const Config::Params configParams{Config::loadConfig(configString)};
+        const config::Params configParams{config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);
     }
 
@@ -105,12 +105,12 @@ catching:
 mutations:
   lethal: aaaa36
 )");
-        REQUIRE_THROWS(Config::loadConfig(invalidConfigString));
+        REQUIRE_THROWS(config::loadConfig(invalidConfigString));
     }
 
     SECTION("partial config")
     {
-        Config::Params expectedParams;
+        config::Params expectedParams;
         expectedParams.population_.max_ = 100000;
         expectedParams.simulationsCount_ = 4;
 
@@ -118,7 +118,7 @@ mutations:
 population:
   max: 100000
 simulations: 4)");
-        const Config::Params configParams{Config::loadConfig(configString)};
+        const config::Params configParams{config::loadConfig(configString)};
         REQUIRE(configParams == expectedParams);
     }
 }

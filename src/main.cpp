@@ -10,7 +10,7 @@
 
 namespace
 {
-Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
+Simulation prepareSimulation(const config::Params& params, int simulationNumber,
                              long int seed)
 {
     Simulation simulation(params);
@@ -18,7 +18,7 @@ Simulation prepareSimulation(const Config::Params& params, int simulationNumber,
         std::make_unique<NumbersGenerator>(params.bits_, seed));
     simulation.createInitialPopulation();
     auto progressCallback{
-        ProgressCallback::getOverallProgressCallback(simulationNumber, params)};
+        progressCallback::getOverallProgressCallback(simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
     return simulation;
 }
@@ -33,11 +33,11 @@ long int getSeed()
 int main(int argc, char* argv[])
 {
     const auto [parsingOK, configFileName,
-                prefix]{Config::getAppArguments(argc, argv)};
+                prefix]{config::getAppArguments(argc, argv)};
     if (!parsingOK)
         return EXIT_FAILURE;
 
-    const auto [paramsOK, params]{Config::getParams(configFileName)};
+    const auto [paramsOK, params]{config::getParams(configFileName)};
     if (!paramsOK)
         return EXIT_FAILURE;
 

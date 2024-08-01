@@ -26,7 +26,7 @@ public:
     void testRunStarting(
         [[maybe_unused]] Catch::TestRunInfo const& testRunInfo) override
     {
-        Config::Params params;
+        config::Params params;
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 
@@ -61,7 +61,7 @@ TEST_CASE("Output averages", "[penna]")
 {
     SECTION("save averages")
     {
-        Config::Params params;
+        config::Params params;
         params.population_.max_ = maxPopulation;
         params.years_ = years;
 

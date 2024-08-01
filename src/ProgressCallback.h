@@ -4,11 +4,11 @@
 
 #include "Config.h"
 
-namespace ProgressCallback
+namespace progressCallback
 {
 [[maybe_unused]] std::function<void(int)> getSequentialProgressCallback(
-    int sim, const Config::Params& params);
+    int sim, const config::Params& params);
 
 [[maybe_unused]] std::function<void(int)> getOverallProgressCallback(
-    int sim, const Config::Params& params);
-}  // namespace ProgressCallback
+    int sim, const config::Params& params);
+}  // namespace progressCallback

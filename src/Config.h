@@ -2,7 +2,7 @@
 
 #include <istream>
 
-namespace Config
+namespace config
 {
 struct Mutations
 {
@@ -50,13 +50,13 @@ struct Params
 
 static_assert(Params::bits_ > 0);
 
-Config::Params loadConfig(std::istream& stream);
+config::Params loadConfig(std::istream& stream);
 
 bool isValid(const Params& params);
 
 std::tuple<bool, std::string, std::string> getAppArguments(int argc,
                                                            char* argv[]);
 
-std::pair<bool, Config::Params> getParams(const std::string& configFileName);
+std::pair<bool, config::Params> getParams(const std::string& configFileName);
 
-}  // namespace Config
+}  // namespace config

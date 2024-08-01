@@ -84,9 +84,9 @@ namespace Catch
 {
 
 template <>
-struct StringMaker<Config::Catching>
+struct StringMaker<config::Catching>
 {
-    static std::string convert(const Config::Catching& value)
+    static std::string convert(const config::Catching& value)
     {
         std::ostringstream os;
         os << "{" << value.percent_ << "," << value.fromYear_ << ","
@@ -98,11 +98,11 @@ struct StringMaker<Config::Catching>
 
 TEST_CASE("Catching", "[penna]")
 {
-    Config::Params params;
+    config::Params params;
     params.population_.max_ = 5000;
     params.years_ = 10;
 
-    using TestCase = std::pair<Config::Catching, std::string>;
+    using TestCase = std::pair<config::Catching, std::string>;
     auto [catching,
           expected]{GENERATE(TestCase{{0, 0, 4}, zeroPercentExpected},
                              TestCase{{100, 0, 4}, oneHundredPercentExpected},

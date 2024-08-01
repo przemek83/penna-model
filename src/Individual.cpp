@@ -45,7 +45,7 @@ void Individual::assignRandomBits(Generator& generator, int startingMutations)
         genome_[mutationPosition] = true;
 }
 
-void Individual::setGenome(const std::bitset<Config::Params::bits_>& genome)
+void Individual::setGenome(const std::bitset<config::Params::bits_>& genome)
 {
     genome_ = genome;
 }

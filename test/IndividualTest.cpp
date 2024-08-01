@@ -10,7 +10,7 @@
 
 TEST_CASE("Individual", "[penna]")
 {
-    const Config::Params defaultParams;
+    const config::Params defaultParams;
     const int bits{defaultParams.bits_};
 
     const std::string genomeString{

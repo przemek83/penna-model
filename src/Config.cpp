@@ -57,9 +57,9 @@ std::string createErrorMsg(Field field, const std::string& condition,
     return os.str();
 }
 
-Config::Mutations loadMutations(const YAML::Node& node)
+config::Mutations loadMutations(const YAML::Node& node)
 {
-    Config::Mutations mutations;
+    config::Mutations mutations;
 
     if (const YAML::Node value{node[fieldToString.at(Field::MUTATIONS_ADDED)]})
         mutations.added_ = value.as<int>();
@@ -74,9 +74,9 @@ Config::Mutations loadMutations(const YAML::Node& node)
     return mutations;
 }
 
-Config::Offspring loadOffspring(const YAML::Node& node)
+config::Offspring loadOffspring(const YAML::Node& node)
 {
-    Config::Offspring offspring;
+    config::Offspring offspring;
 
     if (const YAML::Node value{node[fieldToString.at(Field::OFFSPRING_CHANCE)]})
         offspring.chance_ = value.as<int>();
@@ -87,9 +87,9 @@ Config::Offspring loadOffspring(const YAML::Node& node)
     return offspring;
 }
 
-Config::Population loadPopulation(const YAML::Node& node)
+config::Population loadPopulation(const YAML::Node& node)
 {
-    Config::Population population;
+    config::Population population;
 
     if (const YAML::Node value{
             node[fieldToString.at(Field::POPULATION_INITIAL)]})
@@ -101,9 +101,9 @@ Config::Population loadPopulation(const YAML::Node& node)
     return population;
 }
 
-Config::Catching loadCatching(const YAML::Node& node)
+config::Catching loadCatching(const YAML::Node& node)
 {
-    Config::Catching catching;
+    config::Catching catching;
 
     if (const YAML::Node value{node[fieldToString.at(Field::CATCHING_PERCENT)]})
         catching.percent_ = value.as<int>();
@@ -119,7 +119,7 @@ Config::Catching loadCatching(const YAML::Node& node)
     return catching;
 }
 
-void checkMutations(Config::Mutations mutations, std::string& errorMsg)
+void checkMutations(config::Mutations mutations, std::string& errorMsg)
 {
     if (mutations.added_ < 0)
         errorMsg +=
@@ -133,13 +133,13 @@ void checkMutations(Config::Mutations mutations, std::string& errorMsg)
         errorMsg += createErrorMsg(Field::MUTATIONS_INITIAL, ">= 0",
                                    mutations.initial_);
 
-    if (mutations.initial_ > Config::Params::bits_)
+    if (mutations.initial_ > config::Params::bits_)
         errorMsg += createErrorMsg(
             Field::MUTATIONS_INITIAL,
-            "<= " + std::to_string(Config::Params::bits_), mutations.initial_);
+            "<= " + std::to_string(config::Params::bits_), mutations.initial_);
 }
 
-void checkOffspring(Config::Offspring offspring, std::string& errorMsg)
+void checkOffspring(config::Offspring offspring, std::string& errorMsg)
 {
     if (offspring.count_ < 0)
         errorMsg +=
@@ -154,7 +154,7 @@ void checkOffspring(Config::Offspring offspring, std::string& errorMsg)
                                    offspring.chance_);
 }
 
-void checkPopulation(Config::Population population, std::string& errorMsg)
+void checkPopulation(config::Population population, std::string& errorMsg)
 {
     if (population.max_ <= 0)
         errorMsg +=
@@ -171,7 +171,7 @@ void checkPopulation(Config::Population population, std::string& errorMsg)
             population.initial_);
 }
 
-void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
+void checkCatching(config::Catching catching, int years, std::string& errorMsg)
 {
     if (catching.percent_ < 0)
         errorMsg +=
@@ -194,9 +194,9 @@ void checkCatching(Config::Catching catching, int years, std::string& errorMsg)
         errorMsg +=
             createErrorMsg(Field::CATCHING_FROM_AGE, ">= 0", catching.fromAge_);
 
-    if (catching.fromAge_ > Config::Params::bits_)
+    if (catching.fromAge_ > config::Params::bits_)
         errorMsg += createErrorMsg(Field::CATCHING_FROM_AGE,
-                                   "< " + std::to_string(Config::Params::bits_),
+                                   "< " + std::to_string(config::Params::bits_),
                                    catching.fromAge_);
 }
 
@@ -224,11 +224,11 @@ void fillParser(argparse::ArgumentParser& parser)
 
 }  // namespace
 
-namespace Config
+namespace config
 {
-Config::Params loadConfig(std::istream& stream)
+config::Params loadConfig(std::istream& stream)
 {
-    Config::Params params;
+    config::Params params;
     YAML::Node yaml{YAML::Load(stream)};
 
     if (const YAML::Node & node{yaml[fieldToString.at(Field::POPULATION)]};
@@ -316,7 +316,7 @@ std::tuple<bool, std::string, std::string> getAppArguments(int argc,
     return {true, configFileName, prefix};
 }
 
-std::pair<bool, Config::Params> getParams(const std::string& configFileName)
+std::pair<bool, config::Params> getParams(const std::string& configFileName)
 {
     std::ifstream configFileStream(configFileName);
     if (configFileStream.fail())
@@ -325,12 +325,12 @@ std::pair<bool, Config::Params> getParams(const std::string& configFileName)
         return {false, {}};
     }
 
-    const Config::Params params{Config::loadConfig(configFileStream)};
+    const config::Params params{config::loadConfig(configFileStream)};
 
-    if (!Config::isValid(params))
+    if (!config::isValid(params))
         return {false, {}};
 
     return {true, params};
 }
 
-}  // namespace Config
+}  // namespace config
