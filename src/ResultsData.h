@@ -65,7 +65,7 @@ protected:
 
     std::size_t getYears() const;
 
-    int getBits() const;
+    std::size_t getBits() const;
 
     virtual bool isSingleFamily(std::size_t year) const = 0;
 
@@ -74,5 +74,5 @@ private:
     std::vector<float> bitsDistribution_;
 
     std::size_t years_;
-    int bits_;
+    std::size_t bits_;
 };

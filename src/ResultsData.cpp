@@ -83,4 +83,4 @@ void ResultsData::setBitsDistributionValue(std::size_t index, float value)
 
 std::size_t ResultsData::getYears() const { return years_; }
 
-int ResultsData::getBits() const { return bits_; }
+std::size_t ResultsData::getBits() const { return bits_; }

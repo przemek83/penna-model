@@ -3,7 +3,7 @@
 SimulationData::SimulationData(std::size_t years, int bits)
     : ResultsData(years, bits)
 {
-    ageDistribution_.resize(static_cast<std::size_t>(getBits()), 0);
+    ageDistribution_.resize(getBits(), 0);
     basicMetrics_.resize(getYears());
 }
 
@@ -26,7 +26,7 @@ const std::vector<int>& SimulationData::getAgeDistribution() const
 
 void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
 {
-    const int bits{getBits()};
+    const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
         ageDistribution_[i] = ageDistribution[i];
 }
@@ -34,7 +34,7 @@ void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
 void SimulationData::setBitDistribution(
     const std::vector<int>& bitsDistribution, int populationCount)
 {
-    const int bits{getBits()};
+    const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {
         const float value{populationCount > 0
@@ -49,7 +49,7 @@ void SimulationData::setDeathDistribution(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution)
 {
-    const int bits{getBits()};
+    const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {
         float value{1};

@@ -71,7 +71,7 @@ void AverageData::integrateDistributions(const SimulationData& data)
 {
     const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
-    const int bits{getBits()};
+    const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {
         const float newBitsValue{getBitsDistributionValue(i) +
@@ -104,7 +104,7 @@ void AverageData::finalizeBasicMetrics()
 void AverageData::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
-    const int bits{getBits()};
+    const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {
         const float newDeathsValue{getDeathsDistributionValue(i) /
