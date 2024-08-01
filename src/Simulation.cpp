@@ -73,7 +73,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 
         if (shouldHaveOffspring(individual))
         {
-            for (int i{0}; i < params_.offspring_.count_; i++)
+            for (int i{0}; i < params_.offspring_.count_; ++i)
                 individuals_.emplace_front(individual.offspring(
                     *generator_, params_.mutations_.added_));
             yearMetrics.births_ += params_.offspring_.count_;

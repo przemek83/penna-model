@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
     const long int seed{getSeed()};
     Runner runner;
-    for (int i{1}; i <= params.simulationsCount_; i++)
+    for (int i{1}; i <= params.simulationsCount_; ++i)
         runner.addSimulation(prepareSimulation(params, i, seed + i));
 
     const std::vector<SimulationData> simulationsData{runner.runParallel()};
