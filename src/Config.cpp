@@ -53,7 +53,7 @@ std::string createErrorMsg(Field field, const std::string& condition,
 {
     std::ostringstream os;
     os << "check failed: " << fieldToString.at(field) << " " << condition
-       << ", got " << currentValue << std::endl;
+       << ", got " << currentValue << "\n";
     return os.str();
 }
 
@@ -203,7 +203,7 @@ void checkCatching(config::Catching catching, int years, std::string& errorMsg)
 void printErrorMsg(const std::exception& e,
                    const argparse::ArgumentParser& parser)
 {
-    std::cerr << e.what() << std::endl;
+    std::cerr << e.what() << "\n";
     std::cerr << parser;
 }
 
@@ -287,7 +287,7 @@ bool isValid(const Params& params)
     if (errorMsg.empty())
         return true;
 
-    std::cerr << "Configuration is invalid:" << std::endl << errorMsg;
+    std::cerr << "Configuration is invalid:\n" << errorMsg;
 
     return false;
 }
@@ -321,7 +321,7 @@ std::pair<bool, config::Params> getParams(const std::string& configFileName)
     std::ifstream configFileStream(configFileName);
     if (configFileStream.fail())
     {
-        std::cerr << "Cannot read config file " << configFileName << std::endl;
+        std::cerr << "Cannot read config file " << configFileName << "\n";
         return {false, {}};
     }
 

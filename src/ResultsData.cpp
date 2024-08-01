@@ -10,7 +10,7 @@ ResultsData::ResultsData(std::size_t years, int bits)
 void ResultsData::saveBitsDistibution(std::ostream& stream,
                                       char separator) const
 {
-    stream << "Bit" << separator << "Percent" << std::endl;
+    stream << "Bit" << separator << "Percent\n";
     for (std::size_t bit{0}; bit < bits_; ++bit)
         stream << bit << separator << getBitsDistributionValue(bit)
                << std::endl;
@@ -19,7 +19,7 @@ void ResultsData::saveBitsDistibution(std::ostream& stream,
 void ResultsData::saveDeathsDistibution(std::ostream& stream,
                                         char separator) const
 {
-    stream << "Bit" << separator << "Percent" << std::endl;
+    stream << "Bit" << separator << "Percent\n";
     for (std::size_t bit{0}; bit < bits_; ++bit)
         stream << bit << separator << getDeathsDistributionValue(bit)
                << std::endl;
@@ -28,7 +28,7 @@ void ResultsData::saveDeathsDistibution(std::ostream& stream,
 void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
 {
     stream << "Year" << separator << "Living_start" << separator << "Births"
-           << separator << "Living_end" << separator << "Deaths" << std::endl;
+           << separator << "Living_end" << separator << "Deaths\n";
     for (size_t year{0}; year < years_; ++year)
     {
         stream << year << separator;
@@ -39,7 +39,7 @@ void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
 
 void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 {
-    stream << "Year" << separator << "Families" << std::endl;
+    stream << "Year" << separator << "Families\n";
     for (size_t year{0}; year < years_; ++year)
     {
         if (isSingleFamily(year))
@@ -52,7 +52,7 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
 
 void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
 {
-    stream << "Age" << separator << "Count" << std::endl;
+    stream << "Age" << separator << "Count\n";
     for (std::size_t bit{0}; bit < bits_; ++bit)
     {
         stream << bit << separator;

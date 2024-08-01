@@ -27,7 +27,7 @@ void Output::saveInitialPopulation(
     int counter{0};
     const std::shared_ptr<std::ostream> file{
         getStream(OutputType::INITIAL_POPULATION)};
-    *file << "Id" << separator_ << "Genome" << std::endl;
+    *file << "Id" << separator_ << "Genome\n";
 
     for (const auto& individual : individuals)
     {
@@ -42,8 +42,7 @@ void Output::saveFinalPopulation(const std::list<Individual>& individuals) const
     const std::shared_ptr<std::ostream> file{
         getStream(OutputType::FINAL_POPULATION)};
     *file << "Id" << separator_ << "Ancestor" << separator_ << "Age"
-          << separator_ << "Survived_mutations" << separator_ << "Genome"
-          << std::endl;
+          << separator_ << "Survived_mutations" << separator_ << "Genome\n";
 
     for (const auto& individual : individuals)
     {
