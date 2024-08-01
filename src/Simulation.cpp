@@ -16,7 +16,7 @@ SimulationData Simulation::run()
     int year{0};
     while (year < params_.years_)
     {
-        if (!catchingActive_ && params_.catching_.fromYear_ <= year)
+        if (!catchingActive_ && (params_.catching_.fromYear_ <= year))
             catchingActive_ = true;
 
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
@@ -58,7 +58,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 
         if (int& family{
                 families[static_cast<std::size_t>(individual.getAncestor())]};
-            !singleFamily && family != 1)
+            !singleFamily && (family != 1))
         {
             yearMetrics.families_++;
             family = 1;
@@ -145,8 +145,8 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 
 bool Simulation::isCatched(int age) const
 {
-    if (!catchingActive_ || params_.catching_.percent_ == 0 ||
-        age < params_.catching_.fromAge_)
+    if (!catchingActive_ || (params_.catching_.percent_ == 0) ||
+        (age < params_.catching_.fromAge_))
         return false;
 
     return generator_->getPercentChance() <= params_.catching_.percent_;
@@ -157,14 +157,14 @@ bool Simulation::shouldDie(const Individual& individual,
 {
     return (individual.getSurvivedMutations() >= params_.mutations_.lethal_) ||
            (individual.getAge() >= params_.bits_) ||
-           (generator_->getPercentChance() <= chanceForDeathInPercent ||
+           ((generator_->getPercentChance() <= chanceForDeathInPercent) ||
             isCatched(individual.getAge()));
 }
 
 bool Simulation::shouldHaveOffspring(const Individual& individual) const
 {
     return (individual.getAge() > params_.reproductionAge_) &&
-           generator_->getPercentChance() <= params_.offspring_.chance_;
+           (generator_->getPercentChance() <= params_.offspring_.chance_);
 }
 
 SimulationData Simulation::prepareData(
