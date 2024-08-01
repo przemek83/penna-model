@@ -16,7 +16,7 @@ SimulationData Simulation::run()
     int year{0};
     while (year < params_.years_)
     {
-        if (!catchingActive_ && (params_.catching_.fromYear_ <= year))
+        if ((!catchingActive_) && (params_.catching_.fromYear_ <= year))
             catchingActive_ = true;
 
         const bool singleFamily{isSingleFamily(year, basicMetrics)};
@@ -58,7 +58,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 
         if (int& family{
                 families[static_cast<std::size_t>(individual.getAncestor())]};
-            !singleFamily && (family != 1))
+            (!singleFamily) && (family != 1))
         {
             ++yearMetrics.families_;
             family = 1;
@@ -145,7 +145,7 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 
 bool Simulation::isCatched(int age) const
 {
-    if (!catchingActive_ || (params_.catching_.percent_ == 0) ||
+    if ((!catchingActive_) || (params_.catching_.percent_ == 0) ||
         (age < params_.catching_.fromAge_))
         return false;
 
