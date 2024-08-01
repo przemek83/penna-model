@@ -35,7 +35,7 @@ const char progressLineSuffix{']'};
 const char progressLineMarker{'*'};
 }  // namespace
 
-namespace progressCallback
+namespace progress_callback
 {
 
 [[maybe_unused]] std::function<void(int)> getSequentialProgressCallback(
@@ -89,4 +89,4 @@ namespace progressCallback
         std::cout.flush();
     };
 }
-}  // namespace progressCallback
+}  // namespace progress_callback

@@ -17,8 +17,8 @@ Simulation prepareSimulation(const config::Params& params, int simulationNumber,
     simulation.setGenerator(
         std::make_unique<NumbersGenerator>(params.bits_, seed));
     simulation.createInitialPopulation();
-    auto progressCallback{
-        progressCallback::getOverallProgressCallback(simulationNumber, params)};
+    auto progressCallback{progress_callback::getOverallProgressCallback(
+        simulationNumber, params)};
     simulation.setProgressCallback(progressCallback);
     return simulation;
 }
