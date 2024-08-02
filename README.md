@@ -253,49 +253,48 @@ The project uses the following open-source software:
 For testing of code logic, there is a responsible `Catch2` framework. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-test` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `tests` directory, where the⁣ binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Windows:
     
     $ penna-model-test.exe
-    
-    Randomness seeded to: 1752308627
+    Randomness seeded to: 2798586403
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     penna-model-test.exe is a Catch2 v3.3.0 host application.
     Run with -? for options
-    
+
     -------------------------------------------------------------------------------
     Benchmark
     -------------------------------------------------------------------------------
-    <build path>\test\SimulationTest.cpp:53
+    <path>/penna-model/test/SimulationTest.cpp:52
     ...............................................................................
-    
-    <build path>\test\SimulationTest.cpp:55: SKIPPED:
-    
-    ===============================================================================
-    test cases:   7 |   6 passed | 1 skipped
-    assertions: 111 | 111 passed
+
+    <path>/penna-model/test/SimulationTest.cpp:54: SKIPPED:
+
+    ================================================================================
+    test cases:   8 |   7 passed | 1 skipped
+    assertions: 142 | 142 passed
 
 > **_NOTE:_**  Performance tests are to be skipped by default. To activate performance tests, go to `Benchmark` test case and comment `SKIP();` line.
 
 As an alternative, CTest can be used to run tests (performance tests switched on):
 
-    $ ctest
+    $ ctest -E 'Benchmark'
     Test project <build path>\test
-        Start 1: Catching
-    1/7 Test #1: Catching .........................   Passed    0.03 sec
-        Start 2: Config
-    2/7 Test #2: Config ...........................   Passed    0.02 sec
+        Start 1: Simulation
+    1/7 Test #1: Simulation .......................   Passed    0.15 sec
+        Start 2: Individual
+    2/7 Test #2: Individual .......................   Passed    0.07 sec
         Start 3: Output
-    3/7 Test #3: Output ...........................   Passed    0.02 sec
+    3/7 Test #3: Output ...........................   Passed    0.08 sec
         Start 4: Output averages
-    4/7 Test #4: Output averages ..................   Passed    0.06 sec
-        Start 5: Individual
-    5/7 Test #5: Individual .......................   Passed    0.02 sec
-        Start 6: Simulation
-    6/7 Test #6: Simulation .......................   Passed    0.04 sec
-        Start 7: Benchmark
-    7/7 Test #7: Benchmark ........................   Passed  145.77 sec
-    
+    4/7 Test #4: Output averages ..................   Passed    0.20 sec
+        Start 5: Config
+    5/7 Test #5: Config ...........................   Passed    0.07 sec
+        Start 6: Catching
+    6/7 Test #6: Catching .........................   Passed    0.10 sec
+        Start 7: NumbersGenerator
+    7/7 Test #7: NumbersGenerator .................   Passed    0.07 sec
+
     100% tests passed, 0 tests failed out of 7
-    
-    Total Test time (real) = 145.99 sec
+
+    Total Test time (real) =   0.74 sec
 
 # Potential further improvements
 * Upgrade code to use C++20/23.
