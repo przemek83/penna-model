@@ -28,6 +28,22 @@ long int getSeed()
     return std::chrono::system_clock::now().time_since_epoch().count();
 }
 
+std::vector<SimulationData> runSimulations(const config::Params& params)
+{
+    const long int seed{getSeed()};
+    Runner runner;
+    for (int i{1}; i <= params.simulationsCount_; ++i)
+        runner.addSimulation(prepareSimulation(params, i, seed + i));
+
+    return runner.runParallel();
+}
+
+void saveOutput(const std::string& prefix, const AverageData& averages)
+{
+    FileOutput output(prefix);
+    output.saveAverages(averages);
+}
+
 }  // namespace
 
 int main(int argc, char* argv[])
@@ -41,18 +57,12 @@ int main(int argc, char* argv[])
     if (!paramsOK)
         return EXIT_FAILURE;
 
-    const long int seed{getSeed()};
-    Runner runner;
-    for (int i{1}; i <= params.simulationsCount_; ++i)
-        runner.addSimulation(prepareSimulation(params, i, seed + i));
-
-    const std::vector<SimulationData> simulationsData{runner.runParallel()};
+    const std::vector<SimulationData> simulationsData{runSimulations(params)};
 
     const AverageData averages{
         simulationsData, static_cast<std::size_t>(params.years_), params.bits_};
 
-    FileOutput output(prefix);
-    output.saveAverages(averages);
+    saveOutput(prefix, averages);
 
     return EXIT_SUCCESS;
 }
