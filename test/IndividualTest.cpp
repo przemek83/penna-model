@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <bitset>
 #include <iostream>
 
@@ -6,16 +7,33 @@
 #include "catch2/matchers/catch_matchers_string.hpp"
 
 #include <src/Individual.h>
+
+#include "FakeGenerator.h"
 #include "MockedGenerator.h"
+
+namespace
+{
+int getBitPositionInGenome(int genomeSize, int positon)
+{
+    return genomeSize - 1 - positon;
+}
+
+void setGenome(Individual& individual, std::string genome)
+{
+    std::list<int> mutations;
+    for (int i{0}; i < genome.size(); ++i)
+        if (genome[i] == '1')
+            mutations.push_back(getBitPositionInGenome(genome.size(), i));
+
+    FakeGenerator fakeGenerator{mutations};
+    individual.assignRandomBits(fakeGenerator, mutations.size());
+}
+}  // namespace
 
 TEST_CASE("Individual", "[penna]")
 {
     const config::Params defaultParams;
     const int bits{defaultParams.bits_};
-
-    const std::string genomeString{
-        "000000000000000001000000000000000000000000"
-        "0000100100000000001000"};
 
     SECTION("bit strings creation")
     {
@@ -29,7 +47,76 @@ TEST_CASE("Individual", "[penna]")
     }
 
     Individual individual(0);
-    individual.setGenome(std::bitset<bits>(genomeString));
+
+    SECTION("no mutation applied")
+    {
+        MockedGenerator generator(bits);
+        const Individual child{individual.offspring(generator, 0)};
+
+        std::string childGenome{child.asBitString()};
+        REQUIRE(std::count(childGenome.begin(), childGenome.end(), '1') == 0);
+    }
+
+    SECTION("single mutation applied")
+    {
+        MockedGenerator generator(bits);
+        const Individual child{individual.offspring(generator, 1)};
+
+        std::string childGenome{child.asBitString()};
+        REQUIRE(std::count(childGenome.begin(), childGenome.end(), '1') == 1);
+    }
+
+    SECTION("single mutation applied on existing")
+    {
+        const std::string genomeBeforeMutation{
+            "0000000000000000000000000000000000000000000000000000000000001000"};
+        setGenome(individual, genomeBeforeMutation);
+        FakeGenerator generator({3});
+        const Individual child{individual.offspring(generator, 1)};
+
+        REQUIRE_THAT(child.asBitString(),
+                     Catch::Matchers::Equals(genomeBeforeMutation));
+    }
+
+    SECTION("single mutation exact match")
+    {
+        MockedGenerator generator(bits);
+        const Individual child{individual.offspring(generator, 1)};
+
+        const std::string expectedGenome{
+            "000000000000000000000000000000000000000000"
+            "0000000000000000001000"};
+
+        REQUIRE_THAT(child.asBitString(),
+                     Catch::Matchers::Equals(expectedGenome));
+    }
+
+    SECTION("multiple mutations exact match")
+    {
+        MockedGenerator generator(bits);
+        const Individual child{individual.offspring(generator, 3)};
+
+        const std::string expectedGenome{
+            "0000000000000000010000000000000000000000100000000000000000001000"};
+
+        REQUIRE_THAT(child.asBitString(),
+                     Catch::Matchers::Equals(expectedGenome));
+    }
+
+    SECTION("get genome bits")
+    {
+        const std::string genome{
+            "0000000000000000010000000000000000000000100000000000001000001000"};
+        setGenome(individual, genome);
+        for (size_t i{0}; i < genome.size(); ++i)
+            REQUIRE((genome[getBitPositionInGenome(genome.size(), i)] == '1') ==
+                    individual.getGenomeBit(i));
+    }
+
+    const std::string genomeString{
+        "000000000000000001000000000000000000000000"
+        "0000100100000000001000"};
+    setGenome(individual, genomeString);
 
     SECTION("ageing passing 0")
     {
@@ -110,62 +197,5 @@ TEST_CASE("Individual", "[penna]")
         const Individual child{individual.offspring(generator, 0)};
 
         REQUIRE(child.getSurvivedMutations() == 0);
-    }
-
-    SECTION("single mutation applied")
-    {
-        individual.setGenome(std::bitset<bits>(0));
-        MockedGenerator generator(bits);
-        const Individual child{individual.offspring(generator, 1)};
-
-        REQUIRE_THAT(child.asBitString(),
-                     !Catch::Matchers::Equals(genomeString));
-    }
-
-    SECTION("single mutation applied on existing")
-    {
-        individual.setGenome(std::bitset<bits>(8));
-        MockedGenerator generator(bits);
-        const std::string genomeBeforeMutation{individual.asBitString()};
-        const Individual child{individual.offspring(generator, 1)};
-
-        REQUIRE_THAT(child.asBitString(),
-                     Catch::Matchers::Equals(genomeBeforeMutation));
-    }
-
-    SECTION("single mutation exact match")
-    {
-        individual.setGenome(std::bitset<bits>(0));
-        MockedGenerator generator(bits);
-        const Individual child{individual.offspring(generator, 1)};
-
-        const std::string expectedGenome{
-            "000000000000000000000000000000000000000000"
-            "0000000000000000001000"};
-
-        REQUIRE_THAT(child.asBitString(),
-                     Catch::Matchers::Equals(expectedGenome));
-    }
-
-    SECTION("multiple mutations exact match")
-    {
-        individual.setGenome(std::bitset<bits>(0));
-        MockedGenerator generator(bits);
-        const Individual child{individual.offspring(generator, 3)};
-
-        const std::string expectedGenome{
-            "0000000000000000010000000000000000000000100000000000000000001000"};
-
-        REQUIRE_THAT(child.asBitString(),
-                     Catch::Matchers::Equals(expectedGenome));
-    }
-
-    SECTION("get genome bits")
-    {
-        const std::bitset<bits> bitset(
-            0b0000000000000000010000000000000000000000100000000000001000001000);
-        individual.setGenome(bitset);
-        for (size_t i{0}; i < bitset.size(); ++i)
-            REQUIRE(bitset[i] == individual.getGenomeBit(i));
     }
 }

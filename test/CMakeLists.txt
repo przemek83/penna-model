@@ -17,6 +17,8 @@ set(${PROJECT_TEST}_SOURCES
     StringOutput.cpp
     CatchingTest.cpp
     NumbersGeneratorTest.cpp
+    FakeGenerator.h
+    FakeGenerator.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})

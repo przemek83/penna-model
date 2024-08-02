@@ -31,8 +31,6 @@ public:
         return genome_[position];
     }
 
-    void setGenome(const std::bitset<config::Params::bits_>& genome);
-
 private:
     void applyMutation(Generator& generator);
 
