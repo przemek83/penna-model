@@ -4,8 +4,6 @@
 [![Pylint](https://github.com/przemek83/penna-model/actions/workflows/pylint.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/pylint.yml)
 [![codecov](https://codecov.io/github/przemek83/penna-model/graph/badge.svg?token=NYK9LBVOJE)](https://codecov.io/github/przemek83/penna-model)
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=przemek83_penna-model)
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=przemek83_penna-model&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=przemek83_penna-model)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=przemek83_penna-model&metric=bugs)](https://sonarcloud.io/summary/new_code?id=przemek83_penna-model)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=przemek83_penna-model&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=przemek83_penna-model)
