@@ -42,8 +42,8 @@ TEST_CASE("Individual", "[penna]")
         individual.assignRandomBits(generator, 4);
         REQUIRE_THAT(
             individual.asBitString(),
-            Catch::Matchers::Equals("000000000000000001000000000000000000000010"
-                                    "0000000000001000001000"));
+            Catch::Matchers::Equals("000010000000000000000000001000000100000000"
+                                    "0000000000000000000001"));
     }
 
     Individual individual(0);
@@ -84,8 +84,7 @@ TEST_CASE("Individual", "[penna]")
         const Individual child{individual.offspring(generator, 1)};
 
         const std::string expectedGenome{
-            "000000000000000000000000000000000000000000"
-            "0000000000000000001000"};
+            "0000100000000000000000000000000000000000000000000000000000000000"};
 
         REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
@@ -97,7 +96,7 @@ TEST_CASE("Individual", "[penna]")
         const Individual child{individual.offspring(generator, 3)};
 
         const std::string expectedGenome{
-            "0000000000000000010000000000000000000000100000000000000000001000"};
+            "0000100000000000000000000010000001000000000000000000000000000000"};
 
         REQUIRE_THAT(child.asBitString(),
                      Catch::Matchers::Equals(expectedGenome));
