@@ -2,7 +2,30 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <catch2/matchers/catch_matchers.hpp>
 #include "src/Config.h"
+
+namespace Catch
+{
+
+template <>
+struct StringMaker<config::Params>
+{
+    static std::string convert(const config::Params& value)
+    {
+        std::ostringstream os;
+        os << "{" << value.population_.max_ << "," << value.years_ << ","
+           << value.population_.initial_ << "," << value.mutations_.added_
+           << "," << value.mutations_.lethal_ << ","
+           << value.mutations_.initial_ << "," << value.reproductionAge_ << ","
+           << value.offspring_.chance_ << "," << value.offspring_.count_ << ","
+           << value.simulationsCount_ << "," << value.catching_.percent_ << ","
+           << value.catching_.fromYear_ << "," << value.catching_.fromAge_
+           << "}";
+        return os.str();
+    }
+};
+}  // namespace Catch
 
 namespace
 {
@@ -37,29 +60,31 @@ bool operator==(const config::Params& left, const config::Params& right)
            left.simulationsCount_ == right.simulationsCount_ &&
            left.catching_ == right.catching_;
 }
-}  // namespace
 
-namespace Catch
+class ParamsMatcher : public Catch::Matchers::MatcherBase<config::Params>
 {
+public:
+    ParamsMatcher(const config::Params& expected) : expected_(expected) {}
 
-template <>
-struct StringMaker<config::Params>
-{
-    static std::string convert(const config::Params& value)
+    bool match(const config::Params& actual) const override
     {
-        std::ostringstream os;
-        os << "{" << value.population_.max_ << "," << value.years_ << ","
-           << value.population_.initial_ << "," << value.mutations_.added_
-           << "," << value.mutations_.lethal_ << ","
-           << value.mutations_.initial_ << "," << value.reproductionAge_ << ","
-           << value.offspring_.chance_ << "," << value.offspring_.count_ << ","
-           << value.simulationsCount_ << "," << value.catching_.percent_ << ","
-           << value.catching_.fromYear_ << "," << value.catching_.fromAge_
-           << "}";
-        return os.str();
+        return actual == expected_;
     }
+
+    std::string describe() const override
+    {
+        return Catch::StringMaker<config::Params>::convert(expected_);
+    }
+
+private:
+    config::Params expected_;
 };
-}  // namespace Catch
+
+inline ParamsMatcher EqualsParams(const config::Params& expected)
+{
+    return ParamsMatcher(expected);
+}
+}  // namespace
 
 TEST_CASE("Config", "[penna]")
 {
@@ -69,7 +94,7 @@ TEST_CASE("Config", "[penna]")
 
         std::istringstream emptyCofigString("");
         const config::Params configParams{config::loadConfig(emptyCofigString)};
-        REQUIRE(defaultParams == configParams);
+        REQUIRE_THAT(configParams, EqualsParams(defaultParams));
     }
 
     SECTION("valid config")
@@ -96,7 +121,7 @@ catching:
   fromYear: 2000
   fromAge: 5)");
         const config::Params configParams{config::loadConfig(configString)};
-        REQUIRE(configParams == expectedParams);
+        REQUIRE_THAT(configParams, EqualsParams(expectedParams));
     }
 
     SECTION("invalid config")
@@ -119,6 +144,6 @@ population:
   max: 100000
 simulations: 4)");
         const config::Params configParams{config::loadConfig(configString)};
-        REQUIRE(configParams == expectedParams);
+        REQUIRE_THAT(configParams, EqualsParams(expectedParams));
     }
 }
