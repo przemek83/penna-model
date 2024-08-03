@@ -50,7 +50,7 @@ TEST_CASE("Sequential Progress Callback")
 
     SECTION("end")
     {
-        callback(simNumber, params)(1000);
+        callback(simNumber, params)(years);
         REQUIRE(output.str() == "*]\n");
     }
 
