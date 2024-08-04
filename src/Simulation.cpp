@@ -138,9 +138,10 @@ std::vector<int> Simulation::getBitsDistribution(
 
 int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 {
-    return static_cast<int>(
-        std::round(static_cast<float>(populationCount) /
-                   static_cast<float>(params_.population_.max_) * 100));
+    const float populationRatio{static_cast<float>(populationCount) /
+                                params_.population_.max_};
+    const float deathChance{populationRatio * config::getMaxPercentage()};
+    return static_cast<int>(std::round(deathChance));
 }
 
 bool Simulation::isCatched(int age) const
