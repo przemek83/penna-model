@@ -17,10 +17,7 @@ public:
     template <typename T>
     struct BasicMetrics
     {
-        inline T getLivingAtEnd() const
-        {
-            return livingAtStart_ - deaths_ + births_;
-        }
+        T getLivingAtEnd() const { return livingAtStart_ - deaths_ + births_; }
 
         void serializeLifeRelatedData(std::ostream& stream,
                                       char separator) const
