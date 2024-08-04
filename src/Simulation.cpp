@@ -140,7 +140,7 @@ int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
 {
     const float populationRatio{static_cast<float>(populationCount) /
                                 params_.population_.max_};
-    const float deathChance{populationRatio * config::getMaxPercentage()};
+    const float deathChance{populationRatio * config::maxPercentage};
     return static_cast<int>(std::round(deathChance));
 }
 

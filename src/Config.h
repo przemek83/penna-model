@@ -59,6 +59,6 @@ std::tuple<bool, std::string, std::string> getAppArguments(int argc,
 
 std::pair<bool, config::Params> getParams(const std::string& configFileName);
 
-inline int getMaxPercentage() { return 100; }
+constexpr int maxPercentage{100};
 
 }  // namespace config

@@ -149,11 +149,10 @@ void checkOffspring(config::Offspring offspring, std::string& errorMsg)
         errorMsg +=
             createErrorMsg(Field::OFFSPRING_CHANCE, ">= 0", offspring.chance_);
 
-    if (offspring.chance_ > config::getMaxPercentage())
-        errorMsg +=
-            createErrorMsg(Field::OFFSPRING_CHANCE,
-                           "<= " + std::to_string(config::getMaxPercentage()),
-                           offspring.chance_);
+    if (offspring.chance_ > config::maxPercentage)
+        errorMsg += createErrorMsg(
+            Field::OFFSPRING_CHANCE,
+            "<= " + std::to_string(config::maxPercentage), offspring.chance_);
 }
 
 void checkPopulation(config::Population population, std::string& errorMsg)
@@ -179,11 +178,10 @@ void checkCatching(config::Catching catching, int years, std::string& errorMsg)
         errorMsg +=
             createErrorMsg(Field::CATCHING_PERCENT, ">= 0", catching.percent_);
 
-    if (catching.percent_ > config::getMaxPercentage())
-        errorMsg +=
-            createErrorMsg(Field::CATCHING_PERCENT,
-                           "<= " + std::to_string(config::getMaxPercentage()),
-                           catching.percent_);
+    if (catching.percent_ > config::maxPercentage)
+        errorMsg += createErrorMsg(
+            Field::CATCHING_PERCENT,
+            "<= " + std::to_string(config::maxPercentage), catching.percent_);
 
     if (catching.fromYear_ < 0)
         errorMsg += createErrorMsg(Field::CATCHING_FROM_YEAR, ">= 0",
