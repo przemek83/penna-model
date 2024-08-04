@@ -10,7 +10,7 @@ Individual::Individual(int ancestor) : ancestor_{ancestor} {}
 
 void Individual::ageByOneYear()
 {
-    if (genome_[age_])
+    if (genome_[static_cast<std::size_t>(age_)])
         ++survivedMutations_;
     ++age_;
 }
@@ -31,13 +31,14 @@ Individual Individual::offspring(Generator& generator, int mutations) const
 
 void Individual::applyMutation(Generator& generator)
 {
-    const int mutationPosition{generator.getBitPosition()};
+    const std::size_t mutationPosition{
+        static_cast<std::size_t>(generator.getBitPosition())};
     genome_[mutationPosition] = true;
 }
 
 void Individual::assignRandomBits(Generator& generator, int startingMutations)
 {
-    std::set<int> mutationPositions;
+    std::set<std::size_t> mutationPositions;
     while (mutationPositions.size() < startingMutations)
         mutationPositions.insert(generator.getBitPosition());
 
