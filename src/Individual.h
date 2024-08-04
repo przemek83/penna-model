@@ -12,11 +12,11 @@ class Individual
 public:
     explicit Individual(int ancestor);
 
-    inline int getAge() const { return age_; }
+    int getAge() const { return age_; }
 
-    inline int getSurvivedMutations() const { return survivedMutations_; }
+    int getSurvivedMutations() const { return survivedMutations_; }
 
-    inline int getAncestor() const { return ancestor_; }
+    int getAncestor() const { return ancestor_; }
 
     void ageByOneYear();
 
@@ -26,10 +26,7 @@ public:
 
     void assignRandomBits(Generator& generator, int startingMutations);
 
-    inline bool getGenomeBit(std::size_t position) const
-    {
-        return genome_[position];
-    }
+    bool getGenomeBit(std::size_t position) const { return genome_[position]; }
 
 private:
     void applyMutation(Generator& generator);
