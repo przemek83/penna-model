@@ -1,7 +1,7 @@
 #include "ResultsData.h"
 
 ResultsData::ResultsData(std::size_t years, int bits)
-    : years_(years), bits_(bits)
+    : years_{years}, bits_{static_cast<std::size_t>(bits)}
 {
     deathsDistribution_.resize(bits_, 0);
     bitsDistribution_.resize(bits_, 0);
