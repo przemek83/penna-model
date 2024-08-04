@@ -114,7 +114,7 @@ void Simulation::setGenerator(std::unique_ptr<Generator> generator)
 std::vector<int> Simulation::getAgeDistribution(
     const std::list<Individual>& individuals) const
 {
-    std::vector<int> ageDistribution(params_.bits_, 0);
+    std::vector<int> ageDistribution(config::Params::bits_, 0);
 
     for (const auto& individual : individuals)
         ++ageDistribution[static_cast<std::size_t>(individual.getAge())];
@@ -125,11 +125,11 @@ std::vector<int> Simulation::getAgeDistribution(
 std::vector<int> Simulation::getBitsDistribution(
     const std::list<Individual>& individuals) const
 {
-    std::vector<int> bitsDistribution(params_.bits_, 0);
+    std::vector<int> bitsDistribution(config::Params::bits_, 0);
 
     for (const auto& individual : individuals)
     {
-        for (std::size_t i{0}; i < params_.bits_; ++i)
+        for (std::size_t i{0}; i < config::Params::bits_; ++i)
             bitsDistribution[i] += static_cast<int>(individual.getGenomeBit(i));
     }
 
@@ -156,7 +156,7 @@ bool Simulation::shouldDie(const Individual& individual,
                            int chanceForDeathInPercent) const
 {
     return (individual.getSurvivedMutations() >= params_.mutations_.lethal_) ||
-           (individual.getAge() >= params_.bits_) ||
+           (individual.getAge() >= config::Params::bits_) ||
            ((generator_->getPercentChance() <= chanceForDeathInPercent) ||
             isCatched(individual.getAge()));
 }
@@ -172,7 +172,7 @@ SimulationData Simulation::prepareData(
 {
     const int populationCount{basicMetrics.back().getLivingAtEnd()};
     SimulationData data{static_cast<std::size_t>(params_.years_),
-                        params_.bits_};
+                        config::Params::bits_};
     data.setBasicMetrics(std::move(basicMetrics));
 
     data.setAgeDistribution(getAgeDistribution(individuals_));
@@ -187,8 +187,8 @@ SimulationData Simulation::prepareData(
 std::pair<std::vector<int>, std::vector<int> >
 Simulation::getDeathsDistributionData() const
 {
-    std::vector<int> gompertzDeathsDistribution(params_.bits_, 0);
-    std::vector<int> gompertzAgeDistribution(params_.bits_, 0);
+    std::vector<int> gompertzDeathsDistribution(config::Params::bits_, 0);
+    std::vector<int> gompertzAgeDistribution(config::Params::bits_, 0);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(static_cast<int>(individuals_.size()))};

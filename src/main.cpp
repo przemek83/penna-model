@@ -15,7 +15,7 @@ Simulation prepareSimulation(const config::Params& params, int simulationNumber,
 {
     Simulation simulation(params);
     simulation.setGenerator(
-        std::make_unique<NumbersGenerator>(params.bits_, seed));
+        std::make_unique<NumbersGenerator>(config::Params::bits_, seed));
     simulation.createInitialPopulation();
     auto progressCallback{progress_callback::getOverallProgressCallback(
         simulationNumber, params)};
@@ -35,7 +35,7 @@ std::vector<SimulationData> runSimulations(const config::Params& params)
     for (int i{1}; i <= params.simulationsCount_; ++i)
         runner.addSimulation(prepareSimulation(params, i, seed + i));
 
-    return runner.runParallel();
+    return runner.runSequential();
 }
 
 void saveOutput(const std::string& prefix, const AverageData& averages)
@@ -59,8 +59,9 @@ int main(int argc, char* argv[])
 
     const std::vector<SimulationData> simulationsData{runSimulations(params)};
 
-    const AverageData averages{
-        simulationsData, static_cast<std::size_t>(params.years_), params.bits_};
+    const AverageData averages{simulationsData,
+                               static_cast<std::size_t>(params.years_),
+                               config::Params::bits_};
 
     saveOutput(prefix, averages);
 
