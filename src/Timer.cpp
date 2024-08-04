@@ -9,5 +9,5 @@ Timer::~Timer()
     std::cout
         << "Execution time: "
         << std::chrono::duration_cast<std::chrono::seconds>(timeElapsed).count()
-        << "s." << std::endl;
+        << "s." << '\n';
 }

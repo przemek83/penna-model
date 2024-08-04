@@ -12,8 +12,7 @@ void ResultsData::saveBitsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent\n";
     for (std::size_t bit{0}; bit < bits_; ++bit)
-        stream << bit << separator << getBitsDistributionValue(bit)
-               << std::endl;
+        stream << bit << separator << getBitsDistributionValue(bit) << '\n';
 }
 
 void ResultsData::saveDeathsDistibution(std::ostream& stream,
@@ -21,8 +20,7 @@ void ResultsData::saveDeathsDistibution(std::ostream& stream,
 {
     stream << "Bit" << separator << "Percent\n";
     for (std::size_t bit{0}; bit < bits_; ++bit)
-        stream << bit << separator << getDeathsDistributionValue(bit)
-               << std::endl;
+        stream << bit << separator << getDeathsDistributionValue(bit) << '\n';
 }
 
 void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
@@ -33,7 +31,7 @@ void ResultsData::saveBasicMetrics(std::ostream& stream, char separator) const
     {
         stream << year << separator;
         writeLifeRelatedMetricData(stream, year, separator);
-        stream << std::endl;
+        stream << '\n';
     }
 }
 
@@ -46,7 +44,7 @@ void ResultsData::saveFamilies(std::ostream& stream, char separator) const
             return;
         stream << year << separator;
         writeFamiliesMetricData(stream, year);
-        stream << std::endl;
+        stream << '\n';
     }
 }
 
@@ -57,7 +55,7 @@ void ResultsData::saveAgeDistibution(std::ostream& stream, char separator) const
     {
         stream << bit << separator;
         writeBitDistributionData(stream, bit);
-        stream << std::endl;
+        stream << '\n';
     }
 }
 
