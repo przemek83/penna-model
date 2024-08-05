@@ -22,7 +22,8 @@ TEST_CASE("NumbersGenerator", "[penna]")
 
     SECTION("Get int")
     {
-        for (auto i : {7630, 22734, 77992, 31897, 43841, 97823, 72347, 45558})
+        for (auto i :
+             {7630, 22'734, 77'992, 31'897, 43'841, 97'823, 72'347, 45'558})
             REQUIRE(generator.getInt(0, 100'000) == i);
     }
 
