@@ -14,7 +14,7 @@ option(CODE_COVERAGE "Collect coverage" OFF)
 
 if(CODE_COVERAGE)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 --coverage")
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O0 --coverage")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif()
 
 include(CMakeLists.txt.yaml-cpp)
