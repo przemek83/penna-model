@@ -35,7 +35,7 @@ std::vector<SimulationData> runSimulations(const config::Params& params)
     for (int i{1}; i <= params.simulationsCount_; ++i)
         runner.addSimulation(prepareSimulation(params, i, seed + i));
 
-    return runner.runSequential();
+    return runner.runParallel();
 }
 
 void saveOutput(const std::string& prefix, const AverageData& averages)
