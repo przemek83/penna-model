@@ -21,9 +21,11 @@ int getBitPositionInGenome(std::size_t genomeSize, int positon)
 void setGenome(Individual& individual, std::string genome)
 {
     std::list<int> mutations;
-    for (int i{0}; i < genome.size(); ++i)
+    const std::size_t genomeSize{genome.size()};
+    for (std::size_t i{0}; i < genomeSize; ++i)
         if (genome[i] == '1')
-            mutations.push_back(getBitPositionInGenome(genome.size(), i));
+            mutations.push_back(
+                getBitPositionInGenome(genome.size(), static_cast<int>(i)));
 
     FakeGenerator fakeGenerator{mutations};
     individual.assignRandomBits(fakeGenerator,
@@ -107,8 +109,10 @@ TEST_CASE("Individual", "[penna]")
         const std::string genome{
             "0000000000000000010000000000000000000000100000000000001000001000"};
         setGenome(individual, genome);
-        for (size_t i{0}; i < genome.size(); ++i)
-            REQUIRE((genome[getBitPositionInGenome(genome.size(), i)] == '1') ==
+        const std::size_t genomeSize{genome.size()};
+        for (size_t i{0}; i < genomeSize; ++i)
+            REQUIRE((genome[getBitPositionInGenome(
+                         genome.size(), static_cast<int>(i))] == '1') ==
                     individual.getGenomeBit(i));
     }
 
