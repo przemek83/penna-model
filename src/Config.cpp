@@ -6,6 +6,8 @@
 #include <yaml-cpp/yaml.h>
 #include <argparse/argparse.hpp>
 
+#include "Logger.h"
+
 namespace
 {
 enum class Field
@@ -205,8 +207,7 @@ void checkCatching(config::Catching catching, int years, std::string& errorMsg)
 void printErrorMsg(const std::exception& e,
                    const argparse::ArgumentParser& parser)
 {
-    std::cerr << e.what() << "\n";
-    std::cerr << parser;
+    Logger().err(std::string(e.what()) + "\n" + parser.help().str());
 }
 
 void fillParser(argparse::ArgumentParser& parser)
@@ -289,7 +290,7 @@ bool isValid(const Params& params)
     if (errorMsg.empty())
         return true;
 
-    std::cerr << "Configuration is invalid:\n" << errorMsg;
+    Logger().err("Configuration is invalid:\n" + errorMsg);
 
     return false;
 }
@@ -323,7 +324,7 @@ std::pair<bool, config::Params> getParams(const std::string& configFileName)
     std::ifstream configFileStream(configFileName);
     if (configFileStream.fail())
     {
-        std::cerr << "Cannot read config file " << configFileName << "\n";
+        Logger().err("Cannot read config file " + configFileName + "\n");
         return {false, {}};
     }
 

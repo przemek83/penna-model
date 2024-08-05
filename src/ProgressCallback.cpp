@@ -5,6 +5,8 @@
 #include <numeric>
 #include <vector>
 
+#include "Logger.h"
+
 namespace
 {
 std::vector<int> getProgressVector(int simulations)
@@ -48,19 +50,16 @@ int getLineLength() { return 50; }
     {
         if (year == 0)
         {
-            std::cout << simNumber << "/" << maxSim << " "
-                      << progressLinePreffix;
-            std::cout.flush();
+            Logger().log(std::to_string(simNumber) + "/" +
+                         std::to_string(maxSim) + " " + progressLinePreffix);
             return;
         }
 
         if (shouldAddProgress(year, maxYears))
-            std::cout << progressLineMarker;
+            Logger().log(std::string(1, progressLineMarker));
 
         if (isEnding(year + 1, maxYears))
-            std::cout << progressLineSuffix << "\n";
-
-        std::cout.flush();
+            Logger().log(std::string(1, progressLineSuffix) + "\n");
     };
 }
 
@@ -85,15 +84,14 @@ int getLineLength() { return 50; }
         }
 
         if (currentSum == 1)
-            std::cout << progressLinePreffix;
+            Logger().log({progressLinePreffix});
 
         const int totalSum{simCount * 100};
         if (shouldAddProgress(currentSum, totalSum))
-            std::cout << progressLineMarker;
-        if (isEnding(currentSum, totalSum))
-            std::cout << progressLineSuffix << "\n";
+            Logger().log(std::string(1, progressLineMarker));
 
-        std::cout.flush();
+        if (isEnding(currentSum, totalSum))
+            Logger().log(std::string(1, progressLineSuffix) + "\n");
     };
 }
 }  // namespace progress_callback
