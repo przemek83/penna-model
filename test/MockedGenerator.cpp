@@ -10,7 +10,7 @@ int MockedGenerator::getInt(int low, int high)
     // https://thompsonsed.co.uk/random-number-generators-for-c-performance-tested
 
     x_ = (multiplier_ * x_ + increment_) % modulus_;
-    return low + x_ % (high - low + 1);
+    return low + static_cast<int>(x_ % (high - low + 1));
 }
 
 void MockedGenerator::setX(uint64_t x) { x_ = x; }
