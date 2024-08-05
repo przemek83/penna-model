@@ -22,7 +22,8 @@ TEST_CASE("Simulation", "[penna]")
         StringOutput output;
 
         Simulation simulation(params);
-        simulation.setGenerator(Common::getTestGenerator(params.bits_));
+        simulation.setGenerator(
+            Common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
         auto data{simulation.run()};
@@ -61,7 +62,8 @@ TEST_CASE("Benchmark", "[penna]")
         params.years_ = 100'000;
 
         Simulation simulation(params);
-        simulation.setGenerator(Common::getTestGenerator(params.bits_));
+        simulation.setGenerator(
+            Common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.run();
     }
@@ -75,7 +77,8 @@ TEST_CASE("Benchmark", "[penna]")
         params.years_ = 200'000;
 
         Simulation simulation(params);
-        simulation.setGenerator(Common::getTestGenerator(params.bits_));
+        simulation.setGenerator(
+            Common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.run();
     }
