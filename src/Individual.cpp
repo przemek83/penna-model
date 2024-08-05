@@ -39,7 +39,8 @@ void Individual::applyMutation(Generator& generator)
 void Individual::assignRandomBits(Generator& generator, int startingMutations)
 {
     std::set<std::size_t> mutationPositions;
-    while (mutationPositions.size() < startingMutations)
+    while (mutationPositions.size() <
+           static_cast<std::size_t>(startingMutations))
         mutationPositions.insert(generator.getBitPosition());
 
     for (const auto mutationPosition : mutationPositions)
