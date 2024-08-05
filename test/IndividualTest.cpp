@@ -13,9 +13,9 @@
 
 namespace
 {
-int getBitPositionInGenome(int genomeSize, int positon)
+int getBitPositionInGenome(std::size_t genomeSize, int positon)
 {
-    return genomeSize - 1 - positon;
+    return static_cast<int>(genomeSize) - 1 - positon;
 }
 
 void setGenome(Individual& individual, std::string genome)
@@ -26,14 +26,14 @@ void setGenome(Individual& individual, std::string genome)
             mutations.push_back(getBitPositionInGenome(genome.size(), i));
 
     FakeGenerator fakeGenerator{mutations};
-    individual.assignRandomBits(fakeGenerator, mutations.size());
+    individual.assignRandomBits(fakeGenerator,
+                                static_cast<int>(mutations.size()));
 }
 }  // namespace
 
 TEST_CASE("Individual", "[penna]")
 {
-    const config::Params defaultParams;
-    const int bits{defaultParams.bits_};
+    const int bits{config::Params::bits_};
 
     SECTION("bit strings creation")
     {
