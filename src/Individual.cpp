@@ -31,8 +31,7 @@ Individual Individual::offspring(Generator& generator, int mutations) const
 
 void Individual::applyMutation(Generator& generator)
 {
-    const std::size_t mutationPosition{
-        static_cast<std::size_t>(generator.getBitPosition())};
+    const std::size_t mutationPosition{generator.getBitPosition()};
     genome_[mutationPosition] = true;
 }
 

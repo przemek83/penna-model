@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 class Generator
 {
 public:
@@ -13,7 +15,7 @@ public:
 
     int getPercentChance();
 
-    int getBitPosition();
+    std::size_t getBitPosition();
 
 protected:
     virtual int getInt(int low, int high) = 0;

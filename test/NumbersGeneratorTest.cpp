@@ -10,7 +10,7 @@ TEST_CASE("NumbersGenerator", "[penna]")
 
     SECTION("Get bit position")
     {
-        for (auto i : {0, 1, 6, 2, 3, 7, 5, 3})
+        for (auto i : {0UL, 1UL, 6UL, 2UL, 3UL, 7UL, 5UL, 3UL})
             REQUIRE(generator.getBitPosition() == i);
     }
 
