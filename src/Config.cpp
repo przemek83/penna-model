@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include <yaml-cpp/yaml.h>
 #include <argparse/argparse.hpp>
