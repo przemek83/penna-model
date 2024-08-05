@@ -16,7 +16,6 @@ TEST_CASE("NumbersGenerator", "[penna]")
 
     SECTION("Get percent chance")
     {
-        NumbersGenerator generator{8, seed};
         for (auto i : {7, 22, 78, 32, 44, 98, 73, 46})
             REQUIRE(generator.getPercentChance() == i);
     }
