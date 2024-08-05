@@ -30,8 +30,6 @@ TEST_CASE("Simulation", "[penna]")
         simulation.saveFinalPopulation(output);
         output.saveSimulationData(data);
 
-        std::cout << std::endl;
-
         const std::vector<OutputType> outputTypes{
             OutputType::DEATHS_DISTRIBUTION, OutputType::INITIAL_POPULATION,
             OutputType::FINAL_POPULATION,    OutputType::FAMILIES,
@@ -66,8 +64,6 @@ TEST_CASE("Benchmark", "[penna]")
         simulation.setGenerator(Common::getTestGenerator(params.bits_));
         simulation.createInitialPopulation();
         simulation.run();
-
-        std::cout << std::endl;
     }
 
     SECTION("simulation long")
@@ -82,7 +78,5 @@ TEST_CASE("Benchmark", "[penna]")
         simulation.setGenerator(Common::getTestGenerator(params.bits_));
         simulation.createInitialPopulation();
         simulation.run();
-
-        std::cout << std::endl;
     }
 }
