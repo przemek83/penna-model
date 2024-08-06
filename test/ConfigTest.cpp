@@ -203,5 +203,29 @@ TEST_CASE("Config correctness", "[penna]")
         REQUIRE(!config::isValid(params));
     }
 
+    SECTION("mutations added incorrect")
+    {
+        params.mutations_.added_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("mutations lethal incorrect")
+    {
+        params.mutations_.lethal_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("mutations initial too low")
+    {
+        params.mutations_.initial_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("mutations initial too high")
+    {
+        params.mutations_.initial_ = config::Params::bits_ + 1;
+        REQUIRE(!config::isValid(params));
+    }
+
     std::cerr.rdbuf(oldCerrBuffer);
 }
