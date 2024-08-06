@@ -159,6 +159,8 @@ TEST_CASE("Config correctness", "[penna]")
     std::ostringstream output;
     std::cerr.rdbuf(output.rdbuf());
 
+    SECTION("correct params") { REQUIRE(config::isValid(params)); }
+
     SECTION("years incorrect")
     {
         params.years_ = 0;
