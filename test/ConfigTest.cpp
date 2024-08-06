@@ -245,5 +245,41 @@ TEST_CASE("Config correctness", "[penna]")
         REQUIRE(!config::isValid(params));
     }
 
+    SECTION("catching percent too low")
+    {
+        params.catching_.percent_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("catching percent too high")
+    {
+        params.catching_.percent_ = config::maxPercentage + 1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("catching from year too low")
+    {
+        params.catching_.fromYear_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("catching from year too high")
+    {
+        params.catching_.fromYear_ = params.years_;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("catching from age too low")
+    {
+        params.catching_.fromAge_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("catching from age too high")
+    {
+        params.catching_.fromAge_ = config::Params::bits_ + 1;
+        REQUIRE(!config::isValid(params));
+    }
+
     std::cerr.rdbuf(oldCerrBuffer);
 }
