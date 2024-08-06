@@ -227,5 +227,23 @@ TEST_CASE("Config correctness", "[penna]")
         REQUIRE(!config::isValid(params));
     }
 
+    SECTION("offspring count incorrect")
+    {
+        params.offspring_.count_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("offspring chance too low")
+    {
+        params.offspring_.chance_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("offspring chance too high")
+    {
+        params.offspring_.chance_ = config::maxPercentage + 1;
+        REQUIRE(!config::isValid(params));
+    }
+
     std::cerr.rdbuf(oldCerrBuffer);
 }
