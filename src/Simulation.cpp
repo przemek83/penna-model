@@ -215,8 +215,8 @@ bool Simulation::isSingleFamily(int year,
 {
     if (year == 0)
         return false;
-    else
-        return basicMetrics[static_cast<std::size_t>(year - 1)].families_ == 1;
+
+    return basicMetrics[static_cast<std::size_t>(year - 1)].families_ == 1;
 }
 
 int Simulation::getLivesOnYearStart(
@@ -224,7 +224,6 @@ int Simulation::getLivesOnYearStart(
 {
     if (year == 0)
         return params_.population_.initial_;
-    else
-        return basicMetrics[static_cast<std::size_t>(year - 1)]
-            .getLivingAtEnd();
+
+    return basicMetrics[static_cast<std::size_t>(year - 1)].getLivingAtEnd();
 }
