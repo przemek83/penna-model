@@ -213,16 +213,18 @@ Simulation::getDeathsDistributionData() const
 bool Simulation::isSingleFamily(int year,
                                 const std::vector<BasicMetrics>& basicMetrics)
 {
-    return year == 0
-               ? false
-               : basicMetrics[static_cast<std::size_t>(year - 1)].families_ ==
-                     1;
+    if (year == 0)
+        return false;
+    else
+        return basicMetrics[static_cast<std::size_t>(year - 1)].families_ == 1;
 }
 
 int Simulation::getLivesOnYearStart(
     int year, const std::vector<BasicMetrics>& basicMetrics) const
 {
-    return year == 0 ? params_.population_.initial_
-                     : basicMetrics[static_cast<std::size_t>(year - 1)]
-                           .getLivingAtEnd();
+    if (year == 0)
+        return params_.population_.initial_;
+    else
+        return basicMetrics[static_cast<std::size_t>(year - 1)]
+            .getLivingAtEnd();
 }
