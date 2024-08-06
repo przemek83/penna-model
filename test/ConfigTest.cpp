@@ -1,3 +1,4 @@
+#include <iostream>
 #include <sstream>
 
 #include <catch2/catch_test_macros.hpp>
@@ -89,7 +90,7 @@ inline ParamsMatcher equalsParams(const config::Params& expected)
 }
 }  // namespace
 
-TEST_CASE("Config", "[penna]")
+TEST_CASE("Config loading", "[penna]")
 {
     SECTION("empty config")
     {
@@ -149,4 +150,32 @@ simulations: 4)");
         const config::Params configParams{config::loadConfig(configString)};
         REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
+}
+
+TEST_CASE("Config correctness", "[penna]")
+{
+    config::Params params;
+    std::streambuf* oldCoutBuffer{std::cerr.rdbuf()};
+    std::ostringstream output;
+    std::cerr.rdbuf(output.rdbuf());
+
+    SECTION("years incorrect")
+    {
+        params.years_ = 0;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("reproduction age incorrect")
+    {
+        params.reproductionAge_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("simulations count incorrect")
+    {
+        params.simulationsCount_ = 0;
+        REQUIRE(!config::isValid(params));
+    }
+
+    std::cerr.rdbuf(oldCoutBuffer);
 }
