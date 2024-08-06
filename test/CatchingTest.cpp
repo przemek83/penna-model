@@ -84,8 +84,9 @@ namespace Catch
 {
 
 template <>
-struct StringMaker<config::Catching>
+class StringMaker<config::Catching>
 {
+public:
     static std::string convert(const config::Catching& value)
     {
         std::ostringstream os;
@@ -99,7 +100,7 @@ struct StringMaker<config::Catching>
 TEST_CASE("Catching", "[penna]")
 {
     config::Params params;
-    params.population_.max_ = 5000;
+    params.population_.max_ = 5'000;
     params.years_ = 10;
 
     using TestCase = std::pair<config::Catching, std::string>;
@@ -119,7 +120,7 @@ TEST_CASE("Catching", "[penna]")
     params.catching_ = catching;
 
     Simulation simulation(params);
-    simulation.setGenerator(Common::getTestGenerator(params.bits_));
+    simulation.setGenerator(common::getTestGenerator(config::Params::bits_));
     simulation.createInitialPopulation();
     const SimulationData data{simulation.run()};
 

@@ -9,8 +9,9 @@ namespace Catch
 {
 
 template <>
-struct StringMaker<config::Params>
+class StringMaker<config::Params>
 {
+public:
     static std::string convert(const config::Params& value)
     {
         std::ostringstream os;
@@ -64,11 +65,13 @@ bool operator==(const config::Params& left, const config::Params& right)
 class ParamsMatcher : public Catch::Matchers::MatcherBase<config::Params>
 {
 public:
-    ParamsMatcher(const config::Params& expected) : expected_(expected) {}
-
-    bool match(const config::Params& actual) const override
+    explicit ParamsMatcher(const config::Params& expected) : expected_(expected)
     {
-        return actual == expected_;
+    }
+
+    bool match(const config::Params& arg) const override
+    {
+        return arg == expected_;
     }
 
     std::string describe() const override
@@ -80,7 +83,7 @@ private:
     config::Params expected_;
 };
 
-inline ParamsMatcher EqualsParams(const config::Params& expected)
+inline ParamsMatcher equalsParams(const config::Params& expected)
 {
     return ParamsMatcher(expected);
 }
@@ -94,13 +97,13 @@ TEST_CASE("Config", "[penna]")
 
         std::istringstream emptyCofigString("");
         const config::Params configParams{config::loadConfig(emptyCofigString)};
-        REQUIRE_THAT(configParams, EqualsParams(defaultParams));
+        REQUIRE_THAT(configParams, equalsParams(defaultParams));
     }
 
     SECTION("valid config")
     {
-        const config::Params expectedParams{2000, 100000, 1000, 2,  6,    6, 4,
-                                            50,   2,      4,    20, 2000, 5};
+        const config::Params expectedParams{
+            2'000, 100'000, 1'000, 2, 6, 6, 4, 50, 2, 4, 20, 2'000, 5};
 
         std::istringstream configString(R"(
 population:
@@ -121,7 +124,7 @@ catching:
   fromYear: 2000
   fromAge: 5)");
         const config::Params configParams{config::loadConfig(configString)};
-        REQUIRE_THAT(configParams, EqualsParams(expectedParams));
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
 
     SECTION("invalid config")
@@ -136,7 +139,7 @@ mutations:
     SECTION("partial config")
     {
         config::Params expectedParams;
-        expectedParams.population_.max_ = 100000;
+        expectedParams.population_.max_ = 100'000;
         expectedParams.simulationsCount_ = 4;
 
         std::istringstream configString(R"(
@@ -144,6 +147,6 @@ population:
   max: 100000
 simulations: 4)");
         const config::Params configParams{config::loadConfig(configString)};
-        REQUIRE_THAT(configParams, EqualsParams(expectedParams));
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
 }

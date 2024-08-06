@@ -18,7 +18,7 @@ const int maxPopulation{5000};
 StringOutput output;
 }  // namespace
 
-class testRunListener : public Catch::EventListenerBase
+class TestRunListener : public Catch::EventListenerBase
 {
 public:
     using Catch::EventListenerBase::EventListenerBase;
@@ -31,7 +31,8 @@ public:
         params.years_ = years;
 
         Simulation simulation1(params);
-        simulation1.setGenerator(Common::getTestGenerator(params.bits_));
+        simulation1.setGenerator(
+            common::getTestGenerator(config::Params::bits_));
         simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
         const SimulationData data1{simulation1.run()};
@@ -41,7 +42,7 @@ public:
     }
 };
 
-CATCH_REGISTER_LISTENER(testRunListener)
+CATCH_REGISTER_LISTENER(TestRunListener)
 
 TEST_CASE("Output", "[penna]")
 {
@@ -52,7 +53,7 @@ TEST_CASE("Output", "[penna]")
                  OutputType::FAMILIES)};
     CAPTURE(outputType);
     const FileOutput fileOutput("sim1");
-    Common::compareStringWithFileContent(
+    common::compareStringWithFileContent(
         output.getContentForOutputType(outputType),
         fileOutput.getName(outputType));
 }
@@ -66,12 +67,14 @@ TEST_CASE("Output averages", "[penna]")
         params.years_ = years;
 
         Simulation simulation1(params);
-        simulation1.setGenerator(Common::getTestGenerator(params.bits_));
+        simulation1.setGenerator(
+            common::getTestGenerator(config::Params::bits_));
         simulation1.createInitialPopulation();
         const SimulationData data1{simulation1.run()};
 
-        auto generator{std::make_unique<MockedGenerator>(params.bits_)};
-        generator->setX(14947405050666326135ULL);
+        auto generator{
+            std::make_unique<MockedGenerator>(config::Params::bits_)};
+        generator->setX(14'947'405'050'666'326'135ULL);
         Simulation simulation2(params);
         simulation2.setGenerator(std::move(generator));
         simulation2.createInitialPopulation();
@@ -79,7 +82,7 @@ TEST_CASE("Output averages", "[penna]")
 
         const AverageData averageData{{data1, data2},
                                       static_cast<std::size_t>(params.years_),
-                                      params.bits_};
+                                      config::Params::bits_};
 
         output.reset();
         output.saveAverages(averageData);
@@ -93,7 +96,7 @@ TEST_CASE("Output averages", "[penna]")
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
-            Common::compareStringWithFileContent(
+            common::compareStringWithFileContent(
                 output.getContentForOutputType(outputType),
                 fileOutput.getName(outputType));
         }

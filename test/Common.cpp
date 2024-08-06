@@ -10,7 +10,7 @@
 
 #include "MockedGenerator.h"
 
-namespace Common
+namespace common
 {
 std::string getFileContent(const std::string& file)
 {
@@ -34,4 +34,4 @@ std::unique_ptr<Generator> getTestGenerator(int bits)
     return std::make_unique<MockedGenerator>(bits);
 }
 
-}  // namespace Common
+}  // namespace common

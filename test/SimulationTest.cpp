@@ -16,14 +16,14 @@ TEST_CASE("Simulation", "[penna]")
     SECTION("single simulation")
     {
         config::Params params;
-        params.population_.max_ = 5000;
-        params.years_ = 1000;
+        params.population_.max_ = 5'000;
+        params.years_ = 1'000;
 
         StringOutput output;
 
         Simulation simulation(params);
         simulation.setGenerator(
-            Common::getTestGenerator(config::Params::bits_));
+            common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.saveInitialPopulation(output);
         auto data{simulation.run()};
@@ -41,7 +41,7 @@ TEST_CASE("Simulation", "[penna]")
         for (const auto outputType : outputTypes)
         {
             CAPTURE(outputType);
-            Common::compareStringWithFileContent(
+            common::compareStringWithFileContent(
                 output.getContentForOutputType(outputType),
                 fileOutput.getName(outputType));
         }
@@ -63,7 +63,7 @@ TEST_CASE("Benchmark", "[penna]")
 
         Simulation simulation(params);
         simulation.setGenerator(
-            Common::getTestGenerator(config::Params::bits_));
+            common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.run();
     }
@@ -78,7 +78,7 @@ TEST_CASE("Benchmark", "[penna]")
 
         Simulation simulation(params);
         simulation.setGenerator(
-            Common::getTestGenerator(config::Params::bits_));
+            common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
         simulation.run();
     }
