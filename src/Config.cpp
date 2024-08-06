@@ -32,7 +32,7 @@ enum class Field
     CATCHING_FROM_AGE
 };
 
-static const std::map<Field, std::string> fieldToString{
+const std::map<Field, std::string> fieldToString{
     {Field::POPULATION, "population"},
     {Field::POPULATION_INITIAL, "initial"},
     {Field::POPULATION_MAX, "max"},
