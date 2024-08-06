@@ -155,7 +155,7 @@ simulations: 4)");
 TEST_CASE("Config correctness", "[penna]")
 {
     config::Params params;
-    std::streambuf* oldCoutBuffer{std::cerr.rdbuf()};
+    std::streambuf* oldCerrBuffer{std::cerr.rdbuf()};
     std::ostringstream output;
     std::cerr.rdbuf(output.rdbuf());
 
@@ -167,9 +167,15 @@ TEST_CASE("Config correctness", "[penna]")
         REQUIRE(!config::isValid(params));
     }
 
-    SECTION("reproduction age incorrect")
+    SECTION("reproduction age too low")
     {
         params.reproductionAge_ = -1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("reproduction age too high")
+    {
+        params.reproductionAge_ = config::Params::bits_ + 1;
         REQUIRE(!config::isValid(params));
     }
 
@@ -179,5 +185,23 @@ TEST_CASE("Config correctness", "[penna]")
         REQUIRE(!config::isValid(params));
     }
 
-    std::cerr.rdbuf(oldCoutBuffer);
+    SECTION("population max incorrect")
+    {
+        params.population_.max_ = 0;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("population initial too low")
+    {
+        params.population_.initial_ = 0;
+        REQUIRE(!config::isValid(params));
+    }
+
+    SECTION("population initial too high")
+    {
+        params.population_.initial_ = params.population_.max_ + 1;
+        REQUIRE(!config::isValid(params));
+    }
+
+    std::cerr.rdbuf(oldCerrBuffer);
 }
