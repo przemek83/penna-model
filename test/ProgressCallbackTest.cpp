@@ -76,8 +76,9 @@ TEST_CASE("Overall Progress Callback")
 
     SECTION("start")
     {
-        callback(simNumber, params)(1);
-        REQUIRE(output.str() == "");
+        callback(simNumber,
+                 params)(progress_callback::getSensitivity(years) + shift);
+        REQUIRE(output.str() == "[");
     }
 
     SECTION("before progress")

@@ -14,4 +14,6 @@ namespace progress_callback
 
 int getLineLength();
 
+int getSensitivity(int years);
+
 }  // namespace progress_callback

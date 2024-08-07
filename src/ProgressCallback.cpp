@@ -29,8 +29,7 @@ bool isEnding(int currentValue, int maxValue)
 
 bool shouldCalculateProgress(int currentYear, int maxYears)
 {
-    const int sensitivity{maxYears / 100};
-    return (currentYear + 1) % sensitivity == 0;
+    return (currentYear + 1) % progress_callback::getSensitivity(maxYears) == 0;
 }
 
 const char progressLinePreffix{'['};
@@ -42,6 +41,8 @@ namespace progress_callback
 {
 
 int getLineLength() { return 50; }
+
+int getSensitivity(int years) { return years / 100; }
 
 [[maybe_unused]] std::function<void(int)> getSequentialProgressCallback(
     int sim, const config::Params& params)
@@ -78,9 +79,8 @@ int getLineLength() { return 50; }
         {
             std::scoped_lock<std::mutex> lock(mutex);
             static std::vector<int> progresses{getProgressVector(simCount + 1)};
-            const int sensitivity{maxYears / 100};
             progresses[static_cast<std::size_t>(simNumber)] =
-                (year + 1) / sensitivity;
+                (year + 1) / progress_callback::getSensitivity(maxYears);
             currentSum = std::reduce(progresses.begin(), progresses.end());
         }
 
