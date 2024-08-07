@@ -46,7 +46,7 @@ void saveOutput(const std::string& prefix, const AverageData& averages)
 
 }  // namespace
 
-int main(int argc, char* argv[])
+int main(int argc, const char* argv[])
 {
     const auto [parsingOK, configFileName,
                 prefix]{config::getAppArguments(argc, argv)};

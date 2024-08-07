@@ -297,7 +297,7 @@ bool isValid(const Params& params)
 }
 
 std::tuple<bool, std::string, std::string> getAppArguments(int argc,
-                                                           char* argv[])
+                                                           const char* argv[])
 {
     argparse::ArgumentParser parser("penna-model", "1.0",
                                     argparse::default_arguments::help);

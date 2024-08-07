@@ -55,7 +55,7 @@ config::Params loadConfig(std::istream& stream);
 bool isValid(const Params& params);
 
 std::tuple<bool, std::string, std::string> getAppArguments(int argc,
-                                                           char* argv[]);
+                                                           const char* argv[]);
 
 std::pair<bool, config::Params> getParams(const std::string& configFileName);
 
