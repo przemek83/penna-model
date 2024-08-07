@@ -1,10 +1,12 @@
 #include <iostream>
 #include <sstream>
+#include <tuple>
 
 #include <catch2/catch_test_macros.hpp>
-
 #include <catch2/matchers/catch_matchers.hpp>
-#include "src/Config.h"
+#include <catch2/matchers/catch_matchers_string.hpp>
+
+#include <src/Config.h>
 
 namespace Catch
 {
@@ -279,6 +281,82 @@ TEST_CASE("Config correctness", "[penna]")
     {
         params.catching_.fromAge_ = config::Params::bits_ + 1;
         REQUIRE(!config::isValid(params));
+    }
+
+    std::cerr.rdbuf(oldCerrBuffer);
+}
+
+TEST_CASE("Config app arguments", "[penna]")
+{
+    std::streambuf* oldCerrBuffer{std::cerr.rdbuf()};
+    std::ostringstream output;
+    std::cerr.rdbuf(output.rdbuf());
+
+    const std::string defaultConfigFileName{"config.yaml"};
+    const std::string defaultPrefix{"averages"};
+
+    SECTION("no params")
+    {
+        const char* argv[]{"penna-model"};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(success);
+        REQUIRE_THAT(configFileName,
+                     Catch::Matchers::Equals(defaultConfigFileName));
+        REQUIRE_THAT(prefix, Catch::Matchers::Equals(defaultPrefix));
+    }
+
+    SECTION("only config given")
+    {
+        std::string configName{"someConfig.yaml"};
+        const char* argv[]{"penna-model", configName.c_str()};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(success);
+        REQUIRE_THAT(configFileName, Catch::Matchers::Equals(configName));
+        REQUIRE_THAT(prefix, Catch::Matchers::Equals(defaultPrefix));
+    }
+
+    SECTION("only prefix given")
+    {
+        std::string somePrefix{"somePrefix"};
+        const char* argv[]{"penna-model", "-p", somePrefix.c_str()};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(success);
+        REQUIRE_THAT(configFileName,
+                     Catch::Matchers::Equals(defaultConfigFileName));
+        REQUIRE_THAT(prefix, Catch::Matchers::Equals(somePrefix));
+    }
+
+    SECTION("config and prefix given")
+    {
+        std::string somePrefix{"somePrefix"};
+        std::string configName{"someConfig.yaml"};
+        const char* argv[]{"penna-model", configName.c_str(), "-p",
+                           somePrefix.c_str()};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(success);
+        REQUIRE_THAT(configFileName, Catch::Matchers::Equals(configName));
+        REQUIRE_THAT(prefix, Catch::Matchers::Equals(somePrefix));
+    }
+
+    SECTION("wrong param")
+    {
+        const char* argv[]{"penna-model", "-wrong_param"};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(!success);
+    }
+
+    SECTION("no expected prefix")
+    {
+        const char* argv[]{"penna-model", "-p"};
+        const auto [success, configFileName,
+                    prefix]{config::getAppArguments(std::size(argv), argv)};
+        REQUIRE(success);
+        REQUIRE_THAT(prefix, Catch::Matchers::Equals(defaultPrefix));
     }
 
     std::cerr.rdbuf(oldCerrBuffer);
