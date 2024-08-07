@@ -85,7 +85,10 @@ int getLineLength() { return 50; }
         }
 
         if (currentSum == 1)
+        {
             Logger().log({progressLinePreffix});
+            return;
+        }
 
         const int totalSum{simCount * 100};
         if (shouldAddProgress(currentSum, totalSum))

@@ -56,3 +56,53 @@ TEST_CASE("Sequential Progress Callback")
 
     std::cout.rdbuf(oldCoutBuffer);
 }
+
+TEST_CASE("Overall Progress Callback")
+{
+    const int years{1000};
+    config::Params params;
+    params.simulationsCount_ = 1;
+    params.years_ = years;
+    const int shift{-1};
+
+    const int simNumber{0};
+    const int progressLineLength{progress_callback::getLineLength()};
+    auto callback{progress_callback::getOverallProgressCallback};
+
+    std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
+    std::ostringstream output;
+    std::cout.rdbuf(output.rdbuf());
+    output.str("");
+
+    SECTION("start")
+    {
+        callback(simNumber, params)(1);
+        REQUIRE(output.str() == "");
+    }
+
+    SECTION("before progress")
+    {
+        callback(simNumber, params)(years / progressLineLength - 1 + shift);
+        REQUIRE(output.str() == "");
+    }
+
+    SECTION("progress")
+    {
+        callback(simNumber, params)(years / progressLineLength + shift);
+        REQUIRE(output.str() == "*");
+    }
+
+    SECTION("after progress")
+    {
+        callback(simNumber, params)(years / progressLineLength + 1 + shift);
+        REQUIRE(output.str() == "");
+    }
+
+    SECTION("end")
+    {
+        callback(simNumber, params)(years + shift);
+        REQUIRE(output.str() == "*]\n");
+    }
+
+    std::cout.rdbuf(oldCoutBuffer);
+}
