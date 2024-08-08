@@ -15,7 +15,7 @@ public:
 protected:
     bool shouldAddProgressMarker(int currentValue, int maxValue) const;
 
-    bool isEnding(int currentValue, int maxValue);
+    bool isEnding(int currentValue, int maxValue) const;
 
     int getMaxYear() const { return maxYear_; }
     int getSimCount() const { return simCount_; }
