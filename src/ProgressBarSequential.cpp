@@ -13,7 +13,7 @@ void ProgressBarSequential::update(int year, int sim)
         return;
     }
 
-    if (shouldAddProgress(year, getMaxYear()))
+    if (shouldAddProgressMarker(year + 1, getMaxYear()))
         Logger().log(getMarker());
 
     if (isEnding(year + 1, getMaxYear()))

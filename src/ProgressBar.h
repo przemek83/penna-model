@@ -13,7 +13,7 @@ public:
     int getLength() const { return length_; }
 
 protected:
-    bool shouldAddProgress(int currentValue, int maxValue) const;
+    bool shouldAddProgressMarker(int currentValue, int maxValue) const;
 
     bool isEnding(int currentValue, int maxValue);
 

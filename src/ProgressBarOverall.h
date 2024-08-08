@@ -1,11 +1,19 @@
 #include "ProgressBar.h"
 
+#include <mutex>
+#include <vector>
+
 class ProgressBarOverall : public ProgressBar
 {
 public:
-    using ProgressBar::ProgressBar;
+    ProgressBarOverall(int maxYear, int simCount);
 
     void update(int year, int sim) override;
 
-    static int getSensitivity(int years) { return years / 100; }
+private:
+    bool shouldCalculateProgress(int year, int maxYears) const;
+
+    std::vector<int> progresses_;
+
+    std::mutex mutex_;
 };

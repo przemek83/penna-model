@@ -18,6 +18,7 @@ TEST_CASE("Sequential Progress Callback")
     const int simId{0};
     ProgressBarSequential progressBar{params.years_, params.simulationsCount_};
     const int length{progressBar.getLength()};
+    const int firstYearWithMarker{(years / length) - 1};
 
     std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
     std::ostringstream output;
@@ -34,25 +35,26 @@ TEST_CASE("Sequential Progress Callback")
 
     SECTION("before progress")
     {
-        progressBar.update(years / length - 1, simId);
+        progressBar.update(firstYearWithMarker - 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("progress")
     {
-        progressBar.update(years / length, simId);
+        progressBar.update(firstYearWithMarker, simId);
         REQUIRE(output.str() == "*");
     }
 
     SECTION("after progress")
     {
-        progressBar.update(years / length + 1, simId);
+        progressBar.update(firstYearWithMarker + 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("end")
     {
-        progressBar.update(years, simId);
+        const int lastYear{years - 1};
+        progressBar.update(lastYear, simId);
         REQUIRE(output.str() == "*]\n");
     }
 
@@ -65,11 +67,11 @@ TEST_CASE("Overall Progress Callback")
     config::Params params;
     params.simulationsCount_ = 1;
     params.years_ = years;
-    const int shift{-1};
 
     const int simId{0};
     ProgressBarOverall progressBar{params.years_, params.simulationsCount_};
     const int length{progressBar.getLength()};
+    const int firstYearWithMarker{(years / length) - 1};
 
     std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
     std::ostringstream output;
@@ -78,32 +80,32 @@ TEST_CASE("Overall Progress Callback")
 
     SECTION("start")
     {
-        progressBar.update(ProgressBarOverall::getSensitivity(years) + shift,
-                           simId);
+        progressBar.update(0, simId);
         REQUIRE(output.str() == "[");
     }
 
     SECTION("before progress")
     {
-        progressBar.update(years / length - 1 + shift, simId);
+        progressBar.update(firstYearWithMarker - 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("progress")
     {
-        progressBar.update(years / length + shift, simId);
+        progressBar.update(firstYearWithMarker, simId);
         REQUIRE(output.str() == "*");
     }
 
     SECTION("after progress")
     {
-        progressBar.update(years / length + 1 + shift, simId);
+        progressBar.update(firstYearWithMarker + 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("end")
     {
-        progressBar.update(years + shift, simId);
+        const int lastYear{years - 1};
+        progressBar.update(lastYear, simId);
         REQUIRE(output.str() == "*]\n");
     }
 

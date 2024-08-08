@@ -1,43 +1,24 @@
 #include "ProgressBarOverall.h"
 
-#include <mutex>
 #include <numeric>
-#include <vector>
 
 #include "Logger.h"
 
-namespace
+ProgressBarOverall::ProgressBarOverall(int maxYear, int simCount)
+    : ProgressBar(maxYear, simCount), progresses_{simCount, 0}
 {
-std::vector<int> getProgressVector(int simulations)
-{
-    std::vector<int> progresses(static_cast<std::size_t>(simulations), 0);
-    return progresses;
 }
-
-// int getSensitivity(int years) { return years / 100; }
-
-bool shouldCalculateProgress(int currentYear, int maxYears)
-{
-    return (currentYear + 1) % ProgressBarOverall::getSensitivity(maxYears) ==
-           0;
-}
-
-}  // namespace
 
 void ProgressBarOverall::update(int year, int sim)
 {
-    if (!shouldCalculateProgress(year, getMaxYear()))
+    if ((year != 0) && (!shouldCalculateProgress(year, getMaxYear())))
         return;
 
-    static std::mutex mutex;
     int currentSum{0};
     {
-        std::scoped_lock<std::mutex> lock(mutex);
-        static std::vector<int> progresses{
-            getProgressVector(getSimCount() + 1)};
-        progresses[static_cast<std::size_t>(sim)] =
-            (year + 1) / getSensitivity(getMaxYear());
-        currentSum = std::reduce(progresses.begin(), progresses.end());
+        std::scoped_lock<std::mutex> lock(mutex_);
+        progresses_[static_cast<std::size_t>(sim)] = year + 1;
+        currentSum = std::reduce(progresses_.begin(), progresses_.end());
     }
 
     if (currentSum == 1)
@@ -46,10 +27,16 @@ void ProgressBarOverall::update(int year, int sim)
         return;
     }
 
-    const int totalSum{getSimCount() * 100};
-    if (shouldAddProgress(currentSum, totalSum))
+    const int totalSum{getSimCount() * (getMaxYear())};
+    if (shouldAddProgressMarker(currentSum, totalSum))
         Logger().log(getMarker());
 
     if (isEnding(currentSum, totalSum))
         Logger().log(getSuffix() + "\n");
+}
+
+bool ProgressBarOverall::shouldCalculateProgress(int year, int maxYears) const
+{
+    const int sensitivity{maxYears / 100};
+    return (year + 1) % sensitivity == 0;
 }

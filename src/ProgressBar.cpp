@@ -7,7 +7,7 @@ ProgressBar::ProgressBar(int maxYear, int simCount)
 {
 }
 
-bool ProgressBar::shouldAddProgress(int currentValue, int maxValue) const
+bool ProgressBar::shouldAddProgressMarker(int currentValue, int maxValue) const
 {
     return (currentValue % (maxValue / length_)) == 0;
 }
