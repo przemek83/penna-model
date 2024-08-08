@@ -10,7 +10,7 @@ public:
 
     virtual void update(int year, int sim) = 0;
 
-    int getLength() const { return length_; }
+    [[maybe_unused]] int getLength() const { return length_; }
 
 protected:
     bool shouldAddProgressMarker(int currentValue, int maxValue) const;
