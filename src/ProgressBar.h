@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Config.h"
+#include <string>
 
 class ProgressBar
 {

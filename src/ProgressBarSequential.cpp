@@ -1,5 +1,7 @@
 #include "ProgressBarSequential.h"
 
+#include <string>
+
 #include "Logger.h"
 
 void ProgressBarSequential::update(int year, int sim)

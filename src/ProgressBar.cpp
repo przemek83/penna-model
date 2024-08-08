@@ -1,11 +1,5 @@
 #include "ProgressBar.h"
 
-#include <iostream>
-#include <mutex>
-#include <numeric>
-#include <string>
-#include <vector>
-
 #include "Logger.h"
 
 ProgressBar::ProgressBar(int maxYear, int simCount)
