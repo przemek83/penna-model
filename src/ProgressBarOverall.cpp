@@ -27,7 +27,7 @@ void ProgressBarOverall::update(int year, int sim)
         return;
     }
 
-    const int totalSum{getSimCount() * (getMaxYear())};
+    const int totalSum{getSimCount() * getMaxYear()};
     if (shouldAddProgressMarker(currentSum, totalSum))
         Logger().log(getMarker());
 
