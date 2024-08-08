@@ -13,6 +13,8 @@
 
 TEST_CASE("Simulation", "[penna]")
 {
+    const int simId{0};
+
     SECTION("single simulation")
     {
         config::Params params;
@@ -21,7 +23,7 @@ TEST_CASE("Simulation", "[penna]")
 
         StringOutput output;
 
-        Simulation simulation(params);
+        Simulation simulation(params, simId);
         simulation.setGenerator(
             common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
@@ -52,6 +54,7 @@ TEST_CASE("Benchmark", "[penna]")
 {
     SKIP();
     config::Params params;
+    const int simId{0};
 
     SECTION("simulation short")
     {
@@ -61,7 +64,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.population_.max_ = 100'000;
         params.years_ = 100'000;
 
-        Simulation simulation(params);
+        Simulation simulation(params, simId);
         simulation.setGenerator(
             common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();
@@ -76,7 +79,7 @@ TEST_CASE("Benchmark", "[penna]")
         params.population_.max_ = 200'000;
         params.years_ = 200'000;
 
-        Simulation simulation(params);
+        Simulation simulation(params, simId);
         simulation.setGenerator(
             common::getTestGenerator(config::Params::bits_));
         simulation.createInitialPopulation();

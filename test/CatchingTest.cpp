@@ -119,7 +119,8 @@ TEST_CASE("Catching", "[penna]")
 
     params.catching_ = catching;
 
-    Simulation simulation(params);
+    const int simId{0};
+    Simulation simulation(params, simId);
     simulation.setGenerator(common::getTestGenerator(config::Params::bits_));
     simulation.createInitialPopulation();
     const SimulationData data{simulation.run()};

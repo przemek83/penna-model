@@ -10,11 +10,12 @@
 
 class Output;
 class Generator;
+class ProgressBar;
 
 class Simulation
 {
 public:
-    explicit Simulation(const config::Params& params);
+    Simulation(const config::Params& params, int simId);
 
     void createInitialPopulation();
 
@@ -26,7 +27,7 @@ public:
 
     SimulationData run();
 
-    void setProgressCallback(std::function<void(int)> callback);
+    void setProgressBar(std::shared_ptr<ProgressBar> progressBar);
 
 private:
     using BasicMetrics = SimulationData::BasicMetrics<int>;
@@ -63,7 +64,9 @@ private:
     config::Params params_;
     std::unique_ptr<Generator> generator_{nullptr};
 
-    std::function<void(int)> progressCallback_{nullptr};
+    std::shared_ptr<ProgressBar> progressBar_{nullptr};
 
     bool catchingActive_{false};
+
+    const int simId_;
 };

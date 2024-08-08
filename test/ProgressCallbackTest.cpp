@@ -1,11 +1,13 @@
 #include <iostream>
+#include <memory>
 #include <sstream>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 
 #include <src/Config.h>
-#include <src/ProgressCallback.h>
+#include <src/ProgressBarOverall.h>
+#include <src/ProgressBarSequential.h>
 
 TEST_CASE("Sequential Progress Callback")
 {
@@ -13,9 +15,9 @@ TEST_CASE("Sequential Progress Callback")
     config::Params params;
     params.years_ = years;
 
-    const int simNumber{1};
-    const int progressLineLength{progress_callback::getLineLength()};
-    auto callback{progress_callback::getSequentialProgressCallback};
+    const int simId{0};
+    ProgressBarSequential progressBar{params.years_, params.simulationsCount_};
+    const int length{progressBar.getLength()};
 
     std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
     std::ostringstream output;
@@ -24,7 +26,7 @@ TEST_CASE("Sequential Progress Callback")
 
     SECTION("start")
     {
-        callback(simNumber, params)(0);
+        progressBar.update(0, simId);
         const std::string expectedOutput{
             "1/" + std::to_string(params.simulationsCount_) + " ["};
         REQUIRE(output.str() == expectedOutput);
@@ -32,25 +34,25 @@ TEST_CASE("Sequential Progress Callback")
 
     SECTION("before progress")
     {
-        callback(simNumber, params)(years / progressLineLength - 1);
+        progressBar.update(years / length - 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("progress")
     {
-        callback(simNumber, params)(years / progressLineLength);
+        progressBar.update(years / length, simId);
         REQUIRE(output.str() == "*");
     }
 
     SECTION("after progress")
     {
-        callback(simNumber, params)(years / progressLineLength + 1);
+        progressBar.update(years / length + 1, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("end")
     {
-        callback(simNumber, params)(years);
+        progressBar.update(years, simId);
         REQUIRE(output.str() == "*]\n");
     }
 
@@ -65,9 +67,9 @@ TEST_CASE("Overall Progress Callback")
     params.years_ = years;
     const int shift{-1};
 
-    const int simNumber{0};
-    const int progressLineLength{progress_callback::getLineLength()};
-    auto callback{progress_callback::getOverallProgressCallback};
+    const int simId{0};
+    ProgressBarOverall progressBar{params.years_, params.simulationsCount_};
+    const int length{progressBar.getLength()};
 
     std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
     std::ostringstream output;
@@ -76,32 +78,32 @@ TEST_CASE("Overall Progress Callback")
 
     SECTION("start")
     {
-        callback(simNumber,
-                 params)(progress_callback::getSensitivity(years) + shift);
+        progressBar.update(ProgressBarOverall::getSensitivity(years) + shift,
+                           simId);
         REQUIRE(output.str() == "[");
     }
 
     SECTION("before progress")
     {
-        callback(simNumber, params)(years / progressLineLength - 1 + shift);
+        progressBar.update(years / length - 1 + shift, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("progress")
     {
-        callback(simNumber, params)(years / progressLineLength + shift);
+        progressBar.update(years / length + shift, simId);
         REQUIRE(output.str() == "*");
     }
 
     SECTION("after progress")
     {
-        callback(simNumber, params)(years / progressLineLength + 1 + shift);
+        progressBar.update(years / length + 1 + shift, simId);
         REQUIRE(output.str() == "");
     }
 
     SECTION("end")
     {
-        callback(simNumber, params)(years + shift);
+        progressBar.update(years + shift, simId);
         REQUIRE(output.str() == "*]\n");
     }
 

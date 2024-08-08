@@ -44,8 +44,12 @@ set(${PROJECT_NAME}_SOURCES
     src/FileOutput.cpp
     src/Runner.h
     src/Runner.cpp
-    src/ProgressCallback.h
-    src/ProgressCallback.cpp
+    src/ProgressBar.h
+    src/ProgressBar.cpp
+    src/ProgressBarOverall.h
+    src/ProgressBarOverall.cpp
+    src/ProgressBarSequential.h
+    src/ProgressBarSequential.cpp
     src/AverageData.h
     src/AverageData.cpp
     src/ResultsData.h

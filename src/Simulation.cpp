@@ -5,8 +5,12 @@
 
 #include "Generator.h"
 #include "Output.h"
+#include "ProgressBar.h"
 
-Simulation::Simulation(const config::Params& params) : params_(params) {}
+Simulation::Simulation(const config::Params& params, int simId)
+    : params_(params), simId_(simId)
+{
+}
 
 SimulationData Simulation::run()
 {
@@ -26,8 +30,8 @@ SimulationData Simulation::run()
 
         basicMetrics.push_back(yearMetrics);
 
-        if (progressCallback_)
-            progressCallback_(year);
+        if (progressBar_)
+            progressBar_->update(year, simId_);
 
         ++year;
     }
@@ -35,9 +39,9 @@ SimulationData Simulation::run()
     return prepareData(std::move(basicMetrics));
 }
 
-void Simulation::setProgressCallback(std::function<void(int)> callback)
+void Simulation::setProgressBar(std::shared_ptr<ProgressBar> progressBar)
 {
-    progressCallback_ = std::move(callback);
+    progressBar_ = std::move(progressBar);
 }
 
 SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
