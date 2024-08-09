@@ -32,7 +32,7 @@ void ProgressBarOverall::update(int year, int sim)
 bool ProgressBarOverall::shouldSkip(int year, int maxYears) const
 {
     const int sensitivity{maxYears / 100};
-    return (year != 0) && ((year + 1) % sensitivity != 0);
+    return (year != 0) && (((year + 1) % sensitivity) != 0);
 }
 
 int ProgressBarOverall::getCurrentSum(int year, int sim)
