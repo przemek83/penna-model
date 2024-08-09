@@ -11,7 +11,7 @@ public:
     void update(int year, int sim) override;
 
 private:
-    bool shouldCalculateProgress(int year, int maxYears) const;
+    bool shouldSkip(int year, int maxYears) const;
 
     int getCurrentSum(int year, int sim);
 

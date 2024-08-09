@@ -11,7 +11,7 @@ ProgressBarOverall::ProgressBarOverall(int maxYear, int simCount)
 
 void ProgressBarOverall::update(int year, int sim)
 {
-    if ((year != 0) && (!shouldCalculateProgress(year, getMaxYear())))
+    if (shouldSkip(year, getMaxYear()))
         return;
 
     const int currentSum{getCurrentSum(year, sim)};
@@ -29,10 +29,10 @@ void ProgressBarOverall::update(int year, int sim)
         Logger().log(getSuffix() + "\n");
 }
 
-bool ProgressBarOverall::shouldCalculateProgress(int year, int maxYears) const
+bool ProgressBarOverall::shouldSkip(int year, int maxYears) const
 {
     const int sensitivity{maxYears / 100};
-    return (year + 1) % sensitivity == 0;
+    return (year != 0) && ((year + 1) % sensitivity != 0);
 }
 
 int ProgressBarOverall::getCurrentSum(int year, int sim)
