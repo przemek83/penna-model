@@ -14,7 +14,7 @@ TEST_CASE("Sequential Progress Callback")
 
     const int simId{0};
     ProgressBarSequential progressBar{params.years_, params.simulationsCount_};
-    const int length{progressBar.getLength()};
+    const int length{config::progressBarLength};
     const int firstYearWithMarker{(years / length) - 1};
 
     std::streambuf* oldCoutBuffer{std::cout.rdbuf()};

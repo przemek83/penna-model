@@ -10,8 +10,6 @@ public:
 
     virtual void update(int year, int sim) = 0;
 
-    [[maybe_unused]] int getLength() const { return length_; }
-
 protected:
     bool shouldAddProgressMarker(int currentValue, int maxValue) const;
 
@@ -31,6 +29,4 @@ private:
     const std::string preffix_{'['};
     const std::string suffix_{']'};
     const std::string marker_{'*'};
-
-    const int length_{50};
 };

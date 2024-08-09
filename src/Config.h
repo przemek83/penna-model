@@ -61,4 +61,6 @@ std::pair<bool, config::Params> getParams(const std::string& configFileName);
 
 constexpr int maxPercentage{100};
 
+constexpr int progressBarLength{50};
+
 }  // namespace config
