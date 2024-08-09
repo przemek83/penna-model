@@ -49,8 +49,11 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 {
     BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
 
+    const int familyCounted{1};
+    const int familyNotCounted{0};
     std::vector<int> families(
-        static_cast<std::size_t>(params_.population_.initial_), 0);
+        static_cast<std::size_t>(params_.population_.initial_),
+        familyNotCounted);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(livesAtStart)};
@@ -62,10 +65,10 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
 
         if (int& family{
                 families[static_cast<std::size_t>(individual.getAncestor())]};
-            (!singleFamily) && (family != 1))
+            (!singleFamily) && (family == familyNotCounted))
         {
             ++yearMetrics.families_;
-            family = 1;
+            family = familyCounted;
         }
 
         if (shouldDie(individual, chanceForDeathInPercent))
