@@ -62,6 +62,10 @@ private:
     void handleOffspring(const Individual& individual,
                          BasicMetrics& yearMetrics);
 
+    void handleFamilies(std::vector<int>& families,
+                        const Individual& individual,
+                        BasicMetrics& yearMetrics) const;
+
     std::list<Individual> individuals_;
 
     config::Params params_;
@@ -72,4 +76,7 @@ private:
     bool catchingActive_{false};
 
     const int simId_;
+
+    const int familyCounted_{1};
+    const int familyNotCounted_{0};
 };

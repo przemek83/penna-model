@@ -47,13 +47,11 @@ void Simulation::setProgressBar(std::shared_ptr<ProgressBar> progressBar)
 SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
     bool singleFamily, int livesAtStart)
 {
-    BasicMetrics yearMetrics{singleFamily ? 1 : 0, livesAtStart, 0, 0};
+    BasicMetrics yearMetrics{0, livesAtStart, 0, 0};
 
-    const int familyCounted{1};
-    const int familyNotCounted{0};
     std::vector<int> families(
         static_cast<std::size_t>(params_.population_.initial_),
-        familyNotCounted);
+        familyNotCounted_);
 
     const int chanceForDeathInPercent{
         getCurrentDeathChanceInPercent(livesAtStart)};
@@ -63,13 +61,8 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
     {
         Individual& individual{*it};
 
-        if (int& family{
-                families[static_cast<std::size_t>(individual.getAncestor())]};
-            (!singleFamily) && (family == familyNotCounted))
-        {
-            ++yearMetrics.families_;
-            family = familyCounted;
-        }
+        if (!singleFamily)
+            handleFamilies(families, individual, yearMetrics);
 
         if (shouldDie(individual, chanceForDeathInPercent))
         {
@@ -83,6 +76,9 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
             ++it;
         }
     }
+
+    if (singleFamily)
+        yearMetrics.families_ = 1;
 
     return yearMetrics;
 }
@@ -240,4 +236,16 @@ void Simulation::handleOffspring(const Individual& individual,
             individual.offspring(*generator_, params_.mutations_.added_));
 
     yearMetrics.births_ += params_.offspring_.count_;
+}
+
+void Simulation::handleFamilies(std::vector<int>& families,
+                                const Individual& individual,
+                                BasicMetrics& yearMetrics) const
+{
+    int& family{families[static_cast<std::size_t>(individual.getAncestor())]};
+    if (family == familyNotCounted_)
+    {
+        ++yearMetrics.families_;
+        family = familyCounted_;
+    }
 }
