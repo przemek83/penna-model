@@ -8,10 +8,7 @@ TEST_CASE("Runner - Sequential Run")
     config::Params params;
     params.years_ = 0;
     Runner runner;
-    Simulation simulation1(params, 0);
-    Simulation simulation2(params, 1);
-    runner.addSimulation(std::move(simulation1));
-    runner.addSimulation(std::move(simulation2));
+    runner.prepareSimulations(params, 0);
 
     std::vector<SimulationData> result{runner.runSequential()};
 
@@ -24,10 +21,7 @@ TEST_CASE("Runner - Parallel Run")
     config::Params params;
     params.years_ = 0;
     Runner runner;
-    Simulation simulation1(params, 0);
-    Simulation simulation2(params, 1);
-    runner.addSimulation(std::move(simulation1));
-    runner.addSimulation(std::move(simulation2));
+    runner.prepareSimulations(params, 0);
 
     std::vector<SimulationData> result{runner.runParallel()};
 

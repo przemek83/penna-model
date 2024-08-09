@@ -5,7 +5,7 @@
 class Runner
 {
 public:
-    void addSimulation(Simulation simulation);
+    void prepareSimulations(const config::Params& params, long int seed);
 
     [[maybe_unused]] std::vector<SimulationData> runSequential();
 

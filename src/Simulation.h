@@ -4,11 +4,11 @@
 #include <memory>
 
 #include "Config.h"
+#include "Generator.h"
 #include "Individual.h"
 #include "SimulationData.h"
 
 class Output;
-class Generator;
 class ProgressBar;
 
 class Simulation
