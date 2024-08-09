@@ -166,9 +166,12 @@ bool Simulation::shouldHaveOffspring(const Individual& individual) const
 SimulationData Simulation::prepareData(
     std::vector<BasicMetrics> basicMetrics) const
 {
-    const int populationCount{basicMetrics.back().getLivingAtEnd()};
     SimulationData data{static_cast<std::size_t>(params_.years_),
                         config::Params::bits_};
+    if (basicMetrics.empty())
+        return data;
+
+    const int populationCount{basicMetrics.back().getLivingAtEnd()};
     data.setBasicMetrics(std::move(basicMetrics));
 
     data.setAgeDistribution(getAgeDistribution(individuals_));
