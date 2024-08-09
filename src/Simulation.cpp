@@ -72,19 +72,13 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
         {
             ++yearMetrics.deaths_;
             it = individuals_.erase(it);
-            continue;
         }
-
-        if (shouldHaveOffspring(individual))
+        else
         {
-            for (int i{0}; i < params_.offspring_.count_; ++i)
-                individuals_.emplace_front(individual.offspring(
-                    *generator_, params_.mutations_.added_));
-            yearMetrics.births_ += params_.offspring_.count_;
+            handleOffspring(individual, yearMetrics);
+            individual.ageByOneYear();
+            ++it;
         }
-
-        individual.ageByOneYear();
-        ++it;
     }
 
     return yearMetrics;
@@ -230,4 +224,17 @@ int Simulation::getLivesOnYearStart(
         return params_.population_.initial_;
 
     return basicMetrics[static_cast<std::size_t>(year - 1)].getLivingAtEnd();
+}
+
+void Simulation::handleOffspring(const Individual& individual,
+                                 BasicMetrics& yearMetrics)
+{
+    if (!shouldHaveOffspring(individual))
+        return;
+
+    for (int i = 0; i < params_.offspring_.count_; ++i)
+        individuals_.emplace_front(
+            individual.offspring(*generator_, params_.mutations_.added_));
+
+    yearMetrics.births_ += params_.offspring_.count_;
 }

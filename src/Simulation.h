@@ -59,6 +59,9 @@ private:
     int getLivesOnYearStart(
         int year, const std::vector<BasicMetrics>& basicMetrics) const;
 
+    void handleOffspring(const Individual& individual,
+                         BasicMetrics& yearMetrics);
+
     std::list<Individual> individuals_;
 
     config::Params params_;
