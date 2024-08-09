@@ -53,8 +53,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
         static_cast<std::size_t>(params_.population_.initial_),
         familyNotCounted_);
 
-    const int chanceForDeathInPercent{
-        getCurrentDeathChanceInPercent(livesAtStart)};
+    const int deathChance{getDeathChance(livesAtStart)};
 
     auto it{individuals_.begin()};
     while (it != individuals_.end())
@@ -64,7 +63,7 @@ SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
         if (!singleFamily)
             handleFamilies(families, individual, yearMetrics);
 
-        if (shouldDie(individual, chanceForDeathInPercent))
+        if (shouldDie(individual, deathChance))
         {
             ++yearMetrics.deaths_;
             it = individuals_.erase(it);
@@ -133,7 +132,7 @@ std::vector<int> Simulation::getBitsDistribution(
     return bitsDistribution;
 }
 
-int Simulation::getCurrentDeathChanceInPercent(int populationCount) const
+int Simulation::getDeathChance(int populationCount) const
 {
     const float populationRatio{static_cast<float>(populationCount) /
                                 static_cast<float>(params_.population_.max_)};
@@ -150,12 +149,11 @@ bool Simulation::isCatched(int age) const
     return generator_->getPercentChance() <= params_.catching_.percent_;
 }
 
-bool Simulation::shouldDie(const Individual& individual,
-                           int chanceForDeathInPercent) const
+bool Simulation::shouldDie(const Individual& individual, int deathChance) const
 {
     return (individual.getSurvivedMutations() >= params_.mutations_.lethal_) ||
            (individual.getAge() >= config::Params::bits_) ||
-           ((generator_->getPercentChance() <= chanceForDeathInPercent) ||
+           ((generator_->getPercentChance() <= deathChance) ||
             isCatched(individual.getAge()));
 }
 
@@ -189,7 +187,7 @@ Simulation::getDeathsDistributionData() const
     std::vector<int> gompertzAgeDistribution(config::Params::bits_, 0);
 
     const int chanceForDeathInPercent{
-        getCurrentDeathChanceInPercent(static_cast<int>(individuals_.size()))};
+        getDeathChance(static_cast<int>(individuals_.size()))};
 
     auto it{individuals_.begin()};
     while (it != individuals_.end())

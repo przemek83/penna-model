@@ -39,12 +39,11 @@ private:
     std::vector<int> getBitsDistribution(
         const std::list<Individual>& individuals) const;
 
-    int getCurrentDeathChanceInPercent(int populationCount) const;
+    int getDeathChance(int populationCount) const;
 
     bool isCatched(int age) const;
 
-    bool shouldDie(const Individual& individual,
-                   int chanceForDeathInPercent) const;
+    bool shouldDie(const Individual& individual, int deathChance) const;
 
     bool shouldHaveOffspring(const Individual& individual) const;
 
