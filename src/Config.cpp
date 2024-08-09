@@ -230,10 +230,10 @@ void fillParser(argparse::ArgumentParser& parser)
 
 namespace config
 {
-config::Params loadConfig(std::istream& stream)
+config::Params loadConfig(std::unique_ptr<std::istream> configStream)
 {
     config::Params params;
-    YAML::Node yaml{YAML::Load(stream)};
+    YAML::Node yaml{YAML::Load(*configStream)};
 
     if (const YAML::Node & node{yaml[fieldToString.at(Field::POPULATION)]};
         node)
@@ -320,16 +320,17 @@ std::tuple<bool, std::string, std::string> getAppArguments(int argc,
     return {true, configFileName, prefix};
 }
 
-std::pair<bool, config::Params> getParams(const std::string& configFileName)
+std::pair<bool, config::Params> getParams(
+    const std::string& configFileName,
+    std::unique_ptr<std::istream> configStream)
 {
-    std::ifstream configFileStream(configFileName);
-    if (configFileStream.fail())
+    if (configStream->fail())
     {
         Logger().err("Cannot read config file " + configFileName + "\n");
         return {false, {}};
     }
 
-    const config::Params params{config::loadConfig(configFileStream)};
+    const config::Params params{config::loadConfig(std::move(configStream))};
 
     if (!config::isValid(params))
         return {false, {}};

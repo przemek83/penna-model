@@ -1,6 +1,6 @@
 #include <iostream>
+#include <memory>
 #include <sstream>
-#include <tuple>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
@@ -98,8 +98,9 @@ TEST_CASE("Config loading", "[penna]")
     {
         const config::Params defaultParams;
 
-        std::istringstream emptyCofigString("");
-        const config::Params configParams{config::loadConfig(emptyCofigString)};
+        auto configStream{std::make_unique<std::istringstream>("")};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
         REQUIRE_THAT(configParams, equalsParams(defaultParams));
     }
 
@@ -108,7 +109,7 @@ TEST_CASE("Config loading", "[penna]")
         const config::Params expectedParams{
             2'000, 100'000, 1'000, 2, 6, 6, 4, 50, 2, 4, 20, 2'000, 5};
 
-        std::istringstream configString(R"(
+        std::string configString(R"(
 population:
   initial: 2000
   max: 100000
@@ -126,17 +127,20 @@ catching:
   percent: 20
   fromYear: 2000
   fromAge: 5)");
-        const config::Params configParams{config::loadConfig(configString)};
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
         REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
 
     SECTION("invalid config")
     {
-        std::istringstream invalidConfigString(R"(
+        std::string configString(R"(
 mutations:
   lethal: aaaa36
 )");
-        REQUIRE_THROWS(config::loadConfig(invalidConfigString));
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        REQUIRE_THROWS(config::loadConfig(std::move(configStream)));
     }
 
     SECTION("partial config")
@@ -145,11 +149,13 @@ mutations:
         expectedParams.population_.max_ = 100'000;
         expectedParams.simulationsCount_ = 4;
 
-        std::istringstream configString(R"(
+        std::string configString(R"(
 population:
   max: 100000
 simulations: 4)");
-        const config::Params configParams{config::loadConfig(configString)};
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
         REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
 }

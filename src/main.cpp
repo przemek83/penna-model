@@ -1,3 +1,6 @@
+#include <fstream>
+#include <memory>
+
 #include "AverageData.h"
 #include "FileOutput.h"
 #include "ProgressBarOverall.h"
@@ -25,7 +28,9 @@ int main(int argc, const char* argv[])
     if (!parsingOK)
         return EXIT_FAILURE;
 
-    const auto [paramsOK, params]{config::getParams(configFileName)};
+    auto configStream{std::make_unique<std::ifstream>(configFileName)};
+    const auto [paramsOK, params]{
+        config::getParams(configFileName, std::move(configStream))};
     if (!paramsOK)
         return EXIT_FAILURE;
 

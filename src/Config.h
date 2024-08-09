@@ -1,6 +1,7 @@
 #pragma once
 
 #include <istream>
+#include <memory>
 
 namespace config
 {
@@ -50,14 +51,16 @@ struct Params
 
 static_assert(Params::bits_ > 0);
 
-config::Params loadConfig(std::istream& stream);
+config::Params loadConfig(std::unique_ptr<std::istream> configStream);
 
 bool isValid(const Params& params);
 
 std::tuple<bool, std::string, std::string> getAppArguments(int argc,
                                                            const char* argv[]);
 
-std::pair<bool, config::Params> getParams(const std::string& configFileName);
+std::pair<bool, config::Params> getParams(
+    const std::string& configFileName,
+    std::unique_ptr<std::istream> configStream);
 
 constexpr int maxPercentage{100};
 
