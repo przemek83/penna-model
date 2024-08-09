@@ -19,7 +19,8 @@ set(${PROJECT_TEST}_SOURCES
     NumbersGeneratorTest.cpp
     FakeGenerator.h
     FakeGenerator.cpp
-    ProgressCallbackTest.cpp
+    ProgressBarSequentialTest.cpp
+    ProgressBarOverallTest.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
