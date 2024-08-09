@@ -21,6 +21,7 @@ set(${PROJECT_TEST}_SOURCES
     FakeGenerator.cpp
     ProgressBarSequentialTest.cpp
     ProgressBarOverallTest.cpp
+    RunnerTest.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
