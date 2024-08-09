@@ -14,13 +14,7 @@ void ProgressBarOverall::update(int year, int sim)
     if ((year != 0) && (!shouldCalculateProgress(year, getMaxYear())))
         return;
 
-    int currentSum{0};
-    {
-        std::scoped_lock<std::mutex> lock(mutex_);
-        progresses_[static_cast<std::size_t>(sim)] = year + 1;
-        currentSum = std::reduce(progresses_.begin(), progresses_.end());
-    }
-
+    const int currentSum{getCurrentSum(year, sim)};
     if (currentSum == 1)
     {
         Logger().log({getPreffix()});
@@ -39,4 +33,11 @@ bool ProgressBarOverall::shouldCalculateProgress(int year, int maxYears) const
 {
     const int sensitivity{maxYears / 100};
     return (year + 1) % sensitivity == 0;
+}
+
+int ProgressBarOverall::getCurrentSum(int year, int sim)
+{
+    std::scoped_lock<std::mutex> lock(mutex_);
+    progresses_[static_cast<std::size_t>(sim)] = year + 1;
+    return std::reduce(progresses_.begin(), progresses_.end());
 }
