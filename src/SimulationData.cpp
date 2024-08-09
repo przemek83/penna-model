@@ -31,16 +31,24 @@ void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
         ageDistribution_[i] = ageDistribution[i];
 }
 
+float SimulationData::calculateBitDistributionValue(
+    int populationCount, int bitsDistributionValue) const
+{
+    if (populationCount <= 0)
+        return 1.F;
+
+    return static_cast<float>(bitsDistributionValue) /
+           static_cast<float>(populationCount);
+}
+
 void SimulationData::setBitDistribution(
     const std::vector<int>& bitsDistribution, int populationCount)
 {
     const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {
-        const float value{populationCount > 0
-                              ? static_cast<float>(bitsDistribution[i]) /
-                                    static_cast<float>(populationCount)
-                              : 1.F};
+        float value{calculateBitDistributionValue(populationCount,
+                                                  bitsDistribution[i])};
         setBitsDistributionValue(i, value);
     }
 }

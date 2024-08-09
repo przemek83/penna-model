@@ -36,6 +36,9 @@ protected:
     bool isSingleFamily(std::size_t year) const override;
 
 private:
+    float calculateBitDistributionValue(int populationCount,
+                                        int bitsDistributionValue) const;
+
     std::vector<int> ageDistribution_;
     std::vector<BasicMetrics<int>> basicMetrics_;
 };
