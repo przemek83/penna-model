@@ -1,3 +1,4 @@
+#include <ios>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -90,30 +91,14 @@ inline ParamsMatcher equalsParams(const config::Params& expected)
 {
     return ParamsMatcher(expected);
 }
-}  // namespace
 
-TEST_CASE("Config loading", "[penna]")
+std::string getValidConfig()
 {
-    SECTION("empty config")
-    {
-        const config::Params defaultParams;
-
-        auto configStream{std::make_unique<std::istringstream>("")};
-        const config::Params configParams{
-            config::loadConfig(std::move(configStream))};
-        REQUIRE_THAT(configParams, equalsParams(defaultParams));
-    }
-
-    SECTION("valid config")
-    {
-        const config::Params expectedParams{
-            2'000, 100'000, 1'000, 2, 6, 6, 4, 50, 2, 4, 20, 2'000, 5};
-
-        std::string configString(R"(
+    return R"(
 population:
   initial: 2000
   max: 100000
-years: 1000
+years: 5000
 mutations:
   added: 2
   lethal: 6
@@ -126,8 +111,40 @@ simulations: 4
 catching:
   percent: 20
   fromYear: 2000
-  fromAge: 5)");
-        auto configStream{std::make_unique<std::istringstream>(configString)};
+  fromAge: 5)";
+}
+
+config::Params getExpectedParamsForValidConfig()
+{
+    return {2'000, 100'000, 5'000, 2, 6, 6, 4, 50, 2, 4, 20, 2'000, 5};
+}
+
+std::string getInvalidConfig()
+{
+    return R"(
+mutations:
+  lethal: aaaa36
+)";
+}
+
+}  // namespace
+
+TEST_CASE("Config loading", "[penna]")
+{
+    SECTION("empty config")
+    {
+        const config::Params defaultParams;
+        auto configStream{std::make_unique<std::istringstream>("")};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
+        REQUIRE_THAT(configParams, equalsParams(defaultParams));
+    }
+
+    SECTION("valid config")
+    {
+        const config::Params expectedParams{getExpectedParamsForValidConfig()};
+        auto configStream{
+            std::make_unique<std::istringstream>(getValidConfig())};
         const config::Params configParams{
             config::loadConfig(std::move(configStream))};
         REQUIRE_THAT(configParams, equalsParams(expectedParams));
@@ -135,10 +152,7 @@ catching:
 
     SECTION("invalid config")
     {
-        std::string configString(R"(
-mutations:
-  lethal: aaaa36
-)");
+        std::string configString(getInvalidConfig());
         auto configStream{std::make_unique<std::istringstream>(configString)};
         REQUIRE_THROWS(config::loadConfig(std::move(configStream)));
     }
@@ -366,4 +380,38 @@ TEST_CASE("Config app arguments", "[penna]")
     }
 
     std::cerr.rdbuf(oldCerrBuffer);
+}
+
+TEST_CASE("Get Params", "[penna]")
+{
+    SECTION("Valid config file")
+    {
+        const config::Params expectedParams{getExpectedParamsForValidConfig()};
+        auto configStream{
+            std::make_unique<std::istringstream>(getValidConfig())};
+        const std::string configFileName = "config.yaml";
+        const auto [success, params]{
+            config::getParams(configFileName, std::move(configStream))};
+        REQUIRE(success);
+        REQUIRE_THAT(params, equalsParams(expectedParams));
+    }
+
+    SECTION("Invalid config file")
+    {
+        std::string configString(getInvalidConfig());
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const std::string configFileName = "config.yaml";
+        REQUIRE_THROWS(
+            config::getParams(configFileName, std::move(configStream)));
+    }
+
+    SECTION("Failed to read config file")
+    {
+        const std::string configFileName = "nonexistent.yaml";
+        auto configStream = std::make_unique<std::istringstream>();
+        configStream->setstate(std::ios_base::failbit);
+        const auto [success, params]{
+            config::getParams(configFileName, std::move(configStream))};
+        REQUIRE_FALSE(success);
+    }
 }
