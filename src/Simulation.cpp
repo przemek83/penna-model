@@ -151,10 +151,9 @@ bool Simulation::isCatched(int age) const
 
 bool Simulation::shouldDie(const Individual& individual, int deathChance) const
 {
-    return (individual.getSurvivedMutations() >= params_.mutations_.lethal_) ||
-           (individual.getAge() >= config::Params::bits_) ||
-           ((generator_->getPercentChance() <= deathChance) ||
-            isCatched(individual.getAge()));
+    return individual.shouldDie(params_.mutations_.lethal_) ||
+           (generator_->getPercentChance() <= deathChance) ||
+           isCatched(individual.getAge());
 }
 
 bool Simulation::shouldHaveOffspring(const Individual& individual) const

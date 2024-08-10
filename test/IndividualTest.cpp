@@ -201,4 +201,36 @@ TEST_CASE("Individual", "[penna]")
 
         REQUIRE(child.getSurvivedMutations() == 0);
     }
+
+    individual = Individual(0);
+    SECTION("should live - newborn") { REQUIRE_FALSE(individual.shouldDie(1)); }
+
+    SECTION("should live - adult")
+    {
+        for (int i{0}; i <= 30; ++i)
+            individual.ageByOneYear();
+        REQUIRE_FALSE(individual.shouldDie(1));
+    }
+
+    setGenome(individual, genomeString);
+    SECTION("should live - multiple mutations")
+    {
+        for (int i{0}; i < (config::Params::bits_ - 1); ++i)
+            individual.ageByOneYear();
+        REQUIRE_FALSE(individual.shouldDie(5));
+    }
+
+    SECTION("should die by age")
+    {
+        for (int i{0}; i < config::Params::bits_; ++i)
+            individual.ageByOneYear();
+        REQUIRE(individual.shouldDie(5));
+    }
+
+    SECTION("should die by lethal mutations")
+    {
+        for (int i{0}; i < (config::Params::bits_ - 1); ++i)
+            individual.ageByOneYear();
+        REQUIRE(individual.shouldDie(4));
+    }
 }

@@ -28,6 +28,8 @@ public:
 
     bool getGenomeBit(std::size_t position) const { return genome_[position]; }
 
+    bool shouldDie(int lethalMutations) const;
+
 private:
     void applyMutation(Generator& generator);
 

@@ -45,3 +45,9 @@ void Individual::assignRandomBits(Generator& generator, int startingMutations)
     for (const auto mutationPosition : mutationPositions)
         genome_[mutationPosition] = true;
 }
+
+bool Individual::shouldDie(int lethalMutations) const
+{
+    return (getSurvivedMutations() >= lethalMutations) ||
+           (getAge() >= config::Params::bits_);
+}
