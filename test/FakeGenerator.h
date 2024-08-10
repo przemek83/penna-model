@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdint>
 #include <list>
 
 #include <src/Generator.h>

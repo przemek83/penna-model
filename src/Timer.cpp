@@ -1,6 +1,5 @@
 #include "Timer.h"
 
-#include <iostream>
 #include <string>
 
 #include "Logger.h"
