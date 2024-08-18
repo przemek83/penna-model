@@ -1,10 +1,9 @@
-#include <iostream>
-#include <sstream>
-
 #include <catch2/catch_test_macros.hpp>
 
 #include <src/Config.h>
 #include <src/ProgressBarOverall.h>
+
+#include "StdStreamEater.h"
 
 TEST_CASE("Overall Progress Callback")
 {
@@ -18,41 +17,36 @@ TEST_CASE("Overall Progress Callback")
     const int length{config::progressBarLength};
     const int firstYearWithMarker{(years / length) - 1};
 
-    std::streambuf* oldCoutBuffer{std::cout.rdbuf()};
-    std::ostringstream output;
-    std::cout.rdbuf(output.rdbuf());
-    output.str("");
+    StdStreamEater eater(std::cout);
 
     SECTION("start")
     {
         progressBar.update(0, simId);
-        REQUIRE(output.str() == "[");
+        REQUIRE(eater.getOutput() == "[");
     }
 
     SECTION("before progress")
     {
         progressBar.update(firstYearWithMarker - 1, simId);
-        REQUIRE(output.str() == "");
+        REQUIRE(eater.getOutput() == "");
     }
 
     SECTION("progress")
     {
         progressBar.update(firstYearWithMarker, simId);
-        REQUIRE(output.str() == "*");
+        REQUIRE(eater.getOutput() == "*");
     }
 
     SECTION("after progress")
     {
         progressBar.update(firstYearWithMarker + 1, simId);
-        REQUIRE(output.str() == "");
+        REQUIRE(eater.getOutput() == "");
     }
 
     SECTION("end")
     {
         const int lastYear{years - 1};
         progressBar.update(lastYear, simId);
-        REQUIRE(output.str() == "*]\n");
+        REQUIRE(eater.getOutput() == "*]\n");
     }
-
-    std::cout.rdbuf(oldCoutBuffer);
 }

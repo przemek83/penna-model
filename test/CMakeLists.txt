@@ -22,8 +22,8 @@ set(${PROJECT_TEST}_SOURCES
     ProgressBarSequentialTest.cpp
     ProgressBarOverallTest.cpp
     RunnerTest.cpp
-    CoutEater.h
-    CoutEater.cpp
+    StdStreamEater.h
+    StdStreamEater.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
