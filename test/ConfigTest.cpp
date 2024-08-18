@@ -9,6 +9,8 @@
 
 #include <src/Config.h>
 
+#include "StdStreamEater.h"
+
 namespace Catch
 {
 
@@ -177,9 +179,8 @@ simulations: 4)");
 TEST_CASE("Config correctness", "[penna]")
 {
     config::Params params;
-    std::streambuf* oldCerrBuffer{std::cerr.rdbuf()};
-    std::ostringstream output;
-    std::cerr.rdbuf(output.rdbuf());
+
+    StdStreamEater eater(std::cerr);
 
     SECTION("correct params") { REQUIRE(config::isValid(params)); }
 
@@ -302,15 +303,11 @@ TEST_CASE("Config correctness", "[penna]")
         params.catching_.fromAge_ = config::Params::bits_ + 1;
         REQUIRE(!config::isValid(params));
     }
-
-    std::cerr.rdbuf(oldCerrBuffer);
 }
 
 TEST_CASE("Config app arguments", "[penna]")
 {
-    std::streambuf* oldCerrBuffer{std::cerr.rdbuf()};
-    std::ostringstream output;
-    std::cerr.rdbuf(output.rdbuf());
+    StdStreamEater eater(std::cerr);
 
     const std::string defaultConfigFileName{"config.yaml"};
     const std::string defaultPrefix{"averages"};
@@ -378,8 +375,6 @@ TEST_CASE("Config app arguments", "[penna]")
         REQUIRE(success);
         REQUIRE_THAT(prefix, Catch::Matchers::Equals(defaultPrefix));
     }
-
-    std::cerr.rdbuf(oldCerrBuffer);
 }
 
 TEST_CASE("Get Params", "[penna]")
