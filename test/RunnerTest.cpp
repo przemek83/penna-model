@@ -3,8 +3,12 @@
 #include <src/Generator.h>
 #include <src/Runner.h>
 
+#include "StdStreamEater.h"
+
 TEST_CASE("Runner - Sequential Run")
 {
+    StdStreamEater eater(std::cout);
+
     config::Params params;
     params.years_ = 0;
     Runner runner;
@@ -18,6 +22,8 @@ TEST_CASE("Runner - Sequential Run")
 
 TEST_CASE("Runner - Parallel Run")
 {
+    StdStreamEater eater(std::cout);
+
     config::Params params;
     params.years_ = 0;
     Runner runner;

@@ -1,7 +1,5 @@
 #include <ios>
-#include <iostream>
 #include <memory>
-#include <sstream>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
@@ -379,6 +377,8 @@ TEST_CASE("Config app arguments", "[penna]")
 
 TEST_CASE("Get Params", "[penna]")
 {
+    StdStreamEater eater(std::cerr);
+
     SECTION("Valid config file")
     {
         const config::Params expectedParams{getExpectedParamsForValidConfig()};
