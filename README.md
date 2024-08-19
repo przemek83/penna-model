@@ -44,23 +44,23 @@ Clone and use CMake directly or via any IDE supporting it. CMake **should**:
 As a result of compilation, binary for simulations and binary for testing should be created.
 
 ## Used tools and libraries for the C++ part
-| Tool |  Windows | Lubuntu |
+| Tool |  Windows | Ubuntu |
 | --- | --- | --- |
-| OS version | 10 22H2 | 22.04 |
-| GCC | 11.2.0 | 11.3.0 |
-| CMake | 3.25.0 | 3.25.0 |
-| Git | 2.38.1 | 2.34.1 |
+| OS version | 10 22H2 | 24.04 |
+| GCC | 11.2.0 | 13.2.0 |
+| CMake | 3.25.0 | 3.28.3 |
+| Git | 2.38.1 | 2.43.0 |
 | yaml-cpp | 0.8.0 | 0.8.0 |
 | Catch2 | 3.3.0 | 3.3.0 | 
 | Argparse | 3.0 | 3.0 |
 
 ## Used tools for plots part
-| Tool | Lubuntu |
+| Tool | Ubuntu |
 | --- | --- |
-| OS version | 22.04 |
-| Python | 3.11.4 |
-| Gnuplot | 5.4 patchlevel 2 |
-| Visual Studio Code | 1.80.0 |
+| OS version | 24.04 |
+| Python | 3.12.3 |
+| Gnuplot | 6.0 patchlevel 0 |
+| Visual Studio Code | 1.92.0 |
 
 # Usage
 Call `penna-model` binary and pass appropriate configuration file as parameter:
