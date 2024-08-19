@@ -3,14 +3,14 @@
 #include <ostream>
 #include <vector>
 
-#include "ResultsData.h"
-#include "SimulationData.h"
+#include "Results.h"
+#include "SimResults.h"
 
-class AverageData : public ResultsData
+class AvgResults : public Results
 {
 public:
-    AverageData(const std::vector<SimulationData>& simulationsData,
-                std::size_t years, int bits);
+    AvgResults(const std::vector<SimResults>& simulationsData,
+               std::size_t years, int bits);
 
 protected:
     void writeLifeRelatedMetricData(std::ostream& stream, std::size_t year,
@@ -25,11 +25,11 @@ protected:
     bool isSingleFamily(std::size_t year) const override;
 
 private:
-    void integrate(const SimulationData& data);
+    void integrate(const SimResults& data);
     void finalize();
 
-    void integrateBasicMetrics(const SimulationData& data);
-    void integrateDistributions(const SimulationData& data);
+    void integrateBasicMetrics(const SimResults& data);
+    void integrateDistributions(const SimResults& data);
 
     void finalizeBasicMetrics();
     void finalizeDistributions();

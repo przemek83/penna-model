@@ -7,9 +7,9 @@ class Runner
 public:
     void prepareSimulations(const config::Params& params, long int seed);
 
-    [[maybe_unused]] std::vector<SimulationData> runSequential();
+    [[maybe_unused]] std::vector<SimResults> runSequential();
 
-    std::vector<SimulationData> runParallel();
+    std::vector<SimResults> runParallel();
 
 private:
     std::vector<Simulation> simulations_;

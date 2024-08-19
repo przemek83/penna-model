@@ -8,9 +8,9 @@
 
 #include "Individual.h"
 #include "OutputType.h"
-#include "SimulationData.h"
+#include "SimResults.h"
 
-class AverageData;
+class AvgResults;
 
 class Output
 {
@@ -23,9 +23,9 @@ public:
     Output& operator=(const Output&) = delete;
     Output& operator=(Output&&) = delete;
 
-    [[maybe_unused]] void saveSimulationData(const SimulationData& data);
+    [[maybe_unused]] void saveSimulationData(const SimResults& data);
 
-    void saveAverages(const AverageData& data);
+    void saveAverages(const AvgResults& data);
 
     void saveInitialPopulation(const std::list<Individual>& individuals) const;
 

@@ -3,8 +3,8 @@
 
 #include <src/FileOutput.h>
 #include <src/Generator.h>
+#include <src/SimResults.h>
 #include <src/Simulation.h>
-#include <src/SimulationData.h>
 
 #include "Common.h"
 #include "StringOutput.h"

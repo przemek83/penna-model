@@ -28,8 +28,8 @@ set(${PROJECT_NAME}_SOURCES
     src/Output.cpp
     src/Individual.h
     src/Individual.cpp
-    src/SimulationData.h
-    src/SimulationData.cpp
+    src/SimResults.h
+    src/SimResults.cpp
     src/Simulation.h
     src/Simulation.cpp
     src/Generator.h
@@ -50,10 +50,10 @@ set(${PROJECT_NAME}_SOURCES
     src/ProgressBarOverall.cpp
     src/ProgressBarSequential.h
     src/ProgressBarSequential.cpp
-    src/AverageData.h
-    src/AverageData.cpp
-    src/ResultsData.h
-    src/ResultsData.cpp
+    src/AvgResults.h
+    src/AvgResults.cpp
+    src/Results.h
+    src/Results.cpp
     src/OutputType.h
     src/Logger.h
 )

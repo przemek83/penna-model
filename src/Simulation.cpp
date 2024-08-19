@@ -12,7 +12,7 @@ Simulation::Simulation(const config::Params& params, int simId)
 {
 }
 
-SimulationData Simulation::run()
+SimResults Simulation::run()
 {
     std::vector<BasicMetrics> basicMetrics;
     basicMetrics.reserve(static_cast<std::size_t>(params_.years_));
@@ -44,8 +44,8 @@ void Simulation::setProgressBar(std::shared_ptr<ProgressBar> progressBar)
     progressBar_ = std::move(progressBar);
 }
 
-SimulationData::BasicMetrics<int> Simulation::progressByOneYear(
-    bool singleFamily, int livesAtStart)
+SimResults::BasicMetrics<int> Simulation::progressByOneYear(bool singleFamily,
+                                                            int livesAtStart)
 {
     BasicMetrics yearMetrics{0, livesAtStart, 0, 0};
 
@@ -162,11 +162,10 @@ bool Simulation::shouldHaveOffspring(const Individual& individual) const
            (generator_->getPercentChance() <= params_.offspring_.chance_);
 }
 
-SimulationData Simulation::prepareData(
-    std::vector<BasicMetrics> basicMetrics) const
+SimResults Simulation::prepareData(std::vector<BasicMetrics> basicMetrics) const
 {
-    SimulationData data{static_cast<std::size_t>(params_.years_),
-                        config::Params::bits_};
+    SimResults data{static_cast<std::size_t>(params_.years_),
+                    config::Params::bits_};
     if (basicMetrics.empty())
         return data;
 

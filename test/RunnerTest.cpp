@@ -14,7 +14,7 @@ TEST_CASE("Runner - Sequential Run")
     Runner runner;
     runner.prepareSimulations(params, 0);
 
-    std::vector<SimulationData> result{runner.runSequential()};
+    std::vector<SimResults> result{runner.runSequential()};
 
     REQUIRE(result.size() ==
             static_cast<std::size_t>(params.simulationsCount_));
@@ -29,7 +29,7 @@ TEST_CASE("Runner - Parallel Run")
     Runner runner;
     runner.prepareSimulations(params, 0);
 
-    std::vector<SimulationData> result{runner.runParallel()};
+    std::vector<SimResults> result{runner.runParallel()};
 
     REQUIRE(result.size() ==
             static_cast<std::size_t>(params.simulationsCount_));

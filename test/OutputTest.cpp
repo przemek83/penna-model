@@ -3,7 +3,7 @@
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
-#include <src/AverageData.h>
+#include <src/AvgResults.h>
 #include <src/FileOutput.h>
 #include <src/Simulation.h>
 
@@ -36,7 +36,7 @@ public:
             common::getTestGenerator(config::Params::bits_));
         simulation1.createInitialPopulation();
         simulation1.saveInitialPopulation(output);
-        const SimulationData data1{simulation1.run()};
+        const SimResults data1{simulation1.run()};
 
         simulation1.saveFinalPopulation(output);
         output.saveSimulationData(data1);
@@ -73,7 +73,7 @@ TEST_CASE("Output averages", "[penna]")
         simulation1.setGenerator(
             common::getTestGenerator(config::Params::bits_));
         simulation1.createInitialPopulation();
-        const SimulationData data1{simulation1.run()};
+        const SimResults data1{simulation1.run()};
 
         auto generator{
             std::make_unique<MockedGenerator>(config::Params::bits_)};
@@ -81,11 +81,11 @@ TEST_CASE("Output averages", "[penna]")
         Simulation simulation2(params, simId);
         simulation2.setGenerator(std::move(generator));
         simulation2.createInitialPopulation();
-        const SimulationData data2{simulation2.run()};
+        const SimResults data2{simulation2.run()};
 
-        const AverageData averageData{{data1, data2},
-                                      static_cast<std::size_t>(params.years_),
-                                      config::Params::bits_};
+        const AvgResults averageData{{data1, data2},
+                                     static_cast<std::size_t>(params.years_),
+                                     config::Params::bits_};
 
         output.reset();
         output.saveAverages(averageData);

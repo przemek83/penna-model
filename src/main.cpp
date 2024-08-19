@@ -1,11 +1,11 @@
 #include <fstream>
 #include <memory>
 
-#include "AverageData.h"
+#include "AvgResults.h"
 #include "FileOutput.h"
 #include "ProgressBarOverall.h"
 #include "Runner.h"
-#include "SimulationData.h"
+#include "SimResults.h"
 
 namespace
 {
@@ -14,7 +14,7 @@ long int getSeed()
     return std::chrono::system_clock::now().time_since_epoch().count();
 }
 
-void saveOutput(const std::string& prefix, const AverageData& averages)
+void saveOutput(const std::string& prefix, const AvgResults& averages)
 {
     FileOutput output(prefix);
     output.saveAverages(averages);
@@ -36,11 +36,11 @@ int main(int argc, const char* argv[])
 
     Runner runner;
     runner.prepareSimulations(params, getSeed());
-    const std::vector<SimulationData> simulationsData{runner.runParallel()};
+    const std::vector<SimResults> simResults{runner.runParallel()};
 
-    const AverageData averages{simulationsData,
-                               static_cast<std::size_t>(params.years_),
-                               config::Params::bits_};
+    const AvgResults averages{simResults,
+                              static_cast<std::size_t>(params.years_),
+                              config::Params::bits_};
 
     saveOutput(prefix, averages);
 

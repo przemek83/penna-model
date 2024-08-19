@@ -1,10 +1,10 @@
-#include "AverageData.h"
+#include "AvgResults.h"
 
 #include "Config.h"
 
-AverageData::AverageData(const std::vector<SimulationData>& simulationsData,
-                         std::size_t years, int bits)
-    : ResultsData(years, bits)
+AvgResults::AvgResults(const std::vector<SimResults>& simulationsData,
+                       std::size_t years, int bits)
+    : Results(years, bits)
 {
     ageDistribution_.resize(getBits(), 0);
     basicMetrics_.resize(getYears());
@@ -15,49 +15,49 @@ AverageData::AverageData(const std::vector<SimulationData>& simulationsData,
     finalize();
 }
 
-void AverageData::integrate(const SimulationData& data)
+void AvgResults::integrate(const SimResults& data)
 {
     integrateBasicMetrics(data);
     integrateDistributions(data);
     ++simulations_;
 }
 
-void AverageData::finalize()
+void AvgResults::finalize()
 {
     finalizeBasicMetrics();
     finalizeDistributions();
 }
 
-void AverageData::writeLifeRelatedMetricData(std::ostream& stream,
-                                             std::size_t year,
-                                             char separator) const
+void AvgResults::writeLifeRelatedMetricData(std::ostream& stream,
+                                            std::size_t year,
+                                            char separator) const
 {
     basicMetrics_[year].serializeLifeRelatedData(stream, separator);
 }
 
-void AverageData::writeFamiliesMetricData(std::ostream& stream,
-                                          std::size_t year) const
+void AvgResults::writeFamiliesMetricData(std::ostream& stream,
+                                         std::size_t year) const
 {
     getBasicMetrics(year).serializeFamily(stream);
 }
 
-void AverageData::writeBitDistributionData(std::ostream& stream,
-                                           std::size_t bit) const
+void AvgResults::writeBitDistributionData(std::ostream& stream,
+                                          std::size_t bit) const
 {
     stream << ageDistribution_[bit];
 }
 
-bool AverageData::isSingleFamily(std::size_t year) const
+bool AvgResults::isSingleFamily(std::size_t year) const
 {
     return getBasicMetrics(year).families_ <= 1;
 }
 
-void AverageData::integrateBasicMetrics(const SimulationData& data)
+void AvgResults::integrateBasicMetrics(const SimResults& data)
 {
     const std::size_t years{getYears()};
     for (std::size_t i{0}; i < years; ++i)
     {
-        const SimulationData::BasicMetrics<int>& other{data.getBasicMetrics(i)};
+        const SimResults::BasicMetrics<int>& other{data.getBasicMetrics(i)};
 
         basicMetrics_[i].families_ += static_cast<float>(other.families_);
         basicMetrics_[i].livingAtStart_ +=
@@ -67,7 +67,7 @@ void AverageData::integrateBasicMetrics(const SimulationData& data)
     }
 }
 
-void AverageData::integrateDistributions(const SimulationData& data)
+void AvgResults::integrateDistributions(const SimResults& data)
 {
     const std::vector<int>& ageDistribution{data.getAgeDistribution()};
 
@@ -86,7 +86,7 @@ void AverageData::integrateDistributions(const SimulationData& data)
     }
 }
 
-void AverageData::finalizeBasicMetrics()
+void AvgResults::finalizeBasicMetrics()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
     const std::size_t years{getYears()};
@@ -101,7 +101,7 @@ void AverageData::finalizeBasicMetrics()
     }
 }
 
-void AverageData::finalizeDistributions()
+void AvgResults::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
     const std::size_t bits{getBits()};
@@ -117,7 +117,7 @@ void AverageData::finalizeDistributions()
     }
 }
 
-const AverageData::BasicMetrics<float>& AverageData::getBasicMetrics(
+const AvgResults::BasicMetrics<float>& AvgResults::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];

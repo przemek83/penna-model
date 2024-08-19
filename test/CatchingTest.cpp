@@ -123,7 +123,7 @@ TEST_CASE("Catching", "[penna]")
     Simulation simulation(params, simId);
     simulation.setGenerator(common::getTestGenerator(config::Params::bits_));
     simulation.createInitialPopulation();
-    const SimulationData data{simulation.run()};
+    const SimResults data{simulation.run()};
 
     StringOutput output;
     output.saveSimulationData(data);

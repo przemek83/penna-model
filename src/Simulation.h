@@ -6,7 +6,7 @@
 #include "Config.h"
 #include "Generator.h"
 #include "Individual.h"
-#include "SimulationData.h"
+#include "SimResults.h"
 
 class Output;
 class ProgressBar;
@@ -24,12 +24,12 @@ public:
 
     void setGenerator(std::unique_ptr<Generator> generator);
 
-    SimulationData run();
+    SimResults run();
 
     void setProgressBar(std::shared_ptr<ProgressBar> progressBar);
 
 private:
-    using BasicMetrics = SimulationData::BasicMetrics<int>;
+    using BasicMetrics = SimResults::BasicMetrics<int>;
     BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
     std::vector<int> getAgeDistribution(
@@ -46,7 +46,7 @@ private:
 
     bool shouldHaveOffspring(const Individual& individual) const;
 
-    SimulationData prepareData(std::vector<BasicMetrics> basicMetrics) const;
+    SimResults prepareData(std::vector<BasicMetrics> basicMetrics) const;
 
     std::pair<std::vector<int>, std::vector<int>> getDeathsDistributionData()
         const;

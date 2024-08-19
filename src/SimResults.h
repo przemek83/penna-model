@@ -3,12 +3,12 @@
 #include <ostream>
 #include <vector>
 
-#include "ResultsData.h"
+#include "Results.h"
 
-class SimulationData : public ResultsData
+class SimResults : public Results
 {
 public:
-    SimulationData(std::size_t years, int bits);
+    SimResults(std::size_t years, int bits);
 
     const BasicMetrics<int>& getBasicMetrics(std::size_t year) const;
     void setBasicMetrics(std::vector<BasicMetrics<int>> basicBasicMetrics);

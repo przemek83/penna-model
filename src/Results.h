@@ -3,16 +3,16 @@
 #include <ostream>
 #include <vector>
 
-class ResultsData
+class Results
 {
 public:
-    ResultsData(std::size_t years, int bits);
-    virtual ~ResultsData() = default;
+    Results(std::size_t years, int bits);
+    virtual ~Results() = default;
 
-    ResultsData(const ResultsData&) = default;
-    ResultsData(ResultsData&&) = default;
-    ResultsData& operator=(const ResultsData&) = default;
-    ResultsData& operator=(ResultsData&&) = default;
+    Results(const Results&) = default;
+    Results(Results&&) = default;
+    Results& operator=(const Results&) = default;
+    Results& operator=(Results&&) = default;
 
     template <typename T>
     struct BasicMetrics

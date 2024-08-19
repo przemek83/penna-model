@@ -3,22 +3,22 @@
 #include <filesystem>
 #include <iostream>
 
-#include "AverageData.h"
+#include "AvgResults.h"
 
-void Output::saveSimulationData(const SimulationData& data)
+void Output::saveSimulationData(const SimResults& data)
 {
-    saveData<SimulationData>(data, {{OutputType::FAMILIES, 0},
-                                    {OutputType::STATISTICS, 0},
-                                    {OutputType::AGE_DISTRIBUTION, 0}});
+    saveData<SimResults>(data, {{OutputType::FAMILIES, 0},
+                                {OutputType::STATISTICS, 0},
+                                {OutputType::AGE_DISTRIBUTION, 0}});
 }
 
-void Output::saveAverages(const AverageData& data)
+void Output::saveAverages(const AvgResults& data)
 {
     const int floatPrecision{6};
-    saveData<AverageData>(data,
-                          {{OutputType::FAMILIES, floatPrecision},
-                           {OutputType::STATISTICS, floatPrecision},
-                           {OutputType::AGE_DISTRIBUTION, floatPrecision}});
+    saveData<AvgResults>(data,
+                         {{OutputType::FAMILIES, floatPrecision},
+                          {OutputType::STATISTICS, floatPrecision},
+                          {OutputType::AGE_DISTRIBUTION, floatPrecision}});
 }
 
 void Output::saveInitialPopulation(

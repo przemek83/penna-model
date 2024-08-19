@@ -1,38 +1,37 @@
-#include "SimulationData.h"
+#include "SimResults.h"
 
-SimulationData::SimulationData(std::size_t years, int bits)
-    : ResultsData(years, bits)
+SimResults::SimResults(std::size_t years, int bits) : Results(years, bits)
 {
     ageDistribution_.resize(getBits(), 0);
     basicMetrics_.resize(getYears());
 }
 
-void SimulationData::setBasicMetrics(
+void SimResults::setBasicMetrics(
     std::vector<BasicMetrics<int>> basicBasicMetrics)
 {
     basicMetrics_ = std::move(basicBasicMetrics);
 }
 
-const SimulationData::BasicMetrics<int>& SimulationData::getBasicMetrics(
+const SimResults::BasicMetrics<int>& SimResults::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];
 }
 
-const std::vector<int>& SimulationData::getAgeDistribution() const
+const std::vector<int>& SimResults::getAgeDistribution() const
 {
     return ageDistribution_;
 }
 
-void SimulationData::setAgeDistribution(const std::vector<int>& ageDistribution)
+void SimResults::setAgeDistribution(const std::vector<int>& ageDistribution)
 {
     const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
         ageDistribution_[i] = ageDistribution[i];
 }
 
-float SimulationData::calculateBitDistributionValue(
-    int populationCount, int bitsDistributionValue) const
+float SimResults::calculateBitDistributionValue(int populationCount,
+                                                int bitsDistributionValue) const
 {
     if (populationCount <= 0)
         return 1.F;
@@ -41,8 +40,8 @@ float SimulationData::calculateBitDistributionValue(
            static_cast<float>(populationCount);
 }
 
-void SimulationData::setBitDistribution(
-    const std::vector<int>& bitsDistribution, int populationCount)
+void SimResults::setBitDistribution(const std::vector<int>& bitsDistribution,
+                                    int populationCount)
 {
     const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
@@ -53,7 +52,7 @@ void SimulationData::setBitDistribution(
     }
 }
 
-void SimulationData::setDeathDistribution(
+void SimResults::setDeathDistribution(
     const std::vector<int>& gompertzDeathsDistribution,
     const std::vector<int>& gompertzAgeDistribution)
 {
@@ -69,26 +68,26 @@ void SimulationData::setDeathDistribution(
     }
 }
 
-void SimulationData::writeLifeRelatedMetricData(std::ostream& stream,
-                                                std::size_t year,
-                                                char separator) const
+void SimResults::writeLifeRelatedMetricData(std::ostream& stream,
+                                            std::size_t year,
+                                            char separator) const
 {
     basicMetrics_[year].serializeLifeRelatedData(stream, separator);
 }
 
-void SimulationData::writeFamiliesMetricData(std::ostream& stream,
-                                             std::size_t year) const
+void SimResults::writeFamiliesMetricData(std::ostream& stream,
+                                         std::size_t year) const
 {
     basicMetrics_[year].serializeFamily(stream);
 }
 
-void SimulationData::writeBitDistributionData(std::ostream& stream,
-                                              std::size_t bit) const
+void SimResults::writeBitDistributionData(std::ostream& stream,
+                                          std::size_t bit) const
 {
     stream << ageDistribution_[bit];
 }
 
-bool SimulationData::isSingleFamily(std::size_t year) const
+bool SimResults::isSingleFamily(std::size_t year) const
 {
     return basicMetrics_[year].families_ <= 1;
 }
