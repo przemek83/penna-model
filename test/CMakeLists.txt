@@ -24,6 +24,7 @@ set(${PROJECT_TEST}_SOURCES
     RunnerTest.cpp
     StdStreamEater.h
     StdStreamEater.cpp
+    MetricsTest.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
