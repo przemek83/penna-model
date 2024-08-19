@@ -40,9 +40,10 @@ std::vector<SimulationData> Runner::runParallel()
     std::vector<std::future<SimulationData>> futures;
     const std::size_t simCount{simulations_.size()};
     for (std::size_t i{0}; i < simCount; ++i)
-        futures.emplace_back(std::async(std::launch::async,
-                                        [&simulation = simulations_[i]]
-                                        { return simulation.run(); }));
+    {
+        const auto operation{[&sim = simulations_[i]] { return sim.run(); }};
+        futures.emplace_back(std::async(operation));
+    }
 
     std::vector<SimulationData> dataToReturn;
     for (auto& future : futures)
