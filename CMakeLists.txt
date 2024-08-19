@@ -56,6 +56,7 @@ set(${PROJECT_NAME}_SOURCES
     src/Results.cpp
     src/OutputType.h
     src/Logger.h
+    src/Metrics.h
 )
 
 # Create default binaries.

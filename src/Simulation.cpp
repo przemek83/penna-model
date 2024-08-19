@@ -44,8 +44,8 @@ void Simulation::setProgressBar(std::shared_ptr<ProgressBar> progressBar)
     progressBar_ = std::move(progressBar);
 }
 
-SimResults::BasicMetrics<int> Simulation::progressByOneYear(bool singleFamily,
-                                                            int livesAtStart)
+metrics::BasicMetrics<int> Simulation::progressByOneYear(bool singleFamily,
+                                                         int livesAtStart)
 {
     BasicMetrics yearMetrics{0, livesAtStart, 0, 0};
 
@@ -169,7 +169,7 @@ SimResults Simulation::prepareData(std::vector<BasicMetrics> basicMetrics) const
     if (basicMetrics.empty())
         return data;
 
-    const int populationCount{basicMetrics.back().getLivingAtEnd()};
+    const int populationCount{metrics::getLivingAtEnd(basicMetrics.back())};
     data.setBasicMetrics(std::move(basicMetrics));
 
     data.setAgeDistribution(getAgeDistribution(individuals_));
@@ -221,7 +221,8 @@ int Simulation::getLivesOnYearStart(
     if (year == 0)
         return params_.population_.initial_;
 
-    return basicMetrics[static_cast<std::size_t>(year - 1)].getLivingAtEnd();
+    return metrics::getLivingAtEnd(
+        basicMetrics[static_cast<std::size_t>(year - 1)]);
 }
 
 void Simulation::handleOffspring(const Individual& individual,

@@ -1,4 +1,5 @@
 #include "SimResults.h"
+#include "Metrics.h"
 
 SimResults::SimResults(std::size_t years, int bits) : Results(years, bits)
 {
@@ -7,12 +8,12 @@ SimResults::SimResults(std::size_t years, int bits) : Results(years, bits)
 }
 
 void SimResults::setBasicMetrics(
-    std::vector<BasicMetrics<int>> basicBasicMetrics)
+    std::vector<metrics::BasicMetrics<int>> basicBasicMetrics)
 {
     basicMetrics_ = std::move(basicBasicMetrics);
 }
 
-const SimResults::BasicMetrics<int>& SimResults::getBasicMetrics(
+const metrics::BasicMetrics<int>& SimResults::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];
@@ -72,13 +73,13 @@ void SimResults::writeLifeRelatedMetricData(std::ostream& stream,
                                             std::size_t year,
                                             char separator) const
 {
-    basicMetrics_[year].serializeLifeRelatedData(stream, separator);
+    metrics::serializeLifeRelatedData(basicMetrics_[year], stream, separator);
 }
 
 void SimResults::writeFamiliesMetricData(std::ostream& stream,
                                          std::size_t year) const
 {
-    basicMetrics_[year].serializeFamily(stream);
+    metrics::serializeFamily(basicMetrics_[year], stream);
 }
 
 void SimResults::writeBitDistributionData(std::ostream& stream,

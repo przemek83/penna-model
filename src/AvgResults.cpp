@@ -32,13 +32,13 @@ void AvgResults::writeLifeRelatedMetricData(std::ostream& stream,
                                             std::size_t year,
                                             char separator) const
 {
-    basicMetrics_[year].serializeLifeRelatedData(stream, separator);
+    metrics::serializeLifeRelatedData(basicMetrics_[year], stream, separator);
 }
 
 void AvgResults::writeFamiliesMetricData(std::ostream& stream,
                                          std::size_t year) const
 {
-    getBasicMetrics(year).serializeFamily(stream);
+    metrics::serializeFamily(getBasicMetrics(year), stream);
 }
 
 void AvgResults::writeBitDistributionData(std::ostream& stream,
@@ -57,7 +57,7 @@ void AvgResults::integrateBasicMetrics(const SimResults& data)
     const std::size_t years{getYears()};
     for (std::size_t i{0}; i < years; ++i)
     {
-        const SimResults::BasicMetrics<int>& other{data.getBasicMetrics(i)};
+        const metrics::BasicMetrics<int>& other{data.getBasicMetrics(i)};
 
         basicMetrics_[i].families_ += static_cast<float>(other.families_);
         basicMetrics_[i].livingAtStart_ +=
@@ -117,7 +117,7 @@ void AvgResults::finalizeDistributions()
     }
 }
 
-const AvgResults::BasicMetrics<float>& AvgResults::getBasicMetrics(
+const metrics::BasicMetrics<float>& AvgResults::getBasicMetrics(
     std::size_t year) const
 {
     return basicMetrics_[year];

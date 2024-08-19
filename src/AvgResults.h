@@ -3,6 +3,7 @@
 #include <ostream>
 #include <vector>
 
+#include "Metrics.h"
 #include "Results.h"
 #include "SimResults.h"
 
@@ -34,11 +35,11 @@ private:
     void finalizeBasicMetrics();
     void finalizeDistributions();
 
-    const BasicMetrics<float>& getBasicMetrics(std::size_t year) const;
+    const metrics::BasicMetrics<float>& getBasicMetrics(std::size_t year) const;
 
     int simulations_{0};
 
-    std::vector<BasicMetrics<float>> basicMetrics_;
+    std::vector<metrics::BasicMetrics<float>> basicMetrics_;
 
     std::vector<float> ageDistribution_;
 };

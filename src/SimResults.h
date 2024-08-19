@@ -3,6 +3,7 @@
 #include <ostream>
 #include <vector>
 
+#include "Metrics.h"
 #include "Results.h"
 
 class SimResults : public Results
@@ -10,8 +11,9 @@ class SimResults : public Results
 public:
     SimResults(std::size_t years, int bits);
 
-    const BasicMetrics<int>& getBasicMetrics(std::size_t year) const;
-    void setBasicMetrics(std::vector<BasicMetrics<int>> basicBasicMetrics);
+    const metrics::BasicMetrics<int>& getBasicMetrics(std::size_t year) const;
+    void setBasicMetrics(
+        std::vector<metrics::BasicMetrics<int>> basicBasicMetrics);
 
     void setDeathDistribution(
         const std::vector<int>& gompertzDeathsDistribution,
@@ -40,5 +42,5 @@ private:
                                         int bitsDistributionValue) const;
 
     std::vector<int> ageDistribution_;
-    std::vector<BasicMetrics<int>> basicMetrics_;
+    std::vector<metrics::BasicMetrics<int>> basicMetrics_;
 };

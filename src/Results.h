@@ -14,29 +14,6 @@ public:
     Results& operator=(const Results&) = default;
     Results& operator=(Results&&) = default;
 
-    template <typename T>
-    struct BasicMetrics
-    {
-        T getLivingAtEnd() const { return livingAtStart_ - deaths_ + births_; }
-
-        void serializeLifeRelatedData(std::ostream& stream,
-                                      char separator) const
-        {
-            stream << livingAtStart_ << separator << births_ << separator
-                   << getLivingAtEnd() << separator << deaths_;
-        }
-
-        void serializeFamily(std::ostream& stream) const
-        {
-            stream << families_;
-        }
-
-        T families_{0};
-        T livingAtStart_{0};
-        T births_{0};
-        T deaths_{0};
-    };
-
     void saveBitsDistibution(std::ostream& stream, char separator) const;
     void saveDeathsDistibution(std::ostream& stream, char separator) const;
     void saveBasicMetrics(std::ostream& stream, char separator) const;

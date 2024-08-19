@@ -6,6 +6,7 @@
 #include "Config.h"
 #include "Generator.h"
 #include "Individual.h"
+#include "Metrics.h"
 #include "SimResults.h"
 
 class Output;
@@ -29,7 +30,7 @@ public:
     void setProgressBar(std::shared_ptr<ProgressBar> progressBar);
 
 private:
-    using BasicMetrics = SimResults::BasicMetrics<int>;
+    using BasicMetrics = metrics::BasicMetrics<int>;
     BasicMetrics progressByOneYear(bool singleFamily, int livesAtStart);
 
     std::vector<int> getAgeDistribution(
