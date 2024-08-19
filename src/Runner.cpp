@@ -3,20 +3,20 @@
 #include <future>
 
 #include "NumbersGenerator.h"
-#include "ProgressBarOverall.h"
+// #include "ProgressBarSequential.h"
 #include "Timer.h"
 
 void Runner::prepareSimulations(const config::Params& params, long int seed)
 {
-    auto progressBar{std::make_shared<ProgressBarOverall>(
-        params.years_, params.simulationsCount_)};
+    //    auto progressBar{std::make_shared<ProgressBarSequential>(
+    //       params.years_, params.simulationsCount_)};
     for (int i{0}; i < params.simulationsCount_; ++i)
     {
         Simulation simulation(params, i);
         simulation.setGenerator(std::make_unique<NumbersGenerator>(
             config::Params::bits_, seed + i));
         simulation.createInitialPopulation();
-        simulation.setProgressBar(progressBar);
+        //        simulation.setProgressBar(progressBar);
         simulations_.emplace_back(std::move(simulation));
     }
 }
