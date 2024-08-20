@@ -1,9 +1,9 @@
+#include <chrono>
 #include <fstream>
 #include <memory>
 
 #include "AvgResults.h"
 #include "FileOutput.h"
-#include "ProgressBarOverall.h"
 #include "Runner.h"
 #include "SimResults.h"
 

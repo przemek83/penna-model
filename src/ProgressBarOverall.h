@@ -1,7 +1,6 @@
 #include "ProgressBar.h"
 
-#include <mutex>
-#include <vector>
+#include <atomic>
 
 class ProgressBarOverall : public ProgressBar
 {
@@ -11,11 +10,5 @@ public:
     void update(int year, int sim) override;
 
 private:
-    bool shouldSkip(int year, int maxYears) const;
-
-    int getCurrentSum(int year, int sim);
-
-    std::vector<int> progresses_;
-
-    std::mutex mutex_;
+    std::atomic_int progress_{0};
 };

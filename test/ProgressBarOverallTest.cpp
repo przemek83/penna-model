@@ -5,6 +5,16 @@
 
 #include "StdStreamEater.h"
 
+namespace
+{
+void progress(ProgressBarOverall& progressBar, int steps)
+{
+    StdStreamEater eater(std::cout);
+    for (int i{0}; i < steps; ++i)
+        progressBar.update(0, 0);
+}
+}  // namespace
+
 TEST_CASE("Overall Progress Callback")
 {
     const int years{1000};
@@ -12,41 +22,46 @@ TEST_CASE("Overall Progress Callback")
     params.simulationsCount_ = 1;
     params.years_ = years;
 
-    const int simId{0};
     ProgressBarOverall progressBar{params.years_, params.simulationsCount_};
     const int length{config::progressBarLength};
     const int firstYearWithMarker{(years / length) - 1};
 
-    StdStreamEater eater(std::cout);
-
     SECTION("start")
     {
-        progressBar.update(0, simId);
+        StdStreamEater eater(std::cout);
+        progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "[");
     }
 
     SECTION("before progress")
     {
-        progressBar.update(firstYearWithMarker - 1, simId);
+        progress(progressBar, firstYearWithMarker - 1);
+        StdStreamEater eater(std::cout);
+        progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "");
     }
 
     SECTION("progress")
     {
-        progressBar.update(firstYearWithMarker, simId);
+        progress(progressBar, firstYearWithMarker);
+        StdStreamEater eater(std::cout);
+        progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "*");
     }
 
     SECTION("after progress")
     {
-        progressBar.update(firstYearWithMarker + 1, simId);
+        progress(progressBar, firstYearWithMarker + 1);
+        StdStreamEater eater(std::cout);
+        progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "");
     }
 
     SECTION("end")
     {
-        const int lastYear{years - 1};
-        progressBar.update(lastYear, simId);
+        progress(progressBar, years - 1);
+        StdStreamEater eater(std::cout);
+        progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "*]\n");
     }
 }
