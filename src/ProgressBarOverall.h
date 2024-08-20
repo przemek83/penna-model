@@ -10,5 +10,5 @@ public:
     void update(int year, int sim) override;
 
 private:
-    std::atomic_int progress_{0};
+    std::atomic<int> progress_{0};
 };
