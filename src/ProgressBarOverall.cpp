@@ -2,11 +2,6 @@
 
 #include "Logger.h"
 
-ProgressBarOverall::ProgressBarOverall(int maxYear, int simCount)
-    : ProgressBar(maxYear, simCount)
-{
-}
-
 void ProgressBarOverall::update([[maybe_unused]] int year,
                                 [[maybe_unused]] int sim)
 {

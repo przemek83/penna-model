@@ -5,7 +5,7 @@
 class ProgressBarOverall : public ProgressBar
 {
 public:
-    ProgressBarOverall(int maxYear, int simCount);
+    using ProgressBar::ProgressBar;
 
     void update(int year, int sim) override;
 
