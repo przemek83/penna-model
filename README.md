@@ -47,9 +47,9 @@ As a result of compilation, binary for simulations and binary for testing should
 | Tool |  Windows | Ubuntu |
 | --- | --- | --- |
 | OS version | 10 22H2 | 24.04 |
-| GCC | 11.2.0 | 13.2.0 |
-| CMake | 3.25.0 | 3.28.3 |
-| Git | 2.38.1 | 2.43.0 |
+| GCC | 13.1.0 | 13.2.0 |
+| CMake | 3.30.2 | 3.28.3 |
+| Git | 2.46.0 | 2.43.0 |
 | yaml-cpp | 0.8.0 | 0.8.0 |
 | Catch2 | 3.3.0 | 3.3.0 | 
 | Argparse | 3.0 | 3.0 |
