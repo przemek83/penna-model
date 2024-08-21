@@ -127,13 +127,13 @@ The following parameters are supported via the configuration file:
 | | fromAge | 4 | Age from which individuals are taken into consideration when catching is applied. |
 
 ## Sequential run
-To run simulation after simulation instead all at once (in sequence) use `Runner::runSequential` method in `main` function replacing line
+To run simulations in sequence use `Runner::runSequential` method in `main` function replacing line
 ```cpp
-const std::vector<SimulationData> simulationsData{runner.runParallel()};
+const std::vector<SimResults> simResults{runner.runParallel()};
 ```
 with
 ```cpp
-const std::vector<SimulationData> simulationsData{runner.runSequential()}; 
+const std::vector<SimResults> simResults{runner.runSequential()};
 ```
 Computation will be executed using one thread only.
 
@@ -141,20 +141,20 @@ Computation will be executed using one thread only.
 By default, simulations are run in parallel using method `Runner::runParallel`. For those purposes, the functionality of `std::future` combined with `std::async` is used. Launching all simulations at once might take additional workload when there are more simulations than threads on a machine. This behavior might be improved by modifying the mentioned `Runner::runParallel` and allowing it to run a limited number of simulations in parallel at once.
 
 ## Progress indicators
-The implementation contains 2 optional progress callbacks available to use to visualize the current status of the run. Both are located in namespace `ProgressCallback`. 
+The implementation contains 2 optional progress bars available to use to visualize the current status of the run. Both are inheriting from `ProgressBar` class. 
 
-> **_NOTE:_**  Progress callback are optional and application can run without it. Remove call of `Simulation::setProgressCallback` to not use it.
+> **_NOTE:_**  Progress bars are optional and application can run without it. Remove call of `Simulation::setProgressBar` method in `Runner` class to not use it.
 
 ### Overall progress
-The first progress callback shows overall information. The output is as follows:
+The first progress bar class is named `ProgressBarOverall` and shows overall information. The output is as follows:
 
     [**************************************************]
     Execution time: 10s.
 
-The overall progress callback can be combined with both ways of execution: parallel and sequential.
+The overall progress bar can be combined with both ways of execution: parallel and sequential.
 
 ### Sequential progress
-The second type of progress callback is a sequential one. Example execution output is as follows:
+The second type of progress bar is a sequential one. Class is named `ProgressBarSequential`. Example execution output is as follows:
 
     1/6 [**************************************************]
     2/6 [**************************************************]
@@ -164,7 +164,7 @@ The second type of progress callback is a sequential one. Example execution outp
     6/6 [**************************************************]
     Execution time: 7s.
 
-The sequential progress callback should be combined with sequential execution.
+The sequential progress bar should be combined only with sequential execution.
 
 ## Genome length
 Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, one can do 2 things:
