@@ -314,7 +314,5 @@ As an alternative, CTest can be used to run tests (performance tests switched on
 
 # Potential further improvements
 * Upgrade code to use C++20/23.
-* Increase test coverage.
-* Setup static analysis (CppCheck, Clang Tidy, SonarQube).
 * Make the size of the genome configurable (use something different from std::bitset).
-* Simplify the generation of results. Currently, it is somewhat complex and advanced.
+* Simplify the generation of results. Currently, it is somewhat complex.
