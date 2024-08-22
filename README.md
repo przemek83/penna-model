@@ -63,7 +63,7 @@ As a result of compilation, binary for simulations and binary for testing should
 | Visual Studio Code | 1.92.0 |
 
 # Usage
-Call `penna-model` binary and pass appropriate configuration file as parameter:
+Call `penna-model` binary and pass the appropriate configuration file as a parameter:
 
     penna-model config.yaml
 
@@ -127,7 +127,7 @@ The following parameters are supported via the configuration file:
 | | fromAge | 4 | Age from which individuals are taken into consideration when catching is applied. |
 
 ## Sequential run
-To run simulations in sequence use `Runner::runSequential` method in `main` function replacing line
+To run simulations in sequence, use the `Runner::runSequential` method in the `main` function, replacing line
 ```cpp
 const std::vector<SimResults> simResults{runner.runParallel()};
 ```
@@ -135,13 +135,13 @@ with
 ```cpp
 const std::vector<SimResults> simResults{runner.runSequential()};
 ```
-Computation will be executed using one thread only.
+Computation will be executed using only one thread.
 
 ## Parallel run
 By default, simulations are run in parallel using method `Runner::runParallel`. For those purposes, the functionality of `std::future` combined with `std::async` is used. Launching all simulations at once might take additional workload when there are more simulations than threads on a machine. This behavior might be improved by modifying the mentioned `Runner::runParallel` and allowing it to run a limited number of simulations in parallel at once.
 
 ## Progress indicators
-The implementation contains 2 optional progress bars available to use to visualize the current status of the run. Both are inheriting from `ProgressBar` class. 
+The implementation contains 2 optional progress bars that can be used to visualize the current status of the run. Both are inheriting from the `ProgressBar` class.
 
 > **_NOTE:_**  Progress bars are optional and application can run without it. Remove call of `Simulation::setProgressBar` method in `Runner` class to not use it.
 
@@ -167,7 +167,7 @@ The second type of progress bar is a sequential one. Class is named `ProgressBar
 The sequential progress bar should be combined only with sequential execution.
 
 ## Genome length
-Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals to `64`. To modify genome length, one can do 2 things:
+Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals `64`. To modify genome length, one can do 2 things:
 - change the value of `bits_` to a different one and rebuild the binaries,
 - in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lenghts_binaries()` and rebuild project to have 32, 64 and 128 genome length binaries.
 
@@ -179,11 +179,11 @@ Plots are generated using Gnuplot. Multiple categories of plots can be found in 
 | --- | --- | --- |
 | AddedMutations | generate_added_mutations_plots.py | Category showing impact on simulation of different number of mutations applied to offspring. |
 | Basic | generate_basic_plots.py | Category is showing some simulation fundamentals like Eve Effect, age/bits distribution, deaths distribution with Gompertz law, phases of population (rise, fall, fluctuation, stabilization). |
-| Catching | generate_catching_plots.py | Category used for visualization of impact of catching/killing of individuals according to set percent, starting year, and starting age. Used for determining what percent of the population (for example, the Atlantic or Baltic cod population) can be caught per year to sustain the population and maximize the profits of the fishery. |
+| Catching | generate_catching_plots.py | Category used for visualization of the impact of catching/killing individuals according to set percent, starting year, and starting age. Used for determining what percent of the population (for example, the Atlantic or Baltic cod population) can be caught per year to sustain the population and maximize the profits of the fishery. |
 | GenomeLength | generate_genome_length_plots.py | Category for analysis of population according to different genome lengths of individuals. By default, 32, 64 and 128-bit genomes are checked. |
-| LethalMutations | generate_lethal_mutations_plots.py | Presented changes between simulations when the number of lethal mutations which individual need to suffer before deaths is set to 2,3 and 4. |
-| OffspringCount | generate_offspring_count_plots.py | Plots show how populations behave with different offspring count set in configuration parameters. |
-| ReproductionAge | generate_reproduction_age_plots.py | Visualize differences between simulations having reproduction age set to 8, 10 and 12 years. |
+| LethalMutations | generate_lethal_mutations_plots.py | Presented changes between simulations when the number of lethal mutations that individuals need to suffer before deaths is set to 2, 3 and 4. |
+| OffspringCount | generate_offspring_count_plots.py | Plots show how populations behave with different offspring counts set in configuration parameters. |
+| ReproductionAge | generate_reproduction_age_plots.py | Visualize differences between simulations having reproduction ages set to 8, 10 and 12 years. |
 
 All plots can be generated using the `generate_all.py` script. Make sure that you prepare 32, 64 and 128 genome length binaries first (check the [genome length](#genome-length) section for more details).
 
