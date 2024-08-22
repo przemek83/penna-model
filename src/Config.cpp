@@ -220,10 +220,10 @@ void fillParser(argparse::ArgumentParser& parser)
         .default_value(std::string("averages"))
         .help("prefix used for output file names");
     parser.add_description(
-        "Implementation of Penna model of population aging.");
+        "Implementation of the Penna model of population aging.");
     parser.add_epilog(
-        "Run outputs results into .txt files. You may use scripts "
-        "placed in the 'plots' directory to generate plots.");
+        "Run the output results into .txt files. You may use scripts placed in "
+        "the 'plots' directory to generate plots.");
 }
 
 }  // namespace
