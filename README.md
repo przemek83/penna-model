@@ -278,39 +278,39 @@ As an alternative, CTest can be used to run tests (performance tests switched on
     $ ctest -E 'Benchmark'
     Test project <path>/penna-model/build/test
         Start  1: Simulation
-    1/15 Test  #1: Simulation .......................   Passed    0.16 sec
+    1/15 Test  #1: Simulation .......................   Passed    0.02 sec
         Start  2: Individual
-    2/15 Test  #2: Individual .......................   Passed    0.08 sec
+    2/15 Test  #2: Individual .......................   Passed    0.01 sec
         Start  3: Output
-    3/15 Test  #3: Output ...........................   Passed    0.09 sec
+    3/15 Test  #3: Output ...........................   Passed    0.01 sec
         Start  4: Output averages
-    4/15 Test  #4: Output averages ..................   Passed    0.22 sec
+    4/15 Test  #4: Output averages ..................   Passed    0.04 sec
         Start  5: Config loading
-    5/15 Test  #5: Config loading ...................   Passed    0.08 sec
+    5/15 Test  #5: Config loading ...................   Passed    0.02 sec
         Start  6: Config correctness
-    6/15 Test  #6: Config correctness ...............   Passed    0.08 sec
+    6/15 Test  #6: Config correctness ...............   Passed    0.01 sec
         Start  7: Config app arguments
-    7/15 Test  #7: Config app arguments .............   Passed    0.08 sec
+    7/15 Test  #7: Config app arguments .............   Passed    0.01 sec
         Start  8: Get Params
-    8/15 Test  #8: Get Params .......................   Passed    0.08 sec
+    8/15 Test  #8: Get Params .......................   Passed    0.01 sec
         Start  9: Catching
-    9/15 Test  #9: Catching .........................   Passed    0.10 sec
+    9/15 Test  #9: Catching .........................   Passed    0.02 sec
         Start 10: NumbersGenerator
-    10/15 Test #10: NumbersGenerator .................   Passed    0.08 sec
+    10/15 Test #10: NumbersGenerator .................   Passed    0.02 sec
         Start 11: Sequential Progress Callback
-    11/15 Test #11: Sequential Progress Callback .....   Passed    0.08 sec
+    11/15 Test #11: Sequential Progress Callback .....   Passed    0.01 sec
         Start 12: Overall Progress Callback
-    12/15 Test #12: Overall Progress Callback ........   Passed    0.08 sec
+    12/15 Test #12: Overall Progress Callback ........   Passed    0.01 sec
         Start 13: Runner - Sequential Run
-    13/15 Test #13: Runner - Sequential Run ..........   Passed    0.08 sec
+    13/15 Test #13: Runner - Sequential Run ..........   Passed    0.01 sec
         Start 14: Runner - Parallel Run
-    14/15 Test #14: Runner - Parallel Run ............   Passed    0.08 sec
+    14/15 Test #14: Runner - Parallel Run ............   Passed    0.01 sec
         Start 15: Metrics
-    15/15 Test #15: Metrics ..........................   Passed    0.08 sec
+    15/15 Test #15: Metrics ..........................   Passed    0.01 sec
 
     100% tests passed, 0 tests failed out of 15
 
-    Total Test time (real) =   1.42 sec
+    Total Test time (real) =   0.26 sec
 
 # Potential further improvements
 * Upgrade code to use C++20/23.
