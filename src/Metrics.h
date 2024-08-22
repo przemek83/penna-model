@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 namespace metrics
 {
 template <typename T>
