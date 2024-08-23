@@ -8,6 +8,6 @@ on:
 
 jobs:
   build:
-    uses: przemek83/workflows/build-and-test-cpp.yml@main
+    uses: przemek83/workflows/.github/workflows/build-and-test-cpp.yml@main
     with:
       platform: ubuntu-latest
