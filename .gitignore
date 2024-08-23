@@ -30,13 +30,13 @@
 *.exe
 *.out
 *.app
-*.user
 
 # Other
 /.vscode
 /build
 /**/__pycache__
 /.cache
+*.user
 
 # Plots
 /plots/**/*.png
