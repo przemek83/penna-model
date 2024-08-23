@@ -4,7 +4,6 @@
 #include <list>
 #include <map>
 #include <memory>
-#include <string>
 
 #include "Individual.h"
 #include "OutputType.h"

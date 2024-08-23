@@ -1,6 +1,5 @@
 #include "Output.h"
 
-#include <filesystem>
 #include <iostream>
 
 #include "AvgResults.h"

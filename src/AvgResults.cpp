@@ -1,7 +1,5 @@
 #include "AvgResults.h"
 
-#include "Config.h"
-
 AvgResults::AvgResults(const std::vector<SimResults>& simulationsData,
                        std::size_t years, int bits)
     : Results(years, bits)
