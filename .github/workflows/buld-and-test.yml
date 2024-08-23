@@ -1,4 +1,4 @@
-name: Build & test on Linux
+name: Build & test
 
 on:
   push:
@@ -7,7 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  linux:
     uses: przemek83/workflows/.github/workflows/build-and-test-cpp.yml@main
     with:
       platform: ubuntu-latest
+
+  windows:
+    uses: przemek83/workflows/.github/workflows/build-and-test-cpp.yml@main
+    with:
+      platform: windows-latest
