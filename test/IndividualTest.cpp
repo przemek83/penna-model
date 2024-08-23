@@ -11,9 +11,9 @@
 
 namespace
 {
-int getBitPositionInGenome(std::size_t genomeSize, int positon)
+std::size_t getBitPositionInGenome(std::size_t genomeSize, std::size_t positon)
 {
-    return static_cast<int>(genomeSize) - 1 - positon;
+    return genomeSize - 1 - positon;
 }
 
 void setGenome(Individual& individual, std::string genome)
@@ -23,7 +23,7 @@ void setGenome(Individual& individual, std::string genome)
     for (std::size_t i{0}; i < genomeSize; ++i)
         if (genome[i] == '1')
             mutations.push_back(
-                getBitPositionInGenome(genome.size(), static_cast<int>(i)));
+                static_cast<int>(getBitPositionInGenome(genome.size(), i)));
 
     FakeGenerator fakeGenerator{mutations};
     individual.assignRandomBits(fakeGenerator,
@@ -109,8 +109,7 @@ TEST_CASE("Individual", "[penna]")
         setGenome(individual, genome);
         const std::size_t genomeSize{genome.size()};
         for (size_t i{0}; i < genomeSize; ++i)
-            REQUIRE((genome[getBitPositionInGenome(
-                         genome.size(), static_cast<int>(i))] == '1') ==
+            REQUIRE((genome[getBitPositionInGenome(genome.size(), i)] == '1') ==
                     individual.getGenomeBit(i));
     }
 
