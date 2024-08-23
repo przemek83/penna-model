@@ -1,5 +1,4 @@
-[![Build & test on Linux](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test-linux.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test-linux.yml)
-[![Build & test on Windows](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test-windows.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test-windows.yml)
+[![Build & test on Linux/Windows](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/buld-and-test.yml)
 [![CodeQL](https://github.com/przemek83/penna-model/actions/workflows/codeql.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/codeql.yml)
 [![Pylint](https://github.com/przemek83/penna-model/actions/workflows/pylint.yml/badge.svg)](https://github.com/przemek83/penna-model/actions/workflows/pylint.yml)
 [![codecov](https://codecov.io/github/przemek83/penna-model/graph/badge.svg?token=NYK9LBVOJE)](https://codecov.io/github/przemek83/penna-model)
