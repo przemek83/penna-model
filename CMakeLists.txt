@@ -39,8 +39,6 @@ set(${PROJECT_NAME}_SOURCES
     src/NumbersGenerator.cpp
     src/Config.h
     src/Config.cpp
-    src/Timer.h
-    src/Timer.cpp
     src/FileOutput.h
     src/FileOutput.cpp
     src/Runner.h
@@ -62,7 +60,7 @@ set(${PROJECT_NAME}_SOURCES
 
 # Create default binaries.
 add_library (${PROJECT_NAME}-lib STATIC ${${PROJECT_NAME}_SOURCES})
-target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse)
+target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse cpputils)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)

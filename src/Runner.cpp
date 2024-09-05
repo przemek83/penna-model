@@ -2,9 +2,10 @@
 
 #include <future>
 
+#include <cpputils/Timer.h>
+
 #include "NumbersGenerator.h"
 #include "ProgressBarOverall.h"
-#include "Timer.h"
 
 void Runner::prepareSimulations(const config::Params& params, long int seed)
 {
@@ -23,7 +24,7 @@ void Runner::prepareSimulations(const config::Params& params, long int seed)
 
 std::vector<SimResults> Runner::runSequential()
 {
-    const Timer timer;
+    const Timer timer{Timer::Duration::SECONDS};
     std::vector<SimResults> dataToReturn;
     const std::size_t simCount{simulations_.size()};
     dataToReturn.reserve(simCount);
@@ -36,7 +37,7 @@ std::vector<SimResults> Runner::runSequential()
 
 std::vector<SimResults> Runner::runParallel()
 {
-    const Timer timer;
+    const Timer timer{Timer::Duration::SECONDS};
     std::vector<std::future<SimResults>> futures;
     const std::size_t simCount{simulations_.size()};
     for (std::size_t i{0}; i < simCount; ++i)
