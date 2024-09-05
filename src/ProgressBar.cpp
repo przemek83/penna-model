@@ -19,7 +19,7 @@ bool ProgressBar::isEnding(int currentValue, int maxValue) const
     return currentValue >= maxValue;
 }
 
-void ProgressBar::printProgress(const std::string& msg)
+void ProgressBar::printProgress(const std::string& msg) const
 {
     std::cout << msg;
     std::cout.flush();

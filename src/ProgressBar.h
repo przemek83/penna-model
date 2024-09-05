@@ -22,7 +22,7 @@ protected:
     std::string getSuffix() const { return suffix_; }
     std::string getMarker() const { return marker_; }
 
-    void printProgress(const std::string& msg);
+    void printProgress(const std::string& msg) const;
 
 private:
     const int maxYear_;
