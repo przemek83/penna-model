@@ -1,15 +1,14 @@
+#include <cpputils/StreamEater.h>
 #include <catch2/catch_test_macros.hpp>
 
 #include <src/Config.h>
 #include <src/ProgressBarOverall.h>
 
-#include "StdStreamEater.h"
-
 namespace
 {
 void progress(ProgressBarOverall& progressBar, int steps)
 {
-    StdStreamEater eater(std::cout);
+    StreamEater eater(std::cout);
     for (int i{0}; i < steps; ++i)
         progressBar.update(0, 0);
 }
@@ -28,7 +27,7 @@ TEST_CASE("Overall Progress Callback")
 
     SECTION("start")
     {
-        StdStreamEater eater(std::cout);
+        StreamEater eater(std::cout);
         progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "[");
     }
@@ -36,7 +35,7 @@ TEST_CASE("Overall Progress Callback")
     SECTION("before progress")
     {
         progress(progressBar, firstYearWithMarker - 1);
-        StdStreamEater eater(std::cout);
+        StreamEater eater(std::cout);
         progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "");
     }
@@ -44,7 +43,7 @@ TEST_CASE("Overall Progress Callback")
     SECTION("progress")
     {
         progress(progressBar, firstYearWithMarker);
-        StdStreamEater eater(std::cout);
+        StreamEater eater(std::cout);
         progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "*");
     }
@@ -52,7 +51,7 @@ TEST_CASE("Overall Progress Callback")
     SECTION("after progress")
     {
         progress(progressBar, firstYearWithMarker + 1);
-        StdStreamEater eater(std::cout);
+        StreamEater eater(std::cout);
         progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "");
     }
@@ -60,7 +59,7 @@ TEST_CASE("Overall Progress Callback")
     SECTION("end")
     {
         progress(progressBar, years - 1);
-        StdStreamEater eater(std::cout);
+        StreamEater eater(std::cout);
         progressBar.update(0, 0);
         REQUIRE(eater.getOutput() == "*]\n");
     }

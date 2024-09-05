@@ -1,9 +1,8 @@
+#include <cpputils/StreamEater.h>
 #include <catch2/catch_test_macros.hpp>
 
 #include <src/Config.h>
 #include <src/ProgressBarSequential.h>
-
-#include "StdStreamEater.h"
 
 TEST_CASE("Sequential Progress Callback")
 {
@@ -16,7 +15,7 @@ TEST_CASE("Sequential Progress Callback")
     const int length{config::progressBarLength};
     const int firstYearWithMarker{(years / length) - 1};
 
-    StdStreamEater eater(std::cout);
+    StreamEater eater(std::cout);
 
     SECTION("start")
     {

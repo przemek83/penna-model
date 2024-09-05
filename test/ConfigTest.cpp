@@ -1,13 +1,13 @@
 #include <ios>
 #include <memory>
+#include <sstream>
 
+#include <cpputils/StreamEater.h>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <src/Config.h>
-
-#include "StdStreamEater.h"
 
 namespace Catch
 {
@@ -178,7 +178,7 @@ TEST_CASE("Config correctness", "[penna]")
 {
     config::Params params;
 
-    StdStreamEater eater(std::cerr);
+    StreamEater eater(std::cerr);
 
     SECTION("correct params") { REQUIRE(config::isValid(params)); }
 
@@ -305,7 +305,7 @@ TEST_CASE("Config correctness", "[penna]")
 
 TEST_CASE("Config app arguments", "[penna]")
 {
-    StdStreamEater eater(std::cerr);
+    StreamEater eater(std::cerr);
 
     const std::string defaultConfigFileName{"config.yaml"};
     const std::string defaultPrefix{"averages"};
@@ -377,7 +377,7 @@ TEST_CASE("Config app arguments", "[penna]")
 
 TEST_CASE("Get Params", "[penna]")
 {
-    StdStreamEater eater(std::cerr);
+    StreamEater eater(std::cerr);
 
     SECTION("Valid config file")
     {

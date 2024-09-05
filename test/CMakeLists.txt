@@ -22,13 +22,11 @@ set(${PROJECT_TEST}_SOURCES
     ProgressBarSequentialTest.cpp
     ProgressBarOverallTest.cpp
     RunnerTest.cpp
-    StdStreamEater.h
-    StdStreamEater.cpp
     MetricsTest.cpp
     )
 
 add_executable(${PROJECT_TEST} ${${PROJECT_TEST}_SOURCES})
-target_link_libraries(${PROJECT_TEST} PRIVATE Catch2::Catch2WithMain ${PROJECT_NAME}-lib)
+target_link_libraries(${PROJECT_TEST} PRIVATE Catch2::Catch2WithMain cpputils ${PROJECT_NAME}-lib)
 
 include(CTest)
 include(Catch)

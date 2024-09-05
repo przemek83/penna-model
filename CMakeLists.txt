@@ -19,6 +19,7 @@ endif()
 
 include(CMakeLists.txt.yaml-cpp)
 include(CMakeLists.txt.argparse)
+include(CMakeLists.txt.cpputils)
 
 file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY plots DESTINATION ${CMAKE_BINARY_DIR})
