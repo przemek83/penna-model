@@ -52,6 +52,7 @@ As a result of compilation, binary for simulations and binary for testing should
 | yaml-cpp | 0.8.0 | 0.8.0 |
 | Catch2 | 3.3.0 | 3.3.0 | 
 | Argparse | 3.0 | 3.0 |
+| cpputils | 1.0.0 | 1.0.0 |
 
 ## Used tools for plots part
 | Tool | Ubuntu |
@@ -247,6 +248,7 @@ The project uses the following open-source software:
 | yaml-cpp | MIT | https://github.com/jbeder/yaml-cpp | YAML parser library for C++ |
 | Catch2 | BSL-1.0 | https://github.com/catchorg/Catch2 | testing framework for C++ |
 | Argparse | MIT | https://github.com/p-ranav/argparse | an argument parser for C++ |
+| cpputils | MIT | https://github.com/przemek83/cpputils| collection of C++ utility classes |
 
 # Testing
 For testing of code logic, there is a responsible `Catch2` framework. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-test` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `tests` directory, where the⁣ binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Linux:
