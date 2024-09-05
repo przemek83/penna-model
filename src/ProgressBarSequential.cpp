@@ -2,20 +2,18 @@
 
 #include <string>
 
-#include "Logger.h"
-
 void ProgressBarSequential::update(int year, int sim)
 {
     if (year == 0)
     {
-        Logger().log(std::to_string(sim + 1) + "/" +
-                     std::to_string(getSimCount()) + " " + getPreffix());
+        printProgress(std::to_string(sim + 1) + "/" +
+                      std::to_string(getSimCount()) + " " + getPreffix());
         return;
     }
 
     if (shouldAddProgressMarker(year + 1, getMaxYear()))
-        Logger().log(getMarker());
+        printProgress(getMarker());
 
     if (isEnding(year + 1, getMaxYear()))
-        Logger().log(getSuffix() + "\n");
+        printProgress(getSuffix() + "\n");
 }

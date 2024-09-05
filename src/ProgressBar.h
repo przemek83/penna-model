@@ -22,6 +22,8 @@ protected:
     std::string getSuffix() const { return suffix_; }
     std::string getMarker() const { return marker_; }
 
+    void printProgress(const std::string& msg);
+
 private:
     const int maxYear_;
     const int simCount_;

@@ -54,7 +54,6 @@ set(${PROJECT_NAME}_SOURCES
     src/Results.h
     src/Results.cpp
     src/OutputType.h
-    src/Logger.h
     src/Metrics.h
 )
 

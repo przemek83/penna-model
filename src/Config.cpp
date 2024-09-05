@@ -3,10 +3,9 @@
 #include <iostream>
 #include <string>
 
+#include <cpputils/Logger.h>
 #include <yaml-cpp/yaml.h>
 #include <argparse/argparse.hpp>
-
-#include "Logger.h"
 
 namespace
 {
@@ -207,7 +206,7 @@ void checkCatching(config::Catching catching, int years, std::string& errorMsg)
 void printErrorMsg(const std::exception& e,
                    const argparse::ArgumentParser& parser)
 {
-    Logger().err(std::string(e.what()) + "\n" + parser.help().str());
+    Log().error(std::string(e.what()) + "\n" + parser.help().str());
 }
 
 void fillParser(argparse::ArgumentParser& parser)
@@ -290,7 +289,7 @@ bool isValid(const Params& params)
     if (errorMsg.empty())
         return true;
 
-    Logger().err("Configuration is invalid:\n" + errorMsg);
+    Log().error("Configuration is invalid:\n" + errorMsg);
 
     return false;
 }
@@ -325,7 +324,7 @@ std::pair<bool, config::Params> getParams(
 {
     if (configStream->fail())
     {
-        Logger().err("Cannot read config file " + configFileName + "\n");
+        Log().error("Cannot read config file " + configFileName + "\n");
         return {false, {}};
     }
 

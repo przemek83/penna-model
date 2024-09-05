@@ -1,5 +1,7 @@
 #include "ProgressBar.h"
 
+#include <iostream>
+
 #include "Config.h"
 
 ProgressBar::ProgressBar(int maxYear, int simCount)
@@ -15,4 +17,10 @@ bool ProgressBar::shouldAddProgressMarker(int currentValue, int maxValue) const
 bool ProgressBar::isEnding(int currentValue, int maxValue) const
 {
     return currentValue >= maxValue;
+}
+
+void ProgressBar::printProgress(const std::string& msg)
+{
+    std::cout << msg;
+    std::cout.flush();
 }
