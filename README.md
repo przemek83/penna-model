@@ -251,7 +251,7 @@ The project uses the following open-source software:
 | cpputils | MIT | https://github.com/przemek83/cpputils| collection of C++ utility classes |
 
 # Testing
-For testing of code logic, there is a responsible `Catch2` framework. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-test` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `tests` directory, where the⁣ binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Linux:
+For testing of code logic, there is a responsible `Catch2` framework. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-test` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `build/test` directory, where the⁣ binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Linux:
     
     $ ./penna-model-test
     Randomness seeded to: 3324807384
