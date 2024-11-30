@@ -80,4 +80,4 @@ endfunction()
 
 enable_testing()
 Include(Tests.cmake)
-add_subdirectory(test)
+add_subdirectory(tests)
