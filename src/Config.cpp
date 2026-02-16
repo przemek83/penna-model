@@ -1,6 +1,7 @@
 #include "Config.h"
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include <cpputils/Logger.h>
@@ -329,7 +330,7 @@ std::tuple<bool, std::string, std::string> getAppArguments(int argc,
         configFileName = parser.get<std::string>("config");
         prefix = parser.get<std::string>("prefix");
     }
-    catch (const std::exception& e)
+    catch (const std::runtime_error& e)
     {
         printErrorMsg(e, parser);
         return {false, configFileName, prefix};
