@@ -36,6 +36,9 @@ protected:
         OutputType outputType) const = 0;
 
 private:
+    const int bitsDistributionPrecision_{2};
+    const int deathsDistributionPrecision_{3};
+
     template <typename T>
     void saveData(const T& data, std::map<OutputType, int> precisions)
     {
@@ -53,7 +56,7 @@ private:
 
         const std::shared_ptr<std::ostream> bits{
             getStream(OutputType::BITS_DISTRIBUTION)};
-        *bits << std::setprecision(2) << std::fixed;
+        *bits << std::setprecision(bitsDistributionPrecision_) << std::fixed;
         data.saveBitsDistibution(*bits, separator_);
 
         const std::shared_ptr<std::ostream> age{
@@ -64,7 +67,8 @@ private:
 
         const std::shared_ptr<std::ostream> deaths{
             getStream(OutputType::DEATHS_DISTRIBUTION)};
-        *deaths << std::setprecision(3) << std::fixed;
+        *deaths << std::setprecision(deathsDistributionPrecision_)
+                << std::fixed;
         data.saveDeathsDistibution(*deaths, separator_);
     }
 
