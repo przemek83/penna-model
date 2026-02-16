@@ -7,10 +7,11 @@ class Results
 {
 public:
     Results(std::size_t years, int bits);
-    virtual ~Results() = default;
-
     Results(const Results&) = default;
     Results(Results&&) = default;
+
+    virtual ~Results() = default;
+
     Results& operator=(const Results&) = default;
     Results& operator=(Results&&) = default;
 

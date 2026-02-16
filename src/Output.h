@@ -15,10 +15,11 @@ class Output
 {
 public:
     Output() = default;
-    virtual ~Output() = default;
-
     Output(const Output&) = delete;
     Output(Output&&) = delete;
+
+    virtual ~Output() = default;
+
     Output& operator=(const Output&) = delete;
     Output& operator=(Output&&) = delete;
 
