@@ -69,8 +69,9 @@ constexpr std::string_view fieldToString(Field field)
             return "fromYear";
         case Field::CATCHING_FROM_AGE:
             return "fromAge";
+        default:
+            return "";
     }
-    return "";
 }
 
 std::string createErrorMsg(Field field, const std::string& condition,
