@@ -14,13 +14,15 @@ struct BasicMetrics
 };
 
 template <typename T>
-auto getLivingAtEnd(T metrics)
+auto getLivingAtEnd(const T& metrics)
 {
     return (metrics.livingAtStart_ - metrics.deaths_) + metrics.births_;
 }
 
 template <typename T>
-void serializeLifeRelatedData(T metrics, std::ostream& stream, char separator)
+void serializeLifeRelatedData(const T& metrics,
+                              std::ostream& stream,
+                              char separator)
 {
     stream << metrics.livingAtStart_ << separator << metrics.births_
            << separator << getLivingAtEnd<T>(metrics) << separator
@@ -28,7 +30,7 @@ void serializeLifeRelatedData(T metrics, std::ostream& stream, char separator)
 }
 
 template <typename T>
-void serializeFamily(T metrics, std::ostream& stream)
+void serializeFamily(const T& metrics, std::ostream& stream)
 {
     stream << metrics.families_;
 }
