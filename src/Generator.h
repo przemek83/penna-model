@@ -6,10 +6,11 @@ class Generator
 {
 public:
     explicit Generator(int bits);
-    virtual ~Generator() = default;
-
     Generator(const Generator&) = delete;
     Generator(Generator&&) = delete;
+
+    virtual ~Generator() = default;
+
     Generator& operator=(const Generator&) = delete;
     Generator& operator=(Generator&&) = delete;
 
