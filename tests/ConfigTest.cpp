@@ -172,6 +172,74 @@ simulations: 4)");
             config::loadConfig(std::move(configStream))};
         REQUIRE_THAT(configParams, equalsParams(expectedParams));
     }
+
+    SECTION("population section")
+    {
+        config::Params expectedParams;
+        expectedParams.population_.initial_ = 2'000;
+        expectedParams.population_.max_ = 100'000;
+
+        std::string configString(R"(
+population:
+  initial: 2000
+  max: 100000)");
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
+    }
+
+    SECTION("mutations section")
+    {
+        config::Params expectedParams;
+        expectedParams.mutations_.added_ = 2;
+        expectedParams.mutations_.lethal_ = 6;
+        expectedParams.mutations_.initial_ = 6;
+
+        std::string configString(R"(
+mutations:
+  added: 2
+  lethal: 6
+  initial: 6)");
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
+    }
+
+    SECTION("offspring section")
+    {
+        config::Params expectedParams;
+        expectedParams.offspring_.chance_ = 50;
+        expectedParams.offspring_.count_ = 2;
+
+        std::string configString(R"(
+offspring:
+  chance: 50
+  count: 2)");
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
+    }
+
+    SECTION("catching section")
+    {
+        config::Params expectedParams;
+        expectedParams.catching_.percent_ = 20;
+        expectedParams.catching_.fromYear_ = 2'000;
+        expectedParams.catching_.fromAge_ = 5;
+
+        std::string configString(R"(
+catching:
+  percent: 20
+  fromYear: 2000
+  fromAge: 5)");
+        auto configStream{std::make_unique<std::istringstream>(configString)};
+        const config::Params configParams{
+            config::loadConfig(std::move(configStream))};
+        REQUIRE_THAT(configParams, equalsParams(expectedParams));
+    }
 }
 
 TEST_CASE("Config correctness", "[penna]")
