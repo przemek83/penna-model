@@ -87,6 +87,7 @@ void AvgResults::integrateDistributions(const SimResults& data)
 void AvgResults::finalizeBasicMetrics()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
+
     const std::size_t years{getYears()};
     for (std::size_t i{0}; i < years; ++i)
         basicMetrics_[i].families_ /= simulationsAsFloat;
@@ -102,6 +103,7 @@ void AvgResults::finalizeBasicMetrics()
 void AvgResults::finalizeDistributions()
 {
     const float simulationsAsFloat{static_cast<float>(simulations_)};
+
     const std::size_t bits{getBits()};
     for (std::size_t i{0}; i < bits; ++i)
     {

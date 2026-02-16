@@ -40,6 +40,7 @@ void Results::saveFamilies(std::ostream& stream, char separator) const
     {
         if (isSingleFamily(year))
             return;
+
         stream << year << separator;
         writeFamiliesMetricData(stream, year);
         stream << '\n';
