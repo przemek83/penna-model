@@ -116,7 +116,7 @@ The following parameters are supported via the configuration file:
 | | added | 1 | Mutations applied to offspring. |
 | | lethal | 4 | Number of mutations becoming lethal when accumulated. |
 | | initial | 4 | Number of mutations in genome for each individual on simulation start. |
-| reproductionAge | | 10 | Age in which individual stars have offspring. |
+| reproductionAge | | 10 | Age at which individual starts having offspring. |
 | offspring | | |
 | | chance | 100 | Chance for having offspring each year. |
 | | count | 3 | Number of new individuals born. |
@@ -169,7 +169,7 @@ The sequential progress bar should be combined only with sequential execution.
 ## Genome length
 Genome length is hard-coded in the `Config::Params` structure at field `bits_`. Its value equals `64`. To modify genome length, one can do 2 things:
 - change the value of `bits_` to a different one and rebuild the binaries,
-- in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lenghts_binaries()` and rebuild project to have 32, 64 and 128 genome length binaries.
+- in file CMakeLists.txt uncomment line with call to function `generate_other_genome_bit_lengths_binaries()` and rebuild project to have 32, 64 and 128 genome length binaries.
 
 As of April 2024, there is no plan to make it configurable in yaml. Replacing `std::bitset` with something more flexible like `std::vector<bool>` impacts performance greatly.
 
@@ -251,7 +251,7 @@ The project uses the following open-source software:
 | cpputils | MIT | https://github.com/przemek83/cpputils| collection of C++ utility classes |
 
 # Testing
-For testing of code logic, there is a responsible `Catch2` framework. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-tests` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `build/tests` directory, where the⁣ binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Linux:
+For testing of code logic, the `Catch2` framework is used. As it is well integrated with `CMake` it should be straightforward to use. As the first step, build the project. Make sure that the `penna-model-tests` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `build/tests` directory, where the binary `penna-model-tests` should be available after building. Calling it directly should produce the following output on Linux:
     
     $ ./penna-model-tests
     Randomness seeded to: 3324807384

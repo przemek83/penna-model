@@ -64,7 +64,7 @@ target_link_libraries(${PROJECT_NAME}-lib yaml-cpp::yaml-cpp argparse cpputils)
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
 
-function(GENERATE_OTHER_GENOME_BIT_LENGHTS_BINARIES)
+function(GENERATE_OTHER_GENOME_BIT_LENGTHS_BINARIES)
     foreach( bit_length IN ITEMS 32 64 128 )
         add_library (${PROJECT_NAME}${bit_length}-lib STATIC ${${PROJECT_NAME}_SOURCES})
         target_link_libraries(${PROJECT_NAME}${bit_length}-lib yaml-cpp::yaml-cpp argparse)
@@ -76,7 +76,7 @@ function(GENERATE_OTHER_GENOME_BIT_LENGHTS_BINARIES)
 endfunction()
 
 # Uncommment to generate binaries for different genome lengths.
-# generate_other_genome_bit_lenghts_binaries()
+# generate_other_genome_bit_lengths_binaries(()
 
 enable_testing()
 Include(Tests.cmake)
