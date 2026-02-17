@@ -31,7 +31,7 @@
 - [Testing](#testing)
 
 # About project
-Implementation of the Penna population aging model with multiple configuration options. The program runs a given number of simulations in a sequential or parallel manner and saves the averages into output files. The initial implementation was part of my master thesis and was created in the first decade of the 21st century. Reworked heavily in the years 2023–2024 and published as open source.
+Implementation of the Penna population aging model with multiple configuration options. The program runs a given number of simulations in a sequential or parallel manner and saves the averages into output files. The initial implementation was part of my master's thesis and was created in the first decade of the 21st century. Reworked heavily in the years 2023–2024 and published as open source.
 
 The implementation is written in C++17, with a focus on speed and configurability.
   
